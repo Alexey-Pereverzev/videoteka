@@ -15,6 +15,7 @@
         <module>cart-service</module>
         <module>catalog-service</module>
         <module>front-service</module>
+        <module>common</module>
     </modules>
 
 </project>
