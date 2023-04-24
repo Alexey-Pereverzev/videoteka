@@ -1,5 +1,7 @@
 package ru.gb.catalogservice.entities;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import ru.gb.common.generic.entities.GenericEntity;
 
 import javax.persistence.*;
@@ -7,6 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name="films")
+@RequiredArgsConstructor
+@Data
 public class Film extends GenericEntity {
     @Column(name = "title")
     private String title;
@@ -16,10 +20,10 @@ public class Film extends GenericEntity {
     @Column(name = "image_url_link")
     private String imageUrlLink;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name="countries_films",
             joinColumns=@JoinColumn(name="film_id"),
-            inverseJoinColumns=@JoinColumn(name="country_id"))
+            inverseJoinColumns = @JoinColumn(name="country_id"))
     private List<Country> countries;
 
     @ManyToMany
@@ -33,6 +37,10 @@ public class Film extends GenericEntity {
             joinColumns=@JoinColumn(name="film_id"),
             inverseJoinColumns=@JoinColumn(name="genre_id"))
     private List<Genre> genres;
+
+    @OneToMany
+    @JoinColumn(name = "film_id")
+    private List<Price> prices;
 
     @Column(name="description")
     private String description;
