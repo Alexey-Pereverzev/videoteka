@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.entities.Price;
 
+import java.util.List;
+
 @Repository
 public interface PriceRepository extends JpaRepository<Price, Long> {
-
+    List<Price> findAllByIsDeletedIsFalse();
 }

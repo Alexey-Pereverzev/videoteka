@@ -9,6 +9,8 @@ import ru.gb.catalogservice.entities.Price;
 import ru.gb.catalogservice.repositories.CountryRepository;
 import ru.gb.catalogservice.repositories.PriceRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PriceService {
@@ -16,5 +18,9 @@ public class PriceService {
 
     public Page<Price> findAll(){
         return priceRepository.findAll(PageRequest.of(0,3));
+    }
+
+    public List<Price> findAllByIsDeletedIsFalse(){
+        return priceRepository.findAllByIsDeletedIsFalse();
     }
 }

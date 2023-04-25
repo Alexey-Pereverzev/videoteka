@@ -44,4 +44,5 @@ public class Film extends GenericEntity {
 
     @Column(name="description")
     private String description;
+
 }

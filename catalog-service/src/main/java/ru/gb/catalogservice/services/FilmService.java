@@ -12,9 +12,10 @@ import ru.gb.catalogservice.repositories.FilmRepository;
 @Service
 @RequiredArgsConstructor
 public class FilmService {
+    private final int FILM_PAGE_SIZE=10;
     private final FilmRepository filmRepository;
 
-    public Page<Film> findAll(){
-        return filmRepository.findAll(PageRequest.of(0,3));
+    public Page<Film> findAll(int currentPage){
+        return filmRepository.findAll(PageRequest.of(currentPage,FILM_PAGE_SIZE));
     }
 }
