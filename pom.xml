@@ -16,6 +16,7 @@
         <module>catalog-service</module>
         <module>front-service</module>
         <module>gateway-service</module>
+        <module>common</module>
     </modules>
 
 </project>
