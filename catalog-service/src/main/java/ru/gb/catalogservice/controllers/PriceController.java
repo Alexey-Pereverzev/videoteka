@@ -1,5 +1,6 @@
 package ru.gb.catalogservice.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,15 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/price")
 @RequiredArgsConstructor
+@Tag(name = "Цены", description = "Методы для работы со списком цен")
 public class PriceController {
     private final PriceService priceService;
     private final PriceConverter priceConverter;
-    @GetMapping("list_all")
-    public PriceDto getAllPrices(){
-        List<Price> priceList=priceService.findAllByIsDeletedIsFalse();
-        PriceDto priceDto = PriceDto.builder()
-                .minPriceSale(priceList.stream().min(Integer::compare))
-                .build();
-        return null;
+    @GetMapping("prices_filter")
+    public PriceDto getMinMaxPrices(){
+        return priceConverter.entityToDto(priceService.findAllByIsDeletedIsFalse());
     }
+
 }

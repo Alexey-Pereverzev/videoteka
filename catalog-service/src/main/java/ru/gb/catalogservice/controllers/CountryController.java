@@ -1,5 +1,6 @@
 package ru.gb.catalogservice.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/country")
 @RequiredArgsConstructor
+@Tag(name = "Страны", description = "Методы для работы со списком стран")
 public class CountryController {
     private final CountryService countryService;
     private final CountryConverter countryConverter;

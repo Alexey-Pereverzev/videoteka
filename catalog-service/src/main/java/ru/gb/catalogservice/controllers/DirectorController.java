@@ -1,5 +1,6 @@
 package ru.gb.catalogservice.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/director")
 @RequiredArgsConstructor
+@Tag(name = "Режиссер", description = "Методы для работы со списком режиссеров")
 public class DirectorController {
     private final DirectorService directorService;
     private final DirectorConverter directorConverter;
