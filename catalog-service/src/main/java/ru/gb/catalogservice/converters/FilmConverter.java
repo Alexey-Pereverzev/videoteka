@@ -14,6 +14,7 @@ public class FilmConverter {
                 .id(film.getId())
                 .title(film.getTitle())
                 .premierYear(film.getPremierYear())
+                .description(film.getDescription())
                 .imageUrlLink(film.getImageUrlLink())
                 .genre(getGenreList(film.getGenres()))
                 .country(getCountriesList(film.getCountries()))

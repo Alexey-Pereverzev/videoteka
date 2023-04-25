@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PriceSaleDto {
+public class CountryDto {
     private Long id;
-    private int priceSale;
+    private String title;
 }

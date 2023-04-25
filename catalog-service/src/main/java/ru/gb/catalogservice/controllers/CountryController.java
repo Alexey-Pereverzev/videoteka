@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.gb.api.dtos.CountryDto;
+import ru.gb.catalogservice.converters.CountryConverter;
 import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.services.CountryService;
 
@@ -17,8 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CountryController {
     private final CountryService countryService;
+    private final CountryConverter countryConverter;
     @GetMapping("list_all")
-    public Page<Country> getUserOrders(){
-        return countryService.findAll();
+    public List<CountryDto> listAll(){
+        return countryService.findAll().stream().map(countryConverter::entityToDto).toList();
     }
 }

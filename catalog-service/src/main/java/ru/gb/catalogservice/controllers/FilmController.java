@@ -20,7 +20,7 @@ public class FilmController {
     private final FilmService filmService;
     private final FilmConverter filmConverter;
     @GetMapping("list_all")
-    public Page<FilmDto> getUserOrders(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage){
+    public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage){
         return filmService.findAll(currentPage).map(filmConverter::entityToDto);
     }
 }

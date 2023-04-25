@@ -11,6 +11,7 @@ public class FilmDto {
     private Long id;
     private String title;
     private int premierYear;
+    private String description;
     private String imageUrlLink;
     private List<String> genre;
     private List<String> country;
