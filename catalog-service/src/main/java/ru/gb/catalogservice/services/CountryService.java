@@ -22,6 +22,13 @@ public class CountryService {
         return countryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Страна с id="+id+" не найдена"));
     }
 
+    public List<Country> findByTitle(String title){
+        return countryRepository.findAllByTitle(title);
+    }
+
+    public List<Country> findCountryList(String[] strings){
+        return countryRepository.findAllByTitleIsIn(strings);
+    }
     public List<Country> findAll(){
         return countryRepository.findAll(SORT_COUNTRY);
     }
