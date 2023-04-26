@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.entities.Director;
 import ru.gb.catalogservice.entities.Film;
+import ru.gb.catalogservice.entities.Genre;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.DirectorRepository;
 import ru.gb.catalogservice.repositories.FilmRepository;
@@ -25,8 +26,10 @@ public class FilmService {
     public Film findById(Long id){
         return filmRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Фильм с id="+id+" не найден"));
     }
-    public Page<Film> findByFilter(int currentPage, List<Country> countries){
-        return filmRepository.findAllByCountriesIn(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort),countries);
+    public Page<Film> findByFilter(int currentPage, List<Country> countries, List<Director> directors, List<Genre> genres,
+                                   int premierYear){
+        return filmRepository.findWithFilter(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort),countries,
+                directors,genres,premierYear);
     }
 
     public Page<Film> findAll(int currentPage){

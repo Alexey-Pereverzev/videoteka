@@ -26,4 +26,6 @@ public class PriceController {
         return priceConverter.entityToDto(priceService.findAllByIsDeletedIsFalse());
     }
 
+
+
 }

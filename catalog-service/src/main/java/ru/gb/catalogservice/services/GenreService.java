@@ -22,6 +22,10 @@ public class GenreService {
     public Genre findById(Long id){
         return genreRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Жанр с id="+id+" не найден"));
     }
+
+    public List<Genre> findByFilter(String[] filterGenre){
+        return genreRepository.findAllByTitleIn(filterGenre);
+    }
     public List<Genre> findAll(){
         return genreRepository.findAll(SORT_GENRE);
     }

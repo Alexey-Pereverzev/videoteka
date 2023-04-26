@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.entities.Director;
 
+import java.util.List;
+
 @Repository
 public interface DirectorRepository extends JpaRepository<Director, Long> {
-
+    List<Director> findAllByFirstNameInAndLastNameIn(String[] filterFirstName, String[] filterLastName);
 }
