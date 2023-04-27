@@ -14,6 +14,7 @@ import java.util.List;
 public class Film extends GenericEntity {
     @Column(name = "title")
     private String title;
+
     @Column(name="premier_year")
     private int premierYear;
 

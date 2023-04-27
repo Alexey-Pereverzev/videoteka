@@ -2,6 +2,7 @@ package ru.gb.catalogservice.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import ru.gb.catalogservice.services.FilmService;
 @RestController
 @RequestMapping("/api/v1/film")
 @RequiredArgsConstructor
+//@CrossOrigin(origins="http://localhost:3000")
 public class FilmController {
     private final FilmService filmService;
     @GetMapping("list_all")
