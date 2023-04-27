@@ -28,8 +28,9 @@ public class FilmController {
     private final GenreService genreService;
     private final PriceService priceService;
     @GetMapping("find_by_id")
-    public FilmDto findById(@RequestParam Long id){
-        return filmConverter.entityToDto(filmService.findById(id));
+    public Film findById(@RequestParam Long id){
+//        return filmConverter.entityToDto(filmService.findById(id));
+        return filmService.findById(id);
     }
     @GetMapping("list_all")
     public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
@@ -38,9 +39,9 @@ public class FilmController {
                                  @RequestParam (name="filterGenreList",required = false) String[] filterGenreList,
                                  @RequestParam (name="startPremierYear",required = false)Integer startPremierYear,
                                  @RequestParam (name="endPremierYear",required = false)Integer endPremierYear,
-                                 @RequestParam boolean isSale,
-                                 @RequestParam int minPrice,
-                                 @RequestParam int maxPrice){
+                                 @RequestParam (name="isSale",required = false)Boolean isSale,
+                                 @RequestParam (name="minPrice",required = false)Integer minPrice,
+                                 @RequestParam (name="maxPrice",required = false)Integer maxPrice){
         List<Country> countries;
         if (filterCountryList==null || filterCountryList.length==0){
             countries=countryService.findAll();
@@ -88,10 +89,17 @@ public class FilmController {
         if (endPremierYear==null||endPremierYear>LocalDate.now().getYear()){
             endPremierYear=LocalDate.now().getYear();
         }
-
-        List<Price> prices=priceService.findAllByIsDeletedIsFalseForFilter(minSalePrice,maxSalePrice,minRentPrice,maxRentPrice);
-        System.out.println(prices);
-        return filmService.findByFilter(currentPage,countries,directors,genres,startPremierYear,endPremierYear).map(filmConverter::entityToDto);
+        List<Price> prices;
+        if (isSale!=null && minPrice!=null && maxPrice!=null){
+            if (isSale){
+                prices=priceService.findByFilterSalePrice(minPrice,maxPrice);
+            }else{
+                prices=priceService.findByFilterRentPrice(minPrice,maxPrice);
+            }
+            return filmService.findByFilter(currentPage,countries,directors,genres,
+                    startPremierYear,endPremierYear,prices).map(filmConverter::entityToDto);
+        }else{
+            throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+        }
     }
-
 }

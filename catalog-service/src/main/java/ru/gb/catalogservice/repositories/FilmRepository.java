@@ -8,10 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.gb.catalogservice.entities.Country;
-import ru.gb.catalogservice.entities.Director;
-import ru.gb.catalogservice.entities.Film;
-import ru.gb.catalogservice.entities.Genre;
+import ru.gb.catalogservice.entities.*;
 
 import java.util.List;
 
@@ -21,11 +18,12 @@ public interface FilmRepository extends JpaRepository<Film, Long>, JpaSpecificat
     //@Query("SELECT f FROM Film f WHERE (f.countries) IN =:strings")
    // Page<Film> findAllByCountries (PageRequest pageRequest);
 
-    @Query("select distinct f from Film f join f.countries c join f.directors d join f.genres g " +
-            "where (c in :countries) and (d in :directors) and (g in :genres)" +
-            " and (f.premierYear>=:startPremierYear AND f.premierYear<=:endPremierYear)")
+    @Query("select distinct f from Film f join f.countries c join f.directors d join f.genres g" +
+            " join f.prices p where (c in :countries) and (d in :directors) and (g in :genres)" +
+            " and (p in :prices) and (f.premierYear>=:startPremierYear AND f.premierYear<=:endPremierYear)")
     Page<Film> findWithFilter(PageRequest pageRequest, List<Country> countries, List<Director> directors, List<Genre> genres,
-                              int startPremierYear, int endPremierYear);
+                              int startPremierYear, int endPremierYear,List<Price> prices);
+
 //    @Query("select f from Film f where f.countries IN :countries")
 //    Page<Film> findWithFilter(PageRequest pageRequest,List<Country> countries);
 

@@ -6,10 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.gb.catalogservice.entities.Country;
-import ru.gb.catalogservice.entities.Director;
-import ru.gb.catalogservice.entities.Film;
-import ru.gb.catalogservice.entities.Genre;
+import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.DirectorRepository;
 import ru.gb.catalogservice.repositories.FilmRepository;
@@ -27,12 +24,14 @@ public class FilmService {
         return filmRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Фильм с id="+id+" не найден"));
     }
     public Page<Film> findByFilter(int currentPage, List<Country> countries, List<Director> directors, List<Genre> genres,
-                                   int startPremierYear, int endPremierYear){
+                                   int startPremierYear, int endPremierYear,
+                                   List<Price> prices){
         return filmRepository.findWithFilter(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort),countries,
-                directors,genres,startPremierYear,endPremierYear);
+                directors,genres,startPremierYear,endPremierYear,prices);
     }
-
     public Page<Film> findAll(int currentPage){
         return filmRepository.findAll(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort));
     }
+
+
 }

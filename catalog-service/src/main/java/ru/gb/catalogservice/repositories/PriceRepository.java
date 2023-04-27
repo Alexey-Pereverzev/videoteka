@@ -12,4 +12,7 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
     List<Price> findAllByIsDeletedIsFalseAndPriceSaleBetweenAndPriceRentBetween(int minSalePrice,int maxSalePrice,
                                                                                 int minRentPrice,int maxRentPrice);
     List<Price> findAllByIsDeletedIsFalse();
+    List<Price> findAllByIsDeletedIsFalseAndPriceSaleBetween(int minSalePrice, int maxSalePrice);
+    List<Price> findAllByIsDeletedIsFalseAndPriceRentBetween(int minRentPrice, int maxRentPrice);
+
 }

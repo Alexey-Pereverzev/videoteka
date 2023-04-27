@@ -34,4 +34,11 @@ public class PriceService {
     public List<Price> findAllByIsDeletedIsFalse(){
         return priceRepository.findAllByIsDeletedIsFalse();
     }
+
+    public List<Price> findByFilterSalePrice(int minSalePrice,int maxSalePrice){
+        return priceRepository.findAllByIsDeletedIsFalseAndPriceSaleBetween(minSalePrice,maxSalePrice);
+    }
+    public List<Price> findByFilterRentPrice(int minRentPrice,int maxRentPrice){
+        return priceRepository.findAllByIsDeletedIsFalseAndPriceRentBetween(minRentPrice,maxRentPrice);
+    }
 }
