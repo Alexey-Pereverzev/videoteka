@@ -1,9 +1,6 @@
 package ru.gb.catalogservice.services;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.gb.catalogservice.entities.Country;
@@ -26,7 +23,7 @@ public class CountryService {
         return countryRepository.findAllByTitle(title);
     }
 
-    public List<Country> findCountryList(String[] strings){
+    public List<Country> findByFilter(String[] strings){
         return countryRepository.findAllByTitleIsIn(strings);
     }
     public List<Country> findAll(){

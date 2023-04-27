@@ -27,9 +27,9 @@ public class FilmService {
         return filmRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Фильм с id="+id+" не найден"));
     }
     public Page<Film> findByFilter(int currentPage, List<Country> countries, List<Director> directors, List<Genre> genres,
-                                   int premierYear){
+                                   int startPremierYear, int endPremierYear){
         return filmRepository.findWithFilter(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort),countries,
-                directors,genres,premierYear);
+                directors,genres,startPremierYear,endPremierYear);
     }
 
     public Page<Film> findAll(int currentPage){

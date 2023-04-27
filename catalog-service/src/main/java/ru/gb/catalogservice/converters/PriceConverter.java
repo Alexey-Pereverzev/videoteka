@@ -29,6 +29,7 @@ public class PriceConverter {
                 priceDto.setMinPriceRent(p.getPriceRent());
             }
         }
+
         return priceDto;
     }
 }
