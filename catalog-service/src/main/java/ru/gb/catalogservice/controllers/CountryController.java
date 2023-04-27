@@ -25,11 +25,6 @@ public class CountryController {
         return countryConverter.entityToDto(countryService.findById(id));
     }
 
-//    @GetMapping("list_all_filter")
-//    public List<Country> findCountry (){
-//        String[] filter = {"Россия","Германия"};
-//        return countryService.findCountryList(filter);
-//    }
     @GetMapping("list_all")
     public List<CountryDto> listAll(){
         return countryService.findAll().stream().map(countryConverter::entityToDto).toList();
