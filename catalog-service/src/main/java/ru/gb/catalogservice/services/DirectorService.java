@@ -21,7 +21,6 @@ public class DirectorService {
     public Director findById(Long id){
         return directorRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Режиссер с id="+id+" не найден"));
     }
-
     public List<Director> findByFilter(String[] filterFirstName, String[] filterLastName){
         return directorRepository.findAllByFirstNameInAndLastNameIn(filterFirstName,filterLastName);
     }

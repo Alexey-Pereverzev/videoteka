@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.entities.*;
-
 import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
 import ru.gb.catalogservice.services.*;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -28,9 +26,8 @@ public class FilmController {
     private final GenreService genreService;
     private final PriceService priceService;
     @GetMapping("find_by_id")
-    public Film findById(@RequestParam Long id){
-//        return filmConverter.entityToDto(filmService.findById(id));
-        return filmService.findById(id);
+    public FilmDto findById(@RequestParam Long id){
+        return filmConverter.entityToDto(filmService.findById(id));
     }
     @GetMapping("list_all")
     public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,

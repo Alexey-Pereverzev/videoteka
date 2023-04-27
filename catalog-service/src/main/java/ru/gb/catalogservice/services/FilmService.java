@@ -4,15 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
-import ru.gb.catalogservice.repositories.DirectorRepository;
 import ru.gb.catalogservice.repositories.FilmRepository;
 
 import java.util.List;
-import java.util.logging.Filter;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +26,4 @@ public class FilmService {
         return filmRepository.findWithFilter(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort),countries,
                 directors,genres,startPremierYear,endPremierYear,prices);
     }
-    public Page<Film> findAll(int currentPage){
-        return filmRepository.findAll(PageRequest.of(currentPage,FILM_PAGE_SIZE,sort));
-    }
-
-
 }

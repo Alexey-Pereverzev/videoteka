@@ -14,15 +14,9 @@ import java.util.List;
 public class CountryService {
     private final CountryRepository countryRepository;
     private final Sort SORT_COUNTRY = Sort.by("title").ascending();
-
     public Country findById(Long id){
         return countryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Страна с id="+id+" не найдена"));
     }
-
-    public List<Country> findByTitle(String title){
-        return countryRepository.findAllByTitle(title);
-    }
-
     public List<Country> findByFilter(String[] strings){
         return countryRepository.findAllByTitleIsIn(strings);
     }
