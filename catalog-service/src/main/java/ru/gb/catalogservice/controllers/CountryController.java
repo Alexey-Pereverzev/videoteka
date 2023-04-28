@@ -24,6 +24,7 @@ public class CountryController {
     public CountryDto findById(@RequestParam Long id){
         return countryConverter.entityToDto(countryService.findById(id));
     }
+
     @GetMapping("list_all")
     public List<CountryDto> listAll(){
         return countryService.findAll().stream().map(countryConverter::entityToDto).toList();

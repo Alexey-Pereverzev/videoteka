@@ -20,7 +20,7 @@ public class Film extends GenericEntity {
     @Column(name = "image_url_link")
     private String imageUrlLink;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="countries_films",
             joinColumns=@JoinColumn(name="film_id"),
             inverseJoinColumns = @JoinColumn(name="country_id"))
