@@ -69,7 +69,6 @@ public class FilmController {
                     throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
                 }
             }
-            System.out.println(Arrays.toString(filterDirectorFirstName)+Arrays.toString(filterDirectorLastName));
             directors=directorService.findByFilter(filterDirectorFirstName,filterDirectorLastName);
         }
         List<Genre> genres;
@@ -78,8 +77,6 @@ public class FilmController {
         }else {
             genres = genreService.findByFilter(filterGenreList);
         }
-        System.out.println(startPremierYear);
-        System.out.println(endPremierYear);
         if (startPremierYear==null||startPremierYear<1900){
             startPremierYear=1900;
         }
