@@ -70,6 +70,7 @@ public class FilmController {
                     throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
                 }
             }
+            System.out.println(Arrays.toString(filterDirectorFirstName)+Arrays.toString(filterDirectorLastName));
             directors=directorService.findByFilter(filterDirectorFirstName,filterDirectorLastName);
         }
         List<Genre> genres;
