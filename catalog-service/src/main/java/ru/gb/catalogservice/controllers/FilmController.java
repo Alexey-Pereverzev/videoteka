@@ -79,6 +79,8 @@ public class FilmController {
         }else {
             genres = genreService.findByFilter(filterGenreList);
         }
+        System.out.println(startPremierYear);
+        System.out.println(endPremierYear);
         if (startPremierYear==null||startPremierYear<1900){
             startPremierYear=1900;
         }
