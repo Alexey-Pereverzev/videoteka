@@ -17,6 +17,7 @@
         <module>front-service</module>
         <module>gateway-service</module>
         <module>common</module>
+        <module>authorization-service</module>
     </modules>
 
 </project>

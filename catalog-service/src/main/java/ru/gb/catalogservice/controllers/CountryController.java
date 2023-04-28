@@ -9,9 +9,6 @@ import ru.gb.catalogservice.converters.CountryConverter;
 import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.services.CountryService;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("/api/v1/country")
 @RequiredArgsConstructor
