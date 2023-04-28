@@ -3,6 +3,7 @@ package ru.gb.cartservice.models;
 
 import lombok.Data;
 import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.cart.CartItemDto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ public class Cart {
         this.items = new ArrayList<>();
     }
 
-    public void add(FilmDto filmDto) {
-        if (add(filmDto.getId())) {
+    public void add(CartItemDto cartItemDto) {
+        if (add(cartItemDto.getId())) {
             return;
         }
-        items.add(new CartItem(filmDto));
+        items.add(new CartItem(cartItemDto));
         recalculate();
     }
 

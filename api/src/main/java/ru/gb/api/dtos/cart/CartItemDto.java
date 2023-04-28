@@ -11,8 +11,6 @@ public class CartItemDto {
     private List<String> country;
     private List<String> director;
     private int rentPrice;
-    private int salePrice;
-    private int quantity;
     private int pricePerFilm;
     private int price;
 
@@ -25,8 +23,6 @@ public class CartItemDto {
         this.country = country;
         this.director = director;
         this.rentPrice = rentPrice;
-        this.salePrice = salePrice;
-        this.quantity = quantity;
         this.pricePerFilm = pricePerFilm;
         this.price = price;
     }
@@ -97,22 +93,6 @@ public class CartItemDto {
 
     public void setRentPrice(int rentPrice) {
         this.rentPrice = rentPrice;
-    }
-
-    public int getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(int salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public int getPricePerFilm() {
