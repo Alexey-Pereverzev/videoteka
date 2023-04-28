@@ -2,6 +2,11 @@ server:
   port: 8187
   servlet:
     context-path: /auth-service
+flyway:
+  user: postgres
+  password: 123
+  schemas: users_roles_db
+  url: jdbc:postgresql://194.87.101.43:5432/users_roles_db
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
