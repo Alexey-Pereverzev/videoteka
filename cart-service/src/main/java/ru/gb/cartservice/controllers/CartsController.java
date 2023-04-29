@@ -1,6 +1,7 @@
 package ru.gb.cartservice.controllers;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.cart.CartDto;
@@ -12,6 +13,7 @@ import ru.gb.cartservice.services.CartService;
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
+@Tag(name = "Корзина" , description = "Методы работы с корзиной ")
 public class CartsController {
     private final CartService cartService;
     private final CartConverter cartConverter;
