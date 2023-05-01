@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 !**/src/main/resources/static/node_modules
 !**/src/**/npm-*.log
-!**/src/main/resources/static/generated
+!**/src/main/resources/static/public
 
 
 ### STS ###
