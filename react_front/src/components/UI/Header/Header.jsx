@@ -58,14 +58,6 @@ function Header(props) {
                     </div>
                 </div>
             </div>
-
-            <div className={'bottom_header'}>
-                <span>фильмы</span>
-                <span>мультфильмы</span>
-                <span>топ 10</span>
-                <span>бесплатно</span>
-            </div>
-
         </div>
     )
 }
