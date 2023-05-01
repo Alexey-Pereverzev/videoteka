@@ -1,20 +1,27 @@
 .container {
-    height: 100%;
+    position: relative;
+    height: 100vh;
     background: rgb(0, 0, 0);
 }
 
 .empty {
     color: white;
 }
+.genre_bar{
+    margin: 25px 0;
+}
 
 .catalog {
     position: absolute;
     display: flex;
-    height: 100%;
     flex-wrap: wrap;
     margin: 25px;
     width: 90%;
-    overflow-y: scroll;
+    height: fit-content;
+    overflow-y: auto;
+}
+.catalog::-webkit-scrollbar{
+    display: none;
 }
 .pagination{
     color: white;
@@ -25,4 +32,11 @@
 .pagination_items{
     float: right;
     color: white;
+}
+.filter_card{
+    position: relative;
+    right: 0;
+    height: 450px;
+    width: 350px;
+    background: linear-gradient(30deg, rgba(0,0,0,1) 0%, rgba(47,47,47,1) 51%, rgba(29,29,29,1) 76%, rgba(0,0,0,1) 99%);
 }
