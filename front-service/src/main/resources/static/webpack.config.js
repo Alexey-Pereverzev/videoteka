@@ -1,23 +1,20 @@
 const path = require("path");
-var packageJSON = require('./package.json');
-var webpack = require('webpack');
 
 module.exports = {
     mode: "development",
-    entry: "./index.js", // входная точка - исходный файл
+    entry: "./app/app.jsx", // входная точка - исходный файл
     output:{
-        path: path.resolve(__dirname, 'generated'),     // путь к каталогу выходных файлов
-        publicPath: "/generated/",
-        filename: "app-bundle.js"       // название создаваемого файла
+        path: path.resolve(__dirname, "./public"),     // путь к каталогу выходных файлов - папка public
+        publicPath: "/public/",
+        filename: "bundle.js"       // название создаваемого файла
     },
-    resolve: {extensions: ['.js', '.jsx']},
     devServer: {
-        noInfo: false,
-        quiet: false,
-        lazy: false,
-        watchOptions: {
-            poll: true
-        }
+        historyApiFallback: true,
+        static: {
+            directory: path.join(__dirname, "/"),
+        },
+        port: 8081,
+        open: true
     },
     module:{
         rules:[   //загрузчик для jsx

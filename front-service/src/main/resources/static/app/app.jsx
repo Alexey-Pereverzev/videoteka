@@ -1,10 +1,17 @@
-import React from "react";
-import ReactDom from "react-dom";
+const ReactDOM = require("react-dom/client");
+const React = require("react");
+const Header = require("./components/header.jsx");
+const Article = require("./components/article.jsx");
 
-class App extends React.Component {
+const header = "ФЕДЯ!";
+const article = "Если ты читаешь этот текст, то я запустил реакт через спринг бут!";
 
-    render() {
-        return <p>Hello, World!</p>
-    }
-}
-ReactDom.render(<App />, document.getElementById('react'));
+ReactDOM.createRoot(
+    document.getElementById("app")
+)
+    .render(
+        <div>
+            <Header text={header} />
+            <Article content={article} />
+        </div>
+    );
