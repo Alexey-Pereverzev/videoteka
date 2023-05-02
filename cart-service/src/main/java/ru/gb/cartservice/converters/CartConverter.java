@@ -16,13 +16,7 @@ public class CartConverter {
                 new CartItemDto(
                         it.getFilmId(),
                         it.getFilmTitle(),
-                        it.getFilmPremierYear(),
                         it.getFilmImageUrlLink(),
-                        it.getFilmGenre(),
-                        it.getFilmCountry(),
-                        it.getFilmDirector(),
-                        it.getFilmSalePrice(),
-                        it.getFilmRentPrice(),
                         it.getQuantity(),
                         it.getPricePerFilm(),
                         it.getPrice())

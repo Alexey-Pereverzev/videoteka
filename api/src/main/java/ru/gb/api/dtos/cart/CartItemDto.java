@@ -16,7 +16,9 @@ public class CartItemDto {
     private int price;
 
 
+    public CartItemDto(Long filmId, String filmTitle, String filmImageUrlLink, int quantity, int pricePerFilm, int price) {
     }
+}
 
 
 

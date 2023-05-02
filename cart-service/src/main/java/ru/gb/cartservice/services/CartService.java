@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
-import ru.gb.cartservice.integrations.FilmServiceIntegration;
 import ru.gb.cartservice.models.Cart;
 
 import java.util.UUID;
@@ -17,7 +14,7 @@ import java.util.function.Consumer;
 @Service
 @RequiredArgsConstructor
 public class CartService {
-    private final FilmServiceIntegration filmServiceIntegration;
+
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${utils.cart.prefix}")
