@@ -4,12 +4,19 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.entities.*;
+import ru.gb.catalogservice.exceptions.AppError;
 import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
 import ru.gb.catalogservice.services.*;
+import ru.gb.catalogservice.utils.ResultOperation;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -98,6 +105,16 @@ public class FilmController {
                     startPremierYear,endPremierYear,prices).map(filmConverter::entityToDto);
         }else{
             throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+        }
+    }
+
+    @PostMapping("/add_new")
+    public ResponseEntity<?> addProduct(@RequestBody FilmDto filmDto) {
+        ResultOperation resultOperation=filmService.filmAddInVideoteka(filmDto);
+        if (resultOperation.isResult()){
+            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
+        }else {
+            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
         }
     }
 }
