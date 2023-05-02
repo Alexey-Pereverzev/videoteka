@@ -28,9 +28,9 @@ public class CartsController {
         return new StringResponse(cartService.generateCartUuid());
     }
 
-    @GetMapping("/{uuid}/add/{filmId}")
-    public void add(@RequestHeader(required = false) String username, @PathVariable String uuid, @RequestBody CartItemDto cartItemDto) {
-        cartService.addToCart(getCurrentCartUuid(username, uuid), cartItemDto);
+    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmImageUrlLink}/{filmPrice}")
+    public void add(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable long filmId, @PathVariable String filmTitle, @PathVariable String filmImageUrlLink, @PathVariable int filmPrice) {
+        cartService.addToCart(getCurrentCartUuid(username, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice);
     }
 
 

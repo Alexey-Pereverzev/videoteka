@@ -35,9 +35,8 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void addToCart(String cartKey, CartItemDto cartItemDto) {
-       //FilmDto filmDto = filmServiceIntegration.findById(filmId).orElseThrow(() -> new ResourceNotFoundException("Невозможно добавить продукт в корзину. Фильм не найдет, id: " + filmId));
-
+    public void addToCart(String cartKey, long filmId, String filmTitle, String filmImageUrlLink, int filmPrice) {
+        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink,filmPrice, filmPrice);
         execute(cartKey, c -> {
             c.add(cartItemDto);
         });
@@ -72,4 +71,6 @@ public class CartService {
     public void updateCart(String cartKey, Cart cart) {
         redisTemplate.opsForValue().set(cartKey, cart);
     }
+
+
 }
