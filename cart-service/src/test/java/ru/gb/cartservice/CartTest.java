@@ -23,10 +23,7 @@ import java.util.Optional;
         // внедряем бинн CartService
         @Autowired
         private CartService cartService;
-//  можем создать обект заглушку lesson_6time 49:00
 
-
-  //  String cartKey = "test_cart";
 
         @BeforeEach
         public void initCart() {
@@ -42,20 +39,11 @@ import java.util.Optional;
             cartItemDto.setImageUrlLink("test");
             cartItemDto.setPrice(100);
 
-
-
-
-
-
-//
             cartService.addToCart("test_cart1", 5, "X","test",100 );
             cartService.addToCart("test_cart1", 5, "X","test",100 );
             cartService.addToCart("test_cart1", 5, "X","test",100 );
 
-// проверяем что метод findById был вызван 1 раз, так как мы добовляли товар который уже положили в карзину
-            // 1 раз при повторном вызове проверяем корзину и увеличиваем счетчик на 1
-    //        Mockito.verify(productsService,Mockito.times(1)).findById(ArgumentMatchers.eq(5L));
-            //когда смросим у корзиты количество item должен быть 1
+
             Assertions.assertEquals(1, cartService.getCurrentCart("test_cart1").getItems().size());
         }
 @Test

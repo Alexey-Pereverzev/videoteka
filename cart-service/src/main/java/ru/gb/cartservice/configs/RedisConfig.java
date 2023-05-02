@@ -22,12 +22,13 @@ public class RedisConfig {
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         template.setConnectionFactory(jedisConnectionFactory());
+        // чистим корзину
         //template.getConnectionFactory().getConnection().flushAll();
         return template;
 
 
 
-       // jedis.flushAll();
+
 
     }
 }
