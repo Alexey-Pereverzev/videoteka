@@ -23,4 +23,7 @@ public class PriceService {
     public List<Price> findByFilterRentPrice(int minRentPrice,int maxRentPrice){
         return priceRepository.findAllByIsDeletedIsFalseAndPriceRentBetween(minRentPrice,maxRentPrice);
     }
+    public void save(Price price){
+        priceRepository.save(price);
+    }
 }

@@ -17,4 +17,6 @@ public class Price extends GenericEntity {
     @Column(name="price_sale")
     private int priceSale;
 
+    @ManyToOne
+    private Film film;
 }
