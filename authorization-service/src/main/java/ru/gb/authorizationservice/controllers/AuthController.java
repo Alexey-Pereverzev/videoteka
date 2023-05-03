@@ -68,8 +68,8 @@ public class AuthController {
         }
 
         try {           //  если есть такой пользователь
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),
-                    authRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                    (authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(
                     new AppError("CHECK_TOKEN_ERROR", "Некорректный логин или пароль"),

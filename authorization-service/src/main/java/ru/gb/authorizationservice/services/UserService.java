@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gb.api.dtos.RegisterUserDto;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
@@ -22,6 +23,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final RoleService roleService;
+    private static final PhoneNumberService phoneService = new PhoneNumberService();
+
+
 
     public List<User> findByUsername(String username) {     //  найти все версии пользователя, включая удаленные
         return userRepository.findByUsername(username);
@@ -87,7 +92,44 @@ public class UserService implements UserDetailsService {
             u.get().setUsername(username.concat("$"));
                 // удаляемому пользователю приписываем знак $ в конец
         } else {
-            throw new ResourceNotFoundException("Пользователь с именем: " +username + " не найден или удален");
+            throw new ResourceNotFoundException("Пользователь с именем: " + username + " не найден или удален");
         }
+    }
+
+    @Transactional
+    public String createNewUser(RegisterUserDto registerUserDto, String password) {
+        User user = User.Builder.newBuilder()
+                .withUsername(registerUserDto.getUsername())
+                .withPassword(password)
+                .withEmail(registerUserDto.getEmail())
+                .withRoles(List.of(roleService.getUserRole()))
+                .build();
+
+        String firstName = registerUserDto.getFirstName();
+        String lastName = registerUserDto.getLastName();
+        String phoneNumber = registerUserDto.getPhoneNumber();
+        String address = registerUserDto.getAddress();
+
+        if (!firstName.isEmpty()&&!firstName.isBlank()) {
+            user.setFirstName(firstName);
+        }
+
+        if (!lastName.isEmpty()&&!lastName.isBlank()) {
+            user.setLastName(lastName);
+        }
+
+        if (!phoneNumber.isEmpty()&&!phoneNumber.isBlank()) {
+            if (!phoneService.acceptablePhoneNumber(phoneNumber)) {
+                return "Некорректный номер телефона";
+            }
+            user.setPhoneNumber(phoneNumber);
+        }
+
+        if (!address.isEmpty()&&!address.isBlank()) {
+            user.setAddress(address);
+        }
+
+        userRepository.save(user);
+        return "";
     }
 }
