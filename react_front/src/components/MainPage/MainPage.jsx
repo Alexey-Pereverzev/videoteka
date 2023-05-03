@@ -3,16 +3,19 @@ import Header from "../UI/Header/Header";
 import FilmCard from "../../widgets/FilmCard/FilmCard";
 import {Component, useState} from "react";
 import axios from "axios";
-import {Button, ButtonGroup, Pagination} from "@mui/material";
+import {Button, ButtonGroup, FormControl, InputLabel, MenuItem, Pagination, Select} from "@mui/material";
 
 
 class MainPage extends Component {
     constructor(props) {
         super(props);
+        this.handleDirectorsChange = this.handleDirectorsChange.bind(this);
+        this.handleCountriesChange = this.handleCountriesChange.bind(this);
         this.state = {
             films: [],
             genres: [],
             directors: [],
+            countries: [],
             filterCountryList: [],
             filterDirectorList: [],
             filterGenreList: [],
@@ -23,7 +26,6 @@ class MainPage extends Component {
             maxPrice: 1000,
             currentPage: 1
         }
-
     }
 
     componentDidMount() {
@@ -67,6 +69,19 @@ class MainPage extends Component {
             console.error("Error: " + error)
         })
     }
+    getAllCountries = () => {
+        axios.get("http://localhost:5555/catalog/api/v1/country/list_all")
+            .then(response => response.data)
+            .then((data) => {
+                console.log(data)
+                this.setState({
+                    countries: data
+
+                })
+            }).catch((error) => {
+            console.error("Error: " + error)
+        })
+    }
     getAllFilms = (currentPage,
                    filterCountryList,
                    filterDirectorList,
@@ -104,21 +119,7 @@ class MainPage extends Component {
             console.error("Error: " + error)
         })
     }
-    filmFilter(director) {
-        this.setState({
-            filterDirectorList: director
-        });
-        this.getAllFilms(this.state.currentPage,
-            this.state.filterCountryList,
-            this.state.filterDirectorList,
-            this.state.filterGenreList,
-            this.state.startPremierYear,
-            this.state.endPremierYear,
-            this.state.isSale,
-            this.state.minPrice,
-            this.state.maxPrice
-        )
-    }
+
     filmFilterByGenres(genre) {
         this.setState({
             filterGenreList: genre,
@@ -135,11 +136,46 @@ class MainPage extends Component {
             )
     }
 
+    handleDirectorsChange(event) {
+        console.log(event.target.value)
+        const director = event.target.value;
+        this.setState({
+            filterDirectorList: director
+        });
+        this.getAllFilms(this.state.currentPage,
+            this.state.filterCountryList,
+            this.state.filterDirectorList,
+            this.state.filterGenreList,
+            this.state.startPremierYear,
+            this.state.endPremierYear,
+            this.state.isSale,
+            this.state.minPrice,
+            this.state.maxPrice)
+    }
+
+    handleCountriesChange(event) {
+        console.log(event.target.value)
+        const county = event.target.value;
+        this.setState({
+            filterDirectorList: country
+        });
+        this.getAllFilms(this.state.currentPage,
+            this.state.filterCountryList,
+            this.state.filterDirectorList,
+            this.state.filterGenreList,
+            this.state.startPremierYear,
+            this.state.endPremierYear,
+            this.state.isSale,
+            this.state.minPrice,
+            this.state.maxPrice)
+    }
     render() {
 
-
         const {films, currentPage, filmsPerPage} = this.state;
+        const [selectedDirectors, setSelectedDirectors] = this.state.filterDirectorList;
         const genres = this.state.genres;
+        const directors = this.state.directors;
+        const countries = this.state.countries;
         const lastIndex = currentPage * filmsPerPage;
         const firstIndex = lastIndex - filmsPerPage;
         const totalPages = this.state.totalPages;
@@ -149,7 +185,7 @@ class MainPage extends Component {
                 <div className={style.genre_bar}>
                     <ButtonGroup variant="text" size="small" aria-label="outlined primary button group">
                         {genres.map((genre) =>
-                            <Button onClick={() => this.filmFilterByGenres(genre.title)}>{genre.title}</Button>
+                            <Button onClick={() =>this.filmFilterByGenres(genre.title)}>{genre.title}</Button>
                         )}
                     </ButtonGroup>
                 </div>
@@ -190,6 +226,48 @@ class MainPage extends Component {
                 </div>
 
                <div className={style.filter_card}>
+
+                   <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                       <InputLabel id="demo-select-small-label">Режиссёр</InputLabel>
+                       <Select
+                           labelId="demo-select-small-label"
+                           id="demo-select-small"
+                           name={'director'}
+                           value={this.state.filterDirectorList}
+                           color={'success'}
+                           label="Age"
+                           onChange={this.handleDirectorsChange}
+                       >
+                           <MenuItem value="">
+                               <em>None</em>
+                           </MenuItem>
+                           {directors.map((director) =>
+                           <MenuItem value={director.firstName +" "+ director.lastName} >{director.firstName} {director.lastName}</MenuItem>
+                           )}
+                       </Select>
+                   </FormControl>
+                   <div>
+                       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                           <InputLabel id="demo-select-small-label">Страна</InputLabel>
+                           <Select
+                               labelId="demo-select-small-label"
+                               id="demo-select-small"
+                               name={'director'}
+                               value={this.state.filterCountryList}
+                               color={'success'}
+                               label="Страна"
+                               onChange={this.handleCountriesChange}
+                           >
+                               <MenuItem value="">
+                                   <em>None</em>
+                               </MenuItem>
+                               {countries.map((country) =>
+                                   <MenuItem value={country.title}>{country.title}</MenuItem>
+                               )}
+                           </Select>
+                       </FormControl>
+                   </div>
+
 
                </div>
 
