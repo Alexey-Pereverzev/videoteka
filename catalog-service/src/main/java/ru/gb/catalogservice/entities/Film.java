@@ -39,7 +39,7 @@ public class Film extends GenericEntity {
             inverseJoinColumns=@JoinColumn(name="genre_id"))
     private List<Genre> genres;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "film_id")
     private List<Price> prices;
 
