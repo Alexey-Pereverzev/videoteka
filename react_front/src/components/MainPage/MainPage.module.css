@@ -34,9 +34,12 @@
     color: white;
 }
 .filter_card{
-    position: relative;
+    position: absolute;
     right: 0;
-    height: 450px;
-    width: 350px;
-    background: linear-gradient(30deg, rgba(0,0,0,1) 0%, rgba(47,47,47,1) 51%, rgba(29,29,29,1) 76%, rgba(0,0,0,1) 99%);
+    top: 160px;
+    height: 650px;
+    width: 300px;
+    border: 1px solid rgba(32,32,32,1);
+    border-radius: 10px;
+    background: linear-gradient(49deg, rgba(0,0,0,1) 0%, rgba(32,32,32,1) 35%, rgb(32, 32, 32) 66%, rgba(0,0,0,1) 99%);
 }
