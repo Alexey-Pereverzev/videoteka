@@ -7,6 +7,8 @@ import React,
 import "./SignIn.css";
 
 
+//all changes rolledback - Aleksei
+
 // login(): POST{email, password} & save JWT to Local Storage
 class SignIn extends Component {
     constructor(props) {
