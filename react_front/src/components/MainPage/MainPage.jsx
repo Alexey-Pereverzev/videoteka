@@ -17,14 +17,12 @@ import {
 import DateRangeField from "../../widgets/DateRangeField/DateRangeField";
 
 
-
-
-
 class MainPage extends Component {
     constructor(props) {
         super(props);
         this.handleDirectorsChange = this.handleDirectorsChange.bind(this);
         this.handleCountriesChange = this.handleCountriesChange.bind(this);
+
         this.state = {
             films: [],
             genres: [],
@@ -33,32 +31,67 @@ class MainPage extends Component {
             filterCountryList: '',
             filterDirectorList: '',
             filterGenreList: '',
-            startPremierYear: 1955,
-            endPremierYear: 2020,
-            isSale: false,
-            minPrice: 0,
-            maxPrice: 1000,
+            startPremierYear: '',
+            endPremierYear: '',
+            isSale: true,
+            minPrice: '',
+            maxPrice: '',
             currentPage: 1,
-            active: false
+            active: false,
         }
     }
 
     componentDidMount() {
-        this.getAllFilms(this.state.currentPage,
-            this.state.filterCountryList,
-            this.state.filterDirectorList,
-            this.state.filterGenreList,
-            this.state.startPremierYear,
-            this.state.endPremierYear,
-            this.state.isSale,
-            this.state.minPrice,
-            this.state.maxPrice
-        )
+
+        this.getMinMaxPrice()
         this.getAllGenres()
         this.getAllDirectors()
         this.getAllCountries()
     }
 
+    getMinMaxPrice = () => {
+        axios.get("http://localhost:5555/catalog/api/v1/price/prices_filter")
+            .then(response => response.data)
+            .then((data) => {
+
+                if (this.state.isSale === true) {
+                    console.log(data.minPriceSale)
+                    this.setState({
+                        minPrice: data.minPriceSale,
+                        maxPrice: data.maxPriceSale
+                    }, () => this.getAllFilms(this.state.currentPage,
+                        this.state.filterCountryList,
+                        this.state.filterDirectorList,
+                        this.state.filterGenreList,
+                        this.state.startPremierYear,
+                        this.state.endPremierYear,
+                        this.state.isSale,
+                        this.state.minPrice,
+                        this.state.maxPrice
+                    ))
+                } else {
+                    if (this.state.isSale === false) {
+                        console.log(data)
+                        this.setState({
+                            minPrice: data.minPriceRent,
+                            maxPrice: data.maxPriceRent
+                        }, () => this.getAllFilms(this.state.currentPage,
+                            this.state.filterCountryList,
+                            this.state.filterDirectorList,
+                            this.state.filterGenreList,
+                            this.state.startPremierYear,
+                            this.state.endPremierYear,
+                            this.state.isSale,
+                            this.state.minPrice,
+                            this.state.maxPrice
+                        ))
+                    }
+                }
+
+            }).catch((error) => {
+            console.error("Error: " + error)
+        })
+    }
     getAllGenres = () => {
         axios.get("http://localhost:5555/catalog/api/v1/genre/list_all")
             .then(response => response.data)
@@ -108,7 +141,6 @@ class MainPage extends Component {
                    minPrice,
                    maxPrice
     ) => {
-
         currentPage -= 1;
         axios.get("http://localhost:5555/catalog/api/v1/film/list_all",
             {
@@ -135,8 +167,6 @@ class MainPage extends Component {
             }).catch((error) => {
             console.error("Error: " + error)
         })
-        // .then(() => this.clearState())
-
     }
 
     clearState() {
@@ -145,71 +175,63 @@ class MainPage extends Component {
                 filterCountryList: '',
                 filterDirectorList: '',
                 filterGenreList: '',
-                startPremierYear: 1955,
-                endPremierYear: 2020,
-                isSale: false,
-                minPrice: 0,
-                maxPrice: 1000,
+                startPremierYear: '',
+                endPremierYear: '',
+                isSale: true,
+                minPrice: '',
+                maxPrice: '',
                 currentPage: 1,
                 active: false
-            }
+            },() => this.getMinMaxPrice()
         )
     }
 
-    handleClear = () => {
-        if (() => this.clearState()) {
-            this.getAllFilms(this.state.currentPage,
-                this.state.filterCountryList,
-                this.state.filterDirectorList,
-                this.state.filterGenreList,
-                this.state.startPremierYear,
-                this.state.endPremierYear,
-                this.state.isSale,
-                this.state.minPrice,
-                this.state.maxPrice
-            )
-        }
-
-    }
 
     filmFilterByGenres(genre) {
-        this.clearState()
-        this.setState(
-            {
-                filterGenreList: genre,
+        if (genre === "Все") {
+            this.clearState()
+        } else {
+            this.setState(
+                {
+                    filterGenreList: genre
+                }, () => this.getAllFilms(this.state.currentPage,
+                    this.state.filterCountryList,
+                    this.state.filterDirectorList,
+                    this.state.filterGenreList,
+                    this.state.startPremierYear,
+                    this.state.endPremierYear,
+                    this.state.isSale,
+                    this.state.minPrice,
+                    this.state.maxPrice
+                )
+            )
 
-            }
-        )
-        this.getAllFilms(this.state.currentPage,
-            this.state.filterCountryList,
-            this.state.filterDirectorList,
-            genre,
-            this.state.startPremierYear,
-            this.state.endPremierYear,
-            this.state.isSale,
-            this.state.minPrice,
-            this.state.maxPrice
-        )
+        }
+
 
     }
 
     handleDirectorsChange(event) {
-        this.clearState()
-        this.setState(
-            {
-                filterDirectorList: event.target.value
+        console.log(event.target.value)
+        if (event.target.value === "Все") {
+            this.clearState()
+        } else {
+            if (event.target.value !== "Все"){
+                this.setState(
+                    {
+                        filterDirectorList: event.target.value
+                    }, () => this.getAllFilms(this.state.currentPage,
+                        this.state.filterCountryList,
+                        this.state.filterDirectorList,
+                        this.state.filterGenreList,
+                        this.state.startPremierYear,
+                        this.state.endPremierYear,
+                        this.state.isSale,
+                        this.state.minPrice,
+                        this.state.maxPrice)
+                )
             }
-        )
-        this.getAllFilms(this.state.currentPage,
-            this.state.filterCountryList,
-            event.target.value,
-            this.state.filterGenreList,
-            this.state.startPremierYear,
-            this.state.endPremierYear,
-            this.state.isSale,
-            this.state.minPrice,
-            this.state.maxPrice)
-
+        }
     }
 
     usePageHandler(num) {
@@ -217,76 +239,75 @@ class MainPage extends Component {
         this.setState(
             {
                 currentPage: num
-            }
+            }, () => this.getAllFilms(this.state.currentPage,
+                this.state.filterCountryList,
+                this.state.filterDirectorList,
+                this.state.filterGenreList,
+                this.state.startPremierYear,
+                this.state.endPremierYear,
+                this.state.isSale,
+                this.state.minPrice,
+                this.state.maxPrice)
         )
-        this.getAllFilms(num,
-            this.state.filterCountryList,
-            this.state.filterDirectorList,
-            this.state.filterGenreList,
-            this.state.startPremierYear,
-            this.state.endPremierYear,
-            this.state.isSale,
-            this.state.minPrice,
-            this.state.maxPrice)
+
     }
 
     handleCountriesChange(event) {
-        this.clearState()
+
         this.setState(
             {
                 filterCountryList: event.target.value
-            }
+            }, () =>  this.getAllFilms(this.state.currentPage,
+                this.state.filterCountryList,
+                this.state.filterDirectorList,
+                this.state.filterGenreList,
+                this.state.startPremierYear,
+                this.state.endPremierYear,
+                this.state.isSale,
+                this.state.minPrice,
+                this.state.maxPrice)
         )
-        this.getAllFilms(this.state.currentPage,
-            event.target.value,
-            this.state.filterDirectorList,
-            this.state.filterGenreList,
-            this.state.startPremierYear,
-            this.state.endPremierYear,
-            this.state.isSale,
-            this.state.minPrice,
-            this.state.maxPrice)
+
 
     }
+
     handleDateChange(name, event) {
         let value = event.target.value;
-        if(name === "second"){
-            if(parseInt(this.state.startPremierYear) <= parseInt(value)){
-                this.setState({endPremierYear:value});
-                this.getAllFilms(this.state.currentPage,
+        if (name === "second") {
+            if (parseInt(this.state.startPremierYear) <= parseInt(value)) {
+                this.setState({endPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
                     this.state.filterGenreList,
                     this.state.startPremierYear,
-                    value,
-                    this.state.isSale,
-                    this.state.minPrice,
-                    this.state.maxPrice)
-            }
-        }
-        else{
-            if(parseInt(value) <= parseInt(this.state.endPremierYear)){
-                this.setState({startPremierYear: value});
-                this.getAllFilms(this.state.currentPage,
-                    this.state.filterCountryList,
-                    this.state.filterDirectorList,
-                    this.state.filterGenreList,
-                    value,
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    this.state.maxPrice)
+                    this.state.maxPrice));
+            }
+        } else {
+            if (parseInt(value) <= parseInt(this.state.endPremierYear)) {
+                this.setState({startPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
+                    this.state.filterCountryList,
+                    this.state.filterDirectorList,
+                    this.state.filterGenreList,
+                    this.state.startPremierYear,
+                    this.state.endPremierYear,
+                    this.state.isSale,
+                    this.state.minPrice,
+                    this.state.maxPrice));
+
             }
         }
 
 
     }
+
     handlePriceChange(name, event) {
         let value = event.target.value;
-        if(name === "second"){
-            if(parseInt(this.state.minPrice) <= parseInt(value)){
-                this.setState({maxPrice:value});
-                this.getAllFilms(this.state.currentPage,
+        if (name === "second") {
+            if (parseInt(this.state.minPrice) <= parseInt(value)) {
+                this.setState({maxPrice: value}, () =>  this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
                     this.state.filterGenreList,
@@ -294,21 +315,21 @@ class MainPage extends Component {
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    value)
+                    this.state.maxPrice));
+
             }
-        }
-        else{
-            if(parseInt(value) <= parseInt(this.state.maxPrice)){
-                this.setState({minPrice: value});
-                this.getAllFilms(this.state.currentPage,
+        } else {
+            if (parseInt(value) <= parseInt(this.state.maxPrice)) {
+                this.setState({minPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
                     this.state.filterGenreList,
                     this.state.startPremierYear,
                     this.state.endPremierYear,
                     this.state.isSale,
-                    value,
-                    this.state.maxPrice)
+                    this.state.minPrice,
+                    this.state.maxPrice));
+
             }
         }
 
@@ -331,10 +352,10 @@ class MainPage extends Component {
                 <Header logout={this.props.logout}/>
                 <div className={style.genre_bar}>
                     <ButtonGroup variant="text" size="small" aria-label="outlined primary button group">
-                        <Button onClick={this.handleClear} className={style.unselected}>Все</Button>
+                        <Button onClick={() => this.filmFilterByGenres("Все")} className={style.unselected}>Все</Button>
                         {genres.map((genre) =>
                             <Button onClick={() => this.filmFilterByGenres(genre.title)}
-                                    className={active? style.selected : style.unselected}>{genre.title}</Button>
+                                    className={active ? style.selected : style.unselected}>{genre.title}</Button>
                         )}
                     </ButtonGroup>
                 </div>
@@ -385,7 +406,7 @@ class MainPage extends Component {
 
                 <div className={style.filter_card}>
 
-                    <FormControl sx={{m: 1, minWidth: 120}} size="small" success>
+                    <FormControl sx={{m: 1, minWidth: 120}} size="small" success focused={false}>
                         <InputLabel id="demo-select-small-label">Режиссёр</InputLabel>
                         <Select
                             labelId="demo-select-small-label"
@@ -398,7 +419,7 @@ class MainPage extends Component {
                             label="Age"
                             onChange={this.handleDirectorsChange}
                         >
-                            <MenuItem value={''} onClick={this.handleClear}>
+                            <MenuItem value="Все">
                                 <em>Все</em>
                             </MenuItem>
                             {directors.map((director) =>
@@ -416,7 +437,7 @@ class MainPage extends Component {
                                 name={'country'}
                                 value={this.state.filterCountryList}
                                 color={'success'}
-                                defaultValue={''}
+                                defaultValue={'Все'}
                                 sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
                                 label="Страна"
                                 placeHolderColor
@@ -436,7 +457,6 @@ class MainPage extends Component {
                     <div>
                         <div className={style.year_range}>
                             <div className={style.field}>
-                                {/*<label>с</label>*/}
                                 <input type={'number'}
                                        className={style.start__field}
                                        placeholder={'с'}
@@ -444,7 +464,6 @@ class MainPage extends Component {
                             </div>
                             <div className={style.separator}><span>-</span></div>
                             <div className={style.field}>
-                                {/*<label>по</label>*/}
                                 <input type={'number'}
                                        className={style.end__field}
                                        placeholder={'по'}
@@ -478,8 +497,6 @@ class MainPage extends Component {
             </div>
         )
     }
-
-
 }
 
 export default MainPage;
