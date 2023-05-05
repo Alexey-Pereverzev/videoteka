@@ -7,11 +7,12 @@
     top: 208px;
     left: 111px;
     width: 225px;
-    height: 430px;
+    height: 350px;
     color: white;
     background: #000;
     transform: translate(-50%, -50%);
     overflow: hidden;
+
     box-shadow: 0 5px 10px rgba(0,0,0,0.5);
 }
 
@@ -22,7 +23,7 @@
 .card .poster:before {
     content: '';
     position: absolute;
-    bottom: -180px;
+    bottom: -200px;
     left: 0;
     width: 100%;
     height: 100%;
@@ -46,8 +47,8 @@
     text-align: left;
     padding: 20px;
     width: 100%;
-    height: 74%;
-    bottom: -180px;
+    height: 100%;
+    bottom: -325px;
     left: 0;
     box-sizing: border-box;
     transition: 0.5s;
@@ -76,11 +77,17 @@
 }
 
 .info{
-    height: 30%;
+    height: 20%;
 
 }
 .info p{
-    margin: 15px 0 10px;
+    margin: 5px 0 10px;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .country {
