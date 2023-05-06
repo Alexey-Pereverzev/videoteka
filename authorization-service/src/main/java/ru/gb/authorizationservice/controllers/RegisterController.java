@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reg")
+@RequestMapping("api/v1/reg")
 @Tag(name = "Регистрация", description = "Метод регистрации пользователя")
 public class RegisterController {
     private final UserService userService;
@@ -37,7 +37,7 @@ public class RegisterController {
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Ошибка ввода данных (пользователь уже есть в системе, не совпадают пароли или некорректный телефон)",
+                            description = "Ошибка (пользователь уже есть в системе, не совпадают пароли или ошибка ввода данных)",
                             responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
@@ -58,8 +58,8 @@ public class RegisterController {
             String bcryptCachedPassword = passwordEncoder.encode(registerUserDto.getPassword());
             String tryToCreate = userService.createNewUser(registerUserDto, bcryptCachedPassword);
             if (!tryToCreate.equals("")) {
-                return new ResponseEntity<>(new AppError("INCORRECT_PHONE_NUMBER",
-                        "Недопустимый номер телефона"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
+                        tryToCreate), HttpStatus.BAD_REQUEST);
             } else {
                 return ResponseEntity.ok(new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно создан"));

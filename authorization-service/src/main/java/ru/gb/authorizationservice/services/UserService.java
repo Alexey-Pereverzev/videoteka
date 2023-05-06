@@ -1,7 +1,6 @@
 package ru.gb.authorizationservice.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,21 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.RegisterUserDto;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
-    private static final PhoneNumberService phoneService = new PhoneNumberService();
-
+    private final InputValidationService validationService = new InputValidationService();
 
 
     public List<User> findByUsername(String username) {     //  найти все версии пользователя, включая удаленные
@@ -50,76 +46,91 @@ public class UserService implements UserDetailsService {
         User user = findNotDeletedByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User '%s' not found", username)));
         return new org.springframework.security.core.userdetails
-                .User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+                .User(user.getUsername(), user.getPassword(),
+                Collections.singleton(mapRoleToAuthority(user.getRole())));     // Singleton потому что роль может быть только 1
     }
 
     @Transactional
-    public List<String> getRoles(String username) {
+    public String getRole(String username) {
         User user = findNotDeletedByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User '%s' not found", username)));
-        return user.getRoles().stream().map(Role::getTitle).toList();
+        return user.getRole().getTitle();
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getTitle())).collect(Collectors.toList());
-    }
-
-    public boolean IsDollarSignPresent(String username) {
-        //  записываем в конец имени удаленного пользователя знак "$", чтобы избежать ошибки бина
-        //  AuthenticationManager при аутентификации (имя "живого" пользователя в базе всегда уникальное)
-        return username.indexOf('$') >= 0;
+    private SimpleGrantedAuthority mapRoleToAuthority(Role role) {
+        return new SimpleGrantedAuthority(role.getTitle());
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        Optional<User> u = userRepository.findById(id);
-        if (u.isPresent()) {
-            if (!u.get().isDeleted()) {
-                u.get().setUsername(u.get().getUsername().concat("$"));
-                // удаляемому пользователю приписываем знак $ в конец
-            } else {
-                throw new ResourceNotFoundException("Пользователь с id: " +id + " не найден или удален");
-            }
-        } else {
-            throw new ResourceNotFoundException("Пользователь с id: " +id + " не найден или удален");
-        }
-    }
+    public String createNewUser(RegisterUserDto registerUserDto, String encryptedPassword) {
 
-    @Transactional
-    public void deleteByUsername(String username) {
-        Optional<User> u = findNotDeletedByUsername(username);
-        if (u.isPresent()) {
-            u.get().setUsername(username.concat("$"));
-                // удаляемому пользователю приписываем знак $ в конец
-        } else {
-            throw new ResourceNotFoundException("Пользователь с именем: " + username + " не найден или удален");
-        }
-    }
+        User user = new User();
+        user.setRole(roleService.getUserRole());
 
-    @Transactional
-    public String createNewUser(RegisterUserDto registerUserDto, String password) {
-        User user = User.Builder.newBuilder()
-                .withUsername(registerUserDto.getUsername())
-                .withPassword(password)
-                .withEmail(registerUserDto.getEmail())
-                .withRoles(List.of(roleService.getUserRole()))
-                .build();
 
+        String username = registerUserDto.getUsername();
+        String email = registerUserDto.getEmail();
         String firstName = registerUserDto.getFirstName();
         String lastName = registerUserDto.getLastName();
         String phoneNumber = registerUserDto.getPhoneNumber();
         String address = registerUserDto.getAddress();
+        String validationMessage = "";
+
+
+        validationMessage = validationService.acceptableLogin(username);
+        if (validationMessage.equals("")) {
+            user.setUsername(username);
+        } else {
+            return validationMessage;
+        }
+
+
+        validationMessage = validationService.acceptableLogin(username);
+        if (validationMessage.equals("")) {
+            user.setUsername(username);
+        } else {
+            return validationMessage;
+        }
+
+
+        validationMessage = validationService.acceptablePassword(registerUserDto.getPassword());
+                //  здесь берем пароль из ДТО, т.к. валидность проверяем у незашифрованного пароля, а в базу сохраняем
+                //  encryptedPassword - зашифрованный пароль
+        if (validationMessage.equals("")) {
+            user.setPassword(encryptedPassword);
+        } else {
+            return validationMessage;
+        }
+
+
+        validationMessage = validationService.acceptableEmail(email);
+        if (validationMessage.equals("")) {
+            user.setEmail(email);
+        } else {
+            return validationMessage;
+        }
+
 
         if (!firstName.isEmpty()&&!firstName.isBlank()) {
-            user.setFirstName(firstName);
+            validationMessage = validationService.acceptableFirstName(firstName);
+            if (validationMessage.equals("")) {
+                user.setFirstName(firstName);
+            } else {
+                return validationMessage;
+            }
         }
 
         if (!lastName.isEmpty()&&!lastName.isBlank()) {
-            user.setLastName(lastName);
+            validationMessage = validationService.acceptableLastName(lastName);
+            if (validationMessage.equals("")) {
+                user.setLastName(lastName);
+            } else {
+                return validationMessage;
+            }
         }
 
         if (!phoneNumber.isEmpty()&&!phoneNumber.isBlank()) {
-            if (!phoneService.acceptablePhoneNumber(phoneNumber)) {
+            if (!validationService.acceptablePhoneNumber(phoneNumber)) {
                 return "Некорректный номер телефона";
             }
             user.setPhoneNumber(phoneNumber);
@@ -132,4 +143,42 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         return "";
     }
+
+
+
+
+//    public boolean IsDollarSignPresent(String username) {
+//        //  записываем в конец имени удаленного пользователя знак "$", чтобы избежать ошибки бина
+//        //  AuthenticationManager при аутентификации (имя "живого" пользователя в базе всегда уникальное)
+//        return username.indexOf('$') >= 0;
+//    }
+//
+//    @Transactional
+//    public void deleteById(Long id) {
+//        Optional<User> u = userRepository.findById(id);
+//        if (u.isPresent()) {
+//            if (!u.get().isDeleted()) {
+//                u.get().setUsername(u.get().getUsername().concat("$"));
+//                // удаляемому пользователю приписываем знак $ в конец
+//            } else {
+//                throw new ResourceNotFoundException("Пользователь с id: " +id + " не найден или удален");
+//            }
+//        } else {
+//            throw new ResourceNotFoundException("Пользователь с id: " +id + " не найден или удален");
+//        }
+//    }
+//
+//    @Transactional
+//    public void deleteByUsername(String username) {
+//        Optional<User> u = findNotDeletedByUsername(username);
+//        if (u.isPresent()) {
+//            u.get().setUsername(username.concat("$"));
+//                // удаляемому пользователю приписываем знак $ в конец
+//        } else {
+//            throw new ResourceNotFoundException("Пользователь с именем: " + username + " не найден или удален");
+//        }
+//    }
+
+
+
 }

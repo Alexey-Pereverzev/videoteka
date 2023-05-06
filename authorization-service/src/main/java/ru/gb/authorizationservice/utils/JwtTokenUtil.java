@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil {
@@ -22,18 +20,17 @@ public class JwtTokenUtil {
     @Value("${jwt.lifetime}")
     private Integer jwtLifetime;
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, Long userId) {
         Map<String, Object> claims = new HashMap<>();
-        List<String> rolesList = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-        claims.put("roles", rolesList);             //  список ролей
+        String role = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList().get(0);   //  в UserDetails только 1 роль
+        claims.put("role", role);                           // список ролей
 
         Date issuedDate = new Date();               //  время создания токена
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);    //  время окончания жизни токена
         return Jwts.builder()
-                .setClaims(claims)                          //  роли
-                .setSubject(userDetails.getUsername())      //  имя пользователя
+                .setClaims(claims)                          //  роль пользователя
+                .setSubject(String.valueOf(userId))         //  Id пользователя
                 .setIssuedAt(issuedDate)                    //  время создания
                 .setExpiration(expiredDate)                 //  время окончания жизни
                 .signWith(SignatureAlgorithm.HS256, secret) //  подпись
@@ -48,11 +45,12 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    public String getUsernameFromToken(String token) {
+
+    public String getUserIdFromToken(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
 
-    public List<String> getRoles(String token) {
-        return getAllClaimsFromToken(token).get("roles", List.class);
+    public String getRole(String token) {
+        return getAllClaimsFromToken(token).get("role", String.class);
     }
 }
