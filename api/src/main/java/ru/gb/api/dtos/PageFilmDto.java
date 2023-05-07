@@ -14,4 +14,14 @@ public class PageFilmDto {
     private int number;
     private int size;
     private List<FilmDto> contents;
+
+    @Override
+    public String toString() {
+        return "PageFilmDto{" +
+                "totalPages=" + totalPages +
+                ", number=" + number +
+                ", size=" + size +
+                ", contents=" + contents +
+                '}';
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.PageFilmDto;
 
 import java.util.Arrays;
 
@@ -25,16 +26,16 @@ public class CatalogServiceIntegration {
                 .block();
     }
 
-    public Page<FilmDto> getListAllFilms(int page, String[] filterCountryList, String[] filterDirectorList, String[] filterGenreList,
-                                         int startPremierYear, int endPremierYear,
-                                         boolean isSale, int minPrice, int maxPrice) {
+    public PageFilmDto getListAllFilms(int page, String[] filterCountryList, String[] filterDirectorList, String[] filterGenreList,
+                                       int startPremierYear, int endPremierYear,
+                                       boolean isSale, int minPrice, int maxPrice) {
         String filterCountry = convertArrayToString("filterCountryList", filterCountryList);
         System.out.println(filterCountry);
         String filterDirector = convertArrayToString("filterDirectorList", filterDirectorList);
         System.out.println(filterDirector);
         String filterGenre = convertArrayToString("filterGenreList", filterGenreList);
         System.out.println(filterGenre);
-        String s="/api/v1/film/list_all?" + "currentPage=" + page +
+        String s="/api/v1/film/list_all_dto?" + "currentPage=" + page +
                 "&" + filterCountry + "&" + filterDirector + "&" + filterGenre
                 + "&startPremierYear="+startPremierYear+"&endPremierYear="+endPremierYear
                 + "&isSale="+isSale+"&minPrice="+minPrice+"&maxPrice="+maxPrice;
@@ -42,8 +43,7 @@ public class CatalogServiceIntegration {
         return catalogServiceWebClient.get()
                 .uri(s)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Page<FilmDto>>() {
-                })
+                .bodyToMono(PageFilmDto.class)
                 .block();
     }
 
