@@ -1,87 +1,20 @@
 <div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" th:fragment="header">
     <nav class="navbar navbar-expand-lg bg-light-subtle" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Виртуальная школа</a>
+            <a class="navbar-brand" href="/" th:align="center">Видеотека<br>Квадрат</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse">
+                <div class="container-fluid">
+                    <form class="d-flex">
+                        <input class="form-control mr-2" type="search" placeholder="Введите название фильма" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Найти</button>
+                    </form>
+                </div>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            Ученику
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/student/getmyclass">Список одноклассников</a></li>
-                            <li><a class="dropdown-item" href="/student/gettimetablemyclass/0">Расписание уроков</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="/student/mygrade?startDate=2023-01-01&endDate=2023-12-31">Мои оценки</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/student/myprofile">Мой профиль</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            Учителю
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/teacher/myclass">Мой класс</a></li>
-                            <li><a class="dropdown-item" href="/teacher/addstudent">Добавить ученика в класс</a></li>
-                            <li><a class="dropdown-item" href="/teacher/mytimetable/0">Мое расписание</a></li>
-                            <li><a class="dropdown-item" href="/teacher/myclasstimetable/0">Расписание моего класса</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="/teacher/classjournal?studentId=0&classId=0&startDate=2023-01-01&endDate=2023-12-01">Успеваемость</a>
-                            </li>
-                            <li><a class="dropdown-item" href="/teacher/setgradetoclassjournal">Выставить отметку</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/teacher/myprofile">Мой профиль</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            Завучу
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/headteacher/listalldiscipline">Список дисциплин/Добавить
-                                дисциплину</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/headteacher/listallteachers">Список учителей</a></li>
-                            <li><a class="dropdown-item" href="/headteacher/addteacher">Добавить учителя</a></li>
-                            <li><a class="dropdown-item" href="/headteacher/setteacherdiscipline">Назначить учителю
-                                дисциплину</a></li>
-                            <li><a class="dropdown-item" href="/headteacher/setteacherclassgroup">Назначить учителю
-                                класс</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/headteacher/listallclasstitle">Список классов</a></li>
-                            <li><a class="dropdown-item" href="/headteacher/addclasstitle">Создание класса (без
-                                добавления учеников)</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/headteacher/timetable/0/0">Расписание уроков</a></li>
-                            <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="/headteacher/classjournal?classTitleId=0&disciplineId=0&studentId=0&teacherId=0&startDate=2023-01-01&endDate=2023-12-31">Успеваемость
-                                класса</a></li>
-                        </ul>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/login">
                             <button type="button" class="btn btn-primary btn-sm">Войти</button>
