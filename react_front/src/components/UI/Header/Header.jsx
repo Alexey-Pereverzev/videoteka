@@ -33,7 +33,7 @@ function Header(props) {
                 <NavLink to={'/'} className={'logo'}>
                     <img src={'https://w7.pngwing.com/pngs/654/21/png-transparent-alphabet-letter-character-3d-font-text-capital-typography.png'} alt={'logo'}/>
                 </NavLink>
-                <SearchBar/>
+                <SearchBar onChange={props.onChange}/>
                 <div className={'menu_container'} ref={menuRef}>
                     <div className={'dropdown_trigger'} onClick={openMenu}>
                         <Avatar

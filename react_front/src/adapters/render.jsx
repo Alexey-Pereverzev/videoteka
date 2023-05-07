@@ -11,7 +11,14 @@ import {
     logout,
     register,
     getCurrentUser,
-    getAuthHeader, getPublicContent, getUserContent, getManagerContent, getAdminContent, getAllFilms
+    getAuthHeader,
+    getPublicContent,
+    getUserContent,
+    getManagerContent,
+    getAdminContent,
+    getAllFilms,
+    getMinMaxPrice,
+    getAllGenres, getAllDirectors, getAllCountries, clearState
 } from "./state";
 
 import '../index.css';
@@ -35,7 +42,6 @@ export let rerenderEntireTree = (state) =>{
                      getManagerContent={getManagerContent}
                      getAdminContent={getAdminContent}
                      addFilm={addFilm}
-                     // getAllFilms={getAllFilms}
                      updateMessageHandler={updateMessageHandler}/>
 
             </DevSupport>
