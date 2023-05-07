@@ -30,8 +30,7 @@ function FilmPage(props) {
                             </span>{director}</p>
                         )}
 
-                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>1h
-                            33m</p>
+                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.premierYear}</p>
 
                     </div>
                     <p className="movie__detail"><span className="icons icons-yellow"><i
@@ -43,11 +42,11 @@ function FilmPage(props) {
 
                 {props.isSale ?
                     <div className="movie__price">
-                        {props.salePrice}<Icon sx={{transform: 'rotate(90deg)'}} component={CurrencyRubleIcon}/>
+                        Цена продажи: {props.salePrice}<Icon sx={{transform: 'rotate(90deg)'}} component={CurrencyRubleIcon}/>
                     </div>
                     :
                     <div className="movie__price">
-                        {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}} component={CurrencyRubleIcon}/>
+                        Цена аренды: {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}} component={CurrencyRubleIcon}/>
                     </div>
                 }
             </div>

@@ -46,6 +46,7 @@ function FilmCard(props) {
                 <FilmPage director={props.director}
                           isSale={props.isSale}
                           title={props.title}
+                          premierYear={props.premierYear}
                           country={props.country}
                           description={props.description}
                           genre={props.genre}

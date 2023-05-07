@@ -129,8 +129,8 @@ class MainPage extends Component {
 
                 console.log(data.minYear)
                 this.setState({
-                        minYear: data.minYear,
-                        maxYear: data.maxYear
+                    startPremierYear: data.minYear,
+                    endPremierYear: data.maxYear
                     },
                 )
             }).catch((error) => {
@@ -227,7 +227,7 @@ class MainPage extends Component {
                 maxPrice: '',
                 currentPage: 1,
                 active: false
-            }, () => this.getMinMaxPrice()
+            }, () => {this.getMinMaxPrice(); this.getMinMaxYear();}
         )
     }
 
@@ -333,7 +333,7 @@ class MainPage extends Component {
     handleDateChange(name, event) {
         let value = event.target.value;
         if (name === "second") {
-            if (parseInt(this.state.startPremierYear) <= parseInt(value)) {
+            if (parseInt(this.state.startPremierYear) <= parseInt(value) && value.length === 4 ) {
                 this.setState({endPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -345,7 +345,7 @@ class MainPage extends Component {
                     this.state.maxPrice));
             }
         } else {
-            if (parseInt(value) <= parseInt(this.state.endPremierYear)) {
+            if (parseInt(value) <= parseInt(this.state.endPremierYear) && value.length === 4 ) {
                 this.setState({startPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -374,7 +374,7 @@ class MainPage extends Component {
     handlePriceChange(name, event) {
         let value = event.target.value;
         if (name === "second") {
-            if (parseInt(this.state.minPrice) <= parseInt(value)) {
+            if (parseInt(this.state.minPrice) <= parseInt(value) ) {
                 this.setState({maxPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -387,7 +387,7 @@ class MainPage extends Component {
 
             }
         } else {
-            if (parseInt(value) <= parseInt(this.state.maxPrice)) {
+            if (parseInt(value) <= parseInt(this.state.maxPrice) && parseInt(value) >= parseInt(this.state.minPrice) ) {
                 this.setState({minPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -413,7 +413,7 @@ class MainPage extends Component {
         return (
             <div className={style.container}>
                 <Header logout={this.props.logout}
-                        onChange={(num, titlePart) => this.getFilmByTitlePart(num, titlePart)}
+                        onChange={(titlePart) => this.getFilmByTitlePart(this.state.currentPage, titlePart)}
                 />
                 <div className={style.genre_bar}>
                     <ButtonGroup variant="text" size="small" aria-label="outlined primary button group">
@@ -521,25 +521,30 @@ class MainPage extends Component {
                     </div>
                     <br/>
                     <span className={style.filter_title}>Годы премьер</span>
-                    <div>
+                    <div >
                         <div className={style.year_range}>
                             <div className={style.field}>
                                 <input type={'number'}
                                        className={style.start__field}
-                                       placeholder={this.state.minYear}
+                                       placeholder={this.state.startPremierYear}
                                        onChange={this.handleDateChange.bind(this, "first")}/>
                             </div>
                             <div className={style.separator}><span>-</span></div>
                             <div className={style.field}>
                                 <input type={'number'}
                                        className={style.end__field}
-                                       placeholder={this.state.maxYear}
+                                       placeholder={this.state.endPremierYear}
                                        onChange={this.handleDateChange.bind(this, "second")}/>
                             </div>
                         </div>
                     </div>
                     <br/>
-                    <span className={style.filter_title}>Диапазон цен</span>
+                    {this.state.isSale ?
+                        <span className={style.filter_title}>Диапазон цен продажи</span>
+                        :
+                        <span className={style.filter_title}>Диапазон цен аренды</span>
+                    }
+
                     <div>
                         <div className={style.year_range}>
                             <div className={style.field}>
@@ -553,7 +558,7 @@ class MainPage extends Component {
                                 <input type={'number'}
                                        className={style.end__field}
                                        placeholder={this.state.maxPrice}
-                                       onChange={this.handlePriceChange.bind(this, "second")}/>
+                                       onChange={this.handlePriceChange.bind(this, "second") }/>
                             </div>
                         </div>
                     </div>
