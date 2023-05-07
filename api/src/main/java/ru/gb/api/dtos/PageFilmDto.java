@@ -13,5 +13,6 @@ public class PageFilmDto {
     private int totalPages;
     private int number;
     private int size;
+    private int totalElements;
     private List<FilmDto> contents;
 }

@@ -20,6 +20,7 @@ public class PageFilmConverter {
                 .size(films.getSize())
                 .contents(films.getContent().stream().map(filmConverter::entityToDto).collect(Collectors.toList()))
                 .totalPages(films.getTotalPages())
+                .totalElements((int) films.getTotalElements())
                 .build();
         return pageFilmDto;
     }
