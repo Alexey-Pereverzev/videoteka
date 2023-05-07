@@ -1,23 +1,16 @@
-package ru.gb.api.dtos.cart;
+package ru.gb.api.dtos.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemDto {
+public class OrderItemDto {
     private Long filmId;
-    private String title;
-    private String imageUrlLink;
+    private String filmTitle;
     private int price;
-    private boolean isRent;
-
 
 
 }
-
-
-
