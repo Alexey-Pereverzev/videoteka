@@ -11,9 +11,6 @@ import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.FilmRepository;
 import ru.gb.catalogservice.utils.ResultOperation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,6 +33,10 @@ public class FilmService {
                                    List<Price> prices) {
         return filmRepository.findWithFilter(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
                 directors, genres, startPremierYear, endPremierYear, prices);
+    }
+
+    public Page<Film> findByTitlePart(int currentPage, String titlepart) {
+        return filmRepository.findByTitlePart(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), "%" + titlepart + "%");
     }
 
     public ResultOperation filmAddInVideoteka(FilmDto filmDto){
@@ -121,4 +122,9 @@ public class FilmService {
         }
         return resultOperation;
     }
+
+    public List<Film> findAll() {
+        return filmRepository.findAll();
+    }
+
 }

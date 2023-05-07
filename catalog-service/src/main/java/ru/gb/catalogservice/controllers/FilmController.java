@@ -7,9 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.MinMaxYearDto;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.AppError;
@@ -18,7 +17,7 @@ import ru.gb.catalogservice.services.*;
 import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -37,6 +36,17 @@ public class FilmController {
     public FilmDto findById(@RequestParam Long id){
         return filmConverter.entityToDto(filmService.findById(id));
     }
+
+    @GetMapping("find_by_title_part")
+    public Page<FilmDto> findByTitlePart(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
+                                         @RequestParam (name="titlePart",required = false) String titlePart){
+        if (titlePart==null)
+        {
+            titlePart="";
+        }
+        return filmService.findByTitlePart(currentPage, titlePart).map(filmConverter::entityToDto);
+    }
+
     @GetMapping("list_all")
     public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
                                  @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
@@ -77,7 +87,7 @@ public class FilmController {
                     throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
                 }
             }
-            System.out.println(Arrays.toString(filterDirectorFirstName)+Arrays.toString(filterDirectorLastName));
+//            System.out.println(Arrays.toString(filterDirectorFirstName)+Arrays.toString(filterDirectorLastName));
             directors=directorService.findByFilter(filterDirectorFirstName,filterDirectorLastName);
         }
         List<Genre> genres;
@@ -117,4 +127,13 @@ public class FilmController {
             return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("min_max_year")
+    public MinMaxYearDto findMinAndMaxYear() {
+        List<Integer> allYears = filmService.findAll().stream().map(Film::getPremierYear).toList();
+        int minYear = Collections.min(allYears);
+        int maxYear = Collections.max(allYears);
+        return new MinMaxYearDto(minYear, maxYear);
+    }
+
 }

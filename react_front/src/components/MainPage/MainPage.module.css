@@ -1,6 +1,8 @@
 .container {
     position: relative;
-    height: 100vh;
+    bottom: 0;
+    left: 0;
+    height: 100%;
     background: rgb(0, 0, 0);
 }
 
@@ -18,11 +20,13 @@
 }
 
 .catalog {
-    position: absolute;
+    position: relative;
     display: flex;
     flex-wrap: wrap;
-    margin: 25px;
-    width: 90%;
+    margin-left: 200px;
+    margin-bottom: 35px;
+    /*margin: 25px;*/
+    width: 70%;
     height: fit-content;
     overflow-y: auto;
 }
@@ -54,6 +58,8 @@ input[type="number"]::-webkit-inner-spin-button{
 
 .filter_card{
     position: absolute;
+    align-items: center;
+    padding: 25px 0;
     right: 0;
     top: 160px;
     height: 650px;
@@ -110,4 +116,9 @@ input[type="number"]::-webkit-inner-spin-button{
 }
 .end__field{
     width: 100px;
+}
+.clear{
+    margin-top: 25px;
+    background-color: #63386d;
+    color: white;
 }
