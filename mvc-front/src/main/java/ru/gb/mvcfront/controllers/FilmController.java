@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.JwtResponse;
+import ru.gb.api.dtos.PageFilmDto;
 import ru.gb.mvcfront.integrations.AuthorizationServiceIntegration;
 import ru.gb.mvcfront.integrations.CatalogServiceIntegration;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,9 @@ public class FilmController {
     @GetMapping("/listall/{page}")
     public String getAllFilms(Model model, @PathVariable Integer page){
         System.out.println(page);
-        Page<FilmDto> pageData=catalogServiceIntegration.getListAllFilms(0, null,null,null,
+        PageFilmDto pageData=catalogServiceIntegration.getListAllFilms(0, null,null,null,
                                                                             1900,2023,true,0,1000);
-        System.out.println(pageData);
+        System.out.println(pageData.toString());
         return "/index";
     }
 
