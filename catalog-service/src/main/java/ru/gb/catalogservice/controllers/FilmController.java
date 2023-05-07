@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.MinMaxYearDto;
+import ru.gb.api.dtos.PageFilmDto;
 import ru.gb.catalogservice.converters.FilmConverter;
+import ru.gb.catalogservice.converters.PageFilmConverter;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.AppError;
 import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
@@ -28,6 +30,8 @@ import java.util.List;
 public class FilmController {
     private final FilmService filmService;
     private final FilmConverter filmConverter;
+
+    private final PageFilmConverter pageFilmConverter;
     private final CountryService countryService;
     private final DirectorService directorService;
     private final GenreService genreService;
@@ -117,6 +121,78 @@ public class FilmController {
             throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
         }
     }
+
+    @GetMapping("list_all_dto")
+    public PageFilmDto listAllDto(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
+                               @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
+                               @RequestParam (name="filterDirectorList",required = false) String[] filterDirectorList,
+                               @RequestParam (name="filterGenreList",required = false) String[] filterGenreList,
+                               @RequestParam (name="startPremierYear",required = false)Integer startPremierYear,
+                               @RequestParam (name="endPremierYear",required = false)Integer endPremierYear,
+                               @RequestParam (name="isSale",required = false)Boolean isSale,
+                               @RequestParam (name="minPrice",required = false)Integer minPrice,
+                               @RequestParam (name="maxPrice",required = false)Integer maxPrice){
+        List<Country> countries;
+        if (filterCountryList==null || filterCountryList.length==0){
+            countries=countryService.findAll();
+        }else {
+            countries = countryService.findByFilter(filterCountryList);
+        }
+        List<Director> directors;
+        if (filterDirectorList==null || filterDirectorList.length==0){
+            directors=directorService.findAll();
+        }else{
+            String[] filterDirectorFirstName=new String[filterDirectorList.length];
+            String[] filterDirectorLastName=new String[filterDirectorList.length];
+            for (int i=0;i< filterDirectorList.length;i++){
+                String[] s=filterDirectorList[i].split(" ");
+                if (s.length==2){
+                    filterDirectorFirstName[i]=s[0];
+                    filterDirectorLastName[i]=s[1];
+                }else if(s.length>2){
+                    filterDirectorFirstName[i]=s[0];
+                    filterDirectorLastName[i]="";
+                    for (int ii=1;ii<s.length;ii++){
+                        if (ii!=1){
+                            filterDirectorLastName[i]=filterDirectorLastName[i]+" ";
+                        }
+                        filterDirectorLastName[i]=filterDirectorLastName[i]+s[ii];
+                    }
+                }else{
+                    throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+                }
+            }
+            directors=directorService.findByFilter(filterDirectorFirstName,filterDirectorLastName);
+        }
+        List<Genre> genres;
+        if (filterGenreList==null || filterGenreList.length==0){
+            genres=genreService.findAll();
+        }else {
+            genres = genreService.findByFilter(filterGenreList);
+        }
+        System.out.println(startPremierYear);
+        System.out.println(endPremierYear);
+        if (startPremierYear==null||startPremierYear<1900){
+            startPremierYear=1900;
+        }
+        if (endPremierYear==null||endPremierYear>LocalDate.now().getYear()){
+            endPremierYear=LocalDate.now().getYear();
+        }
+        List<Price> prices;
+        if (isSale!=null && minPrice!=null && maxPrice!=null){
+            if (isSale){
+                prices=priceService.findByFilterSalePrice(minPrice,maxPrice);
+            }else{
+                prices=priceService.findByFilterRentPrice(minPrice,maxPrice);
+            }
+            return pageFilmConverter.entityToDto(filmService.findByFilter(currentPage,countries,directors,genres,
+                    startPremierYear,endPremierYear,prices));
+        }else{
+            throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+        }
+    }
+
+
 
     @PostMapping("/add_new")
     public ResponseEntity<?> addProduct(@RequestBody FilmDto filmDto) {
