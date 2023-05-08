@@ -1,15 +1,7 @@
 import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import LoginPage from "./components/LoginPage/LoginPage";
 import MainPage from "./components/MainPage/MainPage";
-import {
-    clearState,
-    getAllCountries,
-    getAllDirectors,
-    getAllFilms,
-    getAllGenres,
-    getMinMaxPrice
-} from "./adapters/state";
+import LoginPage from "./components/LoginPage/LoginPage";
 
 
 function App(props) {
@@ -17,12 +9,6 @@ function App(props) {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path='/login' element={<LoginPage
-                login={props.login}
-                register={props.register}
-
-            />}
-            />
             <Route path={'/*'} element={<MainPage
                 logout={props.logout}
                 getCurrentUser={props.getCurrentUser}
@@ -34,6 +20,12 @@ function App(props) {
                 getAllCountries={props.getAllCountries}
                 clearState={props.clearState}
             />}/>
+              <Route path='/login' element={<LoginPage
+                  login={props.login}
+                  register={props.register}
+
+              />}
+              />
           </Routes>
         </BrowserRouter>
       </div>
