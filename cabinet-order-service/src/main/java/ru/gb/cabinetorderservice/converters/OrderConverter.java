@@ -24,6 +24,7 @@ public class OrderConverter {
         out.setUserId(order.getUserId());
         out.setFilmId(order.getFilmId());
         out.setPrice(order.getPrice());
+        out.setSale(order.getType().equals("SALE"));
         out.setRentStart(order.getRentStart());
         out.setRentEnd(order.getRentEnd());
         return out;

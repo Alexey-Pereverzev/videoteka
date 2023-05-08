@@ -15,13 +15,8 @@ public class OrderDto {
     private Long filmId;
     private String filmTitle;
     private int price;
+    private boolean isSale;
     private LocalDateTime rentStart;
     private LocalDateTime rentEnd;
-
-
-
-
-
-
     }
 
