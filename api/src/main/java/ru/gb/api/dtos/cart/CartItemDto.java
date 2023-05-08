@@ -13,7 +13,7 @@ public class CartItemDto {
     private String title;
     private String imageUrlLink;
     private int price;
-    private boolean isRent;
+    private boolean isSale;
 
 
 

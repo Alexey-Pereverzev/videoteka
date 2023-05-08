@@ -17,7 +17,7 @@ public class CartItem {
     private String filmTitle;
     private String filmImageUrlLink;
     private int price;
-    private boolean isRent;
+    private boolean isSale;
 
 
 

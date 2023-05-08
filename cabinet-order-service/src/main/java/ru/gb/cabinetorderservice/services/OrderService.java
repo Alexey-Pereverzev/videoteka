@@ -36,7 +36,7 @@ public class OrderService {
             order.setUserId(userId);
             order.setPrice(cartItemDto.getPrice());
             order.setFilmId(cartItemDto.getFilmId());
-            if (cartItemDto.isRent()){
+            if (!cartItemDto.isSale()){
                 order.setType("RENT");
                 // текущее время
                 LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();

@@ -35,8 +35,8 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isRent) {
-        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isRent);
+    public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
+        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
         execute(cartKey, c -> {
             c.add(cartItemDto);
         });

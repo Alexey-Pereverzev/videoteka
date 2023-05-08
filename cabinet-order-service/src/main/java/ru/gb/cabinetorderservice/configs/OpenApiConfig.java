@@ -12,7 +12,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Videoteka-Square - сервис звказов")
+                                .title("Videoteka-Square - сервис личного кабинета")
                                 .version("1")
                 );
     }

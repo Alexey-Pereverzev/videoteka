@@ -18,7 +18,7 @@ public class CartConverter {
                         it.getFilmTitle(),
                         it.getFilmImageUrlLink(),
                         it.getPrice(),
-                        it.isRent())
+                        it.isSale())
         ).collect(Collectors.toList());
         CartDto cartDto = new CartDto(cartItemDtos, cart.getTotalPrice());
         return cartDto;
