@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, redirect} from "react-router-dom";
 import style from "./Header.css"
 import {Avatar} from "@mui/material";
 import SearchBar from "../../../widgets/SearchBar/SearchBar";
@@ -7,6 +7,11 @@ import {useEffect, useRef, useState} from "react";
 
 
 function Header(props) {
+
+  let  logout = () => {
+        localStorage.removeItem("user")
+
+    }
     let openMenu = () => {
         setOpen(!open)
     }
@@ -51,10 +56,13 @@ function Header(props) {
                             <span className={'menu_location'}>Москва</span></h3>
                         <ul>
                             <DropdownItem text={'твой профиль'}/>
-                            <button className={'logout_btn'} onClick={props.logout}>
+                            <button className={'logout_btn'} onClick={() => logout()}>
                                 <DropdownItem text={'выход'}/>
                             </button>
                         </ul>
+                    </div>
+                    <div className={'cart_box'}>
+
                     </div>
                 </div>
             </div>
