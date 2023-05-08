@@ -26,17 +26,17 @@ function FilmPage(props) {
                         <h4>Режиссёр: </h4>
                         {props.director.map((director) =>
                             <p className="movie__detail"><span className="icons icons-red">
-
                             </span>{director}</p>
                         )}
 
                         <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.premierYear}</p>
+                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.country}</p>
 
                     </div>
                     <p className="movie__detail"><span className="icons icons-yellow"><i
                         className="fas fa-file-invoice-dollar"></i>
                     </span>
-                        <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}>Оплата</button>
+                        <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}>В Корзину</button>
                     </p>
                 </div>
 

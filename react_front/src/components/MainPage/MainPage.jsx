@@ -7,6 +7,7 @@ import {Button, ButtonGroup, FormControl, InputLabel, MenuItem, Pagination, Sele
 import Footer from "../UI/Footer/Footer";
 import {Route, Routes} from "react-router-dom";
 import CatalogPage from "./CatalogPage/CatalogPage";
+import CartPage from "./CartPage/CartPage";
 
 
 class MainPage extends Component {
@@ -422,7 +423,7 @@ class MainPage extends Component {
                 <div className={style.main_container}>
                     <Routes>
                         <Route index path={'/'} element={<CatalogPage/>}/>
-                        <Route/>
+                        <Route path={'cart'} element={<CartPage/>}/>
                         <Route/>
                     </Routes>
                 </div>
