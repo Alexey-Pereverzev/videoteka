@@ -40,7 +40,7 @@ import ru.gb.cartservice.services.CartService;
         cartItemDto.setTitle("X");
         cartItemDto.setImageUrlLink("test");
         cartItemDto.setPrice(100);
-        cartItemDto.setRent(true);
+        cartItemDto.setSale(true);
 
 
 

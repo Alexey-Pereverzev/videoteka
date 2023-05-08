@@ -38,7 +38,7 @@ import java.util.Optional;
             cartItemDto.setTitle("X");
             cartItemDto.setImageUrlLink("test");
             cartItemDto.setPrice(100);
-            cartItemDto.setRent(true);
+            cartItemDto.setSale(true);
 
             cartService.addToCart("test_cart1", 5l, "X","test",100,true);
             cartService.addToCart("test_cart1", 5l, "X","test",100, true );
@@ -55,14 +55,14 @@ import java.util.Optional;
     cartItemDto.setTitle("X");
     cartItemDto.setImageUrlLink("test");
     cartItemDto.setPrice(100);
-    cartItemDto.setRent(true);
+    cartItemDto.setSale(true);
 
     CartItemDto cartItemDto1 = new CartItemDto();
     cartItemDto.setFilmId(2l);
     cartItemDto.setTitle("Y");
     cartItemDto.setImageUrlLink("test1");
     cartItemDto.setPrice(105);
-    cartItemDto.setRent(true);
+    cartItemDto.setSale(true);
 
     cartService.addToCart("test_cart1", 5l, "X","test",100, true );
     cartService.addToCart("test_cart1", 2l, "Y","test1",105, true );
@@ -80,14 +80,14 @@ public void merge(){
     cartItemDto.setTitle("X");
     cartItemDto.setImageUrlLink("test");
     cartItemDto.setPrice(100);
-    cartItemDto.setRent(true);
+    cartItemDto.setSale(true);
 
     CartItemDto cartItemDto1 = new CartItemDto();
     cartItemDto.setFilmId(2L);
     cartItemDto.setTitle("Y");
     cartItemDto.setImageUrlLink("test");
     cartItemDto.setPrice(102);
-    cartItemDto.setRent(true);
+    cartItemDto.setSale(true);
 
 
     cartService.addToCart("user_cart", 5l, "X","test",100,true );
