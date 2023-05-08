@@ -61,11 +61,11 @@ input[type="number"]::-webkit-inner-spin-button{
     padding: 25px 0;
     right: 0;
     top: 160px;
-    height: 650px;
+    height: 350px;
     width: 300px;
     border: 1px solid rgba(32,32,32,1);
     border-radius: 10px;
-    background: linear-gradient(49deg, rgba(0,0,0,1) 0%, rgba(32,32,32,1) 35%, rgb(32, 32, 32) 66%, rgba(0,0,0,1) 99%);
+    background: black;
 }
 
 .filter_title{

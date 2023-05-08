@@ -35,7 +35,9 @@
     font-size: 14px;
     font-weight: 600;
 }
-
+.tool_bar{
+    display: flex;
+}
 .menu_container {
    margin-top: 10px;
     width: fit-content;
@@ -125,5 +127,24 @@
     display: flex;
     justify-content: space-around;
     color: white;
+}
+.cart_box{
+    position: absolute;
+    top: 20px;
+    right: 250px;
+}
+.cart_box__button{
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+.cart_box__button span{
+    font-size: 14px;
+    margin-left: 10px;
 }
 
