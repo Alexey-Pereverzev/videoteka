@@ -34,10 +34,16 @@ public class FilmController {
     @GetMapping("/listall/{page}")
     public String getAllFilms(Model model, @PathVariable Integer page){
         System.out.println(page);
-        PageFilmDto pageData=catalogServiceIntegration.getListAllFilms(0, null,null,null,
+        PageFilmDto pageData=catalogServiceIntegration.getListAllFilms(page, null,null,null,
                                                                             1900,2023,true,0,1000);
+        int[] pageList=new int[pageData.getTotalPages()];
+        for (int i=0; i<pageData.getTotalPages(); i++){
+            pageList[i]=i;
+        }
         System.out.println(pageData.toString());
-        return "/index";
+        model.addAttribute("films",pageData);
+        model.addAttribute("pageList",pageList);
+        return "/catalog/main";
     }
 
 }

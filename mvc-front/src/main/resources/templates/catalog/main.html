@@ -10,11 +10,50 @@
   <table>
     <tr>
       <td>
-        Список
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Картинка</th>
+            <th scope="col">Название</th>
+            <th scope="col">Год выпуска</th>
+            <th scope="col">Жанр</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Аренда</th>
+            <th scope="col">Покупка</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          <tr th:each="f:${films.contents}">
+            <td> <img th:src="${f.getImageUrlLink()}" class="img-thumbnail"></td>
+            <td th:text="${f.title}"></td>
+            <td th:text="${f.premierYear}"></td>
+            <td>
+              <ul>
+                <li th:each="g: ${f.getGenre()}" th:text="${g}"></li>
+              </ul>
+            </td>
+            <td th:text="${f.description}"></td>
+            <td th:text="${f.rentPrice} + ' дубовых'"></td>
+            <td th:text="${f.salePrice} + ' дубовых'"></td>
+          </tr>
+          </tbody>
+        </table>
       </td>
       <td>
         Фильтры
       </td>
+    </tr>
+  </table>
+  <nav aria-label="Page navigation">
+    <ul class="pagination pagination">
+      <li class="page-item" th:each="p:${pageList}">
+        <a class="page-link" th:text="${p+1}" th:href="@{'/film/listall/'+${p}}"></a>
+      </li>
+    </ul>
+  </nav>
+  <table>
+    <tr>
+
     </tr>
   </table>
 </div>
