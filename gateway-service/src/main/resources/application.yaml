@@ -1,5 +1,5 @@
 server:
-  port: 7777
+  port: 5555
 
 spring:
   application:
@@ -9,38 +9,55 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "http://localhost:8888"
+            allowedOrigins: "http://localhost:3000"
             allowedMethods:
               - GET
               - POST
               - DELETE
             allowedHeaders: "*"
       routes:
-        - id: core-service
-          uri: http://localhost:8080
-          predicates:
-            - Path=/core/**
-          filters:
-            - StripPrefix=1
-            - PrefixPath=/market-core
-            - JwtAuthFilter
-        - id: cart-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/cart/**
-          filters:
-            - StripPrefix=1
-            - PrefixPath=/market-cart
-            - JwtAuthFilter
-        - id: auth-service
-          uri: http://localhost:7070
+        - id: authorization-service
+          uri: http://localhost:8187
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=1
-            - PrefixPath=/market-auth
+            - PrefixPath=/auth-service
             - JwtAuthFilter
+
+        - id: cabinet-order-service
+          uri: http://localhost:8188
+          predicates:
+            - Path=/cabinet/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/cabinet-order-service
+#            - JwtAuthFilter
+
+        - id: cart-service
+          uri: http://localhost:8190
+          predicates:
+            - Path=/cart/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/cart-service
+#            - JwtAuthFilter
+
+        - id: catalog-service
+          uri: http://localhost:8189
+          predicates:
+            - Path=/catalog/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/catalog-service
+#             - JwtAuthFilter
+
+
+
+
 jwt:
-  secret: fnmlaskfnaljkfhnalkfbnalkjfnbaklfnaklfnalksnfasklfnalskfn
+  secret: v4V0pakg6p964nMkLm14HoV3uNZlEKqq9BLf7gShNPB4MjeE3fSjdoTvPQMg0nI7AG2w1UAImEAmP7Qy
+  lifetime: 36000000
+
 
 

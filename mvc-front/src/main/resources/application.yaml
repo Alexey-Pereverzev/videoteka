@@ -1,0 +1,17 @@
+server:
+  port: 3000
+  servlet:
+    context-path: /
+integrations:
+  catalog-service:
+    url: http://localhost:5555/catalog/
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
+  authorization-service:
+    url: http://localhost:5555/auth/
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
+
+
