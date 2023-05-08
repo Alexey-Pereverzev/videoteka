@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class CartService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
@@ -35,8 +35,8 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void addToCart(String cartKey, long filmId, String filmTitle, String filmImageUrlLink, int filmPrice) {
-        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink,filmPrice, filmPrice);
+    public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
+        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
         execute(cartKey, c -> {
             c.add(cartItemDto);
         });
@@ -49,9 +49,6 @@ public class CartService {
     public void removeItemFromCart(String cartKey, Long filmId) {
         execute(cartKey, c -> c.remove(filmId));
     }
-
-
-
 
 
     public void merge(String userCartKey, String guestCartKey) {
@@ -71,6 +68,7 @@ public class CartService {
     public void updateCart(String cartKey, Cart cart) {
         redisTemplate.opsForValue().set(cartKey, cart);
     }
+
 
 
 }
