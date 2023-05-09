@@ -71,6 +71,4 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token, userService.getRole(authRequest.getUsername())));
     }
 
-
-
 }
