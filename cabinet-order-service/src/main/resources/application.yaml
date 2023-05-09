@@ -14,4 +14,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+integrations:
+  cart-service:
+    url: http://localhost:8190/cart
 
