@@ -26,10 +26,13 @@ class SignIn extends Component {
             }).then(response => {
                 console.log(response.data)
                 if (response.data.token) {
+                    axios.defaults.headers.common.Authorization ='Bearer ' + response.data.token
                     localStorage.setItem("customer", JSON.stringify(response.data))
                     localStorage.setItem("username", JSON.stringify(username))
-                    localStorage.setItem("isLoggedIn", JSON.stringify(true))
                     console.log(localStorage.getItem("customer"))
+
+                    axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('cartId') + '/merge')
+                        .then(response =>{})
                     window.location = "/"
                 }
                 return response.data
