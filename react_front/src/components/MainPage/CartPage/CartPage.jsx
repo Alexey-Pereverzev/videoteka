@@ -9,13 +9,65 @@ class CartPage extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            cartItems:[{
+            cartItems:[
+                {
                 price:'107',
                 pricePerFilm: '107',
                 title:'Жара',
                 id:'1',
-                imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg'
-            }],
+                imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                quantity: '3'
+            }, {
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                }, {
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                },{
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                },{
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                },{
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                },{
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                },{
+                    price:'107',
+                    pricePerFilm: '107',
+                    title:'Жара',
+                    id:'1',
+                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
+                    quantity: '3'
+                },
+            ],
         }
     }
     render() {

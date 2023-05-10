@@ -2,21 +2,7 @@ import {rerenderEntireTree} from "./render";
 import axios from "axios";
 
 let state = {
-    films: [],
-    genres: [],
-    directors: [],
-    countries: [],
-    filterCountryList: '',
-    filterDirectorList: '',
-    filterGenreList: '',
-    startPremierYear: '',
-    endPremierYear: '',
-    isSale: true,
-    minPrice: '',
-    maxPrice: '',
-    currentPage: 1,
-    active: false,
-    modal: false
+
 }
 
 export let login = (username, password) => {
@@ -90,5 +76,8 @@ export let addFilm = (title, imageUrlLink, premierYear, country,genre, director,
 export let updateMessageHandler = (newText) => {
     state.dialogsPage.newMessageText = newText;
     rerenderEntireTree(state);
+}
+const UserService = {
+    getCurrentUser
 }
 export default state;

@@ -41,8 +41,11 @@ class CatalogPage extends Component{
         this.getAllGenres()
         this.getAllDirectors()
         this.getAllCountries()
+        const customer = this.getCurrentUser()
     }
-
+    getCurrentUser = () => {
+        return JSON.parse(localStorage.getItem('customer'))
+    }
     getFilmByTitlePart = (currentPage, value) => {
         const titlePart = value.nativeEvent.data
         currentPage -= 1;

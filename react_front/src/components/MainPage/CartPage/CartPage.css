@@ -4,7 +4,7 @@
     width: 80vw;
     height: 100vh;
     margin-top: 25px;
-
+    overflow-y: hidden;
 }
 .cart_container__plate{
     width: 100%;
@@ -48,8 +48,27 @@
     color: #979797;
 }
 .card_box{
-    position: relative;
+    position: absolute;
+    top: 80px;
+    left: 0;
     display: flex;
     flex-direction: column;
+    width: 850px;
+    height: 750px;
+    padding: 25px;
+    margin: 25px 0;
+    overflow-y: scroll;
 }
-.checkout_box{}
+.card_box::-webkit-scrollbar{
+    display: none;
+}
+.checkout_box{
+    position: absolute;
+    top: 80px;
+    right: 35px;
+    height: 820px;
+    width: 550px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 5px 5px 16px 2px #CCCCCC;
+}
