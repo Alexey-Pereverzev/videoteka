@@ -11,6 +11,10 @@
 .genre_bar{
     margin: 25px 0;
 }
+.genre_bar button{
+    color: #c5c5c5;
+    font-weight: 500;
+}
 .selected{
     color: #249700;
 }

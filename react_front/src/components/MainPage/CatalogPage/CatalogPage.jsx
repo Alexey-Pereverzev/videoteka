@@ -243,14 +243,14 @@ class CatalogPage extends Component{
                 {
                     filterGenreList: genre
                 }, () => this.getAllFilms(this.state.currentPage,
-                    this.state.state.filterCountryList,
-                    this.state.state.filterDirectorList,
-                    this.state.state.filterGenreList,
-                    this.state.state.startPremierYear,
-                    this.state.state.endPremierYear,
-                    this.state.state.isSale,
-                    this.state.state.minPrice,
-                    this.state.state.maxPrice
+                    this.state.filterCountryList,
+                    this.state.filterDirectorList,
+                    this.state.filterGenreList,
+                    this.state.startPremierYear,
+                    this.state.endPremierYear,
+                    this.state.isSale,
+                    this.state.minPrice,
+                    this.state.maxPrice
                 )
             )
 
