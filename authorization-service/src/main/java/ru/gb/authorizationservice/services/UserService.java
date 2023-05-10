@@ -118,7 +118,7 @@ public class UserService implements UserDetailsService {
             return validationMessage;
         }
 
-        if (firstName.isEmpty() || firstName.isBlank()) {
+        if (firstName==null || firstName.isEmpty() || firstName.isBlank()) {
             user.setFirstName(null);
         } else {
             validationMessage = validationService.acceptableFirstName(firstName);
@@ -129,7 +129,7 @@ public class UserService implements UserDetailsService {
             }
         }
 
-        if (lastName.isEmpty() || lastName.isBlank()) {
+        if (lastName==null || lastName.isEmpty() || lastName.isBlank()) {
             user.setLastName(null);
         } else {
             validationMessage = validationService.acceptableLastName(lastName);
@@ -140,7 +140,7 @@ public class UserService implements UserDetailsService {
             }
         }
 
-        if (phoneNumber.isEmpty() || phoneNumber.isBlank()) {
+        if (phoneNumber==null || phoneNumber.isEmpty() || phoneNumber.isBlank()) {
             user.setPhoneNumber(null);
         } else {
             if (!validationService.acceptablePhoneNumber(phoneNumber)) {
@@ -149,7 +149,7 @@ public class UserService implements UserDetailsService {
             user.setPhoneNumber(phoneNumber);
         }
 
-        if (address.isEmpty() || address.isBlank()) {
+        if (address==null || address.isEmpty() || address.isBlank()) {
             user.setAddress(null);
         } else {
             user.setAddress(address);
