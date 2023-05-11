@@ -41,7 +41,7 @@ public class CartsController {
             description = "Добавление фильма в корзину"
     )
     @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmImageUrlLink}/{filmPrice}")
-    public void add(@RequestHeader(required = false) String userId,  @RequestParam String uuid,  @RequestParam long filmId,  @RequestParam String filmTitle,  @RequestParam String filmImageUrlLink,  @RequestParam int filmPrice, @RequestParam boolean isSale ) {
+    public void add(@RequestHeader(required = false) String userId,  @PathVariable String uuid,  @PathVariable Long filmId,  @PathVariable String filmTitle,  @PathVariable String filmImageUrlLink,  @PathVariable int filmPrice, @RequestParam boolean isSale ) {
         cartService.addToCart(getCurrentCartUuid(userId, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
     }
 
