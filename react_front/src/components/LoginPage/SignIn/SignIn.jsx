@@ -4,6 +4,8 @@ import axios, {post} from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import {Route, Routes} from "react-router-dom";
 import MainPage from "../../MainPage/MainPage";
+import {decodeToken} from "react-jwt";
+import jwt from 'jwt-decode'
 
 
 // login(): POST{email, password} & save JWT to Local Storage
@@ -29,15 +31,30 @@ class SignIn extends Component {
                     axios.defaults.headers.common.Authorization ='Bearer ' + response.data.token
                     localStorage.setItem("customer", JSON.stringify(response.data))
                     localStorage.setItem("username", JSON.stringify(username))
+                    this.showCurrentUserInfo()
                     console.log(localStorage.getItem("customer"))
 
-                    axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('cartId') + '/merge')
+                    axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
                         .then(response =>{})
                     window.location = "/"
                 }
                 return response.data
 
             })
+    }
+    showCurrentUserInfo = () =>{
+        if(this.isUserLoggedIn){
+            let customer = JSON.parse(localStorage.getItem('customer'))
+            let token = customer.token
+            let payload = jwt(token)
+            let userId = payload.sub
+            return userId
+        } else {
+            alert('UNAUTHORIZED')
+        }
+    }
+    isUserLoggedIn = () =>{
+        return !!localStorage.getItem('customer');
     }
 
     render() {

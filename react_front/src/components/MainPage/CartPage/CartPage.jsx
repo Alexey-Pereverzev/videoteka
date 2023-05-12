@@ -99,17 +99,17 @@ class CartPage extends Component{
                             <span>.</span>
                         </div>
                         <div className={'details'}>
-                            {this.state.bayPack.length === 0 ?
-                                <span>У вас в корзине нет товаров</span>
-                                :
+                            {this.state.bayPack.length > 0 ?
                                 <span>У вас в корзине {this.state.bayPack.length} ед. товара</span>
+                                :
+                                <span>У вас в корзине нет товаров</span>
                             }
 
                         </div>
                     </div>
 
                     <div className={'card_box'}>
-                        {this.state.cartItems.map((item) =>
+                        {this.state.bayPack.map((item) =>
                                 <StringCard quantity={item.quantity}
                                             title={item.title}
                                             price={item.price}

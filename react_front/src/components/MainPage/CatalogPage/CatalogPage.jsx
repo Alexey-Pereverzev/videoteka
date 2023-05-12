@@ -5,7 +5,7 @@ import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
 import {Component} from "react";
 
-class CatalogPage extends Component{
+class CatalogPage extends Component {
     constructor(props) {
         super(props);
         this.handleDirectorsChange = this.handleDirectorsChange.bind(this);
@@ -43,6 +43,7 @@ class CatalogPage extends Component{
         this.getAllCountries()
         const customer = this.getCurrentUser()
     }
+
     getCurrentUser = () => {
         return JSON.parse(localStorage.getItem('customer'))
     }
@@ -81,6 +82,7 @@ class CatalogPage extends Component{
             console.error("Error: " + error)
         })
     }
+
     getMinMaxPrice = () => {
         axios.get("http://localhost:5555/catalog/api/v1/price/prices_filter")
             .then(response => response.data)
@@ -192,6 +194,9 @@ class CatalogPage extends Component{
         currentPage -= 1;
         axios.get("http://localhost:5555/catalog/api/v1/film/list_all",
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
                 params: {
                     currentPage,
                     filterCountryList,
@@ -230,7 +235,10 @@ class CatalogPage extends Component{
                 maxPrice: '',
                 currentPage: 1,
                 active: false
-            }, () => {this.getMinMaxPrice(); this.getMinMaxYear();}
+            }, () => {
+                this.getMinMaxPrice();
+                this.getMinMaxYear();
+            }
         )
     }
 
@@ -336,7 +344,7 @@ class CatalogPage extends Component{
     handleDateChange(name, event) {
         let value = event.target.value;
         if (name === "second") {
-            if (parseInt(this.state.startPremierYear) <= parseInt(value) && value.length === 4 ) {
+            if (parseInt(this.state.startPremierYear) <= parseInt(value) && value.length === 4) {
                 this.setState({endPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -348,7 +356,7 @@ class CatalogPage extends Component{
                     this.state.maxPrice));
             }
         } else {
-            if (parseInt(value) <= parseInt(this.state.endPremierYear) && value.length === 4 ) {
+            if (parseInt(value) <= parseInt(this.state.endPremierYear) && value.length === 4) {
                 this.setState({startPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -377,7 +385,7 @@ class CatalogPage extends Component{
     handlePriceChange(name, event) {
         let value = event.target.value;
         if (name === "second") {
-            if (parseInt(this.state.minPrice) <= parseInt(value) ) {
+            if (parseInt(this.state.minPrice) <= parseInt(value)) {
                 this.setState({maxPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -390,7 +398,7 @@ class CatalogPage extends Component{
 
             }
         } else {
-            if (parseInt(value) <= parseInt(this.state.maxPrice) && parseInt(value) >= parseInt(this.state.minPrice) ) {
+            if (parseInt(value) <= parseInt(this.state.maxPrice) && parseInt(value) >= parseInt(this.state.minPrice)) {
                 this.setState({minPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -575,4 +583,5 @@ class CatalogPage extends Component{
         )
     }
 }
+
 export default CatalogPage;

@@ -8,6 +8,7 @@ import Footer from "../UI/Footer/Footer";
 import {Route, Routes} from "react-router-dom";
 import CatalogPage from "./CatalogPage/CatalogPage";
 import CartPage from "./CartPage/CartPage";
+import PanelPage from "./PanelPage/PanelPage";
 
 
 class MainPage extends Component {
@@ -69,6 +70,7 @@ class MainPage extends Component {
                     <Routes>
                         <Route index path={'/'} element={<CatalogPage/>}/>
                         <Route path={'cart'} element={<CartPage/>}/>
+                        <Route path={'cabinet'} element={<PanelPage/>}/>
                         <Route/>
                     </Routes>
                 </div>
