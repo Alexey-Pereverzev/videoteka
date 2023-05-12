@@ -14,6 +14,8 @@ public class OrderDto {
     private Long userId;
     private Long filmId;
     private String filmTitle;
+    private String description;
+    private String imageUrlLink;
     private int price;
     private boolean isSale;
     private LocalDateTime rentStart;

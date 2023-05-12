@@ -56,7 +56,7 @@ public class OrderService {
         cartServiceIntegration.clearUserCart(userIdString);
     }
 
-    public List<Order> findOrdersByUserId(Long userId) {
+    public List<Order> findAllOrdersByUserId(Long userId) {
         return ordersRepository.findAllByUserId(userId);
     }
 }

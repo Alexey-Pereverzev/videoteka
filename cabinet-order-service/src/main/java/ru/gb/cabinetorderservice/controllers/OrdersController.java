@@ -39,7 +39,7 @@ public class OrdersController {
     @GetMapping
     public List<OrderDto> getCurrentUserOrders(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
-        return orderService.findOrdersByUserId(userIDLong).stream()
+        return orderService.findAllOrdersByUserId(userIDLong).stream()
                 .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 }
