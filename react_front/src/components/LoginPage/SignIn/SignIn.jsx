@@ -48,7 +48,7 @@ class SignIn extends Component {
             let token = customer.token
             let payload = jwt(token)
             let userId = payload.sub
-            return userId
+            localStorage.setItem("userId", JSON.stringify(userId))
         } else {
             alert('UNAUTHORIZED')
         }
