@@ -3,16 +3,16 @@ server:
   servlet:
     context-path: /auth-service
 flyway:
-  user: postgres
-  password: 123
+  user: security
+  password: SequrityVideoteka2023
   schemas: users_roles_db
   url: jdbc:postgresql://194.87.101.43:5432/users_roles_db
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://194.87.101.43:5432/users_roles_db
-    username: postgres
-    password: 123
+    username: security
+    password: SequrityVideoteka2023
   jpa:
     show-sql: true
     properties:

@@ -31,6 +31,9 @@ angular.module('videoteka', ['ngStorage']).controller('mainController', function
                         userId: $scope.payload.sub
                     };
 
+                    // console.log(111);
+                    // console.log($localStorage.videotekaUser.token);
+
                     $scope.userRole = response.data.role;
 
                     $scope.user.username = null;
