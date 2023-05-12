@@ -1,5 +1,5 @@
 server:
-  port: 8188
+  port: 8192
   servlet:
     context-path: /cabinet-order-service
 spring:
