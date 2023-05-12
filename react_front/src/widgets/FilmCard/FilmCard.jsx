@@ -44,6 +44,7 @@ function FilmCard(props) {
                          setActive={setModalActive}
             >
                 <FilmPage director={props.director}
+                          filmId={props.id}
                           isSale={props.isSale}
                           title={props.title}
                           premierYear={props.premierYear}

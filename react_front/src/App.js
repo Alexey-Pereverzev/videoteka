@@ -7,6 +7,7 @@ import axios from "axios";
 
 function App(props) {
     function run() {
+        console.log("Вошли в метод run()")
         if (localStorage.getItem('customer')){
             let user = localStorage.getItem('customer')
             let token = JSON.parse(user)
@@ -21,18 +22,26 @@ function App(props) {
                     axios.defaults.headers.common.Authorization = ''
                 }
             }catch (e) {
-
+                console.log("Ошибка: " + e)
             }
             if (localStorage.getItem('customer')){
                 console.log(token.token)
                 axios.defaults.headers.common.Authorization = 'Bearer ' + token.token
             }
+
         }
-        if (localStorage.getItem("cartId")){
-            axios.get("http://localhost:5555/cart/api/v1/cart/generate")
-                .then(response =>{
-                    localStorage.setItem('cartId',  JSON.stringify(response.data.value))
+        if (!localStorage.getItem("guestCartId")){
+            console.log('Вошли в метод генерации корзины')
+            axios.get("http://localhost:5555/cart/api/v1/cart/generate",{
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
             })
+                .then(response =>{
+                    console.log('Генерация корзины. Голый респонс: '+response)
+                    localStorage.setItem('guestCartId',  JSON.stringify(response.data.value))
+                    console.log('Информация из хранилища. Корзина: '+localStorage.getItem('guestCartId'))
+                })
         }
     }
     run()

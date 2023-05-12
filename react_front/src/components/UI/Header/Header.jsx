@@ -73,7 +73,9 @@ function Header(props) {
                                 {username}
                                 <span className={'menu_location'}>Москва</span></h3>
                             <ul>
-                                <DropdownItem text={'профиль'}/>
+                                <NavLink to={'/cabinet'}>
+                                    <DropdownItem text={'профиль'}/>
+                                </NavLink>
                                 <DropdownItem text={'корзина'}/>
                                 <DropdownItem text={'мои фильмы'}/>
                                 <DropdownItem text={'избранное'}/>

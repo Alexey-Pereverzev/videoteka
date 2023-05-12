@@ -1,8 +1,41 @@
 import "./FilmPage.css"
 import {Icon} from "@mui/material";
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
+import axios from "axios";
+
 
 function FilmPage(props) {
+
+
+    let getPrice = () => {
+        let price = ''
+        if (props.isSale) {
+            price = props.salePrice
+        } else {
+            if (!props.isSale) {
+                price = props.rentPrice
+            }
+        }
+        return price
+    }
+    let addToCart = async () => {
+        try {
+            const response = await axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('cartId') + '/add/', {
+                params: {
+                    filmId: props.filmId,
+                    filmTitle: props.title,
+                    filmImgUrlLink: props.cover,
+                    filmPrice: getPrice(),
+                    isSale: props.isSale
+                }
+            })
+            console.log("Ответ метода addToCart: " + response.data)
+        } catch (e) {
+            console.log("Ошибка в методе addToCart(): " + e)
+        }
+
+
+    }
     return (
         <div className={'film-page'}>
             <div className="movie">
@@ -29,24 +62,32 @@ function FilmPage(props) {
                             </span>{director}</p>
                         )}
 
-                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.premierYear}</p>
-                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.country}</p>
+                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.premierYear}
+                        </p>
+                        <p className="movie__detail"><span className="icons icons-grey"><i className="fas fa-clock"></i> </span>{props.country}
+                        </p>
 
                     </div>
                     <p className="movie__detail"><span className="icons icons-yellow"><i
                         className="fas fa-file-invoice-dollar"></i>
                     </span>
-                        <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}>В Корзину</button>
+                        <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
+                                onClick={() => addToCart()}
+
+                        >В Корзину
+                        </button>
                     </p>
                 </div>
 
                 {props.isSale ?
                     <div className="movie__price">
-                        Цена продажи: {props.salePrice}<Icon sx={{transform: 'rotate(90deg)'}} component={CurrencyRubleIcon}/>
+                        Цена продажи: {props.salePrice}<Icon sx={{transform: 'rotate(90deg)'}}
+                                                             component={CurrencyRubleIcon}/>
                     </div>
                     :
                     <div className="movie__price">
-                        Цена аренды: {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}} component={CurrencyRubleIcon}/>
+                        Цена аренды: {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}}
+                                                            component={CurrencyRubleIcon}/>
                     </div>
                 }
             </div>
