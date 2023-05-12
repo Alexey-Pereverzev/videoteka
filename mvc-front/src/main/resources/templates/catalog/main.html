@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<html lang="ru" ng-app="videoteka" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
   <meta charset="UTF-8">
   <title>Главная страница</title>
@@ -41,6 +41,12 @@
             <td th:text="${f.description}"></td>
             <td th:text="${f.rentPrice} + ' дубовых'"></td>
             <td th:text="${f.salePrice} + ' дубовых'"></td>
+            <td ng-controller="mainController">
+              <script th:inline="javascript">
+                var idqq = [[${f.id}]];
+              </script>
+              <button type="button" class="btn btn-primary" ng-click="addToCart()">Добавить в корзину</button>
+            </td>
           </tr>
           </tbody>
         </table>

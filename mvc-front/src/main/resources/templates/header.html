@@ -14,6 +14,13 @@
                         <button class="btn btn-outline-success" type="submit">Найти</button>
                     </form>
                 </div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart/view">
+                            <button type="button" class="btn btn-warning">Корзинка</button>
+                        </a>
+                    </li>
+                </ul>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" ng-controller="mainController">
                     <li class="nav-item" ng-show="!isUserLoggedIn()">
                         <form class="align-middle" ng-submit="tryToAuth()">
@@ -31,7 +38,14 @@
                         </form>
                     </li>
                     <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
-                        <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">{{videotekaUser}}</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Профиль</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" ng-click="tryToLogout()">Выйти</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>

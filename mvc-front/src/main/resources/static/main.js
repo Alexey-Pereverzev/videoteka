@@ -16,6 +16,14 @@ angular.module('videoteka', ['ngStorage']).controller('mainController', function
         if ($localStorage.videotekaUser) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.videotekaUser.token;
         }
+
+        if (!$localStorage.videotekaGuestCartId) {
+            $http.get('http://localhost:5555/cart/api/v1/cart/generate')
+                .then(function (response) {
+                    $localStorage.videotekaGuestCartId = response.data.value;
+                    console.log($localStorage.videotekaGuestCartId)
+                });
+        }
     }
 
     $scope.tryToAuth = function () {
@@ -54,12 +62,19 @@ angular.module('videoteka', ['ngStorage']).controller('mainController', function
 
     $scope.isUserLoggedIn = function () {
         if ($localStorage.videotekaUser) {
+            $scope.videotekaUser=$localStorage.videotekaUser.username;
             return true;
         } else {
             return false;
         }
     };
 
+    $scope.addToCart = function () {
+        // $http.get('http://localhost:5555/cart/api/v1/cart/' + $localStorage.videotekaGuestCartId + '/add/' + $scope.film)
+        //     .then(function (response) {
+        //     });
+        console.log(idqq);
+    };
 
     //
     // $scope.loadProducts = function () {
