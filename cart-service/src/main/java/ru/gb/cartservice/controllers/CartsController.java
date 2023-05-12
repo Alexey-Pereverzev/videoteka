@@ -76,6 +76,15 @@ public class CartsController {
         );
     }
 
+    @Operation(
+            summary = "Проверка корзины перед оплатой с бд фильм",
+            description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
+    )
+    @GetMapping("/{uuid}/pay")
+    public String pay(@RequestHeader(required = false) String userId, @PathVariable String uuid) {
+       return cartService.validateCart(userId);
+    }
+
     private String getCurrentCartUuid(String userId, String uuid) {
         if (userId != null) {
             return cartService.getCartUuidFromSuffix(userId);
