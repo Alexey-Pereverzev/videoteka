@@ -63,7 +63,7 @@
     font-size: 12px;
 }
 
-.login-box form a {
+.login-box form button {
     position: absolute;
     bottom: 25px;
     display: flex;
@@ -71,8 +71,10 @@
     height: 30px;
     align-items: center;
     color: #03e9f4;
+    background: transparent;
     font-size: 16px;
-    text-decoration: none;
+    outline: none;
+    border: none;
     text-transform: uppercase;
     overflow: hidden;
     transition: 0.5s;
@@ -80,7 +82,7 @@
     letter-spacing: 4px
 }
 
-.login-box a:hover {
+.login-box button:hover {
     background: #03e9f4;
     color: #fff;
     border-radius: 5px;

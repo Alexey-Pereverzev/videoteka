@@ -37,7 +37,7 @@ class SignUp extends Component {
 
         return (
             <div>
-                <form>
+                <form method={'post'} onSubmit={() => sendRegisterRequest()}>
                     <input
                         className="signup-page__sign-in__text"
                         name={'username'}
@@ -94,11 +94,7 @@ class SignUp extends Component {
                         type="text"
                         placeholder="Адрес"
                     />
-
-
-                    <button id="submit" className="login-page__sign-in__button"
-                            onClick={() => sendRegisterRequest()}>Регистрируюсь
-                    </button>
+                    <button id="submit" className="login-page__sign-in__button">Регистрируюсь</button>
                 </form>
 
             </div>
