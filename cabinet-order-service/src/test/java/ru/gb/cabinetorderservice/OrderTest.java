@@ -52,7 +52,7 @@ import ru.gb.cartservice.services.CartService;
         order.setPrice(100);
         order.setType("Rent");
         orderService.createOrder(1l);
-        Assertions.assertEquals(1, orderService.findOrdersByUserId(1L));
+        Assertions.assertEquals(1, orderService.findAllOrdersByUserId(1L));
     }
 }
 

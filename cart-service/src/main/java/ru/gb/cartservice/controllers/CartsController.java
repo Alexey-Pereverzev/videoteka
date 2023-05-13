@@ -40,8 +40,8 @@ public class CartsController {
             summary = "Добавление фильма в корзину ",
             description = "Добавление фильма в корзину"
     )
-    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmImageUrlLink}/{filmPrice}")
-    public void add(@RequestHeader(required = false) String userId,  @PathVariable String uuid,  @PathVariable Long filmId,  @PathVariable String filmTitle,  @PathVariable String filmImageUrlLink,  @PathVariable int filmPrice, @RequestParam boolean isSale ) {
+    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmPrice}")
+    public void add(@RequestHeader(required = false) String userId,  @PathVariable String uuid,  @PathVariable Long filmId,  @PathVariable String filmTitle,  @RequestParam String filmImageUrlLink,  @PathVariable int filmPrice, @RequestParam boolean isSale ) {
         cartService.addToCart(getCurrentCartUuid(userId, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
     }
 
@@ -74,6 +74,15 @@ public class CartsController {
                 getCurrentCartUuid(userId, null),
                 getCurrentCartUuid(null, uuid)
         );
+    }
+
+    @Operation(
+            summary = "Проверка корзины перед оплатой с бд фильм",
+            description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
+    )
+    @GetMapping("/{uuid}/pay")
+    public String pay(@RequestHeader(required = false) String userId, @PathVariable String uuid) {
+       return cartService.validateCart(userId);
     }
 
     private String getCurrentCartUuid(String userId, String uuid) {
