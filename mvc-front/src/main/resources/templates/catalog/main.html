@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<html lang="ru" ng-app="videoteka" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
   <meta charset="UTF-8">
   <title>Главная страница</title>
@@ -10,7 +10,7 @@
   <table>
     <tr>
       <td>
-        <table class="table">
+        <table ng-controller="mainController" class="table">
           <thead>
           <tr>
             <th scope="col">Картинка</th>
@@ -24,24 +24,69 @@
           </tr>
           </thead>
           <tbody class="table-group-divider">
-          <tr th:each="f:${films.contents}">
-            <td> <img th:src="${f.getImageUrlLink()}" class="img-thumbnail"></td>
-            <td th:text="${f.title}"></td>
-            <td th:text="${f.premierYear}"></td>
+          <script th:inline="javascript">
+            var jsfilms = [[${films.contents}]];
+          </script>
+
+          <tr ng-repeat="film in jsfilms">
+            <td>
+              <img src={{film.imageUrlLink}} class="img-thumbnail">
+            </td>
+            <td>
+              {{film.title}}
+            </td>
+            <td>
+              {{film.premierYear}}
+            </td>
             <td>
               <ul>
-                <li th:each="g: ${f.getGenre()}" th:text="${g}"></li>
+                <li ng-repeat="gg in film.genre">
+                  {{gg}}
+                </li>
               </ul>
             </td>
             <td>
               <ul>
-                <li th:each="cc: ${f.getCountry()}" th:text="${cc}"></li>
+                <li ng-repeat="cc in film.country">
+                  {{cc}}
+                </li>
               </ul>
             </td>
-            <td th:text="${f.description}"></td>
-            <td th:text="${f.rentPrice} + ' дубовых'"></td>
-            <td th:text="${f.salePrice} + ' дубовых'"></td>
+            <td>
+              {{film.description}}
+            </td>
+            <td>
+              {{film.rentPrice}}
+            </td>
+            <td>
+              {{film.salePrice}}
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary" ng-click="addToCart(film.id, $index)">Добавить в корзину</button>
+            </td>
+
           </tr>
+<!--          <tr th:each="f:${films.contents}">-->
+<!--            <td> <img th:src="${f.getImageUrlLink()}" class="img-thumbnail"></td>-->
+<!--            <td th:text="${f.title}"></td>-->
+<!--            <td th:text="${f.premierYear}"></td>-->
+<!--            <td>-->
+<!--              <ul>-->
+<!--                <li th:each="g: ${f.getGenre()}" th:text="${g}"></li>-->
+<!--              </ul>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <ul>-->
+<!--                <li th:each="cc: ${f.getCountry()}" th:text="${cc}"></li>-->
+<!--              </ul>-->
+<!--            </td>-->
+<!--            <td th:text="${f.description}"></td>-->
+<!--            <td th:text="${f.rentPrice} + ' дубовых'"></td>-->
+<!--            <td th:text="${f.salePrice} + ' дубовых'"></td>-->
+<!--            <td>-->
+<!--              <button type="button" class="btn btn-primary" ng-click="addToCart()">Добавить в корзину</button>-->
+<!--            </td>-->
+<!--          </tr>-->
           </tbody>
         </table>
       </td>
