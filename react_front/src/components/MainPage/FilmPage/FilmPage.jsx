@@ -21,13 +21,14 @@ function FilmPage(props) {
     let addToCart = async () => {
         const price = getPrice()
         const isSale = props.isSale
-        const stringCover = ''
+        const stringCover = props.cover
         try {
             const response = await axios.get('http://localhost:5555/cart/api/v1/cart/' +
                 localStorage.getItem('guestCartId') +
-                '/add/' + props.filmId + '/' + props.title + '/'  + stringCover + '/' + price,
+                '/add/' + props.filmId + '/' + props.title + '/' + price,
                 {
                     params: {
+                        filmImageUrlLink: stringCover,
                         isSale: isSale
                     }
                 }
