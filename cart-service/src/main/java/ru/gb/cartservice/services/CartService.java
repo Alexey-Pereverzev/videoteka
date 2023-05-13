@@ -7,7 +7,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
 import ru.gb.cartservice.integrations.FilmServiceIntegration;
 import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
@@ -74,7 +73,7 @@ public class CartService {
     public void updateCart(String cartKey, Cart cart) {
         redisTemplate.opsForValue().set(cartKey, cart);
     }
-// проверка корзины через интеграцию с бд фильмами перед оплатой
+    // проверка корзины через интеграцию с бд фильмами перед оплатой
     public String validateCart(String cartKey) {
         String massege = "";
         Cart cart = getCurrentCart(cartKey);
@@ -96,4 +95,4 @@ public class CartService {
     }
 
 
-    }
+}

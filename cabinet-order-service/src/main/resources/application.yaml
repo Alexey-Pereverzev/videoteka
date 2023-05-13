@@ -18,4 +18,3 @@ integrations:
     url: http://localhost:8190/cart
   catalog-service:
     url: http://localhost:8189/catalog-service
-

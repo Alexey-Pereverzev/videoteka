@@ -1,4 +1,4 @@
-package ru.gb.cabinetorderservice.integrations;
+package ru.gb.cartservice.integrations;
 
 
 import lombok.RequiredArgsConstructor;
