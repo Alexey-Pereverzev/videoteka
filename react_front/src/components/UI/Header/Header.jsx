@@ -34,7 +34,7 @@ function Header(props) {
 
     let menuRef = useRef();
     useEffect(() => {
-        if (user){
+        if (user) {
             let handler = (event) => {
                 if (!menuRef.current.contains(event.target)) {
                     setOpen(false);
@@ -56,7 +56,7 @@ function Header(props) {
                         alt={'logo'}/>
                 </NavLink>
                 <SearchBar onChange={props.onChange}/>
-                {user?
+                {user ?
                     <div className={'menu_container'} ref={menuRef}>
                         <div className={'dropdown_trigger'} onClick={openMenu}>
                             <Avatar
@@ -73,12 +73,18 @@ function Header(props) {
                                 {username}
                                 <span className={'menu_location'}>Москва</span></h3>
                             <ul>
-                                <NavLink to={'/cabinet'}>
+                                <NavLink to={'cabinet/profile'}>
                                     <DropdownItem text={'профиль'}/>
                                 </NavLink>
-                                <DropdownItem text={'корзина'}/>
-                                <DropdownItem text={'мои фильмы'}/>
-                                <DropdownItem text={'избранное'}/>
+                                <NavLink to={'cart'}>
+                                    <DropdownItem text={'корзина'}/>
+                                </NavLink>
+                                <NavLink to={'cabinet/orders'}>
+                                    <DropdownItem text={'мои фильмы'}/>
+                                </NavLink>
+                                <NavLink to={'cabinet/favourites'}>
+                                    <DropdownItem text={'избранное'}/>
+                                </NavLink>
                                 <button className={'logout_btn'} onClick={() => logout()}>
                                     <DropdownItem text={'выход'}/>
                                 </button>
@@ -87,7 +93,7 @@ function Header(props) {
                     </div>
                     :
                     <div className={'login_btn'}>
-                        <button onClick={() =>loginRedirector()}>Войти</button>
+                        <button onClick={() => loginRedirector()}>Войти</button>
                     </div>
                 }
 

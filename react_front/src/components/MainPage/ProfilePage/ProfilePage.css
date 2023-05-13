@@ -1,145 +1,99 @@
-div.container {
+.profile-page__container{
+
+}
+.login-box {
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    width: 850px;
+    height: 350px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: #2b303b;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+}
+.login-box form{
     display: flex;
-    align-items: flex-start;
-    justify-content: space-around;
-    margin-top: 30px;
-    border: 1px solid whitesmoke;
-    padding: 21px;
-    border-radius: 4px;
+    justify-content: center;
 }
-h4.title {
+.box__container{
+    margin-right: 25px;
+}
+
+.login-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
     text-align: center;
-    margin-bottom: 45px;
 }
-:root {
-    --omrs-color-ink-lowest-contrast: rgba(47, 60, 85, 0.18);
-    --omrs-color-ink-low-contrast: rgba(60, 60, 67, 0.3);
-    --omrs-color-ink-medium-contrast: rgba(19, 19, 21, 0.6);
-    --omrs-color-interaction: #1e4bd1;
-    --omrs-color-interaction-minus-two: rgba(73, 133, 224, 0.12);
-    --omrs-color-danger: #b50706;
-    --omrs-color-bg-low-contrast: #eff1f2;
-    --omrs-color-ink-high-contrast: #121212;
-    --omrs-color-bg-high-contrast: #ffffff;
 
-}
-/** END: Non Openmrs CSS **/
-div.omrs-input-group {
-    margin-bottom: 1.5rem;
+.login-box .user-box {
     position: relative;
-    width: 20.4375rem;
 }
 
-/* Input*/
-.omrs-input-underlined > input,
-.omrs-input-filled > input {
-    border: none;
-    border-bottom: 0.125rem solid var(--omrs-color-ink-medium-contrast);
+.login-box .user-box input {
     width: 100%;
-    height: 2rem;
-    font-size: 1.0625rem;
-    padding-left: 0.875rem;
-    line-height: 147.6%;
-    padding-top: 0.825rem;
-    padding-bottom: 0.5rem;
-}
-
-.omrs-input-underlined > input:focus,
-.omrs-input-filled > input:focus {
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
     outline: none;
+    background: transparent;
 }
-
-.omrs-input-underlined > .omrs-input-label,
-.omrs-input-filled > .omrs-input-label {
+.login-box .user-box label {
     position: absolute;
-    top: 0.9375rem;
-    left: 0.875rem;
-    line-height: 147.6%;
-    color: var(--omrs-color-ink-medium-contrast);
-    transition: top .2s;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
 }
 
-.omrs-input-underlined > svg,
-.omrs-input-filled > svg {
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #03e9f4;
+    font-size: 12px;
+}
+
+.login-box form a {
     position: absolute;
-    top: 0.9375rem;
-    right: 0.875rem;
-    fill: var(--omrs-color-ink-medium-contrast);
+    bottom: 25px;
+    display: flex;
+    padding: 10px 20px;
+    height: 30px;
+    align-items: center;
+    color: #03e9f4;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin: 0 auto;
+    letter-spacing: 4px
 }
 
-.omrs-input-underlined > .omrs-input-helper,
-.omrs-input-filled > .omrs-input-helper {
-    font-size: 0.9375rem;
-    color: var(--omrs-color-ink-medium-contrast);
-    letter-spacing: 0.0275rem;
-    margin: 0.125rem 0.875rem;
-}
-
-.omrs-input-underlined > input:hover,
-.omrs-input-filled > input:hover {
-    background: var(--omrs-color-interaction-minus-two);
-    border-color: var(--omrs-color-ink-high-contrast);
-}
-
-.omrs-input-underlined > input:focus + .omrs-input-label,
-.omrs-input-underlined > input:valid + .omrs-input-label,
-.omrs-input-filled > input:focus + .omrs-input-label,
-.omrs-input-filled > input:valid + .omrs-input-label {
-    top: 0;
-    font-size: 0.9375rem;
-    margin-bottom: 32px;;
-}
-
-.omrs-input-underlined:not(.omrs-input-danger) > input:focus + .omrs-input-label,
-.omrs-input-filled:not(.omrs-input-danger) > input:focus + .omrs-input-label {
-    color: var(--omrs-color-interaction);
-}
-
-.omrs-input-underlined:not(.omrs-input-danger) > input:focus,
-.omrs-input-filled:not(.omrs-input-danger) > input:focus {
-    border-color: var(--omrs-color-interaction);
-}
-
-.omrs-input-underlined:not(.omrs-input-danger) > input:focus ~ svg,
-.omrs-input-filled:not(.omrs-input-danger) > input:focus ~ svg {
-    fill: var(--omrs-color-ink-high-contrast);
-}
-
-/** DISABLED **/
-
-.omrs-input-underlined > input:disabled {
-    background: var(--omrs-color-bg-low-contrast);
-    cursor: not-allowed;
-}
-
-.omrs-input-underlined > input:disabled + .omrs-input-label,
-.omrs-input-underlined > input:disabled ~ .omrs-input-helper{
-    color: var(--omrs-color-ink-low-contrast);
-}
-
-.omrs-input-underlined > input:disabled ~ svg {
-    fill: var(--omrs-color-ink-low-contrast);
+.login-box a:hover {
+    background: #03e9f4;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #03e9f4,
+    0 0 25px #03e9f4,
+    0 0 50px #03e9f4,
+    0 0 100px #03e9f4;
 }
 
 
-/** DANGER **/
 
-.omrs-input-underlined.omrs-input-danger > .omrs-input-label, .omrs-input-underlined.omrs-input-danger > .omrs-input-helper,
-.omrs-input-filled.omrs-input-danger > .omrs-input-label, .omrs-input-filled.omrs-input-danger > .omrs-input-helper{
-    color: var(--omrs-color-danger);
-}
 
-.omrs-input-danger > svg {
-    fill: var(--omrs-color-danger);
-}
 
-.omrs-input-danger > input {
-    border-color: var(--omrs-color-danger);
-}
 
-.omrs-input-underlined > input {
-    background: var(--omrs-color-bg-high-contrast);
-}
-.omrs-input-filled > input {
-    background: var(--omrs-color-bg-low-contrast);
-}
+
+
