@@ -50,7 +50,7 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/catalog-service
-             - JwtAuthFilter
+#             - JwtAuthFilter
 
 
 
