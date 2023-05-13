@@ -126,16 +126,9 @@
     display: block;
     text-transform: uppercase;
     background-color: #A9C9FF;
-    cursor: pointer;
-    transition: 0.5s;
-}
-.pay_btn:hover{
-    background: #647895;
+
 }
 .pay_btn.sale{
     background-color:#FFBBEC;
     cursor: pointer;
-}
-.pay_btn.sale:hover{
-    background: #a07895;
 }

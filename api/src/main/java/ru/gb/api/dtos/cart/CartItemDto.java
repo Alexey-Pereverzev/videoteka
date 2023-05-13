@@ -9,14 +9,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItemDto {
-    private Long filmId;
+    private Long id;
     private String title;
     private String imageUrlLink;
+    private int pricePerFilm;
     private int price;
-    private boolean isSale;
 
 
-
+    public CartItemDto(Long filmId, String filmTitle, String filmImageUrlLink, int quantity, int pricePerFilm, int price) {
+    }
 }
 
 

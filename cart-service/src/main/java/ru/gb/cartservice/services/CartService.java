@@ -5,12 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
-import ru.gb.cartservice.integrations.FilmServiceIntegration;
 import ru.gb.cartservice.models.Cart;
-import ru.gb.cartservice.models.CartItem;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -19,12 +15,10 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class CartService {
 
-    private final RedisTemplate<Object, Object> redisTemplate;
-    private final FilmServiceIntegration filmServiceIntegration;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
-
 
     public String getCartUuidFromSuffix(String suffix) {
         return cartPrefix + suffix;
@@ -41,8 +35,8 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
-        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
+    public void addToCart(String cartKey, long filmId, String filmTitle, String filmImageUrlLink, int filmPrice) {
+        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink,filmPrice, filmPrice);
         execute(cartKey, c -> {
             c.add(cartItemDto);
         });
@@ -55,6 +49,9 @@ public class CartService {
     public void removeItemFromCart(String cartKey, Long filmId) {
         execute(cartKey, c -> c.remove(filmId));
     }
+
+
+
 
 
     public void merge(String userCartKey, String guestCartKey) {
@@ -74,26 +71,6 @@ public class CartService {
     public void updateCart(String cartKey, Cart cart) {
         redisTemplate.opsForValue().set(cartKey, cart);
     }
-// проверка корзины через интеграцию с бд фильмами перед оплатой
-    public String validateCart(String cartKey) {
-        String massege = "";
-        Cart cart = getCurrentCart(cartKey);
-        for (CartItem cart1 : cart.getItems()) {
-            Long id = cart1.getFilmId();
-            FilmDto filmDto = new FilmDto();
-            //  FilmDto filmDto = filmServiceIntegration.findById(id).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален попробуйте снова оформить заказ .  id: " + cart1.getFilmTitle()));
-            FilmDto filmDto1 = filmServiceIntegration.findById(id).orElse(filmDto);
-            if (!filmDto.equals(filmDto1)) {
-                cart.remove(id);
-                updateCart(cartKey, cart);
-                massege = "Некоторые фильмы были удалены пожалуйста вернитесь в корзину и обновите страницу ";
-            } else
-                massege = "Можно оплавивать";
 
 
-        }
-        return massege;
-    }
-
-
-    }
+}

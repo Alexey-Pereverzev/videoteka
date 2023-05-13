@@ -34,16 +34,14 @@ import java.util.Optional;
         @Test
         public void addToCartTest() {
             CartItemDto cartItemDto = new CartItemDto();
-            cartItemDto.setFilmId(5L);
+            cartItemDto.setId(5L);
             cartItemDto.setTitle("X");
             cartItemDto.setImageUrlLink("test");
             cartItemDto.setPrice(100);
-            cartItemDto.setSale(true);
 
-            cartService.addToCart("test_cart1", 5l, "X","test",100,true);
-            cartService.addToCart("test_cart1", 5l, "X","test",100, true );
-            cartService.addToCart("test_cart1", 5l, "X","test",100,true );
-
+            cartService.addToCart("test_cart1", 5, "X","test",100 );
+            cartService.addToCart("test_cart1", 5, "X","test",100 );
+            cartService.addToCart("test_cart1", 5, "X","test",100 );
 
 
             Assertions.assertEquals(1, cartService.getCurrentCart("test_cart1").getItems().size());
@@ -51,21 +49,19 @@ import java.util.Optional;
 @Test
     public void removeItemFromCart(){
     CartItemDto cartItemDto = new CartItemDto();
-    cartItemDto.setFilmId(5L);
+    cartItemDto.setId(5L);
     cartItemDto.setTitle("X");
     cartItemDto.setImageUrlLink("test");
     cartItemDto.setPrice(100);
-    cartItemDto.setSale(true);
 
     CartItemDto cartItemDto1 = new CartItemDto();
-    cartItemDto.setFilmId(2l);
+    cartItemDto.setId(2L);
     cartItemDto.setTitle("Y");
     cartItemDto.setImageUrlLink("test1");
     cartItemDto.setPrice(105);
-    cartItemDto.setSale(true);
 
-    cartService.addToCart("test_cart1", 5l, "X","test",100, true );
-    cartService.addToCart("test_cart1", 2l, "Y","test1",105, true );
+    cartService.addToCart("test_cart1", 5, "X","test",100 );
+    cartService.addToCart("test_cart1", 2, "Y","test1",105 );
     cartService.removeItemFromCart("test_cart1",2l);
     Assertions.assertEquals(1, cartService.getCurrentCart("test_cart1").getItems().size());
 }
@@ -76,22 +72,20 @@ public void merge(){
     cartService.clearCart("user_cart");
     cartService.clearCart("guest_cart");
     CartItemDto cartItemDto = new CartItemDto();
-    cartItemDto.setFilmId(5L);
+    cartItemDto.setId(5L);
     cartItemDto.setTitle("X");
     cartItemDto.setImageUrlLink("test");
     cartItemDto.setPrice(100);
-    cartItemDto.setSale(true);
 
     CartItemDto cartItemDto1 = new CartItemDto();
-    cartItemDto.setFilmId(2L);
+    cartItemDto.setId(2L);
     cartItemDto.setTitle("Y");
     cartItemDto.setImageUrlLink("test");
     cartItemDto.setPrice(102);
-    cartItemDto.setSale(true);
 
 
-    cartService.addToCart("user_cart", 5l, "X","test",100,true );
-    cartService.addToCart("guest_cart", 2l, "Y","test",102, true );
+    cartService.addToCart("user_cart", 5, "X","test",100 );
+    cartService.addToCart("guest_cart", 2, "Y","test",102 );
     cartService.merge("user_cart","guest_cart");
     Assertions.assertEquals(2, cartService.getCurrentCart("user_cart").getItems().size());
 }

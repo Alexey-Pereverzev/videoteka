@@ -71,7 +71,6 @@ public class InputValidationService {
 
     public String acceptableEmail(String email)
     {
-        if (email.isEmpty() || email.isBlank()) return "Email не может быть пустым";
         EmailValidator validator = EmailValidator.getInstance();
         return validator.isValid(email) ? "" : "Некорректный e-mail";
     }
@@ -119,14 +118,15 @@ public class InputValidationService {
     }
 
 
+
     public static boolean acceptablePhoneNumber(String phoneNumber) {
         if (!phoneNumber.isEmpty() && !phoneNumber.isBlank()) {
-            if (areAllSymbolsInSet(phoneNumber, phoneCharacters)) {
-                phoneNumber = phoneNumber.replace(" ", "")
-                        .replace("(", "").replace(")", "")
+            if (areAllSymbolsInSet(phoneNumber, phoneCharacters)) {               //  если нет недопустимых символов
+                phoneNumber = phoneNumber.replace(" ", "").replace("(", "").replace(")", "")
                         .replace("-", "").replace("+", "");
+                //  выкидываем символы кроме цифр
                 int length = phoneNumber.length();
-                return (length >= 7) && (length <= 13);        //  длина номера от 7 до 13
+                return (length >= 7) && (length <= 13);              //  проверяем длину номера - должна быть от 7 до 13
             } else {
                 return false;
             }

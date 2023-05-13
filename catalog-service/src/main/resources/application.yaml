@@ -3,16 +3,16 @@ server:
   servlet:
     context-path: /catalog-service
 flyway:
-  user: catalog
-  password: CatalogVideoteka2023
+  user: postgres
+  password: 123
   schemas: catalog_db
   url: jdbc:postgresql://194.87.101.43:5432/catalog_db
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://194.87.101.43:5432/catalog_db
-    username: catalog
-    password: CatalogVideoteka2023
+    username: postgres
+    password: 123
   jpa:
     show-sql: true
     properties:
