@@ -16,19 +16,18 @@ public class CartItem {
     private Long filmId;
     private String filmTitle;
     private String filmImageUrlLink;
-    private int quantity;
-    private int pricePerFilm;
     private int price;
+    private boolean isSale;
+
 
 
 
     public CartItem(CartItemDto cartItemDto) { // (FilmDto filmdto)
-        this.filmId = cartItemDto.getId();
+        this.filmId = cartItemDto.getFilmId();
         this.filmTitle = cartItemDto.getTitle();
         this.filmImageUrlLink = cartItemDto.getImageUrlLink();
-        this.quantity = 1;
-        this.pricePerFilm = cartItemDto.getPrice();
         this.price = cartItemDto.getPrice();
+
     }
 
 
