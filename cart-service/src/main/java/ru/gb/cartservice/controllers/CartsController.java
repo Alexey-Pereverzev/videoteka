@@ -41,7 +41,7 @@ public class CartsController {
             description = "Добавление фильма в корзину"
     )
     @GetMapping("/add")
-    public void add(@RequestHeader(required = false) String userId,  @RequestParam String uuid,  @RequestParam Long filmId,  @RequestParam String filmTitle,  @RequestParam String filmImageUrlLink,  @RequestParam int filmPrice, @RequestParam boolean isSale ) {
+    public void add(@RequestHeader(required = false) String userId,  @RequestParam  String uuid,  @RequestParam  Long filmId,  @RequestParam  String filmTitle,  @RequestParam String filmImageUrlLink,  @RequestParam  int filmPrice, @RequestParam boolean isSale ) {
         cartService.addToCart(getCurrentCartUuid(userId, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
     }
 
@@ -51,7 +51,7 @@ public class CartsController {
     )
 
     @GetMapping("/remove")
-    public void remove(@RequestHeader(required = false) String userId, @RequestParam String uuid, @RequestParam Long filmId) {
+    public void remove(@RequestHeader(required = false) String userId, @RequestParam  String uuid, @RequestParam  Long filmId) {
         cartService.removeItemFromCart(getCurrentCartUuid(userId, uuid), filmId);
     }
 
@@ -59,8 +59,8 @@ public class CartsController {
             summary = "Очищает вся корзину ",
             description = "Корзина чистится после оформления заказа "
     )
-    @GetMapping("/{uuid}/clear")
-    public void clear(@RequestHeader(required = false) String userId, @PathVariable String uuid) {
+    @GetMapping("/clear")
+    public void clear(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         cartService.clearCart(getCurrentCartUuid(userId, uuid));
     }
 
@@ -69,7 +69,7 @@ public class CartsController {
             description = "Обеденение корзин не зарегестрированниго пользователея после регистрации"
     )
     @GetMapping("/merge")
-    public void merge(@RequestHeader(required = false) String userId, @RequestParam String uuid) {
+    public void merge(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         cartService.merge(
                 getCurrentCartUuid(userId, null),
                 getCurrentCartUuid(null, uuid)
@@ -81,8 +81,8 @@ public class CartsController {
             description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
     )
     @GetMapping("/pay")
-    public String pay(@RequestHeader(required = false) String userId, @RequestParam String uuid) {
-       return cartService.validateCart(userId);
+    public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+        return cartService.validateCart(userId);
     }
 
     private String getCurrentCartUuid(String userId, String uuid) {
