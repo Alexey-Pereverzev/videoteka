@@ -31,10 +31,11 @@ public class UserController {
             }
     )
     @DeleteMapping("/{deleteUserId}")
-    public void deleteProductById(@PathVariable Long deleteUserId, @RequestHeader String userId) {
+    public void deleteUserById(@PathVariable Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
         userService.safeDeleteById(deleteUserId, userId);
     }
+
 
 }
