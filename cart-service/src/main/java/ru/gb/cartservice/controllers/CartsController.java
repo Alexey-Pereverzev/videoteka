@@ -40,8 +40,8 @@ public class CartsController {
             summary = "Добавление фильма в корзину ",
             description = "Добавление фильма в корзину"
     )
-    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmImageUrlLink}/{filmPrice}")
-    public void add(@RequestHeader(required = false) String userId,  @PathVariable String uuid,  @PathVariable Long filmId,  @PathVariable String filmTitle,  @PathVariable String filmImageUrlLink,  @PathVariable int filmPrice, @RequestParam boolean isSale ) {
+    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmPrice}")
+    public void add(@RequestHeader(required = false) String userId,  @PathVariable String uuid,  @PathVariable Long filmId,  @PathVariable String filmTitle,  @RequestParam String filmImageUrlLink,  @PathVariable int filmPrice, @RequestParam boolean isSale ) {
         cartService.addToCart(getCurrentCartUuid(userId, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
     }
 
