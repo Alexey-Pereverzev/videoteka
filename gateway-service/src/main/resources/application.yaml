@@ -26,13 +26,13 @@ spring:
             - JwtAuthFilter
 
         - id: cabinet-order-service
-          uri: http://localhost:8192
+          uri: http://localhost:8188
           predicates:
             - Path=/cabinet/**
           filters:
             - StripPrefix=1
             - PrefixPath=/cabinet-order-service
-            - JwtAuthFilter
+#            - JwtAuthFilter
 
         - id: cart-service
           uri: http://localhost:8190
@@ -41,7 +41,7 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/cart-service
-            - JwtAuthFilter
+#            - JwtAuthFilter
 
         - id: catalog-service
           uri: http://localhost:8189

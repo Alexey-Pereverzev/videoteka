@@ -19,7 +19,7 @@ public class Cart {
     }
 
     public void add(CartItemDto cartItemDto) {
-        if (add(cartItemDto.getFilmId())) {
+        if (add(cartItemDto.getId())) {
             return;
         }
         items.add(new CartItem(cartItemDto));

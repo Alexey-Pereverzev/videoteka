@@ -37,8 +37,6 @@ public class User extends GenericEntity {
 
     @ManyToOne
     private Role role;
-
-
 }
 
 

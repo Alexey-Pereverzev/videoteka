@@ -1,6 +1,5 @@
 server:
   port: 3000
-  maxHttpHeaderSize:  65535
   servlet:
     context-path: /
 integrations:

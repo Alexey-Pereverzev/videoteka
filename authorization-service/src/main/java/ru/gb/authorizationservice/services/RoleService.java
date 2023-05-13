@@ -6,8 +6,6 @@ import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.RoleRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class RoleService {
@@ -18,9 +16,8 @@ public class RoleService {
                 () -> new ResourceNotFoundException("Роль пользователя в базе не найдена"));
     }
 
-    public Optional<Role> getRoleByName(String role) {
-        return roleRepository.findByTitle(role);
+    public Role getRoleByName(String role) {
+        return roleRepository.findByTitle(role).orElseThrow(
+                () -> new ResourceNotFoundException("Роль " + role + " в базе не найдена"));
     }
-
-
 }

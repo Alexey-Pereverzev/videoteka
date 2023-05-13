@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/reg")
+@RequestMapping("api/v1/reg")
 @Tag(name = "Регистрация", description = "Метод регистрации пользователя")
 public class RegisterController {
     private final UserService userService;
@@ -46,24 +46,11 @@ public class RegisterController {
     @PostMapping("/register")
     public ResponseEntity<?> registerNewUser(@RequestBody RegisterUserDto registerUserDto) {
 
-        Optional<User> user = userService.findByUsername(registerUserDto.getUsername());
+        Optional<User> user = userService.findNotDeletedByUsername(registerUserDto.getUsername());
 
         if (user.isPresent()) {
-            if (!user.get().isDeleted()) {
-                return new ResponseEntity<>(new AppError("USER_ALREADY_EXISTS",
-                        "Такой пользователь уже есть в системе"), HttpStatus.BAD_REQUEST);
-            } else {    // пользователь есть в системе, но был удален - восстанавливаем
-                String bcryptCachedPassword = passwordEncoder.encode(registerUserDto.getPassword());
-                String tryToRestore = userService.restoreUser(registerUserDto, bcryptCachedPassword, user.get());
-                if (!tryToRestore.equals("")) {
-                    return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
-                            tryToRestore), HttpStatus.BAD_REQUEST);
-                } else {
-                    return ResponseEntity.ok(new StringResponse("Пользователь с именем "
-                            + registerUserDto.getUsername() + " успешно создан"));
-                }
-
-            }
+            return new ResponseEntity<>(new AppError("USER_ALREADY_EXISTS",
+                    "Такой пользователь уже есть в системе"), HttpStatus.BAD_REQUEST);
         } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
             return new ResponseEntity<>(new AppError("NOT_MATCHING_PASSWORDS",
                     "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
