@@ -78,6 +78,7 @@ class CartPage extends Component{
     }
 
     loadCart = () =>{
+        console.log('Метод loadCart()')
         console.log(localStorage.getItem("cartId"))
         axios.get("http://localhost:5555/cart/api/v1/cart/" + localStorage.getItem("cartId"))
             .then(response => response.data)

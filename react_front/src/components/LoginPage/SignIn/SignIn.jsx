@@ -60,9 +60,9 @@ class SignIn extends Component {
     render() {
         function authHeaderHandler() {
             const customer = JSON.parse(localStorage.getItem('customer'))
-            if (customer && customer.accessToken) {
+            if (customer && customer.token) {
 
-                return {Authorization: 'Bearer' + customer.accessToken}
+                return {Authorization: 'Bearer' + customer.token}
             } else {
                 toast.warn('🦄 Нет такого пользователя!', {
                     position: "bottom-left",

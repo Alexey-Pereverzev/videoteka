@@ -5,8 +5,11 @@ import {NavLink, Route, Routes} from "react-router-dom";
 import ProfilePage from "../../ProfilePage/ProfilePage";
 import OrdersPage from "../../OrdersPage/OrdersPage";
 import FavoritesPage from "../../FavoritesPage/FavoritesPage";
+import {useState} from "react";
 
 function ProfilePanel() {
+
+    const [link, setLink] = useState(null)
 
 
     let getOrders = () => {
@@ -23,6 +26,7 @@ function ProfilePanel() {
     }
 
     function getProfile() {
+        setLink('profile')
         console.log('Профиль')
     }
 
@@ -40,25 +44,28 @@ function ProfilePanel() {
                     </span>
                 </div>
                 <div className={'menu__item'}>
-                    <button>
+                    <NavLink to={'profile'}>
                         Профиль
-                    </button>
+                    </NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <button onClick={() => getBasket()}>Корзина</button>
+                    <NavLink to={'/cart'}>
+                        Корзина
+                    </NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <button onClick={() => getOrders()}>Мои фильмы</button>
+                    <NavLink to={'orders'}>Мои фильмы</NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <button onClick={() => getFavourites()}>Избранное</button>
+                    <NavLink to={'favourites'}>Избранное</NavLink>
                 </div>
             </div>
             <div>
-               <ProfilePage/>
-                <OrdersPage/>
-                <FavoritesPage/>
-
+                <Routes>
+                    <Route path={'profile'} element={<ProfilePage/>}/>
+                    <Route path={'orders'} element={<OrdersPage/>}/>
+                    <Route path={'favourites'} element={<FavoritesPage/>}/>
+                </Routes>
             </div>
         </div>
     )
