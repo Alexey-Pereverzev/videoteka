@@ -82,7 +82,7 @@ public class CartsController {
     )
     @GetMapping("/pay")
     public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
-       return cartService.validateCart(userId);
+        return cartService.validateCart(userId);
     }
 
     private String getCurrentCartUuid(String userId, String uuid) {
