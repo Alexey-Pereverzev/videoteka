@@ -52,6 +52,10 @@
     width: 80px;
 }
 .string__quantity span{
+    font-size: 10px;
+    color: #979797;
+}
+.string__quantity span{
     margin: 5px auto;
 }
 
