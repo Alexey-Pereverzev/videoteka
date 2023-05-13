@@ -1,17 +1,13 @@
 package ru.gb.mvcfront.integrations;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
-import ru.gb.api.dtos.FilmDto;
-import ru.gb.api.dtos.PageFilmDto;
+import ru.gb.api.dtos.*;
 
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -26,24 +22,68 @@ public class CatalogServiceIntegration {
                 .block();
     }
 
-    public PageFilmDto getListAllFilms(int page, String[] filterCountryList, String[] filterDirectorList, String[] filterGenreList,
-                                       int startPremierYear, int endPremierYear,
-                                       boolean isSale, int minPrice, int maxPrice) {
+    public PageFilmDto getListAllFilms(Integer page, String[] filterCountryList, String[] filterDirectorList, String[] filterGenreList,
+                                       Integer startPremierYear, Integer endPremierYear,
+                                       Boolean isSale, Integer minPrice, Integer maxPrice) {
         String filterCountry = convertArrayToString("filterCountryList", filterCountryList);
-        System.out.println(filterCountry);
         String filterDirector = convertArrayToString("filterDirectorList", filterDirectorList);
-        System.out.println(filterDirector);
         String filterGenre = convertArrayToString("filterGenreList", filterGenreList);
-        System.out.println(filterGenre);
+        if (startPremierYear==null){
+            startPremierYear=1900;
+        }
+        if (endPremierYear==null){
+            endPremierYear= LocalDate.now().getYear();
+        }
         String s="/api/v1/film/list_all_dto?" + "currentPage=" + page +
                 "&" + filterCountry + "&" + filterDirector + "&" + filterGenre
                 + "&startPremierYear="+startPremierYear+"&endPremierYear="+endPremierYear
                 + "&isSale="+isSale+"&minPrice="+minPrice+"&maxPrice="+maxPrice;
-        System.out.println(s);
         return catalogServiceWebClient.get()
                 .uri(s)
                 .retrieve()
                 .bodyToMono(PageFilmDto.class)
+                .block();
+    }
+
+    public List<CountryDto> countryDtoList (){
+        return catalogServiceWebClient.get()
+                .uri("/api/v1/country/list_all")
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<CountryDto>>() {
+                })
+                .block();
+    }
+
+    public List<DirectorDto> directorDtoList (){
+        return catalogServiceWebClient.get()
+                .uri("/api/v1/director/list_all")
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<DirectorDto>>() {
+                })
+                .block();
+    }
+
+    public List<GenreDto> genreDtoList (){
+        return catalogServiceWebClient.get()
+                .uri("/api/v1/genre/list_all")
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<GenreDto>>() {
+                })
+                .block();
+    }
+
+    public PriceDto priceDto(){
+        return catalogServiceWebClient.get()
+                .uri("/api/v1/price/prices_filter")
+                .retrieve()
+                .bodyToMono(PriceDto.class)
+                .block();
+    }
+    public MinMaxYearDto minMaxYearDto(){
+        return catalogServiceWebClient.get()
+                .uri("/api/v1/film/min_max_year")
+                .retrieve()
+                .bodyToMono(MinMaxYearDto.class)
                 .block();
     }
 
@@ -61,12 +101,3 @@ public class CatalogServiceIntegration {
         return result;
     }
 }
-//    public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
-//                                 @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
-//                                 @RequestParam (name="filterDirectorList",required = false) String[] filterDirectorList,
-//                                 @RequestParam (name="filterGenreList",required = false) String[] filterGenreList,
-//                                 @RequestParam (name="startPremierYear",required = false)Integer startPremierYear,
-//                                 @RequestParam (name="endPremierYear",required = false)Integer endPremierYear,
-//                                 @RequestParam (name="isSale",required = false)Boolean isSale,
-//                                 @RequestParam (name="minPrice",required = false)Integer minPrice,
-//                                 @RequestParam (name="maxPrice",required = false)Integer maxPrice){

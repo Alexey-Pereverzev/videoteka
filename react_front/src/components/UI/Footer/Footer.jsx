@@ -52,7 +52,8 @@ function Footer(props) {
                                             <li className="ftr-Login"><span
                                                 className="link login-trigger">Войти в Учётную Запись</span></li>
                                             <li><span className="link"
-                                                      onClick="link('/asp/secure/your_account/track_orders-asp/_/posters.htm')">История Заказов</span>
+                                                      // onClick="link('/asp/secure/your_account/track_orders-asp/_/posters.htm')"
+                                            >История Заказов</span>
                                             </li>
                                         </div>
                                         :
@@ -60,7 +61,8 @@ function Footer(props) {
                                         <li className="ftr-Login"><span className="link ftr-access-my-account">Войти в Учётную Запись</span>
                                         </li>
                                         <li><span className="link"
-                                        onClick="window.location.href = getProfileKey() + '?pagetype=oh';">История Заказов</span>
+                                        // onClick="window.location.href = getProfileKey() + '?pagetype=oh';"
+                                        >История Заказов</span>
                                         </li>
                                         </div>
                                     }
@@ -98,14 +100,16 @@ function Footer(props) {
                             <ul>
                                 <li>
                                     <a href="https://www.facebook.com/example.com" title="Facebook"
-                                       onClick="_gaq.push(['_trackSocial', 'Facebook', 'Follow', 'Footer', 'undefined', 'True']);">
+                                       // onClick="_gaq.push(['_trackSocial', 'Facebook', 'Follow', 'Footer', 'undefined', 'True']);"
+                                    >
                                         <img width="24" height="24" alt="Like us on Facebook"
                                              src="http://cache1.artprintimages.com/images/jump_pages/rebrand/footer/fb.png"/>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="https://plus.google.com/00000000000000000000" title="Google+"
-                                       onClick="_gaq.push(['_trackSocial', 'GooglePlus', 'Follow', 'Footer', 'undefined', 'True']);">
+                                       // onClick="_gaq.push(['_trackSocial', 'GooglePlus', 'Follow', 'Footer', 'undefined', 'True']);"
+                                    >
                                         <img width="24" height="24" alt="Follow us on Google+"
                                              src="http://cache1.artprintimages.com/images/jump_pages/rebrand/footer/gplus.png"/>
                                     </a>
@@ -124,7 +128,8 @@ function Footer(props) {
                                 </li>
                                 <li>
                                     <a href="https://www.twitter.com/exampledotcom" title="Twitter"
-                                       onClick="_gaq.push(['_trackSocial', 'Twitter', 'Follow', 'Footer', 'undefined', 'True']);">
+                                       // onClick="_gaq.push(['_trackSocial', 'Twitter', 'Follow', 'Footer', 'undefined', 'True']);"
+                                    >
                                         <img width="67" alt="Follow us on Twitter"
                                              src="http://cache1.artprintimages.com/images/jump_pages/rebrand/footer/twitter.png"/>
                                     </a>
@@ -145,17 +150,22 @@ function Footer(props) {
                             <ul>
                                 <li className="ftr-stella">
                                     <span title="Stella Service"
-                                          onClick="openLink('http://www.stellaservice.com/profile/Art.com/')"></span>
+                                          // onClick="openLink('http://www.stellaservice.com/profile/Example.com/')"
+                                    ></span>
                                 </li>
                                 <li>
-                                    <span onClick="clickTrack(); return false;"
-                                          onMouseOver="this.style.cursor='pointer'"><img border="0"
+                                    <span
+                                        // onClick="clickTrack(); return false;"
+                                          // onMouseOver="this.style.cursor='pointer'"
+                                    >
+                                        <img border="0"
                                                                                          alt="HACKER SAFE certified sites prevent over 99.9% of hacker crime."
                                                                                          src="https://images.scanalert.com/meter/www.art.com/31.gif"/></span>
                                 </li>
                                 <li className="ftr-bbb">
                                     <span title="BBB"
-                                          onClick="openLink('http://www.bbb.org/raleigh-durham/business-reviews/art-suppliers/artcom-inc-in-raleigh-nc-5001914')"></span>
+                                          // onClick="openLink('http://www.bbb.org/raleigh-durham/business-reviews/example-suppliers/artcom-inc-in-raleigh-nc-5001914')"
+                                    ></span>
                                 </li>
                             </ul>
                         </div>
