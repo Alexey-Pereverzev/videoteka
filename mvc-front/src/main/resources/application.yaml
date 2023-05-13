@@ -1,5 +1,6 @@
 server:
   port: 3000
+  maxHttpHeaderSize:  65535
   servlet:
     context-path: /
 integrations:
@@ -13,5 +14,4 @@ integrations:
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
-
 
