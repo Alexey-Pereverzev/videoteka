@@ -11,6 +11,19 @@
     <tr>
       <td>
         <table ng-controller="mainController" class="table">
+          <thead>
+          <tr>
+            <th scope="col">Картинка</th>
+            <th scope="col">Название</th>
+            <th scope="col">Год выпуска</th>
+            <th scope="col">Жанр</th>
+            <th scope="col">Страна</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Аренда</th>
+            <th scope="col">Покупка</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
           <script th:inline="javascript">
             var jsfilms = [[${films.contents}]];
           </script>
@@ -48,25 +61,11 @@
             <td>
               {{film.salePrice}}
             </td>
-              <td>
-                <button type="button" class="btn btn-primary" ng-click="addToCart(film.id, $index)">Добавить в корзину</button>
-              </td>
+            <td>
+              <button type="button" class="btn btn-primary" ng-click="addToCart(film.id, $index)">Добавить в корзину</button>
+            </td>
 
           </tr>
-          <thead>
-          <tr>
-            <th scope="col">Картинка</th>
-            <th scope="col">Название</th>
-            <th scope="col">Год выпуска</th>
-            <th scope="col">Жанр</th>
-            <th scope="col">Страна</th>
-            <th scope="col">Описание</th>
-            <th scope="col">Аренда</th>
-            <th scope="col">Покупка</th>
-          </tr>
-          </thead>
-          <tbody class="table-group-divider">
-
 <!--          <tr th:each="f:${films.contents}">-->
 <!--            <td> <img th:src="${f.getImageUrlLink()}" class="img-thumbnail"></td>-->
 <!--            <td th:text="${f.title}"></td>-->
