@@ -4,11 +4,15 @@ import {Icon} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StringCard from "../../../widgets/StringCard/StringCard";
 import {Component} from "react";
+import axios from "axios";
+import CheckoutCard from "../../../widgets/CheckoutCard/CheckoutCard";
 
 class CartPage extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            bayPack: [],
+            totalPrice:'',
             cartItems:[
                 {
                 price:'107',
@@ -70,6 +74,21 @@ class CartPage extends Component{
             ],
         }
     }
+    componentDidMount() {
+        this.loadCart()
+    }
+
+    loadCart = () =>{
+        console.log('Метод loadCart()')
+        console.log(localStorage.getItem("cartId"))
+        axios.get("http://localhost:5555/cart/api/v1/cart/" + localStorage.getItem("cartId"))
+            .then(response => response.data)
+            .then(data  => this.setState({
+
+                bayPack: data.items,
+
+            }, () => console.log(this.state.bayPack.items)))
+    }
     render() {
         return (
             <div className={'cart_container'}>
@@ -82,12 +101,17 @@ class CartPage extends Component{
                             <span>.</span>
                         </div>
                         <div className={'details'}>
-                            <span>У вас в корзине 4 ед. товара</span>
+                            {this.state.bayPack.length > 0 ?
+                                <span>У вас в корзине {this.state.bayPack.length} ед. товара</span>
+                                :
+                                <span>У вас в корзине нет товаров</span>
+                            }
+
                         </div>
                     </div>
 
                     <div className={'card_box'}>
-                        {this.state.cartItems.map((item) =>
+                        {this.state.bayPack.map((item) =>
                                 <StringCard quantity={item.quantity}
                                             title={item.title}
                                             price={item.price}
@@ -97,7 +121,9 @@ class CartPage extends Component{
                         }
 
                     </div>
-                    <div className={'checkout_box'}></div>
+                    <div className={'checkout_box'}>
+                        <CheckoutCard/>
+                    </div>
                 </div>
             </div>
         )

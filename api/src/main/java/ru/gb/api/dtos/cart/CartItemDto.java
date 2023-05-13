@@ -15,8 +15,6 @@ public class CartItemDto {
     private int price;
     private boolean isSale;
 
-
-
 }
 
 

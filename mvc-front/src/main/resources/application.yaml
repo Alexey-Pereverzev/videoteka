@@ -15,4 +15,3 @@ integrations:
     read-timeout: 10000
     write-timeout: 5000
 
-

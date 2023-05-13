@@ -39,7 +39,7 @@ public class FilmController {
             maxPrice=maxPriceRent;
         }
         PageFilmDto pageData=catalogServiceIntegration.getListAllFilms(page, filterCountryList,filterDirectorList,filterGenreList,
-                                                                            startPremierYear,endPremierYear,isSale,0,maxPrice);
+                startPremierYear,endPremierYear,isSale,0,maxPrice);
         int[] pageList=new int[pageData.getTotalPages()];
         for (int i=0; i<pageData.getTotalPages(); i++){
             pageList[i]=i;
@@ -113,7 +113,7 @@ public class FilmController {
         String[] results=new String[numPages];
         for (int i=0; i<numPages;i++){
             results[i]="/film/listall?page="+i+"&"+convertArrayToString("filterCountryList",filterDataDto.getFilterCountryList())+
-            "&"+convertArrayToString("filterDirectorList",filterDataDto.getFilterDirectorList())+
+                    "&"+convertArrayToString("filterDirectorList",filterDataDto.getFilterDirectorList())+
                     "&"+convertArrayToString("filterGenreList",filterDataDto.getFilterGenreList())+
                     "&startPremierYear="+ filterDataDto.getStartPremierYear()+"&endPremierYear="+filterDataDto.getEndPremierYear()+
                     "&isSale="+ filterDataDto.isSale()+"&maxPriceRent="+filterDataDto.getMaxPriceRent()+"&maxPriceSale="+filterDataDto.getMaxPriceSale();
