@@ -20,8 +20,6 @@ public class CartItem {
     private boolean isSale;
 
 
-
-
     public CartItem(CartItemDto cartItemDto) { // (FilmDto filmdto)
         this.filmId = cartItemDto.getFilmId();
         this.filmTitle = cartItemDto.getTitle();

@@ -1,6 +1,7 @@
 package ru.gb.cartservice.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,44 +19,75 @@ public class CartsController {
     private final CartService cartService;
     private final CartConverter cartConverter;
 
-    @GetMapping("/{uuid}")
-    public CartDto getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
-        return cartConverter.modelToDto(cartService.getCurrentCart(getCurrentCartUuid(username, uuid)));
+    @Operation(
+            summary = "Получение корзины пользователя ",
+            description = "Позволяет получить список фильмов находящихся в корзине пользователя "
+    )
+    @GetMapping()
+    public CartDto getCart(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+        return cartConverter.modelToDto(cartService.getCurrentCart(getCurrentCartUuid(userId, uuid)));
     }
-
+    @Operation(
+            summary = "Токена пользователя ",
+            description = "генерируем случайный набо символов и возвращаем клиенту"
+    )
     @GetMapping("/generate")
     public StringResponse getCart() {
         return new StringResponse(cartService.generateCartUuid());
     }
 
-    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmImageUrlLink}/{filmPrice}")
-    public void add(@RequestHeader(required = false) String username,  @RequestParam String uuid,  @RequestParam long filmId,  @RequestParam String filmTitle,  @RequestParam String filmImageUrlLink,  @RequestParam int filmPrice) {
-        cartService.addToCart(getCurrentCartUuid(username, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice);
+    @Operation(
+            summary = "Добавление фильма в корзину ",
+            description = "Добавление фильма в корзину"
+    )
+    @GetMapping("/add")
+    public void add(@RequestHeader(required = false) String userId,  @RequestParam  String uuid,  @RequestParam  Long filmId,  @RequestParam  String filmTitle,  @RequestParam String filmImageUrlLink,  @RequestParam  int filmPrice, @RequestParam boolean isSale ) {
+        cartService.addToCart(getCurrentCartUuid(userId, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
     }
 
+    @Operation(
+            summary = "Удаляем фильм из корзины",
+            description = "Удаляем фильм из корзины "
+    )
 
-
-    @GetMapping("/{uuid}/remove/{filmId}")
-    public void remove(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long filmId) {
-        cartService.removeItemFromCart(getCurrentCartUuid(username, uuid), filmId);
+    @GetMapping("/remove")
+    public void remove(@RequestHeader(required = false) String userId, @RequestParam  String uuid, @RequestParam  Long filmId) {
+        cartService.removeItemFromCart(getCurrentCartUuid(userId, uuid), filmId);
     }
 
-    @GetMapping("/{uuid}/clear")
-    public void clear(@RequestHeader(required = false) String username, @PathVariable String uuid) {
-        cartService.clearCart(getCurrentCartUuid(username, uuid));
+    @Operation(
+            summary = "Очищает вся корзину ",
+            description = "Корзина чистится после оформления заказа "
+    )
+    @GetMapping("/clear")
+    public void clear(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+        cartService.clearCart(getCurrentCartUuid(userId, uuid));
     }
 
-    @GetMapping("/{uuid}/merge")
-    public void merge(@RequestHeader(required = false) String username, @PathVariable String uuid) {
+    @Operation(
+            summary = "Обеденение корзин",
+            description = "Обеденение корзин не зарегестрированниго пользователея после регистрации"
+    )
+    @GetMapping("/merge")
+    public void merge(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         cartService.merge(
-                getCurrentCartUuid(username, null),
+                getCurrentCartUuid(userId, null),
                 getCurrentCartUuid(null, uuid)
         );
     }
 
-    private String getCurrentCartUuid(String username, String uuid) {
-        if (username != null) {
-            return cartService.getCartUuidFromSuffix(username);
+    @Operation(
+            summary = "Проверка корзины перед оплатой с бд фильм",
+            description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
+    )
+    @GetMapping("/pay")
+    public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+       return cartService.validateCart(userId);
+    }
+
+    private String getCurrentCartUuid(String userId, String uuid) {
+        if (userId != null) {
+            return cartService.getCartUuidFromSuffix(userId);
         }
         return cartService.getCartUuidFromSuffix(uuid);
     }

@@ -55,8 +55,17 @@ public class OrderService {
 
         cartServiceIntegration.clearUserCart(userIdString);
     }
-
-    public List<Order> findOrdersByUserId(Long userId) {
-        return ordersRepository.findAllByUserId(userId);
+    // возвращаем заказы пользователя проверяем если вермя проката изтекло то не выводим
+    public List<Order> findAllOrdersByUserId(Long userId) {
+        List<Order>  orders = ordersRepository.findAllByUserId(userId);
+        for (Order order: orders){
+            LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+            if (order.getType().equals("RENT")){
+                if (order.getRentEnd().isBefore(dateNow)){
+                    orders.remove(order);
+                }
+            }
+        }
+        return orders;
     }
 }

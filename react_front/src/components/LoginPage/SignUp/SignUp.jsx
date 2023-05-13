@@ -1,105 +1,76 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./SignUp.css";
 import axios from "axios";
 
 
 // register(): POST{username, email, password, firstName, lastName, phoneNumber,address}
 class SignUp extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {};
-    }
+    this.state = {};
+  }
 
-    render() {
-        function sendRegisterRequest(username,
-                                     password,
-                                     confirmPassword,
-                                     email,
-                                     firstName,
-                                     lastName,
-                                     phoneNumber,
-                                     address
-        ) {
-            return axios
-                .post("http://localhost:5555/auth/api/v1/reg/register", {
-                    username,
-                    password,
-                    confirmPassword,
-                    email,
-                    firstName,
-                    lastName,
-                    phoneNumber,
-                    address
-                })
-                .then(response => response.data)
-        }
+  render() {
+      function sendRegisterRequest(username, email, password) {
+          return axios
+              .post("http://localhost:5555/catalog/api/v1/reg/register", {
+                  username,
+                  email,
+                  password
+              })
+      }
 
-        return (
-            <div>
-                <form method={'post'} onSubmit={() => sendRegisterRequest()}>
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'username'}
-                        id="username"
-                        type="text"
-                        placeholder="Псевдоним"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'password'}
-                        id="password"
-                        type="password"
-                        placeholder="Пароль"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'confirmPassword'}
-                        id="another_password"
-                        type="password"
-                        placeholder="Пароль ещё раз"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'email'}
-                        id="email"
-                        type="email"
-                        placeholder="почта"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'firstName'}
-                        id="firstName"
-                        type="text"
-                        placeholder="Имя"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'lastName'}
-                        id="lastName"
-                        type="text"
-                        placeholder="Фамилия"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'phoneNumber'}
-                        id="phoneNumber"
-                        type="text"
-                        placeholder="Номер телефона"
-                    />
-                    <input
-                        className="signup-page__sign-in__text"
-                        name={'address'}
-                        id="addres"
-                        type="text"
-                        placeholder="Адрес"
-                    />
-                    <button id="submit" className="login-page__sign-in__button">Регистрируюсь</button>
-                </form>
-
-            </div>
-        );
-    }
+      return (
+      <div>
+        <input
+          className="signup-page__sign-in__text"
+          id="username"
+          type="text"
+          placeholder="Псевдоним"
+        /><input
+          className="signup-page__sign-in__text"
+          id="firstName"
+          type="text"
+          placeholder="Имя"
+        /><input
+          className="signup-page__sign-in__text"
+          id="lastName"
+          type="text"
+          placeholder="Фамилия"
+        /><input
+          className="signup-page__sign-in__text"
+          id="phoneNumber"
+          type="text"
+          placeholder="Номер телефона"
+        /><input
+          className="signup-page__sign-in__text"
+          id="addres"
+          type="text"
+          placeholder="Адрес"
+        />
+        <input
+          className="signup-page__sign-in__text"
+          id="email"
+          type="email"
+          placeholder="почта"
+        />
+        <input
+          className="signup-page__sign-in__text"
+          id="password"
+          type="password"
+          placeholder="Пароль"
+        />
+        <input
+          className="signup-page__sign-in__text"
+          id="another_password"
+          type="password"
+          placeholder="Пароль ещё раз"
+        />
+        <button id="submit" className="login-page__sign-in__button" onClick={() => sendRegisterRequest()}>Регистрируюсь</button>
+      </div>
+    );
+  }
 }
 
 export default SignUp;

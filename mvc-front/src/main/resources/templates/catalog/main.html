@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" ng-app="videoteka" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<html lang="ru" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
   <meta charset="UTF-8">
   <title>Главная страница</title>
@@ -10,7 +10,7 @@
   <table>
     <tr>
       <td>
-        <table ng-controller="mainController" class="table">
+        <table class="table">
           <thead>
           <tr>
             <th scope="col">Картинка</th>
@@ -24,69 +24,24 @@
           </tr>
           </thead>
           <tbody class="table-group-divider">
-          <script th:inline="javascript">
-            var jsfilms = [[${films.contents}]];
-          </script>
-
-          <tr ng-repeat="film in jsfilms">
-            <td>
-              <img src={{film.imageUrlLink}} class="img-thumbnail">
-            </td>
-            <td>
-              {{film.title}}
-            </td>
-            <td>
-              {{film.premierYear}}
-            </td>
+          <tr th:each="f:${films.contents}">
+            <td> <img th:src="${f.getImageUrlLink()}" class="img-thumbnail"></td>
+            <td th:text="${f.title}"></td>
+            <td th:text="${f.premierYear}"></td>
             <td>
               <ul>
-                <li ng-repeat="gg in film.genre">
-                  {{gg}}
-                </li>
+                <li th:each="g: ${f.getGenre()}" th:text="${g}"></li>
               </ul>
             </td>
             <td>
               <ul>
-                <li ng-repeat="cc in film.country">
-                  {{cc}}
-                </li>
+                <li th:each="cc: ${f.getCountry()}" th:text="${cc}"></li>
               </ul>
             </td>
-            <td>
-              {{film.description}}
-            </td>
-            <td>
-              {{film.rentPrice}}
-            </td>
-            <td>
-              {{film.salePrice}}
-            </td>
-            <td>
-              <button type="button" class="btn btn-primary" ng-click="addToCart(film.id, $index)">Добавить в корзину</button>
-            </td>
-
+            <td th:text="${f.description}"></td>
+            <td th:text="${f.rentPrice} + ' дубовых'"></td>
+            <td th:text="${f.salePrice} + ' дубовых'"></td>
           </tr>
-          <!--          <tr th:each="f:${films.contents}">-->
-          <!--            <td> <img th:src="${f.getImageUrlLink()}" class="img-thumbnail"></td>-->
-          <!--            <td th:text="${f.title}"></td>-->
-          <!--            <td th:text="${f.premierYear}"></td>-->
-          <!--            <td>-->
-          <!--              <ul>-->
-          <!--                <li th:each="g: ${f.getGenre()}" th:text="${g}"></li>-->
-          <!--              </ul>-->
-          <!--            </td>-->
-          <!--            <td>-->
-          <!--              <ul>-->
-          <!--                <li th:each="cc: ${f.getCountry()}" th:text="${cc}"></li>-->
-          <!--              </ul>-->
-          <!--            </td>-->
-          <!--            <td th:text="${f.description}"></td>-->
-          <!--            <td th:text="${f.rentPrice} + ' дубовых'"></td>-->
-          <!--            <td th:text="${f.salePrice} + ' дубовых'"></td>-->
-          <!--            <td>-->
-          <!--              <button type="button" class="btn btn-primary" ng-click="addToCart()">Добавить в корзину</button>-->
-          <!--            </td>-->
-          <!--          </tr>-->
           </tbody>
         </table>
       </td>
@@ -94,13 +49,13 @@
         <form class="form-group" th:action="@{/film/filter_update}" th:object="${filterDataDto.filterCountryList}" method="post">
           <strong>Страны:</strong><br>
           <div class="form-check" style="width:250px; height:200px; overflow:auto; border:solid 1px #C3E4FE;">
-            <p>
-              <th:block th:each="c : ${countries}">
-                <input type="checkbox" th:value="${c.title}" th:field="${filterDataDto.filterCountryList}"/>
-                <label th:text="${c.title}"></label>
-                <br/>
-              </th:block>
-            </p>
+          <p>
+            <th:block th:each="c : ${countries}">
+              <input type="checkbox" th:value="${c.title}" th:field="${filterDataDto.filterCountryList}"/>
+              <label th:text="${c.title}"></label>
+              <br/>
+            </th:block>
+          </p>
           </div>
           <br>
           <strong>Режиссеры:</strong><br>

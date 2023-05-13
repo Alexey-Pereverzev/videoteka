@@ -5,7 +5,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StringCard from "../../../widgets/StringCard/StringCard";
 import {Component} from "react";
 import axios from "axios";
-import CheckoutCard from "../../../widgets/CheckoutCard/CheckoutCard";
 
 class CartPage extends Component{
     constructor(props) {
@@ -79,7 +78,6 @@ class CartPage extends Component{
     }
 
     loadCart = () =>{
-        console.log('Метод loadCart()')
         console.log(localStorage.getItem("cartId"))
         axios.get("http://localhost:5555/cart/api/v1/cart/" + localStorage.getItem("cartId"))
             .then(response => response.data)
@@ -121,9 +119,7 @@ class CartPage extends Component{
                         }
 
                     </div>
-                    <div className={'checkout_box'}>
-                        <CheckoutCard/>
-                    </div>
+                    <div className={'checkout_box'}></div>
                 </div>
             </div>
         )

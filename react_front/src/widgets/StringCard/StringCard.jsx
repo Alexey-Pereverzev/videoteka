@@ -12,14 +12,11 @@ function StringCard(props) {
             <div className={'string__details'}>
                 <div className={'string__title'}>{props.title}</div>
             </div>
-            {/*<div className={'string__quantity'}>*/}
-            {/*    {props.isSale?*/}
-            {/*        <AddCircleOutlineIcon fontSize={'small'} sx={{backgroundColor: 'green', borderRadius: '50px'}}/>*/}
-            {/*        :*/}
-            {/*        <span>Вы уже купили этот фильм</span>*/}
-            {/*    }*/}
-
-            {/*</div>*/}
+            <div className={'string__quantity'}>
+                <RemoveCircleOutlineIcon fontSize={'small'} sx={{backgroundColor: 'red', borderRadius: '50px'}}/>
+                <span>{props.quantity}</span>
+                <AddCircleOutlineIcon fontSize={'small'} sx={{backgroundColor: 'green', borderRadius: '50px'}}/>
+            </div>
             <div className={'string_price'}>
                 <span>цена: {props.price} руб.</span>
             </div>
