@@ -55,7 +55,7 @@ public class OrderService {
 
         cartServiceIntegration.clearUserCart(userIdString);
     }
-// возвращаем заказы пользователя проверяем если вермя проката изтекло то не выводим
+    // возвращаем заказы пользователя проверяем если вермя проката изтекло то не выводим
     public List<Order> findAllOrdersByUserId(Long userId) {
         List<Order>  orders = ordersRepository.findAllByUserId(userId);
         for (Order order: orders){

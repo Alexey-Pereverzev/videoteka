@@ -25,7 +25,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
-            if (request.getHeaders().containsKey("userId")) {     //  защита обхода Gateway
+            if (request.getHeaders().containsKey("username")) {     //  защита обхода Gateway
                 return this.onError(exchange, "Invalid header username", HttpStatus.BAD_REQUEST);
             }
 
@@ -63,7 +63,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         Claims claims = jwtUtil.getAllClaimsFromToken(token);
         exchange.getRequest().mutate()
-                .header("userId", claims.getSubject())
+                .header("username", claims.getSubject())
                 .header("role", String.valueOf(claims.get("role")))     //  ЕСЛИ В ТОКЕНЕ БУДЕТ role
                 .build();
     }
