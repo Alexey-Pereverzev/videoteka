@@ -23,8 +23,8 @@ public class CartsController {
             summary = "Получение корзины пользователя ",
             description = "Позволяет получить список фильмов находящихся в корзине пользователя "
     )
-    @GetMapping("/{uuid}")
-    public CartDto getCart(@RequestHeader(required = false) String userId, @PathVariable String uuid) {
+    @GetMapping()
+    public CartDto getCart(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         return cartConverter.modelToDto(cartService.getCurrentCart(getCurrentCartUuid(userId, uuid)));
     }
     @Operation(
@@ -40,8 +40,8 @@ public class CartsController {
             summary = "Добавление фильма в корзину ",
             description = "Добавление фильма в корзину"
     )
-    @GetMapping("/{uuid}/add/{filmId}/{filmTitle}/{filmPrice}")
-    public void add(@RequestHeader(required = false) String userId,  @PathVariable String uuid,  @PathVariable Long filmId,  @PathVariable String filmTitle,  @RequestParam String filmImageUrlLink,  @PathVariable int filmPrice, @RequestParam boolean isSale ) {
+    @GetMapping("/add")
+    public void add(@RequestHeader(required = false) String userId,  @RequestParam String uuid,  @RequestParam Long filmId,  @RequestParam String filmTitle,  @RequestParam String filmImageUrlLink,  @RequestParam int filmPrice, @RequestParam boolean isSale ) {
         cartService.addToCart(getCurrentCartUuid(userId, uuid), filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
     }
 
@@ -50,8 +50,8 @@ public class CartsController {
             description = "Удаляем фильм из корзины "
     )
 
-    @GetMapping("/{uuid}/remove/{filmId}")
-    public void remove(@RequestHeader(required = false) String userId, @PathVariable String uuid, @PathVariable Long filmId) {
+    @GetMapping("/remove")
+    public void remove(@RequestHeader(required = false) String userId, @RequestParam String uuid, @RequestParam Long filmId) {
         cartService.removeItemFromCart(getCurrentCartUuid(userId, uuid), filmId);
     }
 
@@ -68,8 +68,8 @@ public class CartsController {
             summary = "Обеденение корзин",
             description = "Обеденение корзин не зарегестрированниго пользователея после регистрации"
     )
-    @GetMapping("/{uuid}/merge")
-    public void merge(@RequestHeader(required = false) String userId, @PathVariable String uuid) {
+    @GetMapping("/merge")
+    public void merge(@RequestHeader(required = false) String userId, @RequestParam String uuid) {
         cartService.merge(
                 getCurrentCartUuid(userId, null),
                 getCurrentCartUuid(null, uuid)
@@ -80,8 +80,8 @@ public class CartsController {
             summary = "Проверка корзины перед оплатой с бд фильм",
             description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
     )
-    @GetMapping("/{uuid}/pay")
-    public String pay(@RequestHeader(required = false) String userId, @PathVariable String uuid) {
+    @GetMapping("/pay")
+    public String pay(@RequestHeader(required = false) String userId, @RequestParam String uuid) {
        return cartService.validateCart(userId);
     }
 
