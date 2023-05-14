@@ -18,7 +18,7 @@ public class AppConfig {
     @Value("${integrations.cart-service.url}")
     private String cartServiceUrl;
     @Value("${integrations.catalog-service.url}")
-    private String catalogServiceUrl;
+    private String filmServiceUrl;
 
     @Bean
     public WebClient cartServiceWebClient() {
@@ -37,7 +37,7 @@ public class AppConfig {
                 .build();
     }
     @Bean
-    public WebClient catalogServiceWebClient() {
+    public WebClient filmServiceWebClient() {
         TcpClient tcpClient = TcpClient
                 .create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
@@ -48,7 +48,7 @@ public class AppConfig {
 
         return WebClient
                 .builder()
-                .baseUrl(cartServiceUrl)
+                .baseUrl(filmServiceUrl)
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }
