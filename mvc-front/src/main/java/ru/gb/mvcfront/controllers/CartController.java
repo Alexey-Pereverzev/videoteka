@@ -11,4 +11,5 @@ public class CartController {
     public String index() {
         return "/cart/cart";
     }
+
 }
