@@ -19,23 +19,19 @@ function FilmPage(props) {
         return price
     }
     let addToCart = async () => {
-        const price = getPrice()
-        const isSale = props.isSale
-        const stringCover = props.cover
         try {
-            const response = await axios.get('http://localhost:5555/cart/api/v1/cart/' +
-                localStorage.getItem('guestCartId') +
-                '/add/' + props.filmId + '/' + props.title + '/' + price,
-                {
-                    params: {
-                        filmImageUrlLink: stringCover,
-                        isSale: isSale
-                    }
+            const response = await axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('cartId') + '/add/', {
+                params: {
+                    filmId: props.filmId,
+                    filmTitle: props.title,
+                    filmImgUrlLink: props.cover,
+                    filmPrice: getPrice(),
+                    isSale: props.isSale
                 }
-            )
+            })
             console.log("Ответ метода addToCart: " + response.data)
         } catch (e) {
-            alert(e)
+            console.log("Ошибка в методе addToCart(): " + e)
         }
 
 

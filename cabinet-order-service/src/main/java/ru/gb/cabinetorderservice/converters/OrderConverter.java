@@ -10,12 +10,10 @@ import ru.gb.api.dtos.order.OrderDto;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.FilmServiceIntegration;
 
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 public class OrderConverter {
-private FilmServiceIntegration filmServiceIntegration;
+    private FilmServiceIntegration filmServiceIntegration;
 
 
     public Order dtoToEntity(SpringDataJaxb.OrderDto orderDto) {

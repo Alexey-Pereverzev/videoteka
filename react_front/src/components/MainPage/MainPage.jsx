@@ -70,7 +70,8 @@ class MainPage extends Component {
                     <Routes>
                         <Route index path={'/'} element={<CatalogPage/>}/>
                         <Route path={'cart'} element={<CartPage/>}/>
-                        <Route path={'cabinet/*'} element={<PanelPage/>}/>
+                        <Route path={'cabinet'} element={<PanelPage/>}/>
+                        <Route/>
                     </Routes>
                 </div>
                 <div>

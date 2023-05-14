@@ -48,7 +48,7 @@ class SignIn extends Component {
             let token = customer.token
             let payload = jwt(token)
             let userId = payload.sub
-            localStorage.setItem("userId", JSON.stringify(userId))
+            return userId
         } else {
             alert('UNAUTHORIZED')
         }
@@ -60,9 +60,9 @@ class SignIn extends Component {
     render() {
         function authHeaderHandler() {
             const customer = JSON.parse(localStorage.getItem('customer'))
-            if (customer && customer.token) {
+            if (customer && customer.accessToken) {
 
-                return {Authorization: 'Bearer' + customer.token}
+                return {Authorization: 'Bearer' + customer.accessToken}
             } else {
                 toast.warn('🦄 Нет такого пользователя!', {
                     position: "bottom-left",

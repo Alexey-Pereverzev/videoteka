@@ -16,8 +16,8 @@ import ru.gb.cartservice.services.CartService;
 //
 // это значит что работаем в Spring Boot окружении
 //(classes = CartService.class) - эта строчка означает что для работы этоготеста нужен только этот бин CartService - ускоряет работу
-    @SpringBootTest
-    public class OrderTest {
+@SpringBootTest
+public class OrderTest {
     // внедряем бинн CartService
     @Autowired
     private OrderService orderService;
@@ -52,13 +52,6 @@ import ru.gb.cartservice.services.CartService;
         order.setPrice(100);
         order.setType("Rent");
         orderService.createOrder(1l);
-        Assertions.assertEquals(1, orderService.findAllOrdersByUserId(1L));
+        Assertions.assertEquals(1, orderService.findOrdersByUserId(1L));
     }
 }
-
-
-
-
-
-
-

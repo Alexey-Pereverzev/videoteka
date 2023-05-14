@@ -32,7 +32,7 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/cabinet-order-service
-            - JwtAuthFilter
+#            - JwtAuthFilter
 
         - id: cart-service
           uri: http://localhost:8190
@@ -41,7 +41,7 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/cart-service
-            - JwtAuthFilter
+#            - JwtAuthFilter
 
         - id: catalog-service
           uri: http://localhost:8189
@@ -50,7 +50,7 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/catalog-service
-#             - JwtAuthFilter
+            - JwtAuthFilter
 
 
 
@@ -58,6 +58,4 @@ spring:
 jwt:
   secret: v4V0pakg6p964nMkLm14HoV3uNZlEKqq9BLf7gShNPB4MjeE3fSjdoTvPQMg0nI7AG2w1UAImEAmP7Qy
   lifetime: 36000000
-
-
 

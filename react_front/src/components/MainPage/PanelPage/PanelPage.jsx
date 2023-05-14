@@ -34,7 +34,7 @@ class PanelPage extends Component{
             <div className={'panel_container'}>
 
                 <div className={'panel__box'}>
-                    {this.getRole()}
+                    { this.getRole}
                 </div>
             </div>
         )
