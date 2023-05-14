@@ -7,10 +7,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
-import ru.gb.cartservice.integrations.FilmServiceIntegration;
+import ru.gb.cartservice.integrations.FilmServiceIntegrationForCart;
 import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
+
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 public class CartService {
 
     private final RedisTemplate<Object, Object> redisTemplate;
-    private final FilmServiceIntegration filmServiceIntegration;
+    private final FilmServiceIntegrationForCart filmServiceIntegration;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
