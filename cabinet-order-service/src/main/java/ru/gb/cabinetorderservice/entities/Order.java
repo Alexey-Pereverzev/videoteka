@@ -3,7 +3,10 @@ package ru.gb.cabinetorderservice.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.gb.common.generic.entities.GenericEntity;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
