@@ -96,5 +96,24 @@ public class CartService {
         return massege;
     }
 
+    // удаляем фильм из корзины
+//    public void deletefilm (Long filmId){
+//        // получем список ключей из корзины
+//        Set<String> keys = redisTemplate.keys("*");
+//        // перебираем ключи и проходимся по корзинам
+//       for (String key: keys){
+//           Cart cart = getCurrentCart(key);
+//           List<CartItem> item = cart.getItems();
+//           // получем список заказов и удаляем заказ
+//           for (CartItem items:item){
+//              if (items.getFilmId()== filmId){
+//                  item.remove(items);
+//              }
+//           }
+//
+//       }
+//
+//    }
+
 
     }
