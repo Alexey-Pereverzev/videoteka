@@ -41,7 +41,7 @@ public class CartTest {
         cartItemDto.setSale(true);
 
         cartService.addToCart("test_cart1", 5l, "X","test",100,true);
-        cartService.addToCart("test_cart1", 5l, "X","test",100, true );
+        cartService.addToCart("test_cart1", 5l, "X","test",100, false );
         cartService.addToCart("test_cart1", 5l, "X","test",100,true );
 
 

@@ -12,6 +12,7 @@ import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
 
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -44,7 +45,8 @@ public class CartService {
     public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
         CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
         execute(cartKey, c -> {
-            c.add(cartItemDto);
+
+            c.add(cartItemDto, isSale);
         });
     }
 

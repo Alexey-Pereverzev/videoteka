@@ -19,12 +19,16 @@ public class CartItem {
     private int price;
     private boolean isSale;
 
+//    public CartItem(CartItemDto cartItemDto) {
+//    }
+
 
     public CartItem(CartItemDto cartItemDto) { // (FilmDto filmdto)
         this.filmId = cartItemDto.getFilmId();
         this.filmTitle = cartItemDto.getTitle();
         this.filmImageUrlLink = cartItemDto.getImageUrlLink();
         this.price = cartItemDto.getPrice();
+        this.isSale = cartItemDto.isSale();
 
     }
 
