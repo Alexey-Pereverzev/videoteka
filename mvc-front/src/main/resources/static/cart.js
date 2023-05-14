@@ -49,5 +49,4 @@ angular.module('cart').controller('cartController', function ($scope, $http, $lo
     };
 
     $scope.loadCart();
-
 });
