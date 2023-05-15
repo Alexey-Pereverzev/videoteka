@@ -78,25 +78,25 @@ public class CartService {
     }
 // проверка корзины через интеграцию с бд фильмами перед оплатой
     // to do требует доработки по полю is_delete в FilmDto его нет
-    public String validateCart(String cartKey) {
-        String massege = "";
-        Cart cart = getCurrentCart(cartKey);
-        for (CartItem cart1 : cart.getItems()) {
-            Long id = cart1.getFilmId();
-            FilmDto filmDto = new FilmDto();
-            //  FilmDto filmDto = filmServiceIntegration.findById(id).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален попробуйте снова оформить заказ .  id: " + cart1.getFilmTitle()));
-            FilmDto filmDto1 = filmServiceIntegration.findById(id);
-            if (!filmDto.equals(filmDto1)) {
-                cart.remove(id);
-                updateCart(cartKey, cart);
-                massege = "Некоторые фильмы были удалены пожалуйста вернитесь в корзину и обновите страницу ";
-            } else
-                massege = "Можно оплавивать";
-
-
-        }
-        return massege;
-    }
+//    public String validateCart(String cartKey) {
+//        String massege = "";
+//        Cart cart = ;
+//        for (CartItem cart1 : cart.getItems()) {
+//            Long id = cart1.getFilmId();
+//            FilmDto filmDto = new FilmDto();
+//            //  FilmDto filmDto = filmServiceIntegration.findById(id).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален попробуйте снова оформить заказ .  id: " + cart1.getFilmTitle()));
+//            FilmDto filmDto1 = filmServiceIntegration.findById(id);
+//            if (!filmDto.equals(filmDto1)) {
+//                cart.remove(id);
+//                updateCart(cartKey, cart);
+//                massege = "Некоторые фильмы были удалены пожалуйста вернитесь в корзину и обновите страницу ";
+//            } else
+//                massege = "Можно оплавивать";
+//
+//
+//        }
+//        return massege;
+//    }
 
     // удаляем фильм из корзины
 //    public void deletefilm (Long filmId){

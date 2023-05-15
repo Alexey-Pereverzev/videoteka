@@ -44,7 +44,7 @@ public class OrderTest {
 
 
 
-        cartService.addToCart("test_cart1", 5l, "X", "test", 100, true);
+        cartService.addToCart("1", 5l, "X", "test", 100, true);
         Order order = new Order();
         order.setUserId(1L);
         order.setFilmId(1L);
@@ -52,6 +52,6 @@ public class OrderTest {
         order.setPrice(100);
         order.setType("Rent");
         orderService.createOrder(1l);
-        Assertions.assertEquals(1, orderService.findOrdersByUserId(1L));
+        Assertions.assertEquals(1, orderService.findAllOrdersByUserId(1L));
     }
 }

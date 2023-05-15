@@ -23,7 +23,7 @@ public class CartServiceIntegration {
 
     public CartDto getUserCart(String userId) {
         CartDto cart = cartServiceWebClient.get()
-                .uri("/api/v1/cart/")
+                .uri("/api/v1/cart")
                 .header("user_id", userId)
                 .retrieve()
                 .bodyToMono(CartDto.class)
