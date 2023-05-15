@@ -50,7 +50,7 @@ public class OrderTest {
         order.setFilmId(1L);
         order.setType("X");
         order.setPrice(100);
-        order.setType("Rent");
+        order.setType("SALE");
         orderService.createOrder(1l);
         Assertions.assertEquals(1, orderService.findAllOrdersByUserId(1L));
     }

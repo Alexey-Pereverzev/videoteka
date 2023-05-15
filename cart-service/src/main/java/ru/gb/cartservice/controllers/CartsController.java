@@ -24,7 +24,7 @@ public class CartsController {
             description = "Позволяет получить список фильмов находящихся в корзине пользователя "
     )
     @GetMapping()
-    public CartDto getCart(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+    public CartDto getCart(@RequestHeader(required = false) String userId, @PathVariable  String uuid) {
         return cartConverter.modelToDto(cartService.getCurrentCart(getCurrentCartUuid(userId, uuid)));
     }
     @Operation(
@@ -80,10 +80,10 @@ public class CartsController {
             summary = "Проверка корзины перед оплатой с бд фильм",
             description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
     )
-//    @GetMapping("/pay")
-//    public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
-//        return cartService.validateCart(userId);
-//    }
+    @GetMapping("/pay")
+    public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+        return cartService.validateCart(userId);
+    }
 
     private String getCurrentCartUuid(String userId, String uuid) {
         if (userId != null) {

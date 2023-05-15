@@ -51,8 +51,6 @@ public class OrderService {
         }
 
 
-
-
         cartServiceIntegration.clearUserCart(userIdString);
     }
     // возвращаем заказы пользователя проверяем если вермя проката изтекло то не выводим
