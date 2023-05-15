@@ -30,8 +30,8 @@ public class UserController {
                     )
             }
     )
-    @DeleteMapping("/{deleteUserId}")
-    public void deleteUserById(@PathVariable Long deleteUserId, @RequestHeader String userId) {
+    @DeleteMapping("/delete")
+    public void deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
         userService.safeDeleteById(deleteUserId, userId);

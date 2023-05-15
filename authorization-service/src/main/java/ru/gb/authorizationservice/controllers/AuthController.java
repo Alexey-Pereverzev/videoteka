@@ -12,11 +12,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.JwtRequest;
 import ru.gb.api.dtos.JwtResponse;
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.AppError;
 import ru.gb.authorizationservice.services.UserService;
@@ -69,6 +68,17 @@ public class AuthController {
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails,userByUsername.get().getId());
         return ResponseEntity.ok(new JwtResponse(token, userService.getRole(authRequest.getUsername())));
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestParam("token") String token) {
+        String result = jwtTokenUtil.validateToken(token);
+        if (!result.isEmpty()) {
+            return new ResponseEntity<>(new AppError("INVALID_TOKEN", result),
+                    HttpStatus.UNAUTHORIZED);
+        } else {
+            return ResponseEntity.ok(new StringResponse("Token is valid"));
+        }
     }
 
 }
