@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,13 +40,26 @@ public class JwtTokenUtil {
                 .compact();                                 //  сборка токена
     }
 
-
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public String validateToken(final String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return "";
+        } catch (Exception e) {
+            return "Token is not valid";
+        }
+    }
+
+//    private Key getSignKey() {
+//        byte[] keyBytes = Decoders.BASE64.decode(secret);
+//        return Keys.hmacShaKeyFor(keyBytes);
+//    }
 
 
     public String getUserIdFromToken(String token) {

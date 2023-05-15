@@ -160,8 +160,8 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
-    public void setRoleToUser(String changeUserId, String adminId, String role) {
-        User changeUser = userRepository.findById(Long.valueOf(changeUserId)).orElseThrow(() ->
+    public void setRoleToUser(Long changeUserId, String adminId, String role) {
+        User changeUser = userRepository.findById(changeUserId).orElseThrow(() ->
                 new ResourceNotFoundException("Пользователь с id: " + changeUserId + " не найден"));
         changeUser.setRole(roleService.getRoleByName(role).orElseThrow(
                 () -> new ResourceNotFoundException("Роль " + role + " в базе не найдена")));
@@ -192,5 +192,7 @@ public class UserService implements UserDetailsService {
             throw new ResourceNotFoundException("Пользователь с id: " + deleteUserId + " не найден или удален");
         }
     }
+
+
 
 }
