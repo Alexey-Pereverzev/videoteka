@@ -1,6 +1,5 @@
 import "./CartPage.css"
 import {NavLink} from "react-router-dom";
-import {Icon} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StringCard from "../../../widgets/StringCard/StringCard";
 import {Component} from "react";
@@ -13,65 +12,7 @@ class CartPage extends Component{
         this.state = {
             bayPack: [],
             totalPrice:'',
-            cartItems:[
-                {
-                price:'107',
-                pricePerFilm: '107',
-                title:'Жара',
-                id:'1',
-                imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                quantity: '3'
-            }, {
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                }, {
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                },{
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                },{
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                },{
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                },{
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                },{
-                    price:'107',
-                    pricePerFilm: '107',
-                    title:'Жара',
-                    id:'1',
-                    imageUrlLink:'https://media.filmz.ru/photos/full/filmz.ru_f_27614.jpg',
-                    quantity: '3'
-                },
-            ],
+
         }
     }
     componentDidMount() {
@@ -79,21 +20,41 @@ class CartPage extends Component{
     }
 
     loadCart = () =>{
-        console.log('Метод loadCart()')
-        console.log(localStorage.getItem("cartId"))
+        console.log(localStorage.getItem("guestCartId"))
         axios.get("http://localhost:5555/cart/api/v1/cart/",{
             params: {
-                uuid: localStorage.getItem("cartId")
+                uuid: localStorage.getItem("guestCartId")
             }
         })
             .then(response => response.data)
-            .then(data  => this.setState({
+            .then(data  => {this.setState({
 
                 bayPack: data.items,
+                totalPrice: data.totalPrice
+            })
+                localStorage.setItem("totalPrice", JSON.stringify(data.totalPrice))
 
-            }, () => console.log(this.state.bayPack.items)))
+            })
+
     }
+   clearCart = async () => {
+       try {
+           const response = await axios.get('http://localhost:5555/cart/api/v1/cart/clear',
+               {
+                   params: {
+                       uuid: localStorage.getItem('guestCartId'),
+                   }
+               }
+           )
+           console.log("Ответ метода clearCart: " + response)
+          this.loadCart()
+       } catch (e) {
+           alert("Метод clearCart: " + e)
+       }
+   }
     render() {
+
+
         return (
             <div className={'cart_container'}>
                 <div className={'cart_container__plate'}>
@@ -116,18 +77,26 @@ class CartPage extends Component{
 
                     <div className={'card_box'}>
                         {this.state.bayPack.map((item) =>
-                                <StringCard quantity={item.quantity}
+                                <StringCard filmId={item.filmId}
                                             title={item.title}
                                             price={item.price}
                                             cover={item.imageUrlLink}
+                                            loadCart={this.loadCart}
+
                                 />
                             )
                         }
 
                     </div>
-                    <div className={'checkout_box'}>
-                        <CheckoutCard/>
+                    <div>
+                        <button className={'clear_button'} onClick={() => this.clearCart()}>Очистить корзину</button>
                     </div>
+                </div>
+                <div className={'checkout'}>
+                    <CheckoutCard clearCart={this.clearCart}
+                                  totalPrice={this.state.totalPrice}
+
+                    />
                 </div>
             </div>
         )
