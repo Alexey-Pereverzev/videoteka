@@ -62,13 +62,44 @@
 .card_box::-webkit-scrollbar{
     display: none;
 }
-.checkout_box{
+.clear_button {
     position: absolute;
-    top: 80px;
+    left: 600px;
+    top: 17px;
+    display: flex;
+    padding: 20px 20px;
+    height: 40px;
+    align-items: center;
+    color: #23f403;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin: auto 0;
+    letter-spacing: 4px;
+    cursor: pointer;
+
+}
+
+.clear_button:hover {
+    background: #23f403;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #23f403,
+    0 0 25px #23f403,
+    0 0 50px #23f403,
+    0 0 100px #23f403;
+}
+.checkout{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    top: 0;
     right: 35px;
-    height: 820px;
+    height: 80vh;
     width: 550px;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 5px 5px 16px 2px #CCCCCC;
 }

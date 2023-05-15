@@ -2,8 +2,27 @@ import "./StringCard.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import axios from "axios";
 
 function StringCard(props) {
+
+    let removeFromCart = async () => {
+        console.log(props.filmId)
+        try {
+            const response = await axios.get('http://localhost:5555/cart/api/v1/cart/remove/',
+                {
+                    params: {
+                        uuid: localStorage.getItem('guestCartId'),
+                        filmId: props.filmId,
+                    }
+                }
+            )
+            console.log("Ответ метода removeFromCart: " + response)
+            props.loadCart()
+        } catch (e) {
+            alert(e)
+        }
+    }
     return(
         <div className={'string_container'}>
             <div className={'string__cover'}>
@@ -24,7 +43,7 @@ function StringCard(props) {
                 <span>цена: {props.price} руб.</span>
             </div>
             <div className={'string__delete'}>
-                <button><DeleteIcon/></button>
+                <button onClick={() => removeFromCart()}><DeleteIcon/></button>
             </div>
 
 
