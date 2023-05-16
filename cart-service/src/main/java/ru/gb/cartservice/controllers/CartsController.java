@@ -84,6 +84,10 @@ public class CartsController {
     public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         return cartService.validateCart(userId);
     }
+    @GetMapping ("/rediscontent")
+    public StringResponse redisContent (){
+        return cartService.redisContent();
+    }
 
     private String getCurrentCartUuid(String userId, String uuid) {
         if (userId != null) {

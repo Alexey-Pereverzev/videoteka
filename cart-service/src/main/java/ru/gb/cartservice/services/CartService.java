@@ -7,12 +7,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.cartservice.integrations.FilmServiceIntegration;
 import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
 
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -20,7 +22,7 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class CartService {
 
-    private final RedisTemplate<Object, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final FilmServiceIntegration filmServiceIntegration;
 
     @Value("${utils.cart.prefix}")
@@ -80,7 +82,7 @@ public class CartService {
     // to do требует доработки по полю is_delete в FilmDto его нет
     public String validateCart(String cartKey) {
         String massege = "";
-        Cart cart = getCurrentCart(cartKey);
+        Cart cart = getCurrentCart(cartKey) ;
         for (CartItem cart1 : cart.getItems()) {
             Long id = cart1.getFilmId();
             FilmDto filmDto = new FilmDto();
@@ -98,7 +100,16 @@ public class CartService {
         return massege;
     }
 
-    // удаляем фильм из корзины
+    public StringResponse redisContent() {
+        Set<String> keys = redisTemplate.keys("*");
+        String result = "";
+        for (String key: keys){
+           result = result + key + " ";
+        }
+        return new StringResponse(result);
+
+    }
+//     удаляем фильм из корзины
 //    public void deletefilm (Long filmId){
 //        // получем список ключей из корзины
 //        Set<String> keys = redisTemplate.keys("*");
@@ -114,7 +125,7 @@ public class CartService {
 //           }
 //
 //       }
-//
+
 //    }
 
 

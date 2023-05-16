@@ -83,11 +83,11 @@ public class CartTest {
         cartItemDto.setSale(true);
 
         CartItemDto cartItemDto1 = new CartItemDto();
-        cartItemDto.setFilmId(2L);
-        cartItemDto.setTitle("Y");
-        cartItemDto.setImageUrlLink("test");
-        cartItemDto.setPrice(102);
-        cartItemDto.setSale(true);
+        cartItemDto1.setFilmId(2L);
+        cartItemDto1.setTitle("Y");
+        cartItemDto1.setImageUrlLink("test");
+        cartItemDto1.setPrice(102);
+        cartItemDto1.setSale(true);
 
 
         cartService.addToCart("user_cart", 5l, "X","test",100,true );

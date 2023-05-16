@@ -6,10 +6,11 @@ utils:
   cart:
     prefix: SPRING_WEB_APP_
 integrations:
-  cart-service:
-    url: http://localhost:8190/cart
   catalog-service:
     url: http://localhost:8189/catalog-service
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
 #spring:
 #  datasource:
 #    driver-class-name: org.postgresql.Driver
