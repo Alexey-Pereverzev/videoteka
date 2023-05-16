@@ -25,7 +25,7 @@ function Header(props) {
         window.location = '/'
     }
     let loginRedirector = () => {
-        window.location = "/login"
+        window.location = "/gate/login"
     }
     let openMenu = () => {
         setOpen(!open)

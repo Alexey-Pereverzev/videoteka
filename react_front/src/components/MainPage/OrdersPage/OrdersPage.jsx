@@ -7,14 +7,17 @@ import {Component} from "react";
 class OrdersPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            rentFilms: [],
+            soldFilms: []
+        }
     }
 
     getOrders = () => {
         axios.get('http://localhost:5555/cabinet/api/v1/orders')
             .then(response => response.data)
             .then(data => {
-
+                console.log(data)
             })
     }
 
@@ -22,16 +25,18 @@ class OrdersPage extends Component {
         this.getOrders()
         return (
             <div className={'orders_container'}>
-                {!this.state.isSale ?
+
                     <div className={'rent_box'}>
 
-                        <RentCard/>
+                            <RentCard />
+
+
                     </div>
-                    :
+
                     <div className={'own_box'}>
                         <OwnCard/>
                     </div>
-                }
+
             </div>
         )
     }

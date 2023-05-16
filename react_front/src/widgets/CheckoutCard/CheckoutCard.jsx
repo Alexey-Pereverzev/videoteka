@@ -38,10 +38,11 @@ function CheckoutCard(props) {
                             <label>CVC</label>
                         </div>
                     </div>
-                    <div className={'total-price_box'}>К оплате: <span>{props.totalPrice}</span></div>
+                    <div className={'total-price_box'}>К оплате: <span>{props.totalPrice} руб</span></div>
                     <br/>
-                    <button onClick={() => sendPaymentRequest()}>Отправить</button>
+
                 </form>
+                <button className={'checkout_btn'} onClick={() => sendPaymentRequest()}>Отправить</button>
             </div>
         </div>
     )
