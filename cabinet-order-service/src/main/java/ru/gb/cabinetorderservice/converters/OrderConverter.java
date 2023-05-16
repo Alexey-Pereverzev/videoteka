@@ -13,7 +13,7 @@ import ru.gb.cabinetorderservice.integrations.FilmServiceIntegration;
 @Component
 @RequiredArgsConstructor
 public class OrderConverter {
-    private FilmServiceIntegration filmServiceIntegration;
+    private final FilmServiceIntegration filmServiceIntegration;
 
 
     public Order dtoToEntity(SpringDataJaxb.OrderDto orderDto) {

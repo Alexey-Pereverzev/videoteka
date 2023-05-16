@@ -24,7 +24,7 @@ public class CartsController {
             description = "Позволяет получить список фильмов находящихся в корзине пользователя "
     )
     @GetMapping()
-    public CartDto getCart(@RequestHeader(required = false) String userId, @PathVariable  String uuid) {
+    public CartDto getCart(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         return cartConverter.modelToDto(cartService.getCurrentCart(getCurrentCartUuid(userId, uuid)));
     }
     @Operation(
@@ -83,6 +83,10 @@ public class CartsController {
     @GetMapping("/pay")
     public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         return cartService.validateCart(userId);
+    }
+    @GetMapping ("/rediscontent")
+    public StringResponse redisContent (){
+        return cartService.redisContent();
     }
 
     private String getCurrentCartUuid(String userId, String uuid) {

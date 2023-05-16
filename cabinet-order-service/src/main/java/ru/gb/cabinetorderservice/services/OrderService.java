@@ -29,7 +29,7 @@ public class OrderService {
 
         String userIdString = String.valueOf(userId);
 
-        CartDto currentCart = cartServiceIntegration.getUserCart(userIdString);
+        CartDto currentCart = cartServiceIntegration.getCart(userIdString);
         for(CartItemDto cartItemDto: currentCart.getItems())
         {
             Order order = new Order();
@@ -53,8 +53,9 @@ public class OrderService {
 
         cartServiceIntegration.clearUserCart(userIdString);
     }
+    @Transactional
     // возвращаем заказы пользователя проверяем если вермя проката изтекло то не выводим
-    public List<Order> findAllOrdersByUserId(Long userId) {
+    public List<Order> findAllByUserId(Long userId) {
         List<Order>  orders = ordersRepository.findAllByUserId(userId);
         for (Order order: orders){
             LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
@@ -65,5 +66,8 @@ public class OrderService {
             }
         }
         return orders;
+    }
+    public List<Order>findAll(){
+        return ordersRepository.findAll();
     }
 }
