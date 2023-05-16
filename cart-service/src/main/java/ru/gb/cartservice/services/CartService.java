@@ -7,11 +7,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
-import ru.gb.cartservice.integrations.FilmServiceIntegrationForCart;
+import ru.gb.cartservice.integrations.FilmServiceIntegration;
 import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
 
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
 public class CartService {
 
     private final RedisTemplate<Object, Object> redisTemplate;
-    private final FilmServiceIntegrationForCart filmServiceIntegration;
+    private final FilmServiceIntegration filmServiceIntegration;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
@@ -44,7 +45,8 @@ public class CartService {
     public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
         CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
         execute(cartKey, c -> {
-            c.add(cartItemDto);
+
+            c.add(cartItemDto, isSale);
         });
     }
 
@@ -75,6 +77,7 @@ public class CartService {
         redisTemplate.opsForValue().set(cartKey, cart);
     }
 // проверка корзины через интеграцию с бд фильмами перед оплатой
+    // to do требует доработки по полю is_delete в FilmDto его нет
     public String validateCart(String cartKey) {
         String massege = "";
         Cart cart = getCurrentCart(cartKey);
@@ -82,7 +85,7 @@ public class CartService {
             Long id = cart1.getFilmId();
             FilmDto filmDto = new FilmDto();
             //  FilmDto filmDto = filmServiceIntegration.findById(id).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален попробуйте снова оформить заказ .  id: " + cart1.getFilmTitle()));
-            FilmDto filmDto1 = filmServiceIntegration.findById(id).orElse(filmDto);
+            FilmDto filmDto1 = filmServiceIntegration.findById(id);
             if (!filmDto.equals(filmDto1)) {
                 cart.remove(id);
                 updateCart(cartKey, cart);
@@ -94,6 +97,25 @@ public class CartService {
         }
         return massege;
     }
+
+    // удаляем фильм из корзины
+//    public void deletefilm (Long filmId){
+//        // получем список ключей из корзины
+//        Set<String> keys = redisTemplate.keys("*");
+//        // перебираем ключи и проходимся по корзинам
+//       for (String key: keys){
+//           Cart cart = getCurrentCart(key);
+//           List<CartItem> item = cart.getItems();
+//           // получем список заказов и удаляем заказ
+//           for (CartItem items:item){
+//              if (items.getFilmId()== filmId){
+//                  item.remove(items);
+//              }
+//           }
+//
+//       }
+//
+//    }
 
 
     }

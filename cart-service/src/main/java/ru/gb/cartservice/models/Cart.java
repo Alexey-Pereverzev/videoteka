@@ -17,9 +17,16 @@ public class Cart {
     public Cart() {
         this.items = new ArrayList<>();
     }
-
-    public void add(CartItemDto cartItemDto) {
+// проверка если фильм есть корзине и статус в аренде и мы добавляем этот же фильм со статусом покупки то меняем цену и статус в корзине
+    public void add(CartItemDto cartItemDto, boolean isSale) {
         if (add(cartItemDto.getFilmId())) {
+            for (CartItem o : items) {
+            if (!o.isSale()&& isSale ){
+                o.setPrice(cartItemDto.getPrice());
+                o.setSale(isSale);
+            }
+            }
+
             return;
         }
         items.add(new CartItem(cartItemDto));
@@ -34,8 +41,6 @@ public class Cart {
         }
         return false;
     }
-
-
 
     public void remove(Long filmId) {
         items.removeIf(o -> o.getFilmId().equals(filmId));
