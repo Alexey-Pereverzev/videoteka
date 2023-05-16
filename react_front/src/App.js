@@ -60,12 +60,7 @@ function App(props) {
                 getAllCountries={props.getAllCountries}
                 clearState={props.clearState}
             />}/>
-              <Route path='/login' element={<LoginPage
-                  login={props.login}
-                  register={props.register}
-
-              />}
-              />
+              <Route path='/gate/*' element={<LoginPage/>}/>
           </Routes>
         </BrowserRouter>
       </div>

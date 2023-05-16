@@ -1,5 +1,12 @@
 .orders_container{
-
+position: absolute;
+    top: 10px;
+    left: 307px;
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
-.rent_box{}
-.own_box{}
+.rent_box{
+    margin: 10px;
+}
+.own_box{margin: 10px}
