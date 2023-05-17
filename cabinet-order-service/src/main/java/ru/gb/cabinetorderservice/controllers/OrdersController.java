@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,18 +54,21 @@ public class OrdersController {
     )
     @GetMapping("/playFilm")
     public String findByFilmId(@RequestHeader String userId, @RequestParam  Long filmId) {
-        String message = "";
+        String message = "Приятного просмотра ";
         Long userIDLong = Long.valueOf(userId);
-        Order order = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId).orElseThrow(() -> new ResourceNotFoundException(" Нельзя смотреть," +filmId));
+        //Order order = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId).orElseThrow(() -> new ResourceNotFoundException(" Нельзя смотреть, фильма нет в бд" +filmId));
+        Optional<Order> order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
+        if (order1.isEmpty()){
+            return " Нельзя смотреть, фильма нет в бд " +filmId;
+        }
+        Order order = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId).orElseThrow(() -> new ResourceNotFoundException(" Нельзя смотреть, фильма нет в бд" +filmId));
         if (order.getType().equals("RENT")){
-            if  (orderService.orderIsDelete(order)){
+            if  (!orderService.orderIsDelete(order)){
                 // если фильм в аренде и время проката истекло
-                message = "Нельзя смотреть";
+                message = "Нельзя смотреть закончился срок аренды";
 
             }
         }
-        else message = "Приятного просмотра ";
-
         return  message;
 
     }

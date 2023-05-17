@@ -87,7 +87,7 @@ public class OrderService {
         LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
-            order.setCreatedWhen(LocalDateTime.now());
+            order.setDeletedWhen(LocalDateTime.now());
             // пересохраняем заказ пользователя
             ordersRepository.save(order);
             return true;
