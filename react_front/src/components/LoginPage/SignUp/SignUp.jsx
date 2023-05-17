@@ -17,11 +17,14 @@ import axios from "axios";
 class SignUp extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            isLoggedIn: false
+        };
 
     }
 
     sendRegisterRequest = (event) => {
+        event.preventDefault(true);
         return axios.post('http://localhost:5555/auth/api/v1/reg/register',
             {
                 username: event.target.username.value,
@@ -32,10 +35,11 @@ class SignUp extends Component {
                 lastName: event.target.lastName.value,
                 phoneNumber: event.target.phoneNumber.value,
                 address: event.target.address.value
-            }
-        ).then(response => {
-            window.location = "/"
-        })
+            })
+            .then(response => {
+                console.log(response.data)
+                window.location = "/"
+            })
     }
 
     render() {
