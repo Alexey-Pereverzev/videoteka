@@ -34,8 +34,8 @@ public class OrdersController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder(@RequestHeader String userId) {
-        Long userIDLong = Long.valueOf(userId);
-        orderService.createOrder(userIDLong);
+
+        orderService.createOrder(userId);
     }
     @Operation(
             summary = "Заказ пользователя ",

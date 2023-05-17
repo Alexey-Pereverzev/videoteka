@@ -28,14 +28,15 @@ public class OrderService {
 
 
     @Transactional
-    public void createOrder(Long userId) {
+    public void createOrder(String userId) {
 
-        String userIdString = String.valueOf(userId);
+        //String userIdString = String.valueOf(userId);
 
-        CartDto currentCart = cartServiceIntegration.getCart(userIdString);
+        CartDto currentCart = cartServiceIntegration.getCart(userId);
+        Long userIDLong = Long.valueOf(userId);
         for (CartItemDto cartItemDto : currentCart.getItems()) {
             Order order = new Order();
-            order.setUserId(userId);
+            order.setUserId(userIDLong);
             order.setPrice(cartItemDto.getPrice());
             order.setFilmId(cartItemDto.getFilmId());
             if (!cartItemDto.isSale()) {
@@ -52,7 +53,7 @@ public class OrderService {
         }
 
 
-        cartServiceIntegration.clearUserCart(userIdString);
+        cartServiceIntegration.clearUserCart(userId);
     }
 
     @Transactional
@@ -61,11 +62,11 @@ public class OrderService {
         List<Order> orders = ordersRepository.findAllByUserId(userId);// возвращает список заказов с полем isDelete- false
         Iterator<Order> orderIterator = orders.iterator();
         while (orderIterator.hasNext()){
-            LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
-            if (orderIterator.next().getType().equals("RENT")) {
+            Order orderNext= orderIterator.next();
+            if (orderNext.getType().equals("RENT")) {
                 // если время проката истекло то ставим статус в поле isDelete - false
                 // пересохраняем фильм
-                orderIsDelete(orderIterator.next());
+                orderIsDelete(orderNext);
             }
         }
 
