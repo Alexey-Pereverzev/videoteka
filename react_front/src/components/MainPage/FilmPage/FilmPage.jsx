@@ -18,9 +18,9 @@ function FilmPage(props) {
         }
         return price
     }
-    let addToCart = async () => {
+    let addToCart = async (sale) => {
         const price = getPrice()
-        const isSale = props.isSale
+        // const isSale = props.isSale
         const stringCover = props.cover
         try {
             const response = await axios.get('http://localhost:5555/cart/api/v1/cart/add',
@@ -31,7 +31,7 @@ function FilmPage(props) {
                         filmTitle: props.title,
                         filmPrice: price,
                         filmImageUrlLink: stringCover,
-                        isSale: isSale
+                        isSale: sale
                     }
                 }
             )
@@ -79,7 +79,7 @@ function FilmPage(props) {
                             className="fas fa-file-invoice-dollar"></i>
                     </span>
                             <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
-                                    onClick={() => addToCart()}
+                                    onClick={() => addToCart(props.isSale)}
 
                             >В Корзину
                             </button>

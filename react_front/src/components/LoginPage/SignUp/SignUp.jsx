@@ -22,7 +22,6 @@ class SignUp extends Component {
     }
 
     sendRegisterRequest = (event) => {
-
         return axios.post('http://localhost:5555/auth/api/v1/reg/register',
             {
                 username: event.target.username.value,
@@ -34,22 +33,9 @@ class SignUp extends Component {
                 phoneNumber: event.target.phoneNumber.value,
                 address: event.target.address.value
             }
-        )
-            .then(response => {
-                if (response.data.token) {
-                    axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
-                    localStorage.setItem("customer", JSON.stringify(response.data))
-                    localStorage.setItem("username", JSON.stringify(response.data.username))
-                    this.showCurrentUserInfo()
-                    console.log(localStorage.getItem("customer"))
-
-                    axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
-                        .then(response => {
-                        })
-                    window.location = "/"
-                }
-                return response.data
-            })
+        ).then(response => {
+            window.location = "/"
+        })
     }
 
     render() {
@@ -57,7 +43,7 @@ class SignUp extends Component {
 
         return (
             <div>
-                <form method={'post'} onSubmit={(event) => this.sendRegisterRequest(event)}>
+                <form onSubmit={(event) => this.sendRegisterRequest(event)}>
                     <input
                         className="signup-page__sign-in__text"
                         name={'username'}
