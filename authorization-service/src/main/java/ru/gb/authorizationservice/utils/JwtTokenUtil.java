@@ -47,14 +47,14 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    public String validateToken(final String token) {
-        try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return "";
-        } catch (Exception e) {
-            return "Token is not valid";
-        }
-    }
+//    public String validateToken(final String token) {
+//        try {
+//            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+//            return "";
+//        } catch (Exception e) {
+//            return "Token is not valid";
+//        }
+//    }
 
 //    private Key getSignKey() {
 //        byte[] keyBytes = Decoders.BASE64.decode(secret);

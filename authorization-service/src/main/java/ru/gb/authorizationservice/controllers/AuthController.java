@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+//@RequestMapping("/api/v1/auth")
 @Tag(name = "Аутентификация", description = "Методы сервиса аутентификации")
 public class AuthController {
     private final UserService userService;
@@ -70,15 +71,15 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token, userService.getRole(authRequest.getUsername())));
     }
 
-    @GetMapping("/validate")
-    public ResponseEntity<?> validateToken(@RequestParam("token") String token) {
-        String result = jwtTokenUtil.validateToken(token);
-        if (!result.isEmpty()) {
-            return new ResponseEntity<>(new AppError("INVALID_TOKEN", result),
-                    HttpStatus.UNAUTHORIZED);
-        } else {
-            return ResponseEntity.ok(new StringResponse("Token is valid"));
-        }
-    }
+//    @GetMapping("/validate")
+//    public ResponseEntity<?> validateToken(@RequestParam("token") String token) {
+//        String result = jwtTokenUtil.validateToken(token);
+//        if (!result.isEmpty()) {
+//            return new ResponseEntity<>(new AppError("INVALID_TOKEN", result),
+//                    HttpStatus.UNAUTHORIZED);
+//        } else {
+//            return ResponseEntity.ok(new StringResponse("Token is valid"));
+//        }
+//    }
 
 }

@@ -1,4 +1,4 @@
-package ru.gb.gatewayservice;
+package ru.gb.gatewayservice.filter;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
+
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -23,7 +24,10 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
+            System.out.println(1111);
             ServerHttpRequest request = exchange.getRequest();
+
+            System.out.println(request.getURI().getPath());
 
             if (request.getHeaders().containsKey("userId")) {     //  защита обхода Gateway
                 return this.onError(exchange, "Invalid header username", HttpStatus.BAD_REQUEST);
@@ -32,7 +36,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
             if (isAuthPresent(request)) {
                 final String token = getAuthHeader(request);
                 if (jwtUtil.isInvalid(token)) {
-                    return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
+                    return this.onError(exchange, jwtUtil.validateToken(token), HttpStatus.UNAUTHORIZED);
                 }
                 populateRequestWithHeaders(exchange, token);
             }
