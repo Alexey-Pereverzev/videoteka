@@ -24,6 +24,7 @@ spring:
             - StripPrefix=1
             - PrefixPath=/auth-service
             - JwtAuthFilter
+#            - MyAuthFilter
 
         - id: cabinet-order-service
           uri: http://localhost:8192
