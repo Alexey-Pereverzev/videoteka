@@ -22,7 +22,7 @@ class SignIn extends Component {
         event.preventDefault(true);
         const username = event.target.username.value
         return axios
-            .post('http://localhost:5555/auth/authenticate', {
+            .post('http://localhost:5555/auth/api/v1/auth/authenticate', {
                 username: event.target.username.value,
                 password: event.target.password.value,
             }).then(response => {

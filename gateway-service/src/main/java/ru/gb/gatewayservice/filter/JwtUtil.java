@@ -28,16 +28,16 @@ public class JwtUtil {
     }
 
     public String validateToken(final String token) {
-//        try {
-//            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             if (this.getAllClaimsFromToken(token).getExpiration().before(new Date())) {
                 return "";
             } else {
                 return "Token is expired";
             }
-//        } catch (Exception e) {
-//            return "Token is not valid";
-//        }
+        } catch (Exception e) {
+            return "Token is not valid";
+        }
     }
 }
 
