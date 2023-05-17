@@ -58,7 +58,7 @@ class CartPage extends Component{
         return (
             <div className={'cart_container'}>
                 <div className={'cart_container__plate'}>
-                    <div className={'header'}>
+                    <div className={'cart_container__header'}>
                         <NavLink to={'/'}>
                             <span className={'to_catalog'}><ArrowBackIcon/><h4>Выбрать новые фильмы</h4></span>
                         </NavLink>

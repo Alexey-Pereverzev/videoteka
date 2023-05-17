@@ -12,7 +12,7 @@
     border-radius: 10px;
     background: white;
 }
-.header{
+.cart_container__header{
     display: flex;
     flex-direction: column;
     width: 850px;

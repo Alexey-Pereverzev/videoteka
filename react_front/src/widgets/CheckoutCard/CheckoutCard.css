@@ -130,35 +130,6 @@ position: absolute;
     color: white;
     margin-left: 15px;
 }
-
-/*.checkout-box form button {*/
-/*    position: absolute;*/
-/*    bottom: 50px;*/
-/*    display: flex;*/
-/*    padding: 10px 20px;*/
-/*    height: 30px;*/
-/*    align-items: center;*/
-/*    color: #f48403;*/
-/*    background: transparent;*/
-/*    font-size: 16px;*/
-/*    outline: none;*/
-/*    border: none;*/
-/*    text-transform: uppercase;*/
-/*    overflow: hidden;*/
-/*    transition: 0.5s;*/
-/*    margin: 0 auto;*/
-/*    letter-spacing: 4px*/
-/*}*/
-
-/*.checkout-box button:hover {*/
-/*    background: #f48403;*/
-/*    color: #fff;*/
-/*    border-radius: 5px;*/
-/*    box-shadow: 0 0 5px #f48403,*/
-/*    0 0 25px #f48403,*/
-/*    0 0 50px #f48403,*/
-/*    0 0 100px #f48403;*/
-/*}*/
 .checkout_btn {
     position: absolute;
     bottom: 50px;

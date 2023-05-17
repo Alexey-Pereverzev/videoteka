@@ -433,7 +433,7 @@ class CatalogPage extends Component {
                             </div>
                             :
                             <div className={style.empty}>
-                                <h1>Неть</h1>
+                                <h1>Загрузка...</h1>
                             </div>
                     }
                 </div>
@@ -442,7 +442,7 @@ class CatalogPage extends Component {
                     {
                         films.length === 0 ?
                             <div className={style.empty}>
-                                <h1>Неть</h1>
+                                <h1>Загрузка...</h1>
                             </div> :
                             films.map((film) => (
                                 <FilmCard imageUrlLink={film.imageUrlLink}
