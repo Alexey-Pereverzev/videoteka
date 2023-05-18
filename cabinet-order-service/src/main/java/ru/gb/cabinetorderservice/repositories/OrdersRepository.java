@@ -12,9 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Order, Long> {
-    @Query("select o from Order o where o.userId = ?1 and isDeleted = false")
+    @Query("select o from Order o where o.userId = ?1 and o.isDeleted = false")
     List<Order> findAllByUserId(long userId);
-    @Query("select o from Order o where o.userId = ?1 and o.filmId = ?2")
+    @Query("select o from Order o where o.userId = ?1 and o.filmId = ?2 and o.isDeleted = false")
     Optional<Order> findByUserIdAndFilmId(Long userId, Long filmId);
 
 

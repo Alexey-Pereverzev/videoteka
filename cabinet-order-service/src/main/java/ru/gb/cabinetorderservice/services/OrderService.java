@@ -66,24 +66,13 @@ public class OrderService {
             if (orderNext.getType().equals("RENT")) {
                 // если время проката истекло то ставим статус в поле isDelete - false
                 // пересохраняем фильм
-                orderIsDelete(orderNext);
+                softDeleteOfOrderInRent(orderNext);
             }
         }
 
-//        for (Order order : orders) {
-//            LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
-//            if (order.getType().equals("RENT")) {
-//                if (order.getRentEnd().isBefore(dateNow)) {
-//                    order.setDeleted(true);
-//                    order.setCreatedWhen(LocalDateTime.now());
-//                    // пересохраняем заказ пользователя
-//                    ordersRepository.save(order);
-//                }
-//            }
-
         return ordersRepository.findAllByUserId(userId);
     }
-    public boolean orderIsDelete(Order order){
+    public boolean softDeleteOfOrderInRent(Order order){
         LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
@@ -95,9 +84,17 @@ public class OrderService {
         return false;
     }
 
-    public void delete(Long userId, Long filmId) {
-        Order order = ordersRepository.findByUserIdAndFilmId(userId, filmId).orElseThrow(() -> new ResourceNotFoundException(" Этого фильма нет в бд," + filmId));;
-        ordersRepository.deleteById(order.getId());
+    public String delete(Long userId, Long filmId) {
+        Optional<Order> optionalOrder = ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        if (!optionalOrder.isEmpty()) {
+            Order order = ordersRepository.findByUserIdAndFilmId(userId, filmId).get();
+                    //.orElseThrow(() -> new ResourceNotFoundException(" Этого фильма нет в бд," + filmId));
+            ordersRepository.deleteById(order.getId());
+            return "";
+        }
+        else {
+            return " Этого фильма нет в бд," + filmId;
+        }
     }
 
     public Optional<Order> findFilmByUserIdAndFilmId(Long userId, Long filmId) {
