@@ -22,7 +22,7 @@ public class RouteValidator {
             "/api/v1/film/find_by_title_part",
             "/api/v1/film/find_by_id",
             "/api/v1/film/min_max_year",
-            "/api/v1/genre/film_all",
+            "/api/v1/genre/list_all",
             "/api/v1/genre/find_by_id",
             "/api/v1/price/prices_filter"
             );

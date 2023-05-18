@@ -19,77 +19,63 @@ class OrdersPage extends Component {
 
 
     getOrders = () => {
-       try {
-           axios.get('http://localhost:5555/cabinet/api/v1/orders')
-               .then(response => response.data)
-               .then(data => {
-                   console.log(data)
-                   this.setState({
-                       films: data
-                   })
-               })
-       }catch (e) {
-           console.log(e)
-       }
+        try {
+            axios.get('http://localhost:5555/cabinet/api/v1/orders')
+                .then(response => response.data)
+                .then(data => {
+                    console.log(data)
+                    this.setState({
+                        films: data,
+                    })
+                })
+        } catch (e) {
+            console.log(e)
+        }
 
     }
 
 
     render() {
-       let changeIsSaleState = () =>{
-            if (this.state.isSale){
-                this.setState({
-                    isSale: true
-                })
-            } else{
-                if (this.state.isSale){
-                    this.setState({
-                        isSale: false
-                    })
-                }
-            }
-        }
         return (
             <div className={'orders_container'}>
-
-                {!this.state.isSale?
-                    <div className={'rent_box__container'}>
-                        <button className={'rent_box__btn'} onClick={() => changeIsSaleState()}>Купленные</button>
-                        <span>Арендованные фильмы</span>
-                        <div className={'rent_box'}>
-                            {this.state.films.map(film =>
-                                <RentCard  cover={film.imageUrlLink}
-                                           title={film.filmTitle}
-                                           description={film.description}
-                                           price={film.price}
-                                           rentStart={film.rentStart}
-                                           rentEnd={film.rentEnd}
-                                />
+                    {this.state.films.map(film => {
+                        return
+                        if (!film.sale) {
+                            {this.state.films.map(each =>
+                                <div className={'rent_box__container'}>
+                                    <span>Арендованные фильмы</span>
+                                    <div className={'rent_box'}>
+                                        <RentCard cover={each.imageUrlLink}
+                                                  title={each.filmTitle}
+                                                  description={each.description}
+                                                  price={each.price}
+                                                  rentStart={each.rentStart}
+                                                  rentEnd={each.rentEnd}
+                                        />
+                                    </div>
+                                </div>
                             )}
-                        </div>
-                    </div>
-
-                    :
-                    <div className={'rent_box__container'}>
-                        <button className={'rent_box__btn'} onClick={() => changeIsSaleState()}>Арендованные</button>
-                        <span>Ваши фильмы</span>
-                        <div className={'own_box'}>
-                            {this.state.films.map(film =>
-                                <OwnCard cover={film.imageUrlLink}
-                                         title={film.filmTitle}
-                                         description={film.description}
-                                         price={film.price}/>
-                            )}
-                        </div>
-                    </div>
-
-                }
-
-
+                        } else {
+                            if(film.sale){
+                                {this.state.films.map(each => <div className={'rent_box__container'}>
+                                        <span>Ваши фильмы</span>
+                                        <div className={'own_box'}>
+                                            <OwnCard cover={each.imageUrlLink}
+                                                     title={each.filmTitle}
+                                                     description={each.description}
+                                                     price={each.price}/>
+                                        </div>
+                                    </div>
+                                )}
+                            }
+                        }
+                        }
+                    )}
             </div>
+
+
         )
     }
-
 }
 
 export default OrdersPage;
