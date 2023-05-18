@@ -1,11 +1,10 @@
 import React, {Component} from "react";
 import "./SignIn.css";
+import "react-toastify/dist/ReactToastify.css";
 import axios, {post} from "axios";
 import {toast, ToastContainer} from "react-toastify";
-import {Route, Routes} from "react-router-dom";
-import MainPage from "../../MainPage/MainPage";
-import {decodeToken} from "react-jwt";
 import jwt from 'jwt-decode'
+import {Alert} from "@mui/material";
 
 
 // login(): POST{email, password} & save JWT to Local Storage
@@ -18,29 +17,41 @@ class SignIn extends Component {
             isLoggedIn: false
         }
     }
+
     sendLoginRequest = (event) => {
         event.preventDefault(true);
         const username = event.target.username.value
-        return axios
-            .post('http://localhost:5555/auth/api/v1/auth/authenticate', {
-                username: event.target.username.value,
-                password: event.target.password.value,
-            }).then(response => {
-                console.log(response.data)
-                if (response.data.token) {
-                    axios.defaults.headers.common.Authorization ='Bearer ' + response.data.token
-                    localStorage.setItem("customer", JSON.stringify(response.data))
-                    localStorage.setItem("username", JSON.stringify(username))
-                    this.showCurrentUserInfo()
-                    console.log(localStorage.getItem("customer"))
+        try {
+            return axios
+                .post('http://localhost:5555/auth/api/v1/auth/authenticate', {
+                    username: event.target.username.value,
+                    password: event.target.password.value,
+                }).then(response => {
+                    console.log(response.data)
+                    if (response.data.token) {
+                        axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
+                        localStorage.setItem("customer", JSON.stringify(response.data))
+                        localStorage.setItem("username", JSON.stringify(username))
+                        this.showCurrentUserInfo()
 
-                    axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
-                        .then(response =>{})
+                        console.log(localStorage.getItem("customer"))
+
+
+                        axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
+                            .then(response => response.data)
+
+                    }
                     window.location = "/"
-                }
-                return response.data
+                    return response.data
 
-            })
+                })
+                .then(data => {return<Alert severity="error">Привет, {data.username}!</Alert>
+        })
+        }catch (e) {
+             return <Alert severity="error">{e}</Alert>
+
+        }
+
     }
     showCurrentUserInfo = () =>{
         if(this.isUserLoggedIn){
@@ -98,7 +109,9 @@ class SignIn extends Component {
                         Вхожу
                     </button>
                 </form>
-            </div>);
+
+            </div>
+        );
     }
 }
 

@@ -1,12 +1,17 @@
 import "./FilmPage.css"
+import "react-toastify/dist/ReactToastify.css";
 import {Icon} from "@mui/material";
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify";
+import React from "react";
 
 
 function FilmPage(props) {
 
-
+    let displayLoginNotification = (message) => {
+        toast.success(message);
+    };
     let getPrice = () => {
         let price = ''
         if (props.isSale) {
@@ -35,6 +40,14 @@ function FilmPage(props) {
                     }
                 }
             )
+            if (sale){
+                displayLoginNotification('Поздравляем! Вы купили фильм!')
+            } else {
+                if (!sale){
+                    displayLoginNotification('Поздравляем! Вы взяли фильм в аренду!')
+                }
+            }
+
             console.log("Ответ метода addToCart: " + response.data)
         } catch (e) {
             alert(e)
@@ -98,6 +111,18 @@ function FilmPage(props) {
                         </div>
                     }
                 </div>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
             </div>
         )
     }

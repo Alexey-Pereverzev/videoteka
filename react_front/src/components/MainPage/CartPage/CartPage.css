@@ -17,7 +17,8 @@
     flex-direction: column;
     width: 850px;
 }
-.header a{
+.cart_container__header a:visited,
+.cart_container__header a{
     text-decoration: none;
     color: #5c5c62;
 }
@@ -70,7 +71,7 @@
     padding: 20px 20px;
     height: 40px;
     align-items: center;
-    color: #23f403;
+    color: #168d00;
     background: transparent;
     font-size: 16px;
     outline: none;
