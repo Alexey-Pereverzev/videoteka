@@ -3,7 +3,6 @@ package ru.gb.cabinetorderservice;
 
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -12,18 +11,11 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.gb.api.dtos.cart.CartDto;
-import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
 import ru.gb.cabinetorderservice.services.OrderService;
-import ru.gb.cartservice.services.CartService;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +77,7 @@ public class OrderTest {
         order.setType("SALE");
 
         when(ordersRepository.findAll()).thenReturn(List.of(order));
-        List orders = this.orderService.findAllByUserId(1L);
+       List<Order> orders = this.orderService.findAllByUserId(1L);
 
 
 
