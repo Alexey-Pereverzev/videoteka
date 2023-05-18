@@ -13,7 +13,7 @@ function OwnCard(props) {
                     image={props.cover}
                     title={props.title}
                 />
-                <CardContent >
+                <CardContent  sx={{height: 270}}>
                     <Typography className={'own-card__title'} gutterBottom variant="h5" component="div">
                         {props.title}
                     </Typography>
@@ -30,7 +30,7 @@ function OwnCard(props) {
                          setActive={setModalActive}
             >
                 <video controls autoPlay="autoplay">
-                    <source src={'https://vk.com/video-170685099_456240752'}/>
+                    <source src={'https://youtu.be/ChceTkfA-iA'}/>
                 </video>
 
             </ModalWindow>
