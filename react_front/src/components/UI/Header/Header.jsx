@@ -101,7 +101,7 @@ function Header(props) {
 
                 <div className={'cart_box'}>
                     <NavLink to={'/cart'} className={'cart_box__button'}>
-                        <ShoppingCartIcon fontSize={'small'}/>
+                        <ShoppingCartIcon />
                     </NavLink>
 
                 </div>

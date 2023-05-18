@@ -19,15 +19,19 @@ class OrdersPage extends Component {
 
 
     getOrders = () => {
-        axios.get('http://localhost:5555/cabinet/api/v1/orders')
-            .then(response => response.data)
-            .then(data => {
-                console.log(data)
-                this.setState({
-                    films: data,
-                    isSale: true
-                })
-            })
+       try {
+           axios.get('http://localhost:5555/cabinet/api/v1/orders')
+               .then(response => response.data)
+               .then(data => {
+                   console.log(data)
+                   this.setState({
+                       films: data
+                   })
+               })
+       }catch (e) {
+           console.log(e)
+       }
+
     }
 
 
