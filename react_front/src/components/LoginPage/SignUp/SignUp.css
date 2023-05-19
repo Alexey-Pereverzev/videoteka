@@ -1,5 +1,6 @@
 .signup-page__sign-in__text {
     background-color: rgba(134, 145, 155, 0.38);
+    color: #c5c5c5;
     border: 1px solid rgba(191, 222, 255, 0.5);
     border-radius: 5px;
     width: 100%;
@@ -7,7 +8,7 @@
     height: 36px;
     padding-left: 7px;
     margin-bottom: 7px;
-    outline: 0px;
+    outline: 0;
     overflow: hidden;
 
 }

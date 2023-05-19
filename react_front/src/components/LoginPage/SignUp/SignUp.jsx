@@ -2,42 +2,54 @@ import React, {Component} from "react";
 import "./SignUp.css";
 import axios from "axios";
 
+//     username,
+//     password,
+//     confirmPassword,
+//     email,
+//     firstName,
+//     lastName,
+//     phoneNumber,
+//     address
 
+
+//http://localhost:5555/auth/api/v1/reg/register
 // register(): POST{username, email, password, firstName, lastName, phoneNumber,address}
 class SignUp extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isLoggedIn: false
+        };
 
-        this.state = {};
+    }
+
+    sendRegisterRequest = (event) => {
+        event.preventDefault(true);
+        return axios.post('http://localhost:5555/auth/api/v1/reg/register',
+            {
+                username: event.target.username.value,
+                password: event.target.password.value,
+                confirmPassword: event.target.confirmPassword.value,
+                email: event.target.email.value,
+                firstName: event.target.firstName.value,
+                lastName: event.target.lastName.value,
+                phoneNumber: event.target.phoneNumber.value,
+                address: event.target.address.value
+            })
+            .then(response => {
+
+                console.log(response.data)
+                window.location = "/"
+            },  function errorCallback(response) {alert(response)} )
+
     }
 
     render() {
-        function sendRegisterRequest(username,
-                                     password,
-                                     confirmPassword,
-                                     email,
-                                     firstName,
-                                     lastName,
-                                     phoneNumber,
-                                     address
-        ) {
-            return axios
-                .post("http://localhost:5555/auth/api/v1/reg/register", {
-                    username,
-                    password,
-                    confirmPassword,
-                    email,
-                    firstName,
-                    lastName,
-                    phoneNumber,
-                    address
-                })
-                .then(response => response.data)
-        }
+
 
         return (
             <div>
-                <form>
+                <form onSubmit={(event) => this.sendRegisterRequest(event)}>
                     <input
                         className="signup-page__sign-in__text"
                         name={'username'}
@@ -94,13 +106,8 @@ class SignUp extends Component {
                         type="text"
                         placeholder="Адрес"
                     />
-
-
-                    <button id="submit" className="login-page__sign-in__button"
-                            onClick={() => sendRegisterRequest()}>Регистрируюсь
-                    </button>
+                    <button id="submit" className="login-page__sign-in__button">Регистрируюсь</button>
                 </form>
-
             </div>
         );
     }

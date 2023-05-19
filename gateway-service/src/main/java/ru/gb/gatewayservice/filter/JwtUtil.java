@@ -1,4 +1,4 @@
-package ru.gb.gatewayservice;
+package ru.gb.gatewayservice.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +24,20 @@ public class JwtUtil {
     }
 
     public boolean isInvalid(String token) {
-        return this.isTokenExpired(token);
+        return (validateToken(token).equals(""));
+    }
+
+    public String validateToken(final String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            if (this.getAllClaimsFromToken(token).getExpiration().before(new Date())) {
+                return "";
+            } else {
+                return "Token is expired";
+            }
+        } catch (Exception e) {
+            return "Token is not valid";
+        }
     }
 }
 

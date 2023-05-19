@@ -7,7 +7,7 @@
     height: 36px;
     padding-left: 7px;
     margin-bottom: 7px;
-    outline: 0px;
+    outline: 0;
     overflow: hidden;
 
 }
@@ -29,7 +29,7 @@
     appearance: none;
     text-decoration: none;
     background-color: transparent;
-    outline: 0px;
+    outline: 0;
     height: 36px;
     margin-top: 10px;
     font-weight: bold;

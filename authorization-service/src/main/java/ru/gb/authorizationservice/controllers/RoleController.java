@@ -31,9 +31,9 @@ public class RoleController {
                     )
             }
     )
-    @PostMapping("/update/{changeUserId}")
+    @PostMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable String changeUserId, @RequestParam String role,
+    public void update(@RequestParam Long changeUserId, @RequestParam String role,
                        @RequestHeader String userId) {
 
         //  changeUserId - какого пользователя изменяем

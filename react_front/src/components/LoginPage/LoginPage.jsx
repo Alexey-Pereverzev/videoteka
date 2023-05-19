@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import "./LoginPage.css";
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
+import {NavLink, Route, Routes} from "react-router-dom";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -34,7 +35,12 @@ class LoginPage extends Component {
               <div className="login-page__right-component">
                 <span className="login-page__logo">КИНОПРОКАТ</span>
                 <div className="login-page__sign-in">
-                  {this.state.isLogin ? <SignIn /> : <SignUp />}
+                  <Routes>
+                    <Route index path={'/login'} element={<SignIn/>}/>
+                    <Route path={'/register'} element={<SignUp/>}/>
+                  </Routes>
+                  {/*<SignIn/>*/}
+                  {/*<SignUp/>*/}
 
                   <div className="login-page__ordiv">
                     <div className="login-page__divider"></div>
@@ -57,15 +63,19 @@ class LoginPage extends Component {
                   <div className="login-page__sign-in-prop">
                     <span>
                       Ты ещё не с нами?{" "}
-                      <button onClick={this.changeLoginState}>
+                      <NavLink to={'register'} onClick={() => this.changeLoginState()}>
                         Регистрируйся!
-                      </button>
+                      </NavLink>
+
                     </span>
                   </div>
                 ) : (
                   <div className="login-page__sign-up-prop">
                     Есть регистрация?{" "}
-                    <button onClick={this.changeLoginState}>Входи.</button>
+                    <NavLink to={'login'} onClick={() => this.changeLoginState()}>
+                      Входи!
+                    </NavLink>
+
                   </div>
                 )}
               </div>

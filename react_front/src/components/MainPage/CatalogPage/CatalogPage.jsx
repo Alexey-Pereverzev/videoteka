@@ -267,24 +267,6 @@ class CatalogPage extends Component {
 
     }
 
-    // handleSearchChange (event){
-    //     console.log(event.target.value)
-    //     this.clearState();
-    //             this.setState(
-    //                 {
-    //                     filterDirectorList: event.target.value
-    //                 }, () => this.getAllFilms(this.state.currentPage,
-    //                     this.state.filterCountryList,
-    //                     this.state.filterDirectorList,
-    //                     this.state.filterGenreList,
-    //                     this.state.startPremierYear,
-    //                     this.state.endPremierYear,
-    //                     this.state.isSale,
-    //                     this.state.minPrice,
-    //                     this.state.maxPrice)
-    //             )
-    //
-    // }
     handleDirectorsChange(event) {
         console.log(event.target.value)
         if (event.target.value === "Все") {
@@ -451,7 +433,7 @@ class CatalogPage extends Component {
                             </div>
                             :
                             <div className={style.empty}>
-                                <h1>Неть</h1>
+                                <h1>Загрузка...</h1>
                             </div>
                     }
                 </div>
@@ -460,7 +442,7 @@ class CatalogPage extends Component {
                     {
                         films.length === 0 ?
                             <div className={style.empty}>
-                                <h1>Неть</h1>
+                                <h1>Загрузка...</h1>
                             </div> :
                             films.map((film) => (
                                 <FilmCard imageUrlLink={film.imageUrlLink}
@@ -473,7 +455,8 @@ class CatalogPage extends Component {
                                           country={film.country}
                                           genre={film.genre}
                                           director={film.director}
-                                          description={film.description}/>
+                                          description={film.description}
+                                />
                             ))
                     }
 

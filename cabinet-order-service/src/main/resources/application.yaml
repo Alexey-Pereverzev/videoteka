@@ -15,7 +15,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 integrations:
   cart-service:
-    url: http://localhost:8190/cart
+    url: http://localhost:8190/cart-service
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
   catalog-service:
     url: http://localhost:8189/catalog-service
-
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000

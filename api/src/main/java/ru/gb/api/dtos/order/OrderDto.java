@@ -20,5 +20,4 @@ public class OrderDto {
     private boolean isSale;
     private LocalDateTime rentStart;
     private LocalDateTime rentEnd;
-    }
-
+}

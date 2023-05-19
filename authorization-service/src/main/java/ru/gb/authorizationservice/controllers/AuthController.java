@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.gb.api.dtos.JwtRequest;
 import ru.gb.api.dtos.JwtResponse;
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/auth")
 @Tag(name = "Аутентификация", description = "Методы сервиса аутентификации")
 public class AuthController {
     private final UserService userService;
@@ -70,5 +72,6 @@ public class AuthController {
         String token = jwtTokenUtil.generateToken(userDetails,userByUsername.get().getId());
         return ResponseEntity.ok(new JwtResponse(token, userService.getRole(authRequest.getUsername())));
     }
+
 
 }

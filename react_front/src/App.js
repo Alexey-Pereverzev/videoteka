@@ -17,7 +17,7 @@ function App(props) {
                 let payload = JSON.parse(atob(jwt.split('.')[1]))
                 let currentTime = parseInt(new Date().getTime() / 1000)
                 if(currentTime > payload.exp){
-                    console.log("Токен простыл!")
+                    alert("Токен простыл!")
                     delete localStorage.getItem('customer')
                     axios.defaults.headers.common.Authorization = ''
                 }
@@ -60,12 +60,7 @@ function App(props) {
                 getAllCountries={props.getAllCountries}
                 clearState={props.clearState}
             />}/>
-              <Route path='/login' element={<LoginPage
-                  login={props.login}
-                  register={props.register}
-
-              />}
-              />
+              <Route path='/gate/*' element={<LoginPage/>}/>
           </Routes>
         </BrowserRouter>
       </div>

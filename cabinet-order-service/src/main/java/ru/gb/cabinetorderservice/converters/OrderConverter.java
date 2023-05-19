@@ -10,12 +10,10 @@ import ru.gb.api.dtos.order.OrderDto;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.FilmServiceIntegration;
 
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 public class OrderConverter {
-private FilmServiceIntegration filmServiceIntegration;
+    private final FilmServiceIntegration filmServiceIntegration;
 
 
     public Order dtoToEntity(SpringDataJaxb.OrderDto orderDto) {
@@ -30,7 +28,8 @@ private FilmServiceIntegration filmServiceIntegration;
         out.setPrice(order.getPrice());
         out.setSale(order.getType().equals("SALE"));
         Long filmId = order.getFilmId();
-        FilmDto filmDto = filmServiceIntegration.findById(filmId).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален  id: " + filmId));
+      //  FilmDto filmDto = filmServiceIntegration.findById(filmId).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален  id: " + filmId));
+        FilmDto filmDto = filmServiceIntegration.findById(filmId);
         out.setFilmTitle(filmDto.getTitle());
         out.setDescription(filmDto.getDescription());
         out.setImageUrlLink(filmDto.getImageUrlLink());

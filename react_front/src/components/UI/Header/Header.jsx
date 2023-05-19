@@ -8,6 +8,7 @@ import "./Header.css"
 
 
 function Header(props) {
+
     let username = JSON.parse(localStorage.getItem('username'))
 
     let getCurrentUser = () => {
@@ -24,11 +25,12 @@ function Header(props) {
         window.location = '/'
     }
     let loginRedirector = () => {
-        window.location = "/login"
+        window.location = "/gate/login"
     }
     let openMenu = () => {
         setOpen(!open)
     }
+
 
     const [open, setOpen] = useState(false);
 
@@ -99,8 +101,7 @@ function Header(props) {
 
                 <div className={'cart_box'}>
                     <NavLink to={'/cart'} className={'cart_box__button'}>
-                        <ShoppingCartIcon fontSize={'small'}/>
-                        <span>2250 руб.</span>
+                        <ShoppingCartIcon />
                     </NavLink>
 
                 </div>
