@@ -8,8 +8,18 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RaitingDto {
-    private Long id;
+    private Long film_id;
     private Long user_id;
     private  Integer grade;
     private  String review;
+
+    @Override
+    public String toString() {
+        return "RaitingDto{" +
+                "id=" + film_id +
+                ", user_id=" + user_id +
+                ", grade=" + grade +
+                ", review='" + review + '\'' +
+                '}';
+    }
 }

@@ -6,6 +6,7 @@ import ru.gb.common.generic.entities.GenericEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,4 +24,6 @@ public class Raiting extends GenericEntity {
     @Column(name="review")
     private String review;
 
+    @ManyToOne
+    private Film film;
 }
