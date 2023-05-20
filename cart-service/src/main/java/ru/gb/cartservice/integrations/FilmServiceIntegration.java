@@ -3,7 +3,7 @@ package ru.gb.cartservice.integrations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.dto.FilmDto;
 
 @Component
 @RequiredArgsConstructor

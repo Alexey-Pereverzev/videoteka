@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.FilmRepository;

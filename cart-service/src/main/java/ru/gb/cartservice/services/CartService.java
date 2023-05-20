@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.cartservice.integrations.FilmServiceIntegration;
@@ -13,7 +13,6 @@ import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
 
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
