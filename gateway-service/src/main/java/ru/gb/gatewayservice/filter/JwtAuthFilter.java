@@ -14,20 +14,21 @@ import reactor.core.publisher.Mono;
 @Component
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthFilter() {
+    public JwtAuthFilter(JwtUtil jwtUtil) {
         super(Config.class);
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            System.out.println(1111);
+
             ServerHttpRequest request = exchange.getRequest();
 
-            System.out.println(request.getURI().getPath());
+//            System.out.println(1111);
+//            System.out.println(request.getURI().getPath());
 
             if (request.getHeaders().containsKey("userId")) {     //  защита обхода Gateway
                 return this.onError(exchange, "Invalid header username", HttpStatus.BAD_REQUEST);
