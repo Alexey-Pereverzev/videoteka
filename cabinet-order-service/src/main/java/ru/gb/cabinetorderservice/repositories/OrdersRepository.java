@@ -16,7 +16,10 @@ public interface OrdersRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByUserId(long userId);
     @Query("select o from Order o where o.userId = ?1 and o.filmId = ?2 and o.isDeleted = false")
     Optional<Order> findByUserIdAndFilmId(Long userId, Long filmId);
-
+    @Query("select o from Order o where o.userId = ?1 and o.type = 'RENT'")
+    List<Order> findAllByUserIfFilmIsRent(long userId);
+    @Query("select o from Order o where o.userId = ?1 and o.type = 'SALE'")
+    List<Order> findAllByUserIfFilmIsSale(long userId);
 
 //    @Query("delete o from Order o where o.userId = ?1 and o.filmId = ?1")
 //    void delete(Long userId, Long filmId);

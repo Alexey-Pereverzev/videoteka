@@ -100,4 +100,10 @@ public class OrderService {
     public Optional<Order> findFilmByUserIdAndFilmId(Long userId, Long filmId) {
         return ordersRepository.findByUserIdAndFilmId(userId, filmId);
     }
+    public List<Order> filmIsRent (Long userId){
+        return ordersRepository.findAllByUserIfFilmIsRent(userId);
+    }
+    public List<Order> filmIsSale (Long userId){
+        return ordersRepository.findAllByUserIfFilmIsSale(userId);
+    }
 }
