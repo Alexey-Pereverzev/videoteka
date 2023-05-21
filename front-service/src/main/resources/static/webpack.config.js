@@ -35,7 +35,7 @@ module.exports = {
     module:{
         rules:[   //загрузчик для jsx
             {
-                test: /\.jsx|js?$/, // определяем тип файлов
+                test: /\.(jsx|js)?$/, // определяем тип файлов
                 exclude: /(node_modules)/,  // исключаем из обработки папку node_modules
                 use: [{
                     loader: 'babel-loader',
@@ -50,7 +50,7 @@ module.exports = {
                 }]
             },
             {
-                test: /\.css$/,
+                test: /\.css$/i,
                 exclude: /node_modules/,
                 use: [
                     {
@@ -64,13 +64,15 @@ module.exports = {
                         options: {
                             importLoaders: 0
                         }
-                    },
+                    }
+                    // ,
                 ]
-            },
-            {
-                test: /\.css$/,
-                // use: ['style-loader', 'css-loader']
             }
+            // ,
+            // {
+            //     test: /\.css$/,
+            //     // use: ['style-loader', 'css-loader']
+            // }
         ]
     }
 }

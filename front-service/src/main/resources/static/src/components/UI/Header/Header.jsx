@@ -5,6 +5,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import "./Header.css"
 import SearchBar from "../../widgets/SearchBar/SearchBar";
 import DropdownItem from "../../widgets/DropdownItem/DropdownItem";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 
 function Header(props) {

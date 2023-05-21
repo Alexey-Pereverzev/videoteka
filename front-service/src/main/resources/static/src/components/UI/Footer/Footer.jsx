@@ -1,4 +1,6 @@
 import "./Footer.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 function Footer(props) {
     return(
@@ -26,7 +28,7 @@ function Footer(props) {
                                     <li><a href="/help/placingorders.html" rel="nofollow">Заявки</a></li>
                                     <li><a href="/help/shippingreturns.html" rel="nofollow">Возврат</a></li>
                                     <li><a href="/help/international-shipping.html" rel="nofollow">Международные заказы</a></li>
-                                    <li><a href="/~/egift-cards/" rel="nofollow">Подарочные карты</a></li>
+                                    <li><a href="/src/components/UI/Footer/Footer" rel="nofollow">Подарочные карты</a></li>
                                     <li><a href="/help/faq.html" rel="nofollow">FAQs</a></li>
                                 </ul>
                             </div>
@@ -115,13 +117,13 @@ function Footer(props) {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://pinterest.com/exampledotcom/" target="_blank">
+                                    <a href="components/UI/Footer/Footer" target="_blank">
                                         <img width="24" height="24" alt="Follow us on Pinterest"
                                              src="http://cache1.artprintimages.com/images/jump_pages/rebrand/footer/pin-badge.png"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a target="_blank" href="http://instagram.com/exampledotcom/">
+                                    <a target="_blank" href="components/UI/Footer/Footer">
                                         <img width="24" height="24" alt="Follow us on Instagram"
                                              src="http://cache1.artprintimages.com/images/jump_pages/rebrand/footer/instagram-badge.png"/>
                                     </a>

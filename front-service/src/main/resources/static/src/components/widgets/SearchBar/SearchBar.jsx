@@ -1,5 +1,7 @@
 import "./SearchBar.css"
 import SearchIcon from '@mui/icons-material/Search';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 function SearchBar(props) {
     return(
