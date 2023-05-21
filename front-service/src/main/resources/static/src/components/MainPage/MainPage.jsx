@@ -7,6 +7,8 @@ import {Route, Routes} from "react-router-dom";
 import CatalogPage from "./CatalogPage/CatalogPage";
 import CartPage from "./CartPage/CartPage";
 import PanelPage from "./PanelPage/PanelPage";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 
 class MainPage extends Component {

@@ -1,266 +1,9 @@
 /*!*****************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/FilmPage/FilmPage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/FilmPage/FilmPage.css ***!
   \*****************************************************************************************************************************/
 @import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap);
-/*!**********************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/LoginPage/LoginPage.css ***!
-  \**********************************************************************************************************************/
-
-body {
-    background-color: rgb(1, 1, 25);
-}
-
-input[type="text"i] {
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    appearance: none;
-}
-
-input[type="password"i] {
-    -webkit-text-security: disc !important;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-}
-
-.login-page__main {
-    display: flex;
-    justify-content: center;
-    margin-top: 25px;
-
-}
-
-.login-page__right-component {
-    width: 350px;
-    opacity: 1;
-    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    background-color: rgb(0, 0, 0);
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 8px;
-    border: 1px solid rgb(56, 56, 56);
-    overflow: hidden;
-    margin-top: 120px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    text-align: center;
-
-}
-
-.login-page__logo {
-    font-size: 48px;
-    font-weight: 600;
-    color: #63386d;
-
-}
-
-.login-page__sign-in {
-    margin-top: 35px;
-    margin-left: 25px;
-    margin-right: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-
-.login-page__ordiv {
-    display: flex;
-    justify-content: center;
-}
-
-.login-page__divider {
-    border: 1px solid rgb(99, 56, 109);
-    width: 80px;
-    height: 0px;
-    margin-top: 25px;
-}
-
-.login-page__divider-text {
-
-    font-size: 24px;
-    font-weight: 400;
-    color: rgb(159, 252, 164);
-    margin: 10px;
-}
-
-
-.google__google-btn {
-    display: flex;
-    text-align: center;
-    align-items: center;
-    width: 310px;
-    border: 1px solid rgba(51, 153, 255, 0.5);
-    color: rgb(2, 90, 179);
-    min-width: 64px;
-    padding: 5px 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    user-select: none;
-    vertical-align: middle;
-    appearance: none;
-    text-decoration: none;
-    background-color: rgb(115, 176, 238);
-    outline: 0;
-    height: 36px;
-    margin-top: 15px;
-    font-weight: bold;
-    justify-content: center;
-}
-
-.google__google-btn img {
-    margin-right: 10px;
-    text-align: center;
-
-}
-
-.login-page__forgot-password {
-    font-size: 12px;
-    font-weight: bold;
-    color: rgb(128, 255, 139);
-    margin-top: 12px;
-    line-height: 14px;
-}
-
-.login-page__signup-option {
-    width: 350px;
-    height: 50px;
-    opacity: 1;
-    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    background-color: rgb(0, 0, 0);
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 8px;
-    border: 1px solid rgb(56, 56, 56);
-    overflow: hidden;
-    margin-top: 25px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-}
-
-.login-page__sign-in-prop {
-    color: rgb(128, 191, 255);
-
-}
-
-.login-page__sign-in-prop a{
-    border: none;
-    background-color: transparent;
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.login-page__sign-up-prop {
-    color: rgb(128, 191, 255);
-}
-
-.login-page__sign-up-prop a {
-    border: none;
-    background-color: transparent;
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-/*!**************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/LoginPage/SignIn/SignIn.css ***!
-  \**************************************************************************************************************************/
-.login-page__sign-in__text {
-    background-color: rgba(134, 145, 155, 0.38);
-    border: 1px solid rgba(191, 222, 255, 0.5);
-    border-radius: 5px;
-    width: 100%;
-    max-width: 300px;
-    height: 36px;
-    padding-left: 7px;
-    margin-bottom: 7px;
-    outline: 0;
-    overflow: hidden;
-
-}
-
-.login-page__sign-in__text:hover {
-    border: 1px solid rgba(99, 56, 109, 0.767);
-}
-
-.login-page__sign-in__button {
-    width: 310px;
-    border: 1px solid rgba(191, 222, 255, 0.5);
-    color: rgb(51, 153, 255);
-    min-width: 64px;
-    padding: 5px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    user-select: none;
-    vertical-align: middle;
-    appearance: none;
-    text-decoration: none;
-    background-color: transparent;
-    outline: 0;
-    height: 36px;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.login-page__sign-in__button:hover {
-    background-color: rgba(134, 145, 155, 0.38);
-    border: 1px solid rgba(191, 222, 255, 0.5);
-
-}
-/*!**************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/LoginPage/SignUp/SignUp.css ***!
-  \**************************************************************************************************************************/
-.signup-page__sign-in__text {
-    background-color: rgba(134, 145, 155, 0.38);
-    color: #c5c5c5;
-    border: 1px solid rgba(191, 222, 255, 0.5);
-    border-radius: 5px;
-    width: 100%;
-    max-width: 300px;
-    height: 36px;
-    padding-left: 7px;
-    margin-bottom: 7px;
-    outline: 0;
-    overflow: hidden;
-
-}
-
-.signup-page__sign-in__text:hover {
-    border: 1px solid rgba(99, 56, 109, 0.767);
-}
-
-.signup-page__sign-in__button {
-    width: 310px;
-    border: 1px solid rgba(51, 153, 255, 0.5);
-    color: rgb(51, 153, 255);
-    min-width: 64px;
-    padding: 5px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    user-select: none;
-    vertical-align: middle;
-    appearance: none;
-    text-decoration: none;
-    background-color: transparent;
-    outline: 0px;
-    height: 36px;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.signup-page__sign-in__button:hover {
-    background-color: rgba(0, 86, 173, 0.281);
-    border: 1px solid rgba(71, 163, 255, 0.767);
-
-}
 /*!*******************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/App.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/App.css ***!
   \*******************************************************************************************/
 .root {
   text-align: center;
@@ -304,9 +47,9 @@ input[type="password"i] {
 }
 
 /*!***************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/MainPage.module.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/MainPage.module.css ***!
   \***************************************************************************************************************************/
-._0K9iEkU4iqPgtuFX0Z4X {
+.eVtJL5KD6H4x9RJ7TICP {
     position: absolute;
     top: 10px;
     bottom: 0;
@@ -316,7 +59,7 @@ input[type="password"i] {
     padding: 25px 0 25px 0;
     background: rgb(0, 0, 0);
 }
-._VfokURxqSmhX6RxtO7r{
+.itTYZSCFL7pGXfaZnYB1{
     display: flex;
     justify-content: center;
     width: 100%;
@@ -326,7 +69,7 @@ input[type="password"i] {
 
 
 /*!*******************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/UI/Header/Header.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/UI/Header/Header.css ***!
   \*******************************************************************************************************************/
 .header {
     height: 70px;
@@ -501,8 +244,108 @@ input[type="password"i] {
 }
 
 
+/*!******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/SearchBar/SearchBar.css ***!
+  \******************************************************************************************************************************/
+.search_container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.box {
+    margin: 0 auto;
+    width: 500px;
+    height: 50px;
+}
+.fa{
+    background: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.icon{
+position: absolute;
+    top: 0;
+    right: 10px;
+}
+/* Search 1 - bg change*/
+.container-1 {
+    width: 500px;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+}
+
+.container-1 input#search {
+    width: 500px;
+    height: 50px;
+    background: #2b303b;
+    border: none;
+    font-size: 10pt;
+    float: left;
+    color: #262626;
+    padding-left: 45px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    -webkit-transition: all .55s ease;
+    -moz-transition: all .55s ease;
+    -ms-transition: all .55s ease;
+    -o-transition: all .55s ease;
+    transition: all .55s ease;
+}
+
+.container-1 input#search::-webkit-input-placeholder {
+    color: #65737e;
+}
+
+.container-1 input#search:-moz-placeholder { /* Firefox 18- */
+    color: #65737e;
+}
+
+.container-1 input#search::-moz-placeholder { /* Firefox 19+ */
+    color: #65737e;
+}
+
+.container-1 input#search:-ms-input-placeholder {
+    color: #65737e;
+}
+
+.container-1 .icon {
+    position: absolute;
+    top: 50%;
+    margin-left: 17px;
+    margin-top: 12px;
+    z-index: 1;
+    color: #4f5b66;
+}
+
+/* ANIMATION EFFECTS */
+.container-1 input#search:focus, .container-1 input#search:active {
+    outline: none;
+    background: #ffffff;
+}
+
+
+/*!*******************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/DropdownItem/DropdownItem.module.css ***!
+  \*******************************************************************************************************************************************/
+.syoDEI2DrdDp2oj77TWm {
+    display: flex;
+    margin: 10px auto;
+}
+
+.syoDEI2DrdDp2oj77TWm a{
+    max-width: 200px;
+    margin-left: 10px;
+    transition: 1s;
+}
 /*!*******************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/UI/Footer/Footer.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/UI/Footer/Footer.css ***!
   \*******************************************************************************************************************/
 .hidden {
     display: none;
@@ -801,33 +644,33 @@ input[type="password"i] {
     width: 57px;
 }
 /*!******************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/CatalogPage/CatalogPage.module.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/CatalogPage/CatalogPage.module.css ***!
   \******************************************************************************************************************************************/
-.nAr0Y9IxsDGJOqWleX0_{
+.az9OXqimJFRYFR8CdKuf{
     position: relative;
     bottom: 0;
     left: 0;
     height: 100%;
     /*background: rgb(0, 0, 0);*/
 }
-.KLNanO3iQm5rtAB3cRqc {
+.XYlql53DrEowbvQkjhxT {
     color: white;
 }
-.vaqNaS1niwO8KlOGeGCr{
+.g8oK7jGtTmwdL2Um2aZH{
     margin: 25px 0;
 }
-.vaqNaS1niwO8KlOGeGCr button{
+.g8oK7jGtTmwdL2Um2aZH button{
     color: #c5c5c5;
     font-weight: 500;
 }
-.CT7bCRTjTmQH19oU74ex{
+.WNM2StbG3rzaglR_zR7r{
     color: #249700;
 }
-.QzkF7FIxW4IoUvYuodG0{
+.paAtsXtL8_djFp5HW_lw{
     color: darkblue;
 }
 
-.dLb8s4IRherpYS7beJpH {
+.Vehij7y1Yy4kFmE007Ft {
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -838,10 +681,10 @@ input[type="password"i] {
     height: fit-content;
     overflow-y: auto;
 }
-.dLb8s4IRherpYS7beJpH::-webkit-scrollbar{
+.Vehij7y1Yy4kFmE007Ft::-webkit-scrollbar{
     display: none;
 }
-.kXHwnVxsGNQvZY5Y6fiV{
+.w9TCXmyTTJsqpxJHKeeB{
     position: relative;
     display: flex;
     justify-content: center;
@@ -849,10 +692,10 @@ input[type="password"i] {
     color: white;
 
 }
-.I8RQ4cog4_6v7Q0KpFs8{
+.Sk4M46x_ic2FOSVovgZe{
     float: left;
 }
-.RKulGnY_6YKwQGViaTv6{
+.Nl55CUpUWKSayxaEtxRq{
     float: right;
     color: white;
     margin:  15px;
@@ -864,7 +707,7 @@ input[type="number"]::-webkit-inner-spin-button{
     -webkit-appearance: none;
 }
 
-.UAFmMWopkhP2XNmjFno7{
+.oEXYt_xri31cFB7lsZ3a{
     position: fixed;
     align-items: center;
     padding: 25px 0;
@@ -877,23 +720,23 @@ input[type="number"]::-webkit-inner-spin-button{
     background: black;
 }
 
-.q3Xhha1OoNW_e7WolwZW{
+._au9sNDKZ0HyQoP44_BI{
     color: white;
 }
-.P9CkcvOe2erV3N3iB11g{
+.C_OSlwCWyx9NSPlL8H26{
     display: flex;
     justify-content: center;
     margin: 10px;
 }
-.f6IPn91sRGIqQ76YG7zd{
+.D983IoQ0z8AneHbYHRbc{
 
 }
 
-.f6IPn91sRGIqQ76YG7zd label{
+.D983IoQ0z8AneHbYHRbc label{
     color: white;
     /*margin: 10px;*/
 }
-.f6IPn91sRGIqQ76YG7zd input{
+.D983IoQ0z8AneHbYHRbc input{
     width: 100px;
     height: 100%;
     outline: none;
@@ -904,17 +747,17 @@ input[type="number"]::-webkit-inner-spin-button{
     -moz-appearance: none;
 }
 
-.P9CkcvOe2erV3N3iB11g .f6IPn91sRGIqQ76YG7zd{
+.C_OSlwCWyx9NSPlL8H26 .D983IoQ0z8AneHbYHRbc{
     display: flex;
     align-items: center;
     height: 35px;
     width: 100%;
 }
-.ltcgRoLNTLl0Btt6SiXO{
+.RoLQPwlo6uESRcUBatbT{
     width: 100px;
 }
 
-.QuQknii4FtWTGHchDIJn{
+.DRZob8YCtwqMT3Yln2c6{
     width: 50px;
     display: flex;
     font-size: 17px;
@@ -922,22 +765,22 @@ input[type="number"]::-webkit-inner-spin-button{
     justify-content: center;
     color: white;
 }
-.b6hFTAuGG3Nqpy5VHpS2{
+._2Nf0MnHDtOIBLPX0VWe5{
     width: 100px;
 }
-.c0ibBK5h08oyrNJCPzo0{
+.huVJkPC9huRA5VrYI3qu{
     margin-top: 25px;
     background-color: #63386d;
     color: white;
 }
 /*!***********************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/FilmCard/FilmCard.module.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/FilmCard/FilmCard.module.css ***!
   \***********************************************************************************************************************************/
-.vdWfTYqwZ1IwFyxDrxlE {
+.VM1zio084_FMrmJdGVYL {
     margin: 20px;
 }
 
-.eIIebA9_FxJqajoERjQS {
+.eu4XtNYpl9Y0NXsQoNJE {
     position: relative;
     top: 208px;
     left: 111px;
@@ -950,11 +793,11 @@ input[type="number"]::-webkit-inner-spin-button{
     box-shadow: 0 5px 10px rgba(0,0,0,0.5);
 }
 
-.eIIebA9_FxJqajoERjQS .CQLFsrRDnqG4ogDoxv2b {
+.eu4XtNYpl9Y0NXsQoNJE .XcoM21MygyYoAkZsS1SB {
     position: relative;
     overflow: hidden;
 }
-.eIIebA9_FxJqajoERjQS .CQLFsrRDnqG4ogDoxv2b:before {
+.eu4XtNYpl9Y0NXsQoNJE .XcoM21MygyYoAkZsS1SB:before {
     content: '';
     position: absolute;
     bottom: -200px;
@@ -965,18 +808,18 @@ input[type="number"]::-webkit-inner-spin-button{
     transition: 0.5s;
     z-index: 1;
 }
-.eIIebA9_FxJqajoERjQS:hover .CQLFsrRDnqG4ogDoxv2b:before{
+.eu4XtNYpl9Y0NXsQoNJE:hover .XcoM21MygyYoAkZsS1SB:before{
     bottom: 0;
 }
-.eIIebA9_FxJqajoERjQS .CQLFsrRDnqG4ogDoxv2b img {
+.eu4XtNYpl9Y0NXsQoNJE .XcoM21MygyYoAkZsS1SB img {
     width: 100%;
     transition: 0.5s;
 }
-.eIIebA9_FxJqajoERjQS:hover .CQLFsrRDnqG4ogDoxv2b img {
+.eu4XtNYpl9Y0NXsQoNJE:hover .XcoM21MygyYoAkZsS1SB img {
     filter: blur(5px);
     transform: translateY(-50px);
 }
-.DDWYYhKEqWuMFB3K1iJl {
+.xjh183V8QzLEyYRj2ew4 {
     position: absolute;
     text-align: left;
     padding: 20px;
@@ -988,33 +831,33 @@ input[type="number"]::-webkit-inner-spin-button{
     transition: 0.5s;
     z-index: 2;
 }
-.DDWYYhKEqWuMFB3K1iJl h2{
+.xjh183V8QzLEyYRj2ew4 h2{
     color: white;
     margin: 0;
     padding: 0;
     font-size: 20px;
 }
-.DDWYYhKEqWuMFB3K1iJl h2 span{
+.xjh183V8QzLEyYRj2ew4 h2 span{
     font-size: 14px;
     color: #ff9700;
 }
-.eIIebA9_FxJqajoERjQS:hover .DDWYYhKEqWuMFB3K1iJl{
+.eu4XtNYpl9Y0NXsQoNJE:hover .xjh183V8QzLEyYRj2ew4{
     bottom: 0;
 }
-.dkfMoFcSV3qo2DnDbJBu {
+.GNMBxHauB1aUl4oFS8Pm {
     position: relative;
     display: flex;
     padding: 5px 0;
 }
-.dkfMoFcSV3qo2DnDbJBu span{
+.GNMBxHauB1aUl4oFS8Pm span{
     padding: 0 1px;
 }
 
-.kVU6vj5pn0YO5qXiO8Ba{
+.HH5jegRu3TWe30bf1WaC{
     height: 20%;
 
 }
-.kVU6vj5pn0YO5qXiO8Ba p{
+.HH5jegRu3TWe30bf1WaC p{
     margin: 5px 0 10px;
     height: 60px;
     overflow: hidden;
@@ -1024,7 +867,7 @@ input[type="number"]::-webkit-inner-spin-button{
     -webkit-box-orient: vertical;
 }
 
-.KPkVrO9C8S68IIpLiUsw {
+.uYJFJ9vMm5Nnb6A2zbGK {
     position: relative;
     margin: 0;
     padding: 0;
@@ -1032,23 +875,23 @@ input[type="number"]::-webkit-inner-spin-button{
     color: #f7f403;
 }
 /*!*************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/TagButton/TagButton.module.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/TagButton/TagButton.module.css ***!
   \*************************************************************************************************************************************/
-.oJh6n2cchnc1nFOPEDLM {
+.ydJnWvKEZiFrHlEzQhQj {
     position: relative;
     margin-top: 5px;
     margin-right: 2px;
 }
-.EDqsjyYlbTsf4YJzMQYh{
+.ug0QKI_dE5l52crKjg4_{
     display: inline-block;
     background: #f70661;
 }
-.EDqsjyYlbTsf4YJzMQYh span{
+.ug0QKI_dE5l52crKjg4_ span{
     padding: 2px 5px;
     margin-right: 2px;
 }
 /*!**********************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/ModalWindow/ModalWindow.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/ModalWindow/ModalWindow.css ***!
   \**********************************************************************************************************************************/
 .modal{
     display: flex;
@@ -1086,7 +929,7 @@ input[type="number"]::-webkit-inner-spin-button{
     transform: scale(1);
 }
 /*!*********************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/FilmPage/FilmPage.css (1) ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/FilmPage/FilmPage.css (1) ***!
   \*********************************************************************************************************************************/
 .film-page{
     width: 100%;
@@ -1229,7 +1072,7 @@ input[type="number"]::-webkit-inner-spin-button{
 }
 
 /*!*****************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/CartPage/CartPage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/CartPage/CartPage.css ***!
   \*****************************************************************************************************************************/
 .cart_container{
     position: relative;
@@ -1338,7 +1181,7 @@ input[type="number"]::-webkit-inner-spin-button{
     width: 550px;
 }
 /*!********************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/StringCard/StringCard.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/StringCard/StringCard.css ***!
   \********************************************************************************************************************************/
 .string_container {
     display: flex;
@@ -1419,7 +1262,7 @@ input[type="number"]::-webkit-inner-spin-button{
     cursor: pointer;
 }
 /*!************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/CheckoutCard/CheckoutCard.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/CheckoutCard/CheckoutCard.css ***!
   \************************************************************************************************************************************/
 .checkout-page__container{
 position: absolute;
@@ -1583,7 +1426,7 @@ position: absolute;
 }
 
 /*!*******************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/PanelPage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/PanelPage/PanelPage.css ***!
   \*******************************************************************************************************************************/
 .panel_container{
 position: relative;
@@ -1602,7 +1445,7 @@ position: relative;
     border-radius: 10px;
 }
 /*!***********************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/ProfilePanel/ProfilePanel.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/PanelPage/ProfilePanel/ProfilePanel.css ***!
   \***********************************************************************************************************************************************/
 .profile_container{
 
@@ -1651,7 +1494,7 @@ position: relative;
     margin-top: 25px;
 }
 /*!***********************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/ProfilePage/ProfilePage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/ProfilePage/ProfilePage.css ***!
   \***********************************************************************************************************************************/
 .profile-page__container{
 
@@ -1756,7 +1599,7 @@ position: relative;
 
 
 /*!*********************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/OrdersPage/OrdersPage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/OrdersPage/OrdersPage.css ***!
   \*********************************************************************************************************************************/
 .orders_container{
 position: absolute;
@@ -1830,7 +1673,7 @@ position: absolute;
     overflow-x: scroll;
 }
 /*!****************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/RentCard/RentCard.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/RentCard/RentCard.css ***!
   \****************************************************************************************************************************/
 
 .rent-card__container{
@@ -1850,7 +1693,7 @@ margin: 10px;
     overflow: hidden;
 }
 /*!**************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/OwnCard/OwnCard.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/widgets/OwnCard/OwnCard.css ***!
   \**************************************************************************************************************************/
 .own-card__container{
     margin: 10px;
@@ -1868,11 +1711,11 @@ margin: 10px;
     overflow: hidden;
 }
 /*!***************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/FavoritesPage/FavoritesPage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/FavoritesPage/FavoritesPage.css ***!
   \***************************************************************************************************************************************/
 
 /*!*******************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/AdminPanel/AdminPanel.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/PanelPage/AdminPanel/AdminPanel.css ***!
   \*******************************************************************************************************************************************/
 .admin_container{
 
@@ -1921,11 +1764,11 @@ margin: 10px;
     margin-top: 25px;
 }
 /*!*******************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/UsersPage/UsersPage.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/UsersPage/UsersPage.css ***!
   \*******************************************************************************************************************************/
 
 /*!***********************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/ManagerPanel/ManagerPanel.css ***!
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/MainPage/PanelPage/ManagerPanel/ManagerPanel.css ***!
   \***********************************************************************************************************************************************/
 .manager_container{
 
@@ -1972,4 +1815,261 @@ margin: 10px;
     font-size: 16px;
     font-weight: 600;
     margin-top: 25px;
+}
+/*!**********************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/LoginPage/LoginPage.css ***!
+  \**********************************************************************************************************************/
+
+body {
+    background-color: rgb(1, 1, 25);
+}
+
+input[type="text"i] {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    appearance: none;
+}
+
+input[type="password"i] {
+    -webkit-text-security: disc !important;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.login-page__main {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+
+}
+
+.login-page__right-component {
+    width: 350px;
+    opacity: 1;
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: rgb(0, 0, 0);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 8px;
+    border: 1px solid rgb(56, 56, 56);
+    overflow: hidden;
+    margin-top: 120px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align: center;
+
+}
+
+.login-page__logo {
+    font-size: 48px;
+    font-weight: 600;
+    color: #63386d;
+
+}
+
+.login-page__sign-in {
+    margin-top: 35px;
+    margin-left: 25px;
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.login-page__ordiv {
+    display: flex;
+    justify-content: center;
+}
+
+.login-page__divider {
+    border: 1px solid rgb(99, 56, 109);
+    width: 80px;
+    height: 0px;
+    margin-top: 25px;
+}
+
+.login-page__divider-text {
+
+    font-size: 24px;
+    font-weight: 400;
+    color: rgb(159, 252, 164);
+    margin: 10px;
+}
+
+
+.google__google-btn {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    width: 310px;
+    border: 1px solid rgba(51, 153, 255, 0.5);
+    color: rgb(2, 90, 179);
+    min-width: 64px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    background-color: rgb(115, 176, 238);
+    outline: 0;
+    height: 36px;
+    margin-top: 15px;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.google__google-btn img {
+    margin-right: 10px;
+    text-align: center;
+
+}
+
+.login-page__forgot-password {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(128, 255, 139);
+    margin-top: 12px;
+    line-height: 14px;
+}
+
+.login-page__signup-option {
+    width: 350px;
+    height: 50px;
+    opacity: 1;
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: rgb(0, 0, 0);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 8px;
+    border: 1px solid rgb(56, 56, 56);
+    overflow: hidden;
+    margin-top: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+
+}
+
+.login-page__sign-in-prop {
+    color: rgb(128, 191, 255);
+
+}
+
+.login-page__sign-in-prop a{
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-page__sign-up-prop {
+    color: rgb(128, 191, 255);
+}
+
+.login-page__sign-up-prop a {
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+/*!**************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/LoginPage/SignIn/SignIn.css ***!
+  \**************************************************************************************************************************/
+.login-page__sign-in__text {
+    background-color: rgba(134, 145, 155, 0.38);
+    border: 1px solid rgba(191, 222, 255, 0.5);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    height: 36px;
+    padding-left: 7px;
+    margin-bottom: 7px;
+    outline: 0;
+    overflow: hidden;
+
+}
+
+.login-page__sign-in__text:hover {
+    border: 1px solid rgba(99, 56, 109, 0.767);
+}
+
+.login-page__sign-in__button {
+    width: 310px;
+    border: 1px solid rgba(191, 222, 255, 0.5);
+    color: rgb(51, 153, 255);
+    min-width: 64px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    background-color: transparent;
+    outline: 0;
+    height: 36px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.login-page__sign-in__button:hover {
+    background-color: rgba(134, 145, 155, 0.38);
+    border: 1px solid rgba(191, 222, 255, 0.5);
+
+}
+/*!**************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/components/LoginPage/SignUp/SignUp.css ***!
+  \**************************************************************************************************************************/
+.signup-page__sign-in__text {
+    background-color: rgba(134, 145, 155, 0.38);
+    color: #c5c5c5;
+    border: 1px solid rgba(191, 222, 255, 0.5);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    height: 36px;
+    padding-left: 7px;
+    margin-bottom: 7px;
+    outline: 0;
+    overflow: hidden;
+
+}
+
+.signup-page__sign-in__text:hover {
+    border: 1px solid rgba(99, 56, 109, 0.767);
+}
+
+.signup-page__sign-in__button {
+    width: 310px;
+    border: 1px solid rgba(51, 153, 255, 0.5);
+    color: rgb(51, 153, 255);
+    min-width: 64px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    background-color: transparent;
+    outline: 0px;
+    height: 36px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.signup-page__sign-in__button:hover {
+    background-color: rgba(0, 86, 173, 0.281);
+    border: 1px solid rgba(71, 163, 255, 0.767);
+
 }

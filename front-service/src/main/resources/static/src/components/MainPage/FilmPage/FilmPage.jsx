@@ -3,7 +3,7 @@ import "./FilmPage.css"
 import {Icon} from "@mui/material";
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+// import {toast, ToastContainer} from "react-toastify";
 import React from "react";
 
 

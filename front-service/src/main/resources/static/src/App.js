@@ -1,11 +1,19 @@
-import LoginPage from "./components/LoginPage/LoginPage";
-
+// import LoginPage from "./components/LoginPage/LoginPage";
+//
 require("./App.css")
 const ReactDOM = require("react-dom/client");
 const React = require("react");
+// import {BrowserRouter, Route, Routes} from "react-router-dom";
+// import MainPage  from "./components/MainPage/MainPage";
+// import axios from "axios";
+
+// import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import MainPage  from "./components/MainPage/MainPage";
+import MainPage from "./components/MainPage/MainPage";
+import LoginPage from "./components/LoginPage/LoginPage";
 import axios from "axios";
+// import React from 'react';
+// import ReactDOM from 'react-dom';
 
 function App(props) {
     function run() {
