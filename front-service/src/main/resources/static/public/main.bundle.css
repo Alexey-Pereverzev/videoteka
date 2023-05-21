@@ -1,0 +1,1975 @@
+/*!*****************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/FilmPage/FilmPage.css ***!
+  \*****************************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap);
+/*!**********************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/LoginPage/LoginPage.css ***!
+  \**********************************************************************************************************************/
+
+body {
+    background-color: rgb(1, 1, 25);
+}
+
+input[type="text"i] {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    appearance: none;
+}
+
+input[type="password"i] {
+    -webkit-text-security: disc !important;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.login-page__main {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+
+}
+
+.login-page__right-component {
+    width: 350px;
+    opacity: 1;
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: rgb(0, 0, 0);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 8px;
+    border: 1px solid rgb(56, 56, 56);
+    overflow: hidden;
+    margin-top: 120px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align: center;
+
+}
+
+.login-page__logo {
+    font-size: 48px;
+    font-weight: 600;
+    color: #63386d;
+
+}
+
+.login-page__sign-in {
+    margin-top: 35px;
+    margin-left: 25px;
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.login-page__ordiv {
+    display: flex;
+    justify-content: center;
+}
+
+.login-page__divider {
+    border: 1px solid rgb(99, 56, 109);
+    width: 80px;
+    height: 0px;
+    margin-top: 25px;
+}
+
+.login-page__divider-text {
+
+    font-size: 24px;
+    font-weight: 400;
+    color: rgb(159, 252, 164);
+    margin: 10px;
+}
+
+
+.google__google-btn {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    width: 310px;
+    border: 1px solid rgba(51, 153, 255, 0.5);
+    color: rgb(2, 90, 179);
+    min-width: 64px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    background-color: rgb(115, 176, 238);
+    outline: 0;
+    height: 36px;
+    margin-top: 15px;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.google__google-btn img {
+    margin-right: 10px;
+    text-align: center;
+
+}
+
+.login-page__forgot-password {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(128, 255, 139);
+    margin-top: 12px;
+    line-height: 14px;
+}
+
+.login-page__signup-option {
+    width: 350px;
+    height: 50px;
+    opacity: 1;
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: rgb(0, 0, 0);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 8px;
+    border: 1px solid rgb(56, 56, 56);
+    overflow: hidden;
+    margin-top: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+
+}
+
+.login-page__sign-in-prop {
+    color: rgb(128, 191, 255);
+
+}
+
+.login-page__sign-in-prop a{
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-page__sign-up-prop {
+    color: rgb(128, 191, 255);
+}
+
+.login-page__sign-up-prop a {
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+/*!**************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/LoginPage/SignIn/SignIn.css ***!
+  \**************************************************************************************************************************/
+.login-page__sign-in__text {
+    background-color: rgba(134, 145, 155, 0.38);
+    border: 1px solid rgba(191, 222, 255, 0.5);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    height: 36px;
+    padding-left: 7px;
+    margin-bottom: 7px;
+    outline: 0;
+    overflow: hidden;
+
+}
+
+.login-page__sign-in__text:hover {
+    border: 1px solid rgba(99, 56, 109, 0.767);
+}
+
+.login-page__sign-in__button {
+    width: 310px;
+    border: 1px solid rgba(191, 222, 255, 0.5);
+    color: rgb(51, 153, 255);
+    min-width: 64px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    background-color: transparent;
+    outline: 0;
+    height: 36px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.login-page__sign-in__button:hover {
+    background-color: rgba(134, 145, 155, 0.38);
+    border: 1px solid rgba(191, 222, 255, 0.5);
+
+}
+/*!**************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/LoginPage/SignUp/SignUp.css ***!
+  \**************************************************************************************************************************/
+.signup-page__sign-in__text {
+    background-color: rgba(134, 145, 155, 0.38);
+    color: #c5c5c5;
+    border: 1px solid rgba(191, 222, 255, 0.5);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    height: 36px;
+    padding-left: 7px;
+    margin-bottom: 7px;
+    outline: 0;
+    overflow: hidden;
+
+}
+
+.signup-page__sign-in__text:hover {
+    border: 1px solid rgba(99, 56, 109, 0.767);
+}
+
+.signup-page__sign-in__button {
+    width: 310px;
+    border: 1px solid rgba(51, 153, 255, 0.5);
+    color: rgb(51, 153, 255);
+    min-width: 64px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    background-color: transparent;
+    outline: 0px;
+    height: 36px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.signup-page__sign-in__button:hover {
+    background-color: rgba(0, 86, 173, 0.281);
+    border: 1px solid rgba(71, 163, 255, 0.767);
+
+}
+/*!*******************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/App.css ***!
+  \*******************************************************************************************/
+.root {
+  text-align: center;
+}
+.root::-webkit-scrollbar{
+  display: none;
+}
+.root-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .root-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.root-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.root-link {
+  color: #61dafb;
+}
+
+@keyframes root-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*!***************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/MainPage.module.css ***!
+  \***************************************************************************************************************************/
+._0K9iEkU4iqPgtuFX0Z4X {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 0;
+    height: 1000px;
+    width: 100%;
+    padding: 25px 0 25px 0;
+    background: rgb(0, 0, 0);
+}
+._VfokURxqSmhX6RxtO7r{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: rgb(0, 0, 0);
+}
+
+
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/UI/Header/Header.css ***!
+  \*******************************************************************************************************************/
+.header {
+    height: 70px;
+    z-index: 1;
+}
+
+.top_header {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    align-items: flex-start;
+    align-content: center;
+    justify-content: space-around;
+    height: 70px;
+    z-index: 3;
+}
+
+.logo img {
+    height: 50px;
+    margin-top: 10px;
+}
+
+.avatar {
+
+}
+
+.logout_btn {
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    color: #282c34;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tool_bar {
+    display: flex;
+}
+
+.menu_container {
+    margin-top: 10px;
+    width: fit-content;
+
+}
+
+.dropdown_trigger {
+    width: fit-content;
+    margin-right: 1.5rem;
+}
+
+.dropdown_menu {
+    position: relative;
+    top: 15px;
+    right: 63px;
+    background-color: rgb(197, 196, 196);
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 200px;
+    color: #1c9bf6;
+
+}
+
+.dropdown_menu::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 150px;
+    height: 20px;
+    width: 20px;
+    background: rgb(197, 196, 196);
+    transform: rotate(45deg);
+}
+
+.dropdown_menu a {
+    color: #807f7f;
+}
+
+.dropdown_menu ul li {
+    padding: 5px 0;
+    text-align: center;
+    border-top: 1px solid #807f7f;
+}
+
+.dropdown_menu ul li:hover a {
+    color: #cc0000;
+    cursor: pointer;
+}
+
+.dropdown_menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 0.5s ease;
+}
+
+.dropdown_menu.inactive {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 0.8s ease;
+}
+
+.menu_username {
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 0;
+    font-weight: 500;
+    color: rgba(19, 35, 74, 0.78);
+    line-height: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu_location {
+    font-size: 14px;
+    color: #807f7f;
+    font-weight: 400;
+}
+
+.iconblock__avatar {
+    margin: 4px auto;
+
+}
+
+.bottom_header {
+    display: flex;
+    justify-content: space-around;
+    color: white;
+}
+
+.cart_box {
+    position: absolute;
+    top: 20px;
+    right: 300px;
+}
+
+.cart_box__button {
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.cart_box__button span {
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.login_btn {
+    position: relative;
+    top: 20px;
+    right: 170px;
+}
+.login_btn button{
+    padding: 5px;
+    background: #63386d;
+    color: white;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #80498d;
+}
+
+
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/UI/Footer/Footer.css ***!
+  \*******************************************************************************************************************/
+.hidden {
+    display: none;
+}
+
+.footer-gray {
+    background-color: #EFEFEF;
+    width: 100%;
+}
+
+.footer-custom {
+    color: #888;
+    font: normal normal 12px/1.4 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    max-width: 1008px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.footer-custom:after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.footer-lists:after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.ftr-hdr {
+    color: #000;
+    font: 22px/1.4 'BebasNeueRegular', BebasNeue, 'Bebas Neue', Arial, sans-serif;
+    margin: 1em 0 0;
+}
+
+@media only screen and (min-width: 768px) {
+    .ftr-hdr {
+        font-size: 18px;
+    }
+}
+
+.footer-list-wrap {
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+}
+
+@media only screen and (min-width: 568px) {
+    .footer-list-wrap {
+        width: 33.3333%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .footer-list-wrap {
+        width: 25%;
+    }
+}
+
+.ftr-links-sub {
+    padding: 0;
+    margin: 0;
+}
+
+.ftr-links-sub:after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.ftr-links-sub li {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    padding: 3px 0;
+    color: #888;
+    font: normal normal 12px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    text-transform: uppercase;
+    /*width: 150px;*/
+}
+
+.footer-custom a,
+.footer-custom a:link,
+.footer-custom a:visited,
+.ftr-links-sub li .link {
+    text-decoration: none;
+    color: #888;
+    padding: 5px 0;
+    display: block;
+}
+
+.footer-custom .footer-legal a {
+    display: inline;
+}
+
+.footer-custom a:hover,
+.footer-custom a:active,
+.ftr-links-sub li .link:hover {
+    text-decoration: underline;
+    color: #888;
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+    .footer-custom a, .footer-custom a:link, .footer-custom a:visited, .ftr-links-sub li .link {
+        padding: 0;
+    }
+}
+/* BEGIN EMAIL CAPTURE STYLES*/
+
+.footer-email {
+    text-align: center;
+}
+
+#ftrEmailForm {
+    height: 44px;
+}
+
+#ftrEmailForm .error {
+    display: none;
+    color: red;
+    text-align: left;
+}
+
+#ftrEmailForm #ftrEmailInput {
+    background: none repeat scroll 0 0 #FFF;
+    border: 1px solid #D6D6D6;
+    box-sizing: border-box;
+    color: #888;
+    float: left;
+    font: normal normal 14px/1.4 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    padding: 5px;
+    width: 70%;
+    height: 100%;
+}
+
+#ftrEmailForm #ftrEmailInput:hover {
+    border: 1px solid #888;
+}
+
+#ftrEmailForm #ftrEmailInput:focus {
+    border: 1px solid #ef9223;
+    outline: #ef9223 auto 5px;
+}
+
+#ftrEmailForm .button {
+    width: 30%;
+    height: 100%;
+    padding: 5px;
+    float: left;
+    border: 1px solid #DFDFDF;
+    box-sizing: border-box;
+    color: #000;
+    font: normal bold 14px/1 BebasFamily, BebasNeueRegular, "Bebas Neue", Helvetica, Arial, sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+    background: #FFF;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod%E2%80%A6EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e1e1e1));
+    background: -webkit-linear-gradient(top, white 0, #e1e1e1 100%);
+    background: -moz-linear-gradient(top, white 0, #e1e1e1 100%);
+    background: -ms-linear-gradient(top, white 0, #e1e1e1 100%);
+    background: -o-linear-gradient(top, white 0, #e1e1e1 100%);
+    background: linear-gradient(to bottom, white 0, #e1e1e1 100%);
+    cursor: pointer;
+    vertical-align: middle;
+    outline: none;
+}
+
+#ftrEmailForm .button:hover,
+#ftrEmailForm .button:active {
+    background: black;
+    color: #FFF;
+    outline: none;
+}
+/* BEGIN SOCIAL STYLES*/
+
+.footer-social {
+    text-align: center;
+}
+
+.footer-social ul {
+    padding: 0;
+    display: inline-block;
+    list-style-type: none;
+}
+
+.footer-social ul:after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.footer-social li {
+    float: left;
+    margin: 0 15px 0 0;
+    padding: 0;
+}
+
+@media only screen and (min-width: 768px) {
+    .footer-lists {
+        width: 100%;
+    }
+    .footer-email {
+        width: 50%;
+        float: left;
+        text-align: left;
+    }
+    .footer-social {
+        width: 45%;
+        margin-left: 5%;
+        float: left;
+        text-align: left;
+    }
+}
+
+@media only screen and (min-width: 1008px) {
+    .footer-lists {
+        width: 66.6666%;
+        float: left;
+    }
+    .footer-email {
+        width: 33.3333%;
+    }
+    .footer-social {
+        width: 33.3333%;
+        float: right;
+        margin-left: 0;
+    }
+}
+
+.footer-legal {
+    padding: 15px 0 0;
+    clear: left;
+}
+
+.footer-payment {
+    text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+    .footer-legal {
+        width: 66.6666%;
+        float: left;
+    }
+    .footer-payment {
+        width: 33.3333%;
+        float: left;
+    }
+}
+
+@media only screen and (min-width: 1008px) {
+    .footer-payment {
+        text-align: left;
+    }
+}
+
+.footer-payment ul {
+    padding: 0;
+    display: inline-block;
+    list-style-type: none;
+}
+
+.footer-payment ul li {
+    display: inline-block;
+    margin: 0 6px;
+}
+
+@media only screen and (min-width: 1008px) {
+    .footer-payment ul li.ftr-stella {
+        margin-left: 0;
+    }
+}
+
+.ftr-bbb span,
+.ftr-stella span {
+    background-image: url("http://cache1.artprintimages.com/images/jump_pages/rebrand2/images/subnav2.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+}
+
+.ftr-bbb span {
+    background-position: -339px -8px;
+    width: 96px;
+}
+
+.ftr-stella span {
+    background-position: -339px -107px;
+    width: 57px;
+}
+/*!******************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/CatalogPage/CatalogPage.module.css ***!
+  \******************************************************************************************************************************************/
+.nAr0Y9IxsDGJOqWleX0_{
+    position: relative;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    /*background: rgb(0, 0, 0);*/
+}
+.KLNanO3iQm5rtAB3cRqc {
+    color: white;
+}
+.vaqNaS1niwO8KlOGeGCr{
+    margin: 25px 0;
+}
+.vaqNaS1niwO8KlOGeGCr button{
+    color: #c5c5c5;
+    font-weight: 500;
+}
+.CT7bCRTjTmQH19oU74ex{
+    color: #249700;
+}
+.QzkF7FIxW4IoUvYuodG0{
+    color: darkblue;
+}
+
+.dLb8s4IRherpYS7beJpH {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 200px;
+    margin-bottom: 35px;
+    /*margin: 25px;*/
+    width: 80%;
+    height: fit-content;
+    overflow-y: auto;
+}
+.dLb8s4IRherpYS7beJpH::-webkit-scrollbar{
+    display: none;
+}
+.kXHwnVxsGNQvZY5Y6fiV{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: white;
+
+}
+.I8RQ4cog4_6v7Q0KpFs8{
+    float: left;
+}
+.RKulGnY_6YKwQGViaTv6{
+    float: right;
+    color: white;
+    margin:  15px;
+}
+
+/*filter*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+}
+
+.UAFmMWopkhP2XNmjFno7{
+    position: fixed;
+    align-items: center;
+    padding: 25px 0;
+    right: 25px;
+    top: 210px;
+    height: 350px;
+    width: 300px;
+    border: 1px solid rgba(32,32,32,1);
+    border-radius: 10px;
+    background: black;
+}
+
+.q3Xhha1OoNW_e7WolwZW{
+    color: white;
+}
+.P9CkcvOe2erV3N3iB11g{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+.f6IPn91sRGIqQ76YG7zd{
+
+}
+
+.f6IPn91sRGIqQ76YG7zd label{
+    color: white;
+    /*margin: 10px;*/
+}
+.f6IPn91sRGIqQ76YG7zd input{
+    width: 100px;
+    height: 100%;
+    outline: none;
+    text-align: center;
+    border-radius: 5px;
+    margin-left: 10px;
+    border: 1px solid rgba(32,32,32,1);
+    -moz-appearance: none;
+}
+
+.P9CkcvOe2erV3N3iB11g .f6IPn91sRGIqQ76YG7zd{
+    display: flex;
+    align-items: center;
+    height: 35px;
+    width: 100%;
+}
+.ltcgRoLNTLl0Btt6SiXO{
+    width: 100px;
+}
+
+.QuQknii4FtWTGHchDIJn{
+    width: 50px;
+    display: flex;
+    font-size: 17px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.b6hFTAuGG3Nqpy5VHpS2{
+    width: 100px;
+}
+.c0ibBK5h08oyrNJCPzo0{
+    margin-top: 25px;
+    background-color: #63386d;
+    color: white;
+}
+/*!***********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/FilmCard/FilmCard.module.css ***!
+  \***********************************************************************************************************************************/
+.vdWfTYqwZ1IwFyxDrxlE {
+    margin: 20px;
+}
+
+.eIIebA9_FxJqajoERjQS {
+    position: relative;
+    top: 208px;
+    left: 111px;
+    width: 225px;
+    height: 350px;
+    color: white;
+    background: #000;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+
+.eIIebA9_FxJqajoERjQS .CQLFsrRDnqG4ogDoxv2b {
+    position: relative;
+    overflow: hidden;
+}
+.eIIebA9_FxJqajoERjQS .CQLFsrRDnqG4ogDoxv2b:before {
+    content: '';
+    position: absolute;
+    bottom: -200px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, black 50%, transparent);
+    transition: 0.5s;
+    z-index: 1;
+}
+.eIIebA9_FxJqajoERjQS:hover .CQLFsrRDnqG4ogDoxv2b:before{
+    bottom: 0;
+}
+.eIIebA9_FxJqajoERjQS .CQLFsrRDnqG4ogDoxv2b img {
+    width: 100%;
+    transition: 0.5s;
+}
+.eIIebA9_FxJqajoERjQS:hover .CQLFsrRDnqG4ogDoxv2b img {
+    filter: blur(5px);
+    transform: translateY(-50px);
+}
+.DDWYYhKEqWuMFB3K1iJl {
+    position: absolute;
+    text-align: left;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    bottom: -325px;
+    left: 0;
+    box-sizing: border-box;
+    transition: 0.5s;
+    z-index: 2;
+}
+.DDWYYhKEqWuMFB3K1iJl h2{
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+}
+.DDWYYhKEqWuMFB3K1iJl h2 span{
+    font-size: 14px;
+    color: #ff9700;
+}
+.eIIebA9_FxJqajoERjQS:hover .DDWYYhKEqWuMFB3K1iJl{
+    bottom: 0;
+}
+.dkfMoFcSV3qo2DnDbJBu {
+    position: relative;
+    display: flex;
+    padding: 5px 0;
+}
+.dkfMoFcSV3qo2DnDbJBu span{
+    padding: 0 1px;
+}
+
+.kVU6vj5pn0YO5qXiO8Ba{
+    height: 20%;
+
+}
+.kVU6vj5pn0YO5qXiO8Ba p{
+    margin: 5px 0 10px;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.KPkVrO9C8S68IIpLiUsw {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: #f7f403;
+}
+/*!*************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/TagButton/TagButton.module.css ***!
+  \*************************************************************************************************************************************/
+.oJh6n2cchnc1nFOPEDLM {
+    position: relative;
+    margin-top: 5px;
+    margin-right: 2px;
+}
+.EDqsjyYlbTsf4YJzMQYh{
+    display: inline-block;
+    background: #f70661;
+}
+.EDqsjyYlbTsf4YJzMQYh span{
+    padding: 2px 5px;
+    margin-right: 2px;
+}
+/*!**********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/ModalWindow/ModalWindow.css ***!
+  \**********************************************************************************************************************************/
+.modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top: 0;
+    left: 0;
+   opacity: 0;
+    transition: 0.5s;
+    z-index: 2;
+    pointer-events: none;
+}
+.modal.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal__content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*padding: 20px;*/
+    border-radius: 12px;
+    background-color: white;
+    transform: scale(0.5);
+    transition: 0.4s all;
+    width: fit-content;
+}
+.modal__content.active{
+    transform: scale(1);
+}
+/*!*********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/FilmPage/FilmPage.css (1) ***!
+  \*********************************************************************************************************************************/
+.film-page{
+    width: 100%;
+}
+.movie {
+    max-width: 800px;
+    border-radius: 5px;
+    display: flex;
+    /*box-shadow: 0 5px 20px 10px rgba(0, 0, 0, .2);*/
+    overflow: hidden;
+}
+
+.movie__hero {
+    flex: 0 0 45%;
+}
+
+.movie__img {
+    width: 100%;
+    display: block;
+}
+
+.movie__content {
+    background-color: #fff;
+    flex: 1;
+    padding: 35px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie__price {
+    background:linear-gradient(to bottom, #A9C9FF 0%, #fdfdfd 100%);
+    flex: 0 0 50px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: rgb(255, 255, 255);
+    writing-mode: vertical-lr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.heading__primary {
+    font-size: 16px;
+    margin-right: auto;
+    color: royalblue;
+}
+
+.fa-fire {
+    color: salmon;
+}
+
+.movie__tag {
+    font-size: 10px;
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 100px;
+    margin-right: 8px;
+    display: block;
+    text-transform: uppercase;
+
+}
+
+.movie__tag--1 {
+    background-color: #FFBBEC;
+    color: #282c34;
+}
+
+.movie__description {
+    font-size: 14px;
+}
+
+.movie__details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+.movie__details h4{
+    margin-right: 10px;
+}
+
+.movie__detail {
+    font-size: 13px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.movie__genre{
+    font-size: 13px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.icons i {
+    margin-right: 3px;
+    font-size: 18px;
+}
+
+.icons-red {
+    color: salmon;
+}
+.icons-grey {
+    color: grey;
+}
+
+.icons-yellow {
+    color: rgb(190, 190, 71);
+
+}
+.pay_btn{
+    font-size: 14px;
+    color: #fff;
+    padding: 5px 7px;
+    border: 1px solid transparent;
+    border-radius: 100px;
+    display: block;
+    text-transform: uppercase;
+    background-color: #A9C9FF;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.pay_btn:hover{
+    background: #647895;
+}
+.pay_btn.sale{
+    background-color:#FFBBEC;
+    cursor: pointer;
+}
+.pay_btn.sale:hover{
+    background: #a07895;
+}
+
+/*!*****************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/CartPage/CartPage.css ***!
+  \*****************************************************************************************************************************/
+.cart_container{
+    position: relative;
+    display: flex;
+    width: 80vw;
+    height: 100vh;
+    margin-top: 25px;
+    overflow-y: hidden;
+}
+.cart_container__plate{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: white;
+}
+.cart_container__header{
+    display: flex;
+    flex-direction: column;
+    width: 850px;
+}
+.cart_container__header a:visited,
+.cart_container__header a{
+    text-decoration: none;
+    color: #5c5c62;
+}
+.to_catalog{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 25px;
+}
+.delimiter{
+    position: relative;
+    width: 850px;
+    height: 1px;
+    background: #c5c5c5;
+    margin-left: 25px;
+}
+.delimiter span{
+    color: transparent;
+}
+.details{
+    text-align: start;
+    margin-left: 25px;
+    margin-top: 10px;
+    color: #979797;
+}
+.card_box{
+    position: absolute;
+    top: 80px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 850px;
+    height: 750px;
+    padding: 25px;
+    margin: 25px 0;
+    overflow-y: scroll;
+}
+.card_box::-webkit-scrollbar{
+    display: none;
+}
+.clear_button {
+    position: absolute;
+    left: 600px;
+    top: 17px;
+    display: flex;
+    padding: 20px 20px;
+    height: 40px;
+    align-items: center;
+    color: #168d00;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin: auto 0;
+    letter-spacing: 4px;
+    cursor: pointer;
+
+}
+
+.clear_button:hover {
+    background: #23f403;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #23f403,
+    0 0 25px #23f403,
+    0 0 50px #23f403,
+    0 0 100px #23f403;
+}
+.checkout{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    top: 0;
+    right: 35px;
+    height: 80vh;
+    width: 550px;
+}
+/*!********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/StringCard/StringCard.css ***!
+  \********************************************************************************************************************************/
+.string_container {
+    display: flex;
+    align-items: center;
+    width: 850px;
+    height: 80px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 5px 5px 16px 2px #CCCCCC;
+    margin-bottom: 25px ;
+
+}
+
+.string__cover {
+    width: 50px;
+    height: 70px;
+    margin: 25px;
+}
+
+.string__cover img {
+    width: 100%;
+    height: 100%;
+}
+
+.string__details {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin-left: 60px;
+}
+
+.string__title {
+
+    font-size: 18px;
+    font-weight: 600;
+    text-align: start;
+}
+
+
+.string__detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: #979797;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.string__quantity {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+}
+.string__quantity span{
+    font-size: 10px;
+    color: #979797;
+}
+.string__quantity span{
+    margin: 5px auto;
+}
+
+.string_price {
+    display: flex;
+    justify-content: center;
+    width: 250px;
+}
+.string_price span{
+    display: inline;
+    width: 100%;
+    font-weight: 600;
+}
+
+.string__delete button{
+    background: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+/*!************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/CheckoutCard/CheckoutCard.css ***!
+  \************************************************************************************************************************************/
+.checkout-page__container{
+position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.checkout-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    background: #2b303b;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+}
+.checkout-box form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+.box__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 25px;
+    width: 100%;
+}
+
+.checkout-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+}
+
+.checkout-box .user-box {
+    position: relative;
+    display: flex;
+}
+
+.checkout-box .user-box input {
+    position: relative;
+    width: 80%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+}
+.checkout-box .user-box label {
+    position: absolute;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.checkout-box .user-box input:focus ~ label,
+.checkout-box .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #f48403;
+    font-size: 12px;
+}
+
+.checkout__details{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    margin-left: 55px;
+    margin-top: 25px;
+}
+.checkout-box .details__box {
+    position: relative;
+    display: flex;
+
+    /*justify-content: center;*/
+}
+
+.checkout-box .details__box input {
+    width: 80%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+}
+.checkout-box .details__box label {
+    position: absolute;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.checkout-box .details__box input:focus ~ label,
+.checkout-box .details__box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #f48403;
+    font-size: 12px;
+}
+.total-price_box{
+    display: flex;
+    font-size: 18px;
+    font-weight: 500;
+    color: #c5c5c5;
+    margin-top: 25px;
+}
+
+.total-price_box span{
+    color: white;
+    margin-left: 15px;
+}
+.checkout_btn {
+    position: absolute;
+    bottom: 50px;
+    left: 194px;
+    display: flex;
+    padding: 10px 20px;
+    height: 30px;
+    align-items: center;
+    color: #f48403;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin: 0 auto;
+    letter-spacing: 4px
+}
+.checkout_btn:hover {
+    background: #f48403;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #f48403,
+    0 0 25px #f48403,
+    0 0 50px #f48403,
+    0 0 100px #f48403;
+}
+
+/*!*******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/PanelPage.css ***!
+  \*******************************************************************************************************************************/
+.panel_container{
+position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /*height: 100%;*/
+    padding: 50px 70px;
+}
+.panel__box{
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+}
+/*!***********************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/ProfilePanel/ProfilePanel.css ***!
+  \***********************************************************************************************************************************************/
+.profile_container{
+
+}
+.main_menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100%;
+    background: #2b303b;
+}
+.menu__item{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+
+}
+.menu__item a{
+    width: 100%;
+
+    text-decoration: none;
+    color: #c5c5c5;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.menu__item:hover{
+    background-color: #3b4251;
+}
+.menu__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px 0;
+}
+.menu__info span{
+    color: #ef9223;
+    font-size: 16px;
+    margin-top: 25px;
+}
+/*!***********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/ProfilePage/ProfilePage.css ***!
+  \***********************************************************************************************************************************/
+.profile-page__container{
+
+}
+.login-box {
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    width: 850px;
+    height: 350px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: #2b303b;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+}
+.login-box form{
+    display: flex;
+    justify-content: center;
+}
+.box__container{
+    margin-right: 25px;
+}
+
+.login-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+}
+
+.login-box .user-box {
+    position: relative;
+}
+
+.login-box .user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+}
+.login-box .user-box label {
+    position: absolute;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #03e9f4;
+    font-size: 12px;
+}
+
+.login-box form button {
+    position: absolute;
+    bottom: 25px;
+    display: flex;
+    padding: 10px 20px;
+    height: 30px;
+    align-items: center;
+    color: #03e9f4;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin: 0 auto;
+    letter-spacing: 4px
+}
+
+.login-box button:hover {
+    background: #03e9f4;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #03e9f4,
+    0 0 25px #03e9f4,
+    0 0 50px #03e9f4,
+    0 0 100px #03e9f4;
+}
+
+
+
+
+
+
+
+
+
+/*!*********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/OrdersPage/OrdersPage.css ***!
+  \*********************************************************************************************************************************/
+.orders_container{
+position: absolute;
+    top: 0;
+    left: 307px;
+    display: flex;
+    width: 75vw;
+    height: 100%;
+    overflow: scroll;
+    padding-top: 10px;
+}
+.orders_container::-webkit-scrollbar{
+    display: none;
+}
+.rent_box__container{
+    width: 95%;
+
+}
+.rent_box__container span{
+    font-size: 18px;
+    font-weight: 500;
+    color: #6f7a8e;
+}
+.rent_box__btn{
+    position: absolute;
+    top: 10px;
+   left: 50px;
+    display: flex;
+    padding: 10px 20px;
+    height: 30px;
+    align-items: center;
+    color: #1e296b;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin: 0 auto;
+    letter-spacing: 4px
+}
+.rent_box__btn:hover{
+    background: #0323f4;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #0323f4,
+    0 0 25px #0323f4,
+    0 0 50px #0323f4,
+    0 0 100px #0323f4;
+    z-index: 2;
+}
+.rent_box__container::-webkit-scrollbar{
+    display: none;
+}
+.rent_box{
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+    overflow-x: scroll;
+}
+.rent_box::-webkit-scrollbar-track{
+    background: #2b303b;
+}
+.own_box{
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin: 10px;
+    overflow-x: scroll;
+}
+/*!****************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/RentCard/RentCard.css ***!
+  \****************************************************************************************************************************/
+
+.rent-card__container{
+margin: 10px;
+
+}
+.rent-card__description{
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+.rent-card__title{
+    height: 100px;
+    overflow: hidden;
+}
+/*!**************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/widgets/OwnCard/OwnCard.css ***!
+  \**************************************************************************************************************************/
+.own-card__container{
+    margin: 10px;
+}
+.own-card__description{
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+.own-card__title{
+    height: 100px;
+    overflow: hidden;
+}
+/*!***************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/FavoritesPage/FavoritesPage.css ***!
+  \***************************************************************************************************************************************/
+
+/*!*******************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/AdminPanel/AdminPanel.css ***!
+  \*******************************************************************************************************************************************/
+.admin_container{
+
+}
+.main_menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100%;
+    background: #2b303b;
+}
+.menu__item{
+    position: relative;
+    width: 100%;
+    height: 70px;
+}
+.menu__item button{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: #c5c5c5;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.menu__item button:hover{
+    background-color: #3b4251;
+}
+.menu__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px 0;
+}
+.menu__info span{
+    color: #ef9223;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 25px;
+}
+/*!*******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/UsersPage/UsersPage.css ***!
+  \*******************************************************************************************************************************/
+
+/*!***********************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./app/components/MainPage/PanelPage/ManagerPanel/ManagerPanel.css ***!
+  \***********************************************************************************************************************************************/
+.manager_container{
+
+}
+.main_menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100%;
+    background: #2b303b;
+}
+.menu__item{
+    position: relative;
+    width: 100%;
+    height: 70px;
+}
+.menu__item button{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: #c5c5c5;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.menu__item button:hover{
+    background-color: #3b4251;
+}
+.menu__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px 0;
+}
+.menu__info span{
+    color: #ef9223;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 25px;
+}
