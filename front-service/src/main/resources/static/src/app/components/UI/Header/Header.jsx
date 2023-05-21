@@ -3,8 +3,8 @@ import {Avatar} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import "./Header.css"
-import SearchBar from "../../../widgets/SearchBar/SearchBar"
-import DropdownItem from "../../../widgets/DropdownItem/DropdownItem";
+import SearchBar from "../../widgets/SearchBar/SearchBar";
+import DropdownItem from "../../widgets/DropdownItem/DropdownItem";
 
 
 function Header(props) {
