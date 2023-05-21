@@ -10,14 +10,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.sql.SQLOutput;
+
 @Component
 public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Config> {
 
-    @Autowired
-    private RouteValidator validator;
+    private final RouteValidator validator;
 
-    public MyAuthFilter() {
+    public MyAuthFilter(RouteValidator validator) {
         super(Config.class);
+        this.validator = validator;
     }
 
     @Override
@@ -26,10 +28,13 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             boolean requestIsSecured = false;
 
+
             if (!validator.isFreeAccess.test(request)) {
 
                 if (getRoleHeader(request).equals("ROLE_ADMIN")) {
                     if (!validator.isAdminAccess.test(request)) {
+//                        System.out.println("2222");
+//                        System.out.println(request.getURI().getPath());
                         return this.onError(exchange, "Access denied!", HttpStatus.FORBIDDEN);
                     } else {
                         requestIsSecured = true;
@@ -38,6 +43,9 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
 
                 if (getRoleHeader(request).equals("ROLE_USER")) {
                     if (!validator.isUserAccess.test(request)) {
+//                        System.out.println("3333");
+//                        System.out.println(request.getURI().getPath());
+//                        System.out.println(validator.truncateUri(request.getURI().getPath()));
                         return this.onError(exchange, "Access denied!", HttpStatus.FORBIDDEN);
                     } else {
                         requestIsSecured = true;
@@ -46,6 +54,8 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
 
                 if (getRoleHeader(request).equals("ROLE_MANAGER")) {
                     if (!validator.isManagerAccess.test(request)) {
+//                        System.out.println("4444");
+//                        System.out.println(request.getURI().getPath());
                         return this.onError(exchange, "Access denied!", HttpStatus.FORBIDDEN);
                     } else {
                         requestIsSecured = true;
