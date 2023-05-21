@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.RaitingDto;
 import ru.gb.catalogservice.entities.Film;
 import ru.gb.catalogservice.entities.Raiting;
+import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.RaitingRepository;
 import ru.gb.catalogservice.utils.ResultOperation;
 
@@ -52,5 +53,18 @@ public class RaitingService {
             }
         }
         return resultOperation;
+    }
+    public Raiting gradeUserByIdFilm(Long userId, Long filmId){
+        Film film=filmService.findById(filmId);
+        return raitingRepository.findRaitingByFilmAndUserId(film,userId).orElseThrow(()->new ResourceNotFoundException("Оценка и комментарий пользователя с id="+userId+
+                                                                                                                            " для фильма с id="+filmId+" не найдены"));
+    }
+    public Double getTotalGrade(Long filmId){
+        Double result=raitingRepository.getTotalGrade(filmId);
+        if (result!=null){
+            return result;
+        }else{
+            return 0.0;
+        }
     }
 }

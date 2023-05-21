@@ -193,4 +193,7 @@ public class FilmService {
         }
     }
 
+    public Double getTotalRaitingFilmById (Long filmId){
+        return 2.0;
+    }
 }

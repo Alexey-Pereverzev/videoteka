@@ -1,5 +1,6 @@
 package ru.gb.catalogservice.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,18 @@ import java.util.List;
 public class DirectorController {
     private final DirectorService directorService;
     private final DirectorConverter directorConverter;
+    @Operation(
+            summary = "Вывод имени режиссера по id",
+            description = "Позволяет вывести имя режиссера по заданному id"
+    )
     @GetMapping("find_by_id")
     public DirectorDto findById(@RequestParam Long id){
         return directorConverter.entityToDto(directorService.findById(id));
     }
+    @Operation(
+            summary = "Вывод списка режиссеров",
+            description = "Позволяет вывести полный список режиссеров имеющихся в БД"
+    )
     @GetMapping("list_all")
     public List<DirectorDto> listAll(){
         return directorService.findAll().stream().map(directorConverter::entityToDto).toList();
