@@ -4,10 +4,7 @@ package ru.gb.cartservice.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor

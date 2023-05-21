@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.gb.api.dtos.RegisterUserDto;
+import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.AppError;

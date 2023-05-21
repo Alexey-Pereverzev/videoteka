@@ -1,12 +1,13 @@
-package ru.gb.api.dtos;
+package ru.gb.api.dtos.dto;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountryDto {
+public class GenreDto {
     private Long id;
     private String title;
 }

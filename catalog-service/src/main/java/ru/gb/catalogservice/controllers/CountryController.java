@@ -2,11 +2,9 @@ package ru.gb.catalogservice.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.CountryDto;
+import ru.gb.api.dtos.dto.CountryDto;
 import ru.gb.catalogservice.converters.CountryConverter;
-import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.services.CountryService;
 
 import java.util.List;

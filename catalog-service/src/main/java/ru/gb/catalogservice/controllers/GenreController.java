@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.gb.api.dtos.GenreDto;
+import ru.gb.api.dtos.dto.GenreDto;
 import ru.gb.catalogservice.converters.GenreConverter;
 import ru.gb.catalogservice.services.GenreService;
 

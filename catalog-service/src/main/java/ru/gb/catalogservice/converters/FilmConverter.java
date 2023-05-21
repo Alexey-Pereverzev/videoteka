@@ -1,7 +1,7 @@
 package ru.gb.catalogservice.converters;
 
 import org.springframework.stereotype.Component;
-import ru.gb.api.dtos.FilmDto;
+import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.catalogservice.entities.*;
 
 import java.util.ArrayList;

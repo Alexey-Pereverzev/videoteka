@@ -1,7 +1,7 @@
 package ru.gb.catalogservice.converters;
 
 import org.springframework.stereotype.Component;
-import ru.gb.api.dtos.PriceDto;
+import ru.gb.api.dtos.dto.PriceDto;
 import ru.gb.catalogservice.entities.Price;
 
 import java.util.List;
