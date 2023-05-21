@@ -16,4 +16,6 @@ public interface RaitingRepository extends JpaRepository<Raiting, Long>{
 
     @Query("select sum(r.grade)/1.0/count(r.grade) from Raiting r where r.film.id=:filmId")
     Double getTotalGrade(Long filmId);
+
+    List<Raiting> findAllByFilm(Film film);
 }

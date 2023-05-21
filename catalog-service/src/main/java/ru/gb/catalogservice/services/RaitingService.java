@@ -67,4 +67,9 @@ public class RaitingService {
             return 0.0;
         }
     }
+
+    public List<Raiting> listAllGradeAndReviewsByFilmId(Long filmId){
+        Film film=filmService.findById(filmId);
+        return raitingRepository.findAllByFilm(film);
+    }
 }

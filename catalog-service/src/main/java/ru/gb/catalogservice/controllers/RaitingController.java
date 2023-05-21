@@ -46,8 +46,8 @@ public class RaitingController {
     }
 
     @Operation(
-            summary = "Вывод оценок пользователя по id фильма",
-            description = "Позволяет вывести оценки пользователя по id фильма"
+            summary = "Вывод оценки и отзыва пользователя по id фильма",
+            description = "Позволяет вывести оценку и отзыв пользователя по id фильма"
     )
     @GetMapping("grade_user_by_id_film")
     public RaitingDto gradeUserByIdFilm(@RequestParam Long userId, @RequestParam Long filmId) {
@@ -61,5 +61,14 @@ public class RaitingController {
     @GetMapping("total_film_raiting")
     public String totalRaitingFilmById(@RequestParam Long filmId) {
         return String.format("%.2f",raitingService.getTotalGrade(filmId));
+    }
+
+    @Operation(
+            summary = "Вывод отзывов по id фильма",
+            description = "Позволяет получить список ВСЕХ отзывов и оценок по id фильма"
+    )
+    @GetMapping("list_all_grade_and_review_by_filmId")
+    public List<RaitingDto> listAllGradeAndReviewByFilmId(@RequestParam Long filmId) {
+        return raitingService.listAllGradeAndReviewsByFilmId(filmId).stream().map(raitingConverter::entityToDto).toList();
     }
 }
