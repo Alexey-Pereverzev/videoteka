@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gb.api.dtos.RegisterUserDto;
+import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;

@@ -2,7 +2,7 @@ package ru.gb.mvcfront.controllers;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.*;
+import ru.gb.api.dtos.dto.*;
 import ru.gb.mvcfront.integrations.AuthorizationServiceIntegration;
 import ru.gb.mvcfront.integrations.CatalogServiceIntegration;
 import lombok.RequiredArgsConstructor;

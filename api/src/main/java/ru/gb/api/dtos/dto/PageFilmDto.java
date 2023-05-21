@@ -1,4 +1,4 @@
-package ru.gb.api.dtos;
+package ru.gb.api.dtos.dto;
 
 import lombok.*;
 

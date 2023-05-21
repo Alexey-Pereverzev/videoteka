@@ -1,6 +1,15 @@
 import "./CatalogPage.module.css";
 import style from "./CatalogPage.module.css";
-import {Button, ButtonGroup, FormControl, InputLabel, MenuItem, Pagination, Select} from "@mui/material";
+import {
+    Button,
+    ButtonGroup,
+    CircularProgress,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Pagination,
+    Select
+} from "@mui/material";
 import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
 import {Component} from "react";
@@ -418,9 +427,9 @@ class CatalogPage extends Component {
                     {
                         films.length > 0 ?
                             <div>
-                                <div className={style.current_pages}>
-                                    <h4>Это {currentPage} страница из {totalPages}</h4>
-                                </div>
+                                {/*<div className={style.current_pages}>*/}
+                                {/*    <h4>Это {currentPage} страница из {totalPages}</h4>*/}
+                                {/*</div>*/}
                                 <div className={style.pagination_items}>
                                     <Pagination count={totalPages}
                                                 page={currentPage}
@@ -433,7 +442,6 @@ class CatalogPage extends Component {
                             </div>
                             :
                             <div className={style.empty}>
-                                <h1>Загрузка...</h1>
                             </div>
                     }
                 </div>
@@ -442,7 +450,9 @@ class CatalogPage extends Component {
                     {
                         films.length === 0 ?
                             <div className={style.empty}>
-                                <h1>Загрузка...</h1>
+                                <CircularProgress color="secondary"
+                                                  sx={{mt: 25, ml: 70}}
+                                />
                             </div> :
                             films.map((film) => (
                                 <FilmCard imageUrlLink={film.imageUrlLink}

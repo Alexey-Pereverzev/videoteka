@@ -1,7 +1,7 @@
 package ru.gb.catalogservice.converters;
 
 import org.springframework.stereotype.Component;
-import ru.gb.api.dtos.DirectorDto;
+import ru.gb.api.dtos.dto.DirectorDto;
 import ru.gb.catalogservice.entities.Director;
 
 

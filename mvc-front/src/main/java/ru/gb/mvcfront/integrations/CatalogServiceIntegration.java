@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.gb.api.dtos.*;
+import ru.gb.api.dtos.dto.*;
 
 import java.time.LocalDate;
 import java.util.List;

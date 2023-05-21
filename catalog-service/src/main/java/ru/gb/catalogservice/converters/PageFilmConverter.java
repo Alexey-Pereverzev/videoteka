@@ -3,7 +3,7 @@ package ru.gb.catalogservice.converters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-import ru.gb.api.dtos.PageFilmDto;
+import ru.gb.api.dtos.dto.PageFilmDto;
 import ru.gb.catalogservice.entities.Film;
 
 import java.util.stream.Collectors;

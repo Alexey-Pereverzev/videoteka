@@ -1,4 +1,4 @@
-package ru.gb.api.dtos.order;
+package ru.gb.api.dtos.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

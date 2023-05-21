@@ -28,12 +28,12 @@ function FilmCard(props) {
                     </div>
                     {props.genre.map((genre) => <TagButton genre={genre}/>)}
 
-                    <div className={style.info}>
-                        <p>{props.description}</p>
-                    </div>
-                    <div className={style.country}>
-                        <h4>{props.country}</h4>
-                    </div>
+                    {/*<div className={style.info}>*/}
+                    {/*    <p>{props.description}</p>*/}
+                    {/*</div>*/}
+                    {/*<div className={style.country}>*/}
+                    {/*    <h4>{props.country}</h4>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="card-footer">
                     <div className="clearfix">

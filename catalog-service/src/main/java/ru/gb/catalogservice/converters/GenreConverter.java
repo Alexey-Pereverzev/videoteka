@@ -1,7 +1,7 @@
 package ru.gb.catalogservice.converters;
 
 import org.springframework.stereotype.Component;
-import ru.gb.api.dtos.GenreDto;
+import ru.gb.api.dtos.dto.GenreDto;
 import ru.gb.catalogservice.entities.Genre;
 
 @Component

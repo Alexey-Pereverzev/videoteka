@@ -69,7 +69,7 @@ input[type="number"]::-webkit-inner-spin-button{
     width: 300px;
     border: 1px solid rgba(32,32,32,1);
     border-radius: 10px;
-    background: black;
+    background: rgb(17, 23, 25);
 }
 
 .filter_title{

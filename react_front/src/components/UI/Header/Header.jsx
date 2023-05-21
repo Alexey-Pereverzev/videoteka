@@ -54,7 +54,7 @@ function Header(props) {
             <div className={'top_header'}>
                 <NavLink to={'/'} className={'logo'}>
                     <img
-                        src={'https://w7.pngwing.com/pngs/654/21/png-transparent-alphabet-letter-character-3d-font-text-capital-typography.png'}
+                        src={'https://i.pinimg.com/originals/6a/e2/02/6ae2025b41de91553621b2c8c554d61f.jpg'}
                         alt={'logo'}/>
                 </NavLink>
                 <SearchBar onChange={props.onChange}/>

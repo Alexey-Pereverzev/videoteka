@@ -4,9 +4,8 @@ package ru.gb.cabinetorderservice.converters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Component;
-import ru.gb.api.dtos.FilmDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
-import ru.gb.api.dtos.order.OrderDto;
+import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.OrderDto;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.FilmServiceIntegration;
 
