@@ -40,7 +40,12 @@ public class RaitingService {
                 raiting.setUserId(raitingDto.getUser_id());
                 raiting.setFilm(film);
                 raiting.setGrade(raitingDto.getGrade());
-                raiting.setReview(raitingDto.getReview());
+                if (raitingDto.getReview()==null){
+                    raiting.setReview("");
+                }else{
+                    raiting.setReview(raitingDto.getReview());
+                }
+                raiting.setCreatedBy("frontUser");
                 raitingRepository.save(raiting);
                 resultOperation.setResult(true);
                 resultOperation.setResultDescription("OK");

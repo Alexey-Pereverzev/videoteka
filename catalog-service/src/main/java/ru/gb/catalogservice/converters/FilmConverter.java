@@ -22,7 +22,6 @@ public class FilmConverter {
                 .rentPrice(getRentPrice(film.getPrices()))
                 .salePrice(getSalePrice(film.getPrices()))
                 .build();
-        System.out.println(film.getRaitings());
         return filmDto;
     }
 
