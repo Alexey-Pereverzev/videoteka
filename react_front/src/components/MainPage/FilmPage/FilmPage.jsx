@@ -83,9 +83,12 @@ function FilmPage(props) {
                             <p className="movie__detail"><span className="icons icons-grey"><i
                                 className="fas fa-clock"></i> </span>{props.premierYear}
                             </p>
-                            <p className="movie__detail"><span className="icons icons-grey"><i
-                                className="fas fa-clock"></i> </span>{props.country}
-                            </p>
+                            {props.country.map((country) =>
+                                <p className="movie__detail"><span className="icons icons-grey">
+                                <i className="fas fa-clock"></i> </span>{country}
+                                </p>
+                                )}
+
 
                         </div>
                         <p className="movie__detail"><span className="icons icons-yellow"><i
