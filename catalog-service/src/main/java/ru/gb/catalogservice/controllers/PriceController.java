@@ -1,5 +1,6 @@
 package ru.gb.catalogservice.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,10 @@ import ru.gb.catalogservice.services.PriceService;
 public class PriceController {
     private final PriceService priceService;
     private final PriceConverter priceConverter;
+    @Operation(
+            summary = "Вывод цен",
+            description = "Подготовка данных для ценового фильтра"
+    )
     @GetMapping("prices_filter")
     public PriceDto getMinMaxPrices(){
         return priceConverter.entityToDto(priceService.findAllByIsDeletedIsFalse());

@@ -1,5 +1,6 @@
 package ru.gb.catalogservice.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,10 @@ public class FilmController {
     private final FilmConverter filmConverter;
     private final PageFilmConverter pageFilmConverter;
 
+    @Operation(
+            summary = "Вывод данных фильма по id",
+            description = "Позволяет вывести данные фильма по заданному id"
+    )
     @GetMapping("find_by_id")
     public FilmDto findById(@RequestParam Long id){
         return filmConverter.entityToDto(filmService.findById(id));
@@ -44,7 +49,10 @@ public class FilmController {
         }
         return filmService.findByTitlePart(currentPage, titlePart).map(filmConverter::entityToDto);
     }
-
+    @Operation(
+            summary = "Вывод списка фильмов для главной страницы",
+            description = "Позволяет вывести полный список стран, имеющихся в БД с применением условий фильтров. Используется для подготовки главной страницы"
+    )
     @GetMapping("list_all")
     public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
                                  @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
@@ -59,6 +67,10 @@ public class FilmController {
         return filmService.listAll(currentPage,filterCountryList,filterDirectorList,filterGenreList,
                 startPremierYear,endPremierYear,isSale,minPrice,maxPrice).map(filmConverter::entityToDto);
     }
+    @Operation(
+            summary = "Вывод списка фильмов для главной страницы",
+            description = "Позволяет вывести полный список стран, имеющихся в БД с применением условий фильтров. Используется для подготовки главной страницы"
+    )
     @GetMapping("list_all_dto")
     public PageFilmDto listAllDto(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
                                @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
@@ -72,7 +84,10 @@ public class FilmController {
         return pageFilmConverter.entityToDto(filmService.listAll(currentPage,filterCountryList,filterDirectorList,filterGenreList,
                 startPremierYear,endPremierYear,isSale,minPrice,maxPrice));
     }
-
+    @Operation(
+            summary = "Добавление фильма в БД",
+            description = "Позволяет добавлять фильмы в БД"
+    )
     @PostMapping("/add_new")
     public ResponseEntity<?> addProduct(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddInVideoteka(filmDto);
