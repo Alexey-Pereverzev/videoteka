@@ -7,7 +7,7 @@ import ru.gb.catalogservice.entities.Rating;
 
 @Component
 public class RatingConverter {
-    public RatingDto entityToDto(Rating rating){
+    public RatingDto entityToDto(Rating rating) {
         RatingDto ratingDto = RatingDto.builder()
                 .user_id(rating.getUserId())
                 .film_id(rating.getFilm().getId())

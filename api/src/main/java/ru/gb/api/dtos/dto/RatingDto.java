@@ -10,8 +10,8 @@ import lombok.*;
 public class RatingDto {
     private Long film_id;
     private Long user_id;
-    private  Integer grade;
-    private  String review;
+    private Integer grade;
+    private String review;
 
     @Override
     public String toString() {

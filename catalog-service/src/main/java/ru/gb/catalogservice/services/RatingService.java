@@ -41,9 +41,9 @@ public class RatingService {
                 rating.setUserId(ratingDto.getUser_id());
                 rating.setFilm(film);
                 rating.setGrade(ratingDto.getGrade());
-                if (ratingDto.getReview()==null){
+                if (ratingDto.getReview() == null) {
                     rating.setReview("");
-                }else{
+                } else {
                     rating.setReview(ratingDto.getReview());
                 }
                 rating.setCreatedBy("frontUser");
@@ -54,22 +54,24 @@ public class RatingService {
         }
         return resultOperation;
     }
-    public Rating gradeUserByIdFilm(Long userId, Long filmId){
-        Film film=filmService.findById(filmId);
-        return ratingRepository.findRatingByFilmAndUserId(film,userId).orElseThrow(()->new ResourceNotFoundException("Оценка и комментарий пользователя с id="+userId+
-                                                                                                                            " для фильма с id="+filmId+" не найдены"));
+
+    public Rating gradeUserByIdFilm(Long userId, Long filmId) {
+        Film film = filmService.findById(filmId);
+        return ratingRepository.findRatingByFilmAndUserId(film, userId).orElseThrow(() -> new ResourceNotFoundException("Оценка и комментарий пользователя с id=" + userId +
+                " для фильма с id=" + filmId + " не найдены"));
     }
-    public Double getTotalGrade(Long filmId){
-        Double result= ratingRepository.getTotalGrade(filmId);
-        if (result!=null){
+
+    public Double getTotalGrade(Long filmId) {
+        Double result = ratingRepository.getTotalGrade(filmId);
+        if (result != null) {
             return result;
-        }else{
+        } else {
             return 0.0;
         }
     }
 
-    public List<Rating> listAllGradeAndReviewsByFilmId(Long filmId){
-        Film film=filmService.findById(filmId);
+    public List<Rating> listAllGradeAndReviewsByFilmId(Long filmId) {
+        Film film = filmService.findById(filmId);
         return ratingRepository.findAllByFilm(film);
     }
 }

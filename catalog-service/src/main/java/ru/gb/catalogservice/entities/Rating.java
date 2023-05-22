@@ -10,18 +10,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="grades_reviews")
+@Table(name = "grades_reviews")
 @Data
 @RequiredArgsConstructor
 public class Rating extends GenericEntity {
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name="grade")
+    @Column(name = "grade")
     private int grade;
 
-    @Column(name="review")
+    @Column(name = "review")
     private String review;
 
     @ManyToOne

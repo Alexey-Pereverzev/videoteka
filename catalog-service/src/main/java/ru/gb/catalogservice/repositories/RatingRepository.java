@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RatingRepository extends JpaRepository<Rating, Long>{
+public interface RatingRepository extends JpaRepository<Rating, Long> {
     Optional<Rating> findRatingByFilmAndUserId(Film film, Long userId);
 
     @Query("select sum(r.grade)/1.0/count(r.grade) from Rating r where r.film.id=:filmId")
