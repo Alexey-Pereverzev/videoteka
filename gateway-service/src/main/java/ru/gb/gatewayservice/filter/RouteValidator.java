@@ -25,11 +25,11 @@ public class RouteValidator {
             "/api/v1/genre/list_all",
             "/api/v1/genre/find_by_id",
             "/api/v1/price/prices_filter",
-            "/api/v1/raiting/list_all",
-            "/api/v1/raiting/add_new",
-            "/api/v1/raiting/total_film_raiting",
-            "/api/v1/raiting/list_all_grade_and_review_by_filmId",
-            "/api/v1/raiting/grade_user_by_id_film",
+            "/api/v1/rating/list_all",
+            "/api/v1/rating/add_new",
+            "/api/v1/rating/grade_user_by_id_film",
+            "/api/v1/rating/total_film_rating",
+            "/api/v1/rating/list_all_grade_and_review_by_filmId",
 
             "/api/v1/cart",
             "/api/v1/cart/generate",
@@ -42,7 +42,9 @@ public class RouteValidator {
 
     public static final List<String> adminApiEndpoints = List.of(
             "/api/v1/roles/update",
-            "/api/v1/users/delete"
+            "/api/v1/users/delete",
+            "/api/v1/users/list_all",
+            "/api/v1/users/list_all_not_deleted"
     );
 
     public static final List<String> userApiEndpoints = List.of(
