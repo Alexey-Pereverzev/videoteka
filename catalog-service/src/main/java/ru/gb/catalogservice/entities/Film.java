@@ -48,6 +48,6 @@ public class Film extends GenericEntity {
 
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "film_id")
-    private List<Raiting> raitings;
+    private List<Rating> ratings;
 
 }
