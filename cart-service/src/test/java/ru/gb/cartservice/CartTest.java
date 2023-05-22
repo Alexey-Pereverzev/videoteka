@@ -40,9 +40,9 @@ public class CartTest {
         cartItemDto.setPrice(100);
         cartItemDto.setSale(true);
 
-        cartService.addToCart("test_cart1", 5l, "X","test",100,true);
-        cartService.addToCart("test_cart1", 5l, "X","test",100, false );
-        cartService.addToCart("test_cart1", 5l, "X","test",100,true );
+        cartService.addToCart("test_cart1","test_cart1", 5l, "X","test",100,true);
+        cartService.addToCart("test_cart1", "test_cart1",5l, "X","test",100, false );
+        cartService.addToCart("test_cart1","test_cart1", 5l, "X","test",100,true );
 
 
 
@@ -64,8 +64,8 @@ public class CartTest {
         cartItemDto.setPrice(105);
         cartItemDto.setSale(true);
 
-        cartService.addToCart("test_cart1", 5l, "X","test",100, true );
-        cartService.addToCart("test_cart1", 2l, "Y","test1",105, true );
+        cartService.addToCart("test_cart1", "test_cart1",5l, "X","test",100, true );
+        cartService.addToCart("test_cart1","test_cart1", 2l, "Y","test1",105, true );
         cartService.removeItemFromCart("test_cart1",2l);
         Assertions.assertEquals(1, cartService.getCurrentCart("test_cart1").getItems().size());
     }
@@ -90,8 +90,8 @@ public class CartTest {
         cartItemDto1.setSale(true);
 
 
-        cartService.addToCart("user_cart", 5l, "X","test",100,true );
-        cartService.addToCart("guest_cart", 2l, "Y","test",102, true );
+        cartService.addToCart("user_cart","user_cart", 5l, "X","test",100,true );
+        cartService.addToCart("guest_cart", "guest_cart",2l, "Y","test",102, true );
         cartService.merge("user_cart","guest_cart");
         Assertions.assertEquals(2, cartService.getCurrentCart("user_cart").getItems().size());
     }

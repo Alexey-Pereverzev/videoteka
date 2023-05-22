@@ -63,6 +63,23 @@ public class OrdersController {
         return "Приятного просмотра ";
 
     }
+    @Operation(
+            summary = " Фильм пользоватея ",
+            description = "Возвращает фильм пользователя  "
+    )
+    @GetMapping("/userFilm")
+    public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
+        Long userIDLong = Long.valueOf(userId);
+        Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
+        System.out.println(optionalOrder+"userFilm ");
+        if (optionalOrder.isEmpty())
+            return new OrderDto();
+        else {
+            Order order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId).get();
+            return orderConverter.entityToDto(order1);
+        }
+
+    }
 
     @Operation(
             summary = "удаление заказа  ",
@@ -85,17 +102,19 @@ public class OrdersController {
             description = "удавытаскиваем из бд заказов фильмы пользователя которые в аренде  "
     )
     @GetMapping("/rent")
-    public List<Order> filmIsRent(String userId) {
+    public List<OrderDto> filmIsRent(String userId) {
         Long userIDLong = Long.valueOf(userId);
-        return orderService.filmIsRent(userIDLong);
+        return orderService.filmIsRent(userIDLong).stream()
+                .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
     @Operation(
             summary = "Фильмы купленные",
             description = "вытаскиваем из бд заказов фильмы пользователя которые куплены "
     )
     @GetMapping("/sale")
-    public List<Order> filmIsSale(String userId) {
+    public List<OrderDto> filmIsSale(String userId) {
         Long userIDLong = Long.valueOf(userId);
-        return orderService.filmIsSale(userIDLong);
+        return orderService.filmIsSale(userIDLong).stream()
+                .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 }
