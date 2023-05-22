@@ -22,10 +22,14 @@ public class RouteValidator {
             "/api/v1/film/find_by_title_part",
             "/api/v1/film/find_by_id",
             "/api/v1/film/min_max_year",
-            "/api/v1/film/add_new",
             "/api/v1/genre/list_all",
             "/api/v1/genre/find_by_id",
             "/api/v1/price/prices_filter",
+            "/api/v1/raiting/list_all",
+            "/api/v1/raiting/add_new",
+            "/api/v1/raiting/total_film_raiting",
+            "/api/v1/raiting/list_all_grade_and_review_by_filmId",
+            "/api/v1/raiting/grade_user_by_id_film",
 
             "/api/v1/cart",
             "/api/v1/cart/generate",
@@ -52,26 +56,22 @@ public class RouteValidator {
     );
 
     public static final List<String> managerApiEndpoints = List.of(
-
-
+            "/api/v1/film/add_new"
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
             request -> openApiEndpoints
                     .stream()
-//                    .anyMatch(uri -> request.getURI().getPath().contains(uri));
                     .anyMatch(uri -> truncateUri(request.getURI().getPath()).equals(uri));
 
     public Predicate<ServerHttpRequest> isAdminAccess =
             request -> adminApiEndpoints
                     .stream()
-//                    .anyMatch(uri -> request.getURI().getPath().contains(uri));
                     .anyMatch(uri -> truncateUri(request.getURI().getPath()).equals(uri));
 
     public Predicate<ServerHttpRequest> isUserAccess =
             request -> userApiEndpoints
                     .stream()
-//                    .anyMatch(uri -> request.getURI().getPath().contains(uri));
                     .anyMatch(uri -> truncateUri(request.getURI().getPath()).equals(uri));
 
     public Predicate<ServerHttpRequest> isManagerAccess =
