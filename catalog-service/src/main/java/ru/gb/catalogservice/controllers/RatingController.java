@@ -6,29 +6,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.dto.RaitingDto;
-import ru.gb.catalogservice.converters.RaitingConverter;
+import ru.gb.api.dtos.dto.RatingDto;
+import ru.gb.catalogservice.converters.RatingConverter;
 import ru.gb.catalogservice.exceptions.AppError;
-import ru.gb.catalogservice.services.RaitingService;
+import ru.gb.catalogservice.services.RatingService;
 import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/raiting")
+@RequestMapping("/api/v1/rating")
 @RequiredArgsConstructor
 @Tag(name = "Рейтинги", description = "Методы для работы с рейтингом фильмов")
-public class RaitingController {
-    private final RaitingService raitingService;
-    private final RaitingConverter raitingConverter;
+public class RatingController {
+    private final RatingService ratingService;
+    private final RatingConverter ratingConverter;
 
     @Operation(
             summary = "Вывод таблицы оценок",
             description = "Позволяет вывести ВСЕ записи таблицы оценок и комментариев"
     )
     @GetMapping("list_all")
-    public List<RaitingDto> listAll() {
-        return raitingService.findAll().stream().map(raitingConverter::entityToDto).toList();
+    public List<RatingDto> listAll() {
+        return ratingService.findAll().stream().map(ratingConverter::entityToDto).toList();
     }
 
     @Operation(
@@ -36,8 +36,8 @@ public class RaitingController {
             description = "Позволяет добавить оценку и комментарий пользователя к фильму"
     )
     @PostMapping("/add_new")
-    public ResponseEntity<?> addFilmRating(@RequestBody RaitingDto raitingDto) {
-        ResultOperation resultOperation = raitingService.addFilmRating(raitingDto);
+    public ResponseEntity<?> addFilmRating(@RequestBody RatingDto ratingDto) {
+        ResultOperation resultOperation = ratingService.addFilmRating(ratingDto);
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
         } else {
@@ -50,8 +50,8 @@ public class RaitingController {
             description = "Позволяет вывести оценку и отзыв пользователя по id фильма"
     )
     @GetMapping("grade_user_by_id_film")
-    public RaitingDto gradeUserByIdFilm(@RequestParam Long userId, @RequestParam Long filmId) {
-        return raitingConverter.entityToDto(raitingService.gradeUserByIdFilm(userId, filmId));
+    public RatingDto gradeUserByIdFilm(@RequestHeader String userId, @RequestParam Long filmId) {
+        return ratingConverter.entityToDto(ratingService.gradeUserByIdFilm(Long.parseLong(userId), filmId));
     }
 
     @Operation(
@@ -59,8 +59,8 @@ public class RaitingController {
             description = "Позволяет среднюю оценку пользователей по id фильма"
     )
     @GetMapping("total_film_raiting")
-    public String totalRaitingFilmById(@RequestParam Long filmId) {
-        return String.format("%.2f",raitingService.getTotalGrade(filmId));
+    public String totalRatingFilmById(@RequestParam Long filmId) {
+        return String.format("%.2f", ratingService.getTotalGrade(filmId));
     }
 
     @Operation(
@@ -68,7 +68,7 @@ public class RaitingController {
             description = "Позволяет получить список ВСЕХ отзывов и оценок по id фильма"
     )
     @GetMapping("list_all_grade_and_review_by_filmId")
-    public List<RaitingDto> listAllGradeAndReviewByFilmId(@RequestParam Long filmId) {
-        return raitingService.listAllGradeAndReviewsByFilmId(filmId).stream().map(raitingConverter::entityToDto).toList();
+    public List<RatingDto> listAllGradeAndReviewByFilmId(@RequestParam Long filmId) {
+        return ratingService.listAllGradeAndReviewsByFilmId(filmId).stream().map(ratingConverter::entityToDto).toList();
     }
 }

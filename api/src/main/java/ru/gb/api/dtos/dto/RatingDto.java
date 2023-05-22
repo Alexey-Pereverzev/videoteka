@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RaitingDto {
+public class RatingDto {
     private Long film_id;
     private Long user_id;
     private  Integer grade;

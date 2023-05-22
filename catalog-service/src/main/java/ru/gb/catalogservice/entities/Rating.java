@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name="grades_reviews")
 @Data
 @RequiredArgsConstructor
-public class Raiting extends GenericEntity {
+public class Rating extends GenericEntity {
 
     @Column(name="user_id")
     private Long userId;
