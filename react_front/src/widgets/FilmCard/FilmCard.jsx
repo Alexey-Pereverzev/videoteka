@@ -4,9 +4,26 @@ import TagButton from "../TagButton/TagButton";
 import {useState} from "react";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import FilmPage from "../../components/MainPage/FilmPage/FilmPage";
+import axios from "axios";
 
 
 function FilmCard(props) {
+
+    let getRating = async () => {
+            try {
+                const response = await axios.get('http://localhost:5555/catalog/api/v1/raiting/total_film_raiting',
+                    {
+                        params: {
+                            filmId: props.filmId,
+                        }
+                    }
+                )
+                console.log("Ответ метода getRating: " + response.data)
+            } catch (e) {
+
+            }
+    }
+    getRating()
     const [modalActive, setModalActive] = useState(false);
     return(
         <div className={style.container}>

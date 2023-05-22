@@ -10,6 +10,8 @@ import DropdownItem from "../../../widgets/DropdownItem/DropdownItem";
 function Header(props) {
 
     let username = JSON.parse(localStorage.getItem('username'))
+    let role = JSON.parse(localStorage.getItem('role_user'))
+    console.log('Присвоена роль: ' + role)
 
     let getCurrentUser = () => {
         return JSON.parse(localStorage.getItem('customer'))
@@ -30,7 +32,21 @@ function Header(props) {
     let openMenu = () => {
         setOpen(!open)
     }
+    let roleMenu = () =>{
+        switch(role) {
+            case 'ROLE_ADMIN':
+                return <NavLink to={'cabinet/users'}>
+                    <DropdownItem text={'пользователи'}/>
+                </NavLink>
+            case 'ROLE_MANAGER':
+                return <NavLink to={'cabinet/reductor'}>
+                    <DropdownItem text={'редактор'}/>
+                </NavLink>
+            default:
+                return
+        }
 
+    }
 
     const [open, setOpen] = useState(false);
 
@@ -87,9 +103,11 @@ function Header(props) {
                                 <NavLink to={'cabinet/favourites'}>
                                     <DropdownItem text={'избранное'}/>
                                 </NavLink>
+                                {roleMenu()}
                                 <button className={'logout_btn'} onClick={() => logout()}>
                                     <DropdownItem text={'выход'}/>
                                 </button>
+
                             </ul>
                         </div>
                     </div>
@@ -101,7 +119,7 @@ function Header(props) {
 
                 <div className={'cart_box'}>
                     <NavLink to={'/cart'} className={'cart_box__button'}>
-                        <ShoppingCartIcon />
+                        <ShoppingCartIcon/>
                     </NavLink>
 
                 </div>
