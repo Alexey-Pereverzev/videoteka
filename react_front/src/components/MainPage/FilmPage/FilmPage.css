@@ -123,6 +123,18 @@
     color: rgb(190, 190, 71);
 
 }
+.reviews_link{
+margin-right: 20px;
+}
+.reviews_link h4{
+}
+.reviews_link button{
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #c5c5c5;
+    cursor: pointer;
+}
 .pay_btn{
     font-size: 14px;
     color: #fff;

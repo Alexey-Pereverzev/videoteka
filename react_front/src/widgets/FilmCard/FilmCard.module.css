@@ -69,6 +69,8 @@
 .rating {
     position: relative;
     display: flex;
+    align-items: center;
+    max-height: 50px;
     padding: 5px 0;
 }
 .rating span{
