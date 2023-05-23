@@ -31,13 +31,18 @@ public class OrdersController {
             description = "Созадение заказа "
     )
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    //@ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createOrder(@RequestHeader String userId) {
         String result = orderService.createOrder(userId);
         if (result.equals("Заказ успено сохранен в БД")) {
             return ResponseEntity.ok(new StringResponse(" Заказ успешно сохранен в БД"));
 
-        } else {
+        }
+        else if (result.equals("Сервис корзины недоступен")){
+            return new ResponseEntity<>(new AppError("CART_NOT_FOUND", " Сервис корзины недоступен - попробуйте обновить страницу"), HttpStatus.NOT_FOUND);
+        }
+
+        else {
             return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Корзина пользователя пуста - заказ не сохранен"), HttpStatus.NOT_FOUND);
         }
 

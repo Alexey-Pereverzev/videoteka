@@ -31,34 +31,38 @@ public class OrderService {
     public String createOrder(String userId) {
 
         //String userIdString = String.valueOf(userId);
+        try {
+            CartDto currentCart = cartServiceIntegration.getCart(userId);
+            if (currentCart.getItems().size() <= 0) {
+                return "Заказ не сохранен - корзина пуста";
+            }
+            Long userIDLong = Long.valueOf(userId);
+            for (CartItemDto cartItemDto : currentCart.getItems()) {
+                Order order = new Order();
+                order.setUserId(userIDLong);
+                order.setPrice(cartItemDto.getPrice());
+                order.setFilmId(cartItemDto.getFilmId());
+                if (!cartItemDto.isSale()) {
+                    order.setType("RENT");
+                    // текущее время
+                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+                    order.setRentStart(dateStart);
+                    // к текущей дате прибавили 24 часа
+                    order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
 
-        CartDto currentCart = cartServiceIntegration.getCart(userId);
-        if (currentCart.getItems().size()<1 && userId.isEmpty()){
-            return "Заказ не сохранен - корзина пуста";
-        }
-        Long userIDLong = Long.valueOf(userId);
-        for (CartItemDto cartItemDto : currentCart.getItems()) {
-            Order order = new Order();
-            order.setUserId(userIDLong);
-            order.setPrice(cartItemDto.getPrice());
-            order.setFilmId(cartItemDto.getFilmId());
-            if (!cartItemDto.isSale()) {
-                order.setType("RENT");
-                // текущее время
-                LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
-                order.setRentStart(dateStart);
-                // к текущей дате прибавили 24 часа
-                order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
+                } else {
+                    order.setType("SALE");
+                    ordersRepository.save(order);
+                }
 
-            } else {
-                order.setType("SALE");
-                ordersRepository.save(order);
             }
 
+            cartServiceIntegration.clearUserCart(userId);
+            return "Заказ успено сохранен в БД";
         }
-
-        cartServiceIntegration.clearUserCart(userId);
-        return "Заказ успено сохранен в БД";
+        catch (Exception e){
+            return "Сервис корзины недоступен";
+        }
     }
 
     @Transactional
