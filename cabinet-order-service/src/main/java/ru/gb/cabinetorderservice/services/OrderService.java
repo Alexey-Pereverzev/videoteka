@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.cart.CartDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
-import ru.gb.api.dtos.order.OrderDto;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
@@ -29,11 +28,15 @@ public class OrderService {
 
 
     @Transactional
-    public void createOrder(String userId) {
+    public String createOrder(String userId) {
 
         //String userIdString = String.valueOf(userId);
 
         CartDto currentCart = cartServiceIntegration.getCart(userId);
+        if (currentCart.getItems().size()<1){
+            return "Заказ не сохранен - корзина пуста";
+        }
+
         Long userIDLong = Long.valueOf(userId);
         for (CartItemDto cartItemDto : currentCart.getItems()) {
             Order order = new Order();
@@ -48,13 +51,15 @@ public class OrderService {
                 // к текущей дате прибавили 24 часа
                 order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
 
-            } else
+            } else {
                 order.setType("SALE");
-            ordersRepository.save(order);
+                ordersRepository.save(order);
+            }
+
         }
 
-
         cartServiceIntegration.clearUserCart(userId);
+        return "Заказ успено сохранен в БД";
     }
 
     @Transactional
