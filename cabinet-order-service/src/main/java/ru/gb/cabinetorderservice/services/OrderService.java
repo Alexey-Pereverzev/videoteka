@@ -33,10 +33,9 @@ public class OrderService {
         //String userIdString = String.valueOf(userId);
 
         CartDto currentCart = cartServiceIntegration.getCart(userId);
-        if (currentCart.getItems().size()<1){
+        if (currentCart.getItems().size()<1 && userId.isEmpty()){
             return "Заказ не сохранен - корзина пуста";
         }
-
         Long userIDLong = Long.valueOf(userId);
         for (CartItemDto cartItemDto : currentCart.getItems()) {
             Order order = new Order();
