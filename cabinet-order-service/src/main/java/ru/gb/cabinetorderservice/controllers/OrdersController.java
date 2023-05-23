@@ -32,9 +32,15 @@ public class OrdersController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String userId) {
+    public ResponseEntity<?> createOrder(@RequestHeader String userId) {
+        String result = orderService.createOrder(userId);
+        if (result.equals("Заказ успено сохранен в БД")) {
+            return ResponseEntity.ok(new StringResponse(" Заказ успешно сохранен в БД"));
 
-        orderService.createOrder(userId);
+        } else {
+            return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Корзина пользователя пуста - заказ не сохранен"), HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @Operation(

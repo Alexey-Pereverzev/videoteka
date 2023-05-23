@@ -3,7 +3,8 @@ package ru.gb.cartservice.integrations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.gb.api.dtos.order.OrderDto;
+import ru.gb.api.dtos.dto.OrderDto;
+
 
 @Component
 @RequiredArgsConstructor
