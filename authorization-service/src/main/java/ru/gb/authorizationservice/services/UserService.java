@@ -120,27 +120,22 @@ public class UserService implements UserDetailsService {
             return validationMessage;
         }
 
-        if (firstName==null || firstName.isEmpty() || firstName.isBlank()) {
-            user.setFirstName(null);
+
+        validationMessage = validationService.acceptableFirstName(firstName);
+        if (validationMessage.equals("")) {
+            user.setFirstName(firstName);
         } else {
-            validationMessage = validationService.acceptableFirstName(firstName);
-            if (validationMessage.equals("")) {
-                user.setFirstName(firstName);
-            } else {
-                return validationMessage;
-            }
+            return validationMessage;
         }
 
-        if (lastName==null || lastName.isEmpty() || lastName.isBlank()) {
-            user.setLastName(null);
+
+        validationMessage = validationService.acceptableLastName(lastName);
+        if (validationMessage.equals("")) {
+            user.setLastName(lastName);
         } else {
-            validationMessage = validationService.acceptableLastName(lastName);
-            if (validationMessage.equals("")) {
-                user.setLastName(lastName);
-            } else {
-                return validationMessage;
-            }
+            return validationMessage;
         }
+
 
         if (phoneNumber==null || phoneNumber.isEmpty() || phoneNumber.isBlank()) {
             user.setPhoneNumber(null);
@@ -201,5 +196,14 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public String fullNameById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent() && !user.get().isDeleted()) {
+            return user.get().getFirstName().concat(" ").concat(user.get().getLastName());
+        } else {
+            return "";
+        }
     }
 }
