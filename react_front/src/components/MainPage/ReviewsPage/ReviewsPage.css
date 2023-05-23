@@ -1,0 +1,17 @@
+.review-page{
+    width: 100%;
+    border: 1px solid rgba(32,32,32,1);
+    border-radius: 5px;
+}
+.button-back_box{
+    margin: 10px;
+}
+.button-back_box button{
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b6b6b;
+    background: transparent;
+    outline: none;
+    border: none;
+
+}
