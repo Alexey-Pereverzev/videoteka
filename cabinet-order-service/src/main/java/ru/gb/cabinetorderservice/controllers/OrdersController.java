@@ -39,7 +39,7 @@ public class OrdersController {
 
         }
         else if (result.equals("Сервис корзины недоступен")){
-            return new ResponseEntity<>(new AppError("CART_NOT_FOUND", " Сервис корзины недоступен - попробуйте обновить страницу"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new AppError("CART_NOT_FOUND", " Сервис корзины недоступен - попробуйте обновить страницу"), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
         else {
