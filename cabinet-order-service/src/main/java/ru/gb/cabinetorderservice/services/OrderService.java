@@ -106,7 +106,7 @@ public class OrderService {
                     // пересохраняем фильм
 
                 }
-            return "Фильм перезаписан в статусе удален ";
+            return "Фильм перезаписан в статусе удален";
         }
         else {
             return " Этого фильма нет в бд," + filmId;
@@ -119,7 +119,6 @@ public class OrderService {
         if (orders.size()>0){
             return Optional.ofNullable(orders.get(0));
         }
-
         else return Optional.empty();
     }
     public List<Order> filmIsRent (Long userId){

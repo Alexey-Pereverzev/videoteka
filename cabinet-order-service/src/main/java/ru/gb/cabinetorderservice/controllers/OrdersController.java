@@ -71,7 +71,6 @@ public class OrdersController {
     public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
-        System.out.println(optionalOrder+"userFilm ");
         if (optionalOrder.isEmpty())
             return new OrderDto();
         else {
@@ -89,8 +88,8 @@ public class OrdersController {
     public ResponseEntity<?> delete(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         String result = orderService.delete(userIDLong, filmId);
-        if (result.equals("")) {
-            return ResponseEntity.ok(new StringResponse(" фильм успешно удален из заказов пользователя "));
+        if (result.equals("Фильм перезаписан в статусе удален")) {
+            return ResponseEntity.ok(new StringResponse(" Фильм перезаписан в статусе удален"));
 
         } else {
             return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Фильм не найден в заказах пользователя"), HttpStatus.NOT_FOUND);
