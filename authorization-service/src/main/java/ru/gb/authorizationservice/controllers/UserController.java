@@ -7,8 +7,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.UserDto;
+import ru.gb.authorizationservice.converters.UserConverter;
 import ru.gb.authorizationservice.exceptions.AppError;
 import ru.gb.authorizationservice.services.UserService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +21,9 @@ import ru.gb.authorizationservice.services.UserService;
 public class UserController {
 
     private final UserService userService;
+
+    private final UserConverter userConverter;
+
 
     @Operation(
             summary = "Запрос на удаление пользователя",
@@ -35,6 +42,22 @@ public class UserController {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
         userService.safeDeleteById(deleteUserId, userId);
+    }
+
+    @Operation(
+            summary = "Вывод всех не удаленных пользователей на странице админа"
+    )
+    @GetMapping("list_all_not_deleted")
+    public List<UserDto> listAllNotDeleted() {
+        return userService.findAllNotDeleted().stream().map(userConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Вывод всех пользователей на странице админа, включая удаленных"
+    )
+    @GetMapping("list_all")
+    public List<UserDto> listAll() {
+        return userService.findAll().stream().map(userConverter::entityToDto).toList();
     }
 
 

@@ -14,7 +14,9 @@ import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -193,6 +195,11 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public List<User> findAllNotDeleted() {
+        return userRepository.findAllNotDeleted();
+    }
 
-
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 }
