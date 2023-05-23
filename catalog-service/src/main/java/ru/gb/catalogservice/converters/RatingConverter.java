@@ -13,6 +13,7 @@ public class RatingConverter {
                 .film_id(rating.getFilm().getId())
                 .grade(rating.getGrade())
                 .review(rating.getReview())
+                .createDateTime(rating.getCreatedWhen())
                 .build();
         return ratingDto;
     }
