@@ -58,7 +58,7 @@ public class RatingController {
             summary = "Вывод средней оценки по всем пользователям по id фильма",
             description = "Позволяет среднюю оценку пользователей по id фильма"
     )
-    @GetMapping("total_film_raiting")
+    @GetMapping("total_film_rating")
     public String totalRatingFilmById(@RequestParam Long filmId) {
         return String.format("%.2f", ratingService.getTotalGrade(filmId));
     }
