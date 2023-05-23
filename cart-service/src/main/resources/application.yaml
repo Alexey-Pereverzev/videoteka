@@ -11,6 +11,11 @@ integrations:
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
+  cabinet-order-service:
+    url: http://localhost:8192/cabinet-order-service
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
 #spring:
 #  datasource:
 #    driver-class-name: org.postgresql.Driver

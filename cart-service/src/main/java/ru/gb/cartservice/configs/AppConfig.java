@@ -17,20 +17,38 @@ import java.util.concurrent.TimeUnit;
 public class AppConfig {
     @Value("${integrations.catalog-service.url}")
     private String filmServiceUrl;
+    @Value("${integrations.cabinet-order-service.url}")
+    private String orderServiceUrl;
 
     @Bean
     public WebClient filmServiceWebClient() {
         TcpClient tcpClient = TcpClient
                 .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .doOnConnected(connection -> {
                     connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(2000, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
                 });
 
         return WebClient
                 .builder()
                 .baseUrl(filmServiceUrl)
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .build();
+    }
+    @Bean
+    public WebClient orderServiceWebClient() {
+        TcpClient tcpClient = TcpClient
+                .create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
+                });
+
+        return WebClient
+                .builder()
+                .baseUrl(orderServiceUrl)
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }

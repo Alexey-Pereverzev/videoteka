@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.api.dtos.order.OrderDto;
 import ru.gb.cartservice.integrations.FilmServiceIntegration;
+import ru.gb.cartservice.integrations.OrderServiceIntegration;
 import ru.gb.cartservice.models.Cart;
 import ru.gb.cartservice.models.CartItem;
 
@@ -23,6 +25,7 @@ public class CartService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final FilmServiceIntegration filmServiceIntegration;
+    private final OrderServiceIntegration orderServiceIntegration;
 
     @Value("${utils.cart.prefix}")
     private String cartPrefix;
@@ -43,12 +46,31 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void addToCart(String cartKey, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
+    public StringResponse addToCart(String cartKey, String userId, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
         CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
+
+        if (!filmFindInMyFilm(userId, filmId,isSale)){
+            return new StringResponse("Этот фильм уже есть в вашем кабинете " + filmTitle);
+
+        }
         execute(cartKey, c -> {
 
             c.add(cartItemDto, isSale);
         });
+        return new StringResponse("Фильм успешно добавлен в корзину " + filmTitle);
+    }
+    public boolean filmFindInMyFilm(String userId, Long filmId, boolean isSale){
+        OrderDto orderDto = orderServiceIntegration.findByFilmIdAndUserId(userId, filmId);
+        if (orderDto.getId()==null) {
+            return true;
+        }
+        // если фильм есть уже в моих заказах и он в аренде а мы хотим купить
+        else if (orderDto.getRentStart()!=null && isSale){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void clearCart(String cartKey) {

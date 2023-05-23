@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.cart.CartDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
+import ru.gb.api.dtos.order.OrderDto;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
@@ -72,32 +73,58 @@ public class OrderService {
 
         return ordersRepository.findAllByUserId(userId);
     }
+    @Transactional
     public boolean softDeleteOfOrderInRent(Order order){
         LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
-            order.setDeletedWhen(LocalDateTime.now());
+            order.setDeletedWhen(dateNow);
             // пересохраняем заказ пользователя
             ordersRepository.save(order);
             return true;
         }
         return false;
     }
+    @Transactional
+    public void softDeleteOfOrder(Order order){
+        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+            order.setDeleted(true);
+            order.setDeletedWhen(dateNow);
+            // пересохраняем заказ пользователя
+            ordersRepository.save(order);
+
+    }
 
     public String delete(Long userId, Long filmId) {
-        Optional<Order> optionalOrder = ordersRepository.findByUserIdAndFilmId(userId, filmId);
-        if (!optionalOrder.isEmpty()) {
-            Order order = ordersRepository.findByUserIdAndFilmId(userId, filmId).get();
-                    //.orElseThrow(() -> new ResourceNotFoundException(" Этого фильма нет в бд," + filmId));
-            ordersRepository.deleteById(order.getId());
-            return "";
+        List<Order> orders = ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        if (orders.size()>0) {
+            Iterator<Order> orderIterator = orders.iterator();
+            while (orderIterator.hasNext()){
+                Order orderNext= orderIterator.next();
+                softDeleteOfOrder(orderNext);
+                    // если время проката истекло то ставим статус в поле isDelete - false
+                    // пересохраняем фильм
+
+                }
+            return "Фильм перезаписан в статусе удален";
         }
         else {
             return " Этого фильма нет в бд," + filmId;
         }
     }
 
+
     public Optional<Order> findFilmByUserIdAndFilmId(Long userId, Long filmId) {
-        return ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        List<Order> orders = ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        if (orders.size()>0){
+            return Optional.ofNullable(orders.get(0));
+        }
+        else return Optional.empty();
+    }
+    public List<Order> filmIsRent (Long userId){
+        return ordersRepository.findAllByUserIfFilmIsRent(userId);
+    }
+    public List<Order> filmIsSale (Long userId){
+        return ordersRepository.findAllByUserIfFilmIsSale(userId);
     }
 }
