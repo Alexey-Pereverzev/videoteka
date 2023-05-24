@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.RoleChangeDto;
 import ru.gb.authorizationservice.exceptions.AppError;
 import ru.gb.authorizationservice.services.UserService;
 
@@ -31,14 +32,13 @@ public class RoleController {
                     )
             }
     )
-    @PostMapping("/update")
+    @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestParam Long changeUserId, @RequestParam String role,
+    public void update(@RequestBody RoleChangeDto roleChangeDto,
                        @RequestHeader String userId) {
-
         //  changeUserId - какого пользователя изменяем
         //  userId - кто послал запрос на изменение пользователя
-        userService.setRoleToUser(changeUserId, userId, role);
+        userService.setRoleToUser(roleChangeDto.getChangeUserId(), userId, roleChangeDto.getRole());
     }
 
 
