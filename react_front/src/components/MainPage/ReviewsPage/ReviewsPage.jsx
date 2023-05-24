@@ -16,7 +16,7 @@ function ReviewsPage(props) {
                     setFilmReviews({
                         reviews: data.review,
                         id: data.user_id
-                    }, [setFilmReviews])
+                    }, [])
 
                     }
                 )

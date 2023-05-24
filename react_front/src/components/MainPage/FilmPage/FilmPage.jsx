@@ -94,7 +94,7 @@ function FilmPage(props) {
                 alert(e)
             }
         } else {
-            displayCartNotification('Для покупки зайдите в учётную запись!')
+            displayCartNotification('Добавление в корзину и оформление заказов возможно только для авторизованных пользователей! Пожалуйста, авторизуйтесь!')
         }
 
     }
