@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -184,21 +183,25 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void safeDeleteById(Long deleteUserId, String adminId) {
+    public String safeDeleteById(Long deleteUserId, String adminId) {
         Optional<User> u = userRepository.findById(deleteUserId);
         if (u.isPresent()) {
             if (!u.get().isDeleted()) {
                 u.get().setDeleted(true);
-                u.get().setDeletedBy(findById(adminId).orElseThrow(() -> new ResourceNotFoundException
-                        ("Пользователь с id: " + adminId + " не найден")).getUsername());
+                Optional<User> admin = findById(adminId);
+                if (admin.isPresent()) {
+                    u.get().setDeletedBy(admin.get().getUsername());
+                } else {
+                    return "Пользователь с id: " + adminId + " не найден";
+                }
                 u.get().setDeletedWhen(LocalDateTime.now());
                 userRepository.save(u.get());
+                return "";
             } else {
-                throw new ResourceNotFoundException
-                        ("Пользователь с id: " + deleteUserId + " не найден или удален");
+                return "Пользователь с id: " + deleteUserId + " не найден или удален";
             }
         } else {
-            throw new ResourceNotFoundException("Пользователь с id: " + deleteUserId + " не найден или удален");
+            return "Пользователь с id: " + deleteUserId + " не найден или удален";
         }
     }
 

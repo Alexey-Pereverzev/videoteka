@@ -36,16 +36,21 @@ public class UserController {
                             description = "Пользователь успешно удален", responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "404",
+                            description = "Пользователь не найден", responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
     )
     @DeleteMapping("/delete")
-    public void deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
+    public ResponseEntity<?> deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
-        userService.safeDeleteById(deleteUserId, userId);
+        String result = userService.safeDeleteById(deleteUserId, userId);
+        if (result.equals("")) {
+            return ResponseEntity.ok(new StringResponse("Пользователь успешно удален"));
+        } else {
+            return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR", result), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Operation(
