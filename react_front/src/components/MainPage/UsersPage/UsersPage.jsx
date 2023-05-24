@@ -28,11 +28,12 @@ function UsersPage(props) {
     useEffect(() => {
         getAllUsers();
     }, []);
+
     const handleChange = (event, whomChangeId) => {
         console.log(event.target)
         axios.put("http://localhost:5555/auth/api/v1/roles/update", {
             changeUserId: whomChangeId,
-            role: event.target.value
+                role: event.target.value
         })
             .then(r => console.log("Работает handleChange:"+r))
     };

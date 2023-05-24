@@ -89,7 +89,7 @@ function Header(props) {
                         <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
                             <h3 className={'menu_username'}>
                                 {username}
-                                <span className={'menu_location'}>Москва</span></h3>
+                                <span className={'menu_location'}></span></h3>
                             <ul>
                                 <NavLink to={'cabinet/profile'}>
                                     <DropdownItem text={'профиль'}/>
