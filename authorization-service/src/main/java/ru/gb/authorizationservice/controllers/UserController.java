@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.dto.JwtResponse;
+import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.api.dtos.dto.UserDto;
 import ru.gb.authorizationservice.converters.UserConverter;
-import ru.gb.authorizationservice.exceptions.AppError;
+
 import ru.gb.authorizationservice.services.UserService;
 
 import java.util.List;

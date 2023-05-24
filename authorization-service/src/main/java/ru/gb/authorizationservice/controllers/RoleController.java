@@ -7,9 +7,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.RoleChangeDto;
-import ru.gb.authorizationservice.exceptions.AppError;
+
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.services.UserService;
 
 @RestController
@@ -27,18 +30,22 @@ public class RoleController {
                             description = "Роль успешно изменена", responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "404",
+                            description = "Пользователь не найден", responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
     )
     @PutMapping("/update")
-    @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody RoleChangeDto roleChangeDto,
-                       @RequestHeader String userId) {
+    public ResponseEntity<?> update(@RequestBody RoleChangeDto roleChangeDto,
+                                 @RequestHeader String userId) {
         //  changeUserId - какого пользователя изменяем
         //  userId - кто послал запрос на изменение пользователя
-        userService.setRoleToUser(roleChangeDto.getChangeUserId(), userId, roleChangeDto.getRole());
+        String result = userService.setRoleToUser(roleChangeDto.getChangeUserId(), userId, roleChangeDto.getRole());
+        if (result.equals("")) {
+            return ResponseEntity.ok(new StringResponse("Роль успешно изменена"));
+        } else {
+            return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR", result), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
