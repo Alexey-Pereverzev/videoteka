@@ -9,23 +9,42 @@ class OrdersPage extends Component {
         super(props);
         this.state = {
             films: [],
+            saleFilms: [],
+            rentFilms: [],
             isSale: false
+
         }
     }
 
     componentDidMount() {
-        this.getOrders()
+        this.getRentedOrders()
+        this.getSoldOrders()
     }
 
 
-    getOrders = () => {
+    getRentedOrders = () => {
         try {
-            axios.get('http://localhost:5555/cabinet/api/v1/orders')
+            axios.get('http://localhost:5555/cabinet/api/v1/orders/rent')
                 .then(response => response.data)
                 .then(data => {
                     console.log(data)
                     this.setState({
-                        films: data,
+                        rentFilms: data,
+                    })
+                }).catch(reason => console.log(reason))
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+    getSoldOrders = () => {
+        try {
+            axios.get('http://localhost:5555/cabinet/api/v1/orders/sale')
+                .then(response => response.data)
+                .then(data => {
+                    console.log(data)
+                    this.setState({
+                        saleFilms: data,
                     })
                 })
         } catch (e) {
@@ -38,39 +57,34 @@ class OrdersPage extends Component {
     render() {
         return (
             <div className={'orders_container'}>
-                    {this.state.films.map(film => {
-                        return
-                        if (!film.sale) {
-                            {this.state.films.map(each =>
-                                <div className={'rent_box__container'}>
-                                    <span>Арендованные фильмы</span>
-                                    <div className={'rent_box'}>
-                                        <RentCard cover={each.imageUrlLink}
-                                                  title={each.filmTitle}
-                                                  description={each.description}
-                                                  price={each.price}
-                                                  rentStart={each.rentStart}
-                                                  rentEnd={each.rentEnd}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        } else {
-                            if(film.sale){
-                                {this.state.films.map(each => <div className={'rent_box__container'}>
-                                        <span>Ваши фильмы</span>
-                                        <div className={'own_box'}>
-                                            <OwnCard cover={each.imageUrlLink}
-                                                     title={each.filmTitle}
-                                                     description={each.description}
-                                                     price={each.price}/>
-                                        </div>
-                                    </div>
-                                )}
-                            }
-                        }
-                        }
-                    )}
+                {this.state.saleFilms.map((each) => (
+                    <div className={'rent_box__container'}>
+                        <span>Арендованные фильмы</span>
+                        <div className={'rent_box'}>
+                            <RentCard cover={each.imageUrlLink}
+                                      title={each.filmTitle}
+                                      description={each.description}
+                                      price={each.price}
+                                      rentStart={each.rentStart}
+                                      rentEnd={each.rentEnd}
+                            />
+                        </div>
+                    </div>
+                ))}
+
+
+                {this.state.saleFilms.map(each =>
+                    <div className={'rent_box__container'}>
+                        <span>Ваши фильмы</span>
+                        <div className={'own_box'}>
+                            <OwnCard cover={each.imageUrlLink}
+                                     title={each.filmTitle}
+                                     description={each.description}
+                                     price={each.price}/>
+                        </div>
+                    </div>
+                )
+                }
             </div>
 
 
