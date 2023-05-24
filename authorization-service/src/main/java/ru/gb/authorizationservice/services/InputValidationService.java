@@ -11,6 +11,7 @@ public class InputValidationService {
     private static ArrayList<Character> phoneCharacters;
     private static ArrayList<Character> loginCharacters;
     private static ArrayList<Character> passwordCharacters;
+    private static ArrayList<Character> emailCharacters;
 
     private static final int MIN_LOGIN_LENGTH = 3;
     private static final int MAX_LOGIN_LENGTH = 15;
@@ -58,6 +59,11 @@ public class InputValidationService {
         passwordCharacters.addAll(digits);
         passwordCharacters.addAll(latin);
         passwordCharacters.addAll(cyrillic);
+
+        emailCharacters = new ArrayList<>(66);
+        emailCharacters.addAll(digits);
+        emailCharacters.addAll(latin);
+        emailCharacters.add('@'); emailCharacters.add('.'); emailCharacters.add('_'); emailCharacters.add('-');
     }
 
     private static boolean areAllSymbolsInSet(String input, ArrayList<Character> pattern) {
@@ -72,8 +78,12 @@ public class InputValidationService {
     public String acceptableEmail(String email)
     {
         if (email.isEmpty() || email.isBlank()) return "Email не может быть пустым";
-        EmailValidator validator = EmailValidator.getInstance();
-        return validator.isValid(email) ? "" : "Некорректный e-mail";
+        if (!areAllSymbolsInSet(email, emailCharacters)) {
+            return "Недопустимые символы в email";
+        } else {
+            EmailValidator validator = EmailValidator.getInstance();
+            return validator.isValid(email) ? "" : "Некорректный e-mail";
+        }
     }
 
     public String acceptableLogin(String login)

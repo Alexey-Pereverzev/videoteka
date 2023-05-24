@@ -6,7 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.JwtResponse;
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.api.dtos.dto.UserDto;
 import ru.gb.authorizationservice.converters.UserConverter;
 import ru.gb.authorizationservice.exceptions.AppError;
@@ -58,6 +62,30 @@ public class UserController {
     @GetMapping("list_all")
     public List<UserDto> listAll() {
         return userService.findAll().stream().map(userConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Фамилия и имя по id",
+            responses = {
+            @ApiResponse(
+                    description = "Имя и фамилия", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = StringResponse.class))
+            ),
+            @ApiResponse(
+                    description = "Пользователь не найден", responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = AppError.class))
+            )
+    }
+    )
+    @GetMapping("get_fullname_by_id")
+    public ResponseEntity<?> fullNameById(@RequestParam Long userId) {
+        String fullname = userService.fullNameById(userId);
+        if (fullname.equals("")) {
+            return new ResponseEntity<>(new AppError("USER_NOT_FOUND", "Нет такого пользователя"),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseEntity.ok(new StringResponse(fullname));
+        }
     }
 
 
