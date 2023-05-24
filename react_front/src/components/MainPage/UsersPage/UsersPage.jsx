@@ -1,112 +1,126 @@
 import './UsersPage.css';
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
-
+import {
+    MenuItem,
+    Paper,
+    Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow
+} from "@mui/material";
+import axios from "axios";
+import {useEffect, useState} from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+///api/v1/roles/update
 
 function UsersPage(props) {
-    interface Column {
-        id: 'name' | 'code' | 'population' | 'size' | 'density';
-        label: string;
-        minWidth?: number;
-        align?: 'right';
-        format?: (value: number) => string;
-    }
-    interface Data {
-        name: string;
-        code: string;
-        population: number;
-        size: number;
-        density: number;
-    }
 
-    function createData(
-        name: string,
-        code: string,
-        population: number,
-        size: number,
-    ): Data {
-        const density = population / size;
-        return { name, code, population, size, density };
+    let getAllUsers = () => {
+        return axios.get("http://localhost:5555/auth/api/v1/users/list_all")
+            .then(response => response.data)
+            .then(data => setUsers(data))
     }
-
-    const rows = [
-        createData('India', 'IN', 1324171354, 3287263),
-        createData('China', 'CN', 1403500365, 9596961),
-        createData('Italy', 'IT', 60483973, 301340),
-        createData('United States', 'US', 327167434, 9833520),
-        createData('Canada', 'CA', 37602103, 9984670),
-        createData('Australia', 'AU', 25475400, 7692024),
-        createData('Germany', 'DE', 83019200, 357578),
-        createData('Ireland', 'IE', 4857000, 70273),
-        createData('Mexico', 'MX', 126577691, 1972550),
-        createData('Japan', 'JP', 126317000, 377973),
-        createData('France', 'FR', 67022000, 640679),
-        createData('United Kingdom', 'GB', 67545757, 242495),
-        createData('Russia', 'RU', 146793744, 17098246),
-        createData('Nigeria', 'NG', 200962417, 923768),
-        createData('Brazil', 'BR', 210147125, 8515767),
-    ];
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+    // const [role, setRole] = useState('');
+    const [users, setUsers] = useState([])
+    useEffect(() => {
+        getAllUsers();
+    }, []);
+    const handleChange = (event, whomChangeId) => {
+        console.log(event.target)
+        axios.put("http://localhost:5555/auth/api/v1/roles/update", {
+            changeUserId: whomChangeId,
+            role: event.target.value
+        })
+            .then(r => console.log("Работает handleChange:"+r))
     };
 
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-    return(
-        <div>
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="sticky table">
+    let banToUser = async (userId) => {
+        console.log(userId)
+        try {
+            const response = await axios.get('http://localhost:5555/auth/api/v1/users/delete',
+                {
+                    params: {
+                        deleteUserId: userId
+                    }
+                }
+            )
+            console.log("Ответ метода banToUser: " + response)
+            getAllUsers()
+        } catch (e) {
+            alert(e)
+        }
+    }
+    return (
+        <div className={'users_page'}>
+            <div className={'users_page__title'}>
+                Пользователи
+            </div>
+            <div className={'user_page__box'}>
+                <TableContainer component={Paper}>
+                    <Table stickyHeader={true} sx={{minWidth: 1050}} aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                {props.columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableCell sx={{background: '#2b303b', color: 'white'}}>Псевдоним</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Id</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Имя</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Фамилия</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Адрес почты</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Адрес доставки</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Номер</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white', width: 77}} align="center">Права</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Статус</TableCell>
+                                <TableCell sx={{background: '#2b303b', color: 'white', width: 50}} align="right"></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                            {props.columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {column.format && typeof value === 'number'
-                                                            ? column.format(value)
-                                                            : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
+                            {users.map((row) => (
+                                <TableRow
+                                    hover role="checkbox"
+                                    tabIndex={-1}
+                                    key={row.username}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {row.username}
+                                    </TableCell>
+                                    <TableCell align="right">{row.id}</TableCell>
+                                    <TableCell align="right">{row.firstName}</TableCell>
+                                    <TableCell align="right">{row.lastName}</TableCell>
+                                    <TableCell align="right"><a href={`mailto:${row.email}`}>{row.email}</a></TableCell>
+                                    <TableCell align="right">{row.address}</TableCell>
+                                    <TableCell align="right">{row.phoneNumber}</TableCell>
+                                    <TableCell align="left">
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={row.role}
+                                            label={row.role}
+                                            onChange={(event,_) => handleChange(event,row.id)}
+                                        >
+                                            <MenuItem value={'ROLE_USER'}>USER</MenuItem>
+                                            <MenuItem value={'ROLE_ADMIN'}>ADMIN</MenuItem>
+                                            <MenuItem value={'ROLE_MANAGER'}>MANAGER</MenuItem>
+                                        </Select>
+                                        {/*{row.role}*/}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {row.deleted ?
+                                            <h4 className={'banned'}>бан</h4>
+                                            :
+                                            <h4 className={'active_user'}>активен</h4>
+                                        }
+                                    </TableCell>
+                                    <TableCell align="right"><button className={'delete-user__btn'} onClick={() => banToUser(row.id)}><DeleteIcon/></button></TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
+            </div>
+
         </div>
     )
 }
