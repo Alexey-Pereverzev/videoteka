@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.api.dtos.dto.OrderDto;
 import ru.gb.cabinetorderservice.converters.OrderConverter;
 import ru.gb.cabinetorderservice.entities.Order;
-import ru.gb.cabinetorderservice.exceptions.AppError;
 import ru.gb.cabinetorderservice.services.OrderService;
 
 import java.util.List;
@@ -111,7 +111,7 @@ public class OrdersController {
             description = "удавытаскиваем из бд заказов фильмы пользователя которые в аренде  "
     )
     @GetMapping("/rent")
-    public List<OrderDto> filmIsRent(String userId) {
+    public List<OrderDto> filmIsRent(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
         return orderService.filmIsRent(userIDLong).stream()
                 .map(orderConverter::entityToDto).collect(Collectors.toList());
@@ -121,7 +121,7 @@ public class OrdersController {
             description = "вытаскиваем из бд заказов фильмы пользователя которые куплены "
     )
     @GetMapping("/sale")
-    public List<OrderDto> filmIsSale(String userId) {
+    public List<OrderDto> filmIsSale(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
         return orderService.filmIsSale(userIDLong).stream()
                 .map(orderConverter::entityToDto).collect(Collectors.toList());
