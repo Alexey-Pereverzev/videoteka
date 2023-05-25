@@ -8,10 +8,11 @@ position: absolute;
     overflow: scroll;
     padding-top: 10px;
 }
-.orders_container::-webkit-scrollbar{
-    display: none;
-}
+
 .rent_box__container{
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
     width: 95%;
 
 }
@@ -68,4 +69,8 @@ position: absolute;
     width: 100%;
     margin: 10px;
     overflow-x: scroll;
+}
+.orders_img{
+    width: 30px;
+    height: 30px;
 }

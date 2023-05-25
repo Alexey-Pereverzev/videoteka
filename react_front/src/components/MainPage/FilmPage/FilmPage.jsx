@@ -81,13 +81,14 @@ function FilmPage(props) {
                         }
                     }
                 )
-                if (sale) {
-                    displayCartNotification('Поздравляем! Вы купили фильм!')
-                } else {
-                    if (!sale) {
-                        displayCartNotification('Поздравляем! Вы взяли фильм в аренду!')
-                    }
-                }
+                // if (sale) {
+                    displayCartNotification(response.data.value)
+                // } else {
+                //     if (!sale) {
+                //         displayCartNotification('Поздравляем! Вы взяли фильм в аренду!')
+                //     }
+                //
+                // }
 
                 console.log("Ответ метода addToCart: " + response.data)
             } catch (e) {

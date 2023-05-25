@@ -15,7 +15,7 @@ function FilmCard(props) {
     console.log('Id фильма: ' + props.id)
     let getRating = () => {
         try {
-            axios.get('http://localhost:5555/catalog/api/v1/rating/total_film_raiting',
+            axios.get('http://localhost:5555/catalog/api/v1/rating/total_film_rating',
                 {
                     params: {
                         filmId: props.id,
@@ -80,8 +80,9 @@ function FilmCard(props) {
                     </h2>
                     <div className={style.rating}>
                         <Rating name="half-rating-read"
-                                size={'small'}
-                                precision={0.5}
+                               sx={{padding: 1}}
+                                size={'normal'}
+                                precision={0.01}
                                 value={ratingState}
                                 readOnly/>
                         <span>{ratingState}</span>
