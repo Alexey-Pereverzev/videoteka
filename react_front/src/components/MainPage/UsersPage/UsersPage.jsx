@@ -30,18 +30,24 @@ function UsersPage(props) {
     }, []);
 
     const handleChange = (event, whomChangeId) => {
+        try {
         console.log(event.target)
         axios.put("http://localhost:5555/auth/api/v1/roles/update", {
             changeUserId: whomChangeId,
                 role: event.target.value
         })
-            .then(r => console.log("Работает handleChange:"+r))
+
+            .then(r => getAllUsers())
+        } catch (e) {
+            alert(e)
+        }
+
     };
 
     let banToUser = async (userId) => {
         console.log(userId)
         try {
-            const response = await axios.get('http://localhost:5555/auth/api/v1/users/delete',
+            const response = await axios.delete('http://localhost:5555/auth/api/v1/users/delete',
                 {
                     params: {
                         deleteUserId: userId
@@ -90,7 +96,7 @@ function UsersPage(props) {
                                     <TableCell align="right">{row.id}</TableCell>
                                     <TableCell align="right">{row.firstName}</TableCell>
                                     <TableCell align="right">{row.lastName}</TableCell>
-                                    <TableCell align="right"><a href={`mailto:${row.email}`}>{row.email}</a></TableCell>
+                                    <TableCell align="right"><a href={`${row.email}`}>{row.email}</a></TableCell>
                                     <TableCell align="right">{row.address}</TableCell>
                                     <TableCell align="right">{row.phoneNumber}</TableCell>
                                     <TableCell align="left">

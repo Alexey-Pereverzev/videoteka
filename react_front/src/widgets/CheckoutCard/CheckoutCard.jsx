@@ -1,13 +1,18 @@
 import "./CheckoutCard.css";
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify";
+import React from "react";
 
 function CheckoutCard(props) {
+    let displayCartNotification = (message) => {
+        toast.success(message);
+    };
 
     let sendPaymentRequest = async () => {
         try {
-            const response = await axios.post('http://localhost:5555/cabinet/api/v1/orders')
+            const response = await axios.post('http://localhost:5555/cabinet/api/v1/orders').then(() => props.clearCart())
             console.log("Ответ метода sendPaymentRequest: " + response)
-            props.clearCart()
+            displayCartNotification(response.value)
         } catch (e) {
             alert("Метод sendPaymentRequest: " + e)
         }
@@ -42,8 +47,20 @@ function CheckoutCard(props) {
                     <br/>
 
                 </form>
-                <button className={'checkout_btn'} onClick={() => sendPaymentRequest()}>Отправить</button>
+                <button className={'checkout_btn'} onClick={() => sendPaymentRequest()}>Оплатить</button>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }

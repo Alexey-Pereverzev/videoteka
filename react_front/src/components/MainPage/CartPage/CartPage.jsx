@@ -2,9 +2,10 @@ import "./CartPage.css"
 import {NavLink} from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StringCard from "../../../widgets/StringCard/StringCard";
-import {Component} from "react";
+import React, {Component} from "react";
 import axios from "axios";
 import CheckoutCard from "../../../widgets/CheckoutCard/CheckoutCard";
+import {toast, ToastContainer} from "react-toastify";
 
 class CartPage extends Component{
     constructor(props) {
