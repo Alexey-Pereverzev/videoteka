@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.RatingDto;
 import ru.gb.catalogservice.converters.RatingConverter;
-import ru.gb.catalogservice.exceptions.AppError;
 import ru.gb.catalogservice.services.RatingService;
 import ru.gb.catalogservice.utils.ResultOperation;
 

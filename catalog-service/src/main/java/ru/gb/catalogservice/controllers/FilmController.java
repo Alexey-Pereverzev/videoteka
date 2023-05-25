@@ -14,7 +14,6 @@ import ru.gb.api.dtos.dto.PageFilmDto;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.converters.PageFilmConverter;
 import ru.gb.catalogservice.entities.*;
-import ru.gb.catalogservice.exceptions.AppError;
 import ru.gb.catalogservice.services.*;
 import ru.gb.catalogservice.utils.ResultOperation;
 
