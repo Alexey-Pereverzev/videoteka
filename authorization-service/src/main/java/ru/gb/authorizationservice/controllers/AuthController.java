@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.gb.api.dtos.JwtRequest;
-import ru.gb.api.dtos.JwtResponse;
+import ru.gb.api.dtos.dto.AppError;
+import ru.gb.api.dtos.dto.JwtRequest;
+import ru.gb.api.dtos.dto.JwtResponse;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.exceptions.AppError;
+
 import ru.gb.authorizationservice.services.UserService;
 import ru.gb.authorizationservice.utils.JwtTokenUtil;
 

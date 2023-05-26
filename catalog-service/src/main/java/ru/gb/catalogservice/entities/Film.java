@@ -46,4 +46,8 @@ public class Film extends GenericEntity {
     @Column(name="description")
     private String description;
 
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "film_id")
+    private List<Rating> ratings;
+
 }

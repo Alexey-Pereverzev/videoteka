@@ -7,12 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
-import ru.gb.api.dtos.order.OrderDto;
+import ru.gb.api.dtos.dto.OrderDto;
 import ru.gb.cabinetorderservice.converters.OrderConverter;
 import ru.gb.cabinetorderservice.entities.Order;
-import ru.gb.cabinetorderservice.exceptions.AppError;
 import ru.gb.cabinetorderservice.services.OrderService;
 
 import java.util.List;
@@ -32,11 +31,23 @@ public class OrdersController {
             description = "Созадение заказа "
     )
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String userId) {
+    //@ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> createOrder(@RequestHeader String userId) {
+        String result = orderService.createOrder(userId);
+        if (result.equals("Заказ успено сохранен в БД")) {
+            return ResponseEntity.ok(new StringResponse(" Заказ успешно сохранен в БД"));
 
-        orderService.createOrder(userId);
+        }
+        else if (result.equals("Сервис корзины недоступен")){
+            return new ResponseEntity<>(new AppError("CART_NOT_FOUND", " Сервис корзины недоступен - попробуйте обновить страницу"), HttpStatus.SERVICE_UNAVAILABLE);
+        }
+
+        else {
+            return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Корзина пользователя пуста - заказ не сохранен"), HttpStatus.NOT_FOUND);
+        }
+
     }
+
     @Operation(
             summary = "Заказ пользователя ",
             description = "Заказ пользователя "
@@ -47,35 +58,72 @@ public class OrdersController {
         return orderService.findAllByUserId(userIDLong).stream()
                 .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
+
     @Operation(
             summary = "Просмотр фильма  ",
             description = "Просмотр фильма   "
     )
     @GetMapping("/playFilm")
-    public String findByFilmId(@RequestHeader String userId, @RequestParam  Long filmId) {
+    public String findByFilmId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
-        if (order1.isEmpty()){
-            return " Нельзя смотреть, фильм не оплачен " +filmId;
+        if (order1.isEmpty()) {
+            return " Нельзя смотреть, фильм не оплачен " + filmId;
         }
-        return  "Приятного просмотра ";
+        return "Приятного просмотра ";
 
     }
+    @Operation(
+            summary = " Фильм пользоватея ",
+            description = "Возвращает фильм пользователя  "
+    )
+    @GetMapping("/userFilm")
+    public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
+        Long userIDLong = Long.valueOf(userId);
+        Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
+        if (optionalOrder.isEmpty())
+            return new OrderDto();
+        else {
+            Order order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId).get();
+            return orderConverter.entityToDto(order1);
+        }
+
+    }
+
     @Operation(
             summary = "удаление заказа  ",
             description = "удаление заказа из бд   "
     )
     @GetMapping("/delete")
-    public ResponseEntity<?> delete(@RequestHeader String userId, @RequestParam  Long filmId) {
+    public ResponseEntity<?> delete(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         String result = orderService.delete(userIDLong, filmId);
-        if (result.equals("")){
-            return ResponseEntity.ok(new StringResponse(" фильм успешно удален из заказов пользователя "));
+        if (result.equals("Фильм перезаписан в статусе удален")) {
+            return ResponseEntity.ok(new StringResponse(" Фильм перезаписан в статусе удален"));
 
-        }
-        else {
+        } else {
             return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Фильм не найден в заказах пользователя"), HttpStatus.NOT_FOUND);
         }
 
+    }
+    @Operation(
+            summary = "Фильмы в арнде  ",
+            description = "удавытаскиваем из бд заказов фильмы пользователя которые в аренде  "
+    )
+    @GetMapping("/rent")
+    public List<OrderDto> filmIsRent(@RequestHeader String userId) {
+        Long userIDLong = Long.valueOf(userId);
+        return orderService.filmIsRent(userIDLong).stream()
+                .map(orderConverter::entityToDto).collect(Collectors.toList());
+    }
+    @Operation(
+            summary = "Фильмы купленные",
+            description = "вытаскиваем из бд заказов фильмы пользователя которые куплены "
+    )
+    @GetMapping("/sale")
+    public List<OrderDto> filmIsSale(@RequestHeader String userId) {
+        Long userIDLong = Long.valueOf(userId);
+        return orderService.filmIsSale(userIDLong).stream()
+                .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 }

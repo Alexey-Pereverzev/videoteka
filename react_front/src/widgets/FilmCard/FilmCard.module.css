@@ -69,11 +69,16 @@
 .rating {
     position: relative;
     display: flex;
+    align-items: center;
+    max-height: 50px;
     padding: 5px 0;
 }
-.rating span{
-    padding: 0 1px;
-}
+/*.film_rating__stars span{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+
+/*}*/
+
 
 .info{
     height: 20%;

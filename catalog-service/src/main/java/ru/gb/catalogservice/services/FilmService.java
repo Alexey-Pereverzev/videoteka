@@ -1,16 +1,21 @@
 package ru.gb.catalogservice.services;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.gb.api.dtos.FilmDto;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.PageFilmDto;
 import ru.gb.catalogservice.entities.*;
+import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.FilmRepository;
 import ru.gb.catalogservice.utils.ResultOperation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -127,4 +132,68 @@ public class FilmService {
         return filmRepository.findAll();
     }
 
+    public Page<Film> listAll (int currentPage, String[] filterCountryList,String[] filterDirectorList,
+                                  String[] filterGenreList, Integer startPremierYear, Integer endPremierYear,
+                                  Boolean isSale, Integer minPrice, Integer maxPrice){
+        List<Country> countries;
+        if (filterCountryList==null || filterCountryList.length==0){
+            countries=countryService.findAll();
+        }else {
+            countries = countryService.findByFilter(filterCountryList);
+        }
+        List<Director> directors;
+        if (filterDirectorList==null || filterDirectorList.length==0){
+            directors=directorService.findAll();
+        }else{
+            String[] filterDirectorFirstName=new String[filterDirectorList.length];
+            String[] filterDirectorLastName=new String[filterDirectorList.length];
+            for (int i=0;i< filterDirectorList.length;i++){
+                String[] s=filterDirectorList[i].split(" ");
+                if (s.length==2){
+                    filterDirectorFirstName[i]=s[0];
+                    filterDirectorLastName[i]=s[1];
+                }else if(s.length>2){
+                    filterDirectorFirstName[i]=s[0];
+                    filterDirectorLastName[i]="";
+                    for (int ii=1;ii<s.length;ii++){
+                        if (ii!=1){
+                            filterDirectorLastName[i]=filterDirectorLastName[i]+" ";
+                        }
+                        filterDirectorLastName[i]=filterDirectorLastName[i]+s[ii];
+                    }
+                }else{
+                    throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+                }
+            }
+            directors=directorService.findByFilter(filterDirectorFirstName,filterDirectorLastName);
+        }
+        List<Genre> genres;
+        if (filterGenreList==null || filterGenreList.length==0){
+            genres=genreService.findAll();
+        }else {
+            genres = genreService.findByFilter(filterGenreList);
+        }
+        if (startPremierYear==null||startPremierYear<1900){
+            startPremierYear=1900;
+        }
+        if (endPremierYear==null||endPremierYear> LocalDate.now().getYear()){
+            endPremierYear=LocalDate.now().getYear();
+        }
+        List<Price> prices;
+        if (isSale!=null && minPrice!=null && maxPrice!=null){
+            if (isSale){
+                prices=priceService.findByFilterSalePrice(minPrice,maxPrice);
+            }else{
+                prices=priceService.findByFilterRentPrice(minPrice,maxPrice);
+            }
+            return findByFilter(currentPage,countries,directors,genres,
+                    startPremierYear,endPremierYear,prices);
+        }else{
+            throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+        }
+    }
+
+    public Double getTotalRaitingFilmById (Long filmId){
+        return 2.0;
+    }
 }

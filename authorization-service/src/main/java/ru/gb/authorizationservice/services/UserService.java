@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gb.api.dtos.RegisterUserDto;
+import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -118,27 +118,22 @@ public class UserService implements UserDetailsService {
             return validationMessage;
         }
 
-        if (firstName==null || firstName.isEmpty() || firstName.isBlank()) {
-            user.setFirstName(null);
+
+        validationMessage = validationService.acceptableFirstName(firstName);
+        if (validationMessage.equals("")) {
+            user.setFirstName(firstName);
         } else {
-            validationMessage = validationService.acceptableFirstName(firstName);
-            if (validationMessage.equals("")) {
-                user.setFirstName(firstName);
-            } else {
-                return validationMessage;
-            }
+            return validationMessage;
         }
 
-        if (lastName==null || lastName.isEmpty() || lastName.isBlank()) {
-            user.setLastName(null);
+
+        validationMessage = validationService.acceptableLastName(lastName);
+        if (validationMessage.equals("")) {
+            user.setLastName(lastName);
         } else {
-            validationMessage = validationService.acceptableLastName(lastName);
-            if (validationMessage.equals("")) {
-                user.setLastName(lastName);
-            } else {
-                return validationMessage;
-            }
+            return validationMessage;
         }
+
 
         if (phoneNumber==null || phoneNumber.isEmpty() || phoneNumber.isBlank()) {
             user.setPhoneNumber(null);
@@ -160,14 +155,27 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
-    public void setRoleToUser(Long changeUserId, String adminId, String role) {
-        User changeUser = userRepository.findById(changeUserId).orElseThrow(() ->
-                new ResourceNotFoundException("Пользователь с id: " + changeUserId + " не найден"));
-        changeUser.setRole(roleService.getRoleByName(role).orElseThrow(
-                () -> new ResourceNotFoundException("Роль " + role + " в базе не найдена")));
-        changeUser.setUpdateBy(findById(adminId).orElseThrow(() ->
-                new ResourceNotFoundException("Пользователь с id: " + adminId + " не найден")).getUsername());
-        userRepository.save(changeUser);
+    public String setRoleToUser(Long changeUserId, String adminId, String role) {
+        Optional<User> changeUser = userRepository.findById(changeUserId);
+        if (changeUser.isPresent()) {
+            User user = changeUser.get();
+            Optional<Role> newRole = roleService.getRoleByName(role);
+            if (newRole.isPresent()) {
+                user.setRole(newRole.get());
+            } else {
+                return "Роль " + role + " в базе не найдена";
+            }
+            Optional<User> changer = findById(adminId);
+            if (changer.isPresent()) {
+                user.setUpdateBy(changer.get().getUsername());
+            } else {
+                return "Пользователь с id: " + adminId + " не найден";
+            }
+            userRepository.save(user);
+            return "";
+        } else {
+            return "Пользователь с id: " + changeUserId + " не найден";
+        }
     }
 
     public Optional<User> findById(String userId) {
@@ -175,24 +183,42 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void safeDeleteById(Long deleteUserId, String adminId) {
+    public String safeDeleteById(Long deleteUserId, String adminId) {
         Optional<User> u = userRepository.findById(deleteUserId);
         if (u.isPresent()) {
             if (!u.get().isDeleted()) {
                 u.get().setDeleted(true);
-                u.get().setDeletedBy(findById(adminId).orElseThrow(() -> new ResourceNotFoundException
-                        ("Пользователь с id: " + adminId + " не найден")).getUsername());
+                Optional<User> admin = findById(adminId);
+                if (admin.isPresent()) {
+                    u.get().setDeletedBy(admin.get().getUsername());
+                } else {
+                    return "Пользователь с id: " + adminId + " не найден";
+                }
                 u.get().setDeletedWhen(LocalDateTime.now());
                 userRepository.save(u.get());
+                return "";
             } else {
-                throw new ResourceNotFoundException
-                        ("Пользователь с id: " + deleteUserId + " не найден или удален");
+                return "Пользователь с id: " + deleteUserId + " не найден или удален";
             }
         } else {
-            throw new ResourceNotFoundException("Пользователь с id: " + deleteUserId + " не найден или удален");
+            return "Пользователь с id: " + deleteUserId + " не найден или удален";
         }
     }
 
+    public List<User> findAllNotDeleted() {
+        return userRepository.findAllNotDeleted();
+    }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
+    public String fullNameById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent() && !user.get().isDeleted()) {
+            return user.get().getFirstName().concat(" ").concat(user.get().getLastName());
+        } else {
+            return "";
+        }
+    }
 }

@@ -2,26 +2,29 @@
 
 .film-page{
     width: 100%;
+    border: 1px solid rgba(32,32,32,1);
+    border-radius: 5px;
 }
 .movie {
-    max-width: 800px;
+    max-width: 870px;
     border-radius: 5px;
     display: flex;
-    /*box-shadow: 0 5px 20px 10px rgba(0, 0, 0, .2);*/
     overflow: hidden;
 }
 
 .movie__hero {
     flex: 0 0 45%;
+    width: 350px;
 }
 
 .movie__img {
     width: 100%;
+    height: 100%;
     display: block;
 }
 
 .movie__content {
-    background-color: #fff;
+    background-color: #000000;
     flex: 1;
     padding: 35px 30px;
     display: flex;
@@ -29,7 +32,7 @@
 }
 
 .movie__price {
-    background:linear-gradient(to bottom, #A9C9FF 0%, #fdfdfd 100%);
+    background:linear-gradient(to bottom, #A9C9FF 0%, #000000 100%);
     flex: 0 0 50px;
     font-size: 18px;
     font-weight: bold;
@@ -75,6 +78,7 @@
 
 .movie__description {
     font-size: 14px;
+    color: #c5c5c5;
 }
 
 .movie__details {
@@ -85,6 +89,7 @@
 }
 .movie__details h4{
     margin-right: 10px;
+    color: #ef9223;
 }
 
 .movie__detail {
@@ -93,6 +98,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #ef9223;
 }
 .movie__genre{
     font-size: 13px;
@@ -116,6 +122,18 @@
 .icons-yellow {
     color: rgb(190, 190, 71);
 
+}
+.reviews_link{
+margin-right: 20px;
+}
+.reviews_link h4{
+}
+.reviews_link button{
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #c5c5c5;
+    cursor: pointer;
 }
 .pay_btn{
     font-size: 14px;

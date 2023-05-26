@@ -28,32 +28,41 @@ public class OrderService {
 
 
     @Transactional
-    public void createOrder(String userId) {
+    public String createOrder(String userId) {
 
         //String userIdString = String.valueOf(userId);
+        try {
+            CartDto currentCart = cartServiceIntegration.getCart(userId);
+            if (currentCart.getItems().size() <= 0) {
+                return "Заказ не сохранен - корзина пуста";
+            }
+            Long userIDLong = Long.valueOf(userId);
+            for (CartItemDto cartItemDto : currentCart.getItems()) {
+                Order order = new Order();
+                order.setUserId(userIDLong);
+                order.setPrice(cartItemDto.getPrice());
+                order.setFilmId(cartItemDto.getFilmId());
+                if (!cartItemDto.isSale()) {
+                    order.setType("RENT");
+                    // текущее время
+                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+                    order.setRentStart(dateStart);
+                    // к текущей дате прибавили 24 часа
+                    order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
 
-        CartDto currentCart = cartServiceIntegration.getCart(userId);
-        Long userIDLong = Long.valueOf(userId);
-        for (CartItemDto cartItemDto : currentCart.getItems()) {
-            Order order = new Order();
-            order.setUserId(userIDLong);
-            order.setPrice(cartItemDto.getPrice());
-            order.setFilmId(cartItemDto.getFilmId());
-            if (!cartItemDto.isSale()) {
-                order.setType("RENT");
-                // текущее время
-                LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
-                order.setRentStart(dateStart);
-                // к текущей дате прибавили 24 часа
-                order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
+                } else {
+                    order.setType("SALE");
+                    ordersRepository.save(order);
+                }
 
-            } else
-                order.setType("SALE");
-            ordersRepository.save(order);
+            }
+
+            cartServiceIntegration.clearUserCart(userId);
+            return "Заказ успено сохранен в БД";
         }
-
-
-        cartServiceIntegration.clearUserCart(userId);
+        catch (Exception e){
+            return "Сервис корзины недоступен";
+        }
     }
 
     @Transactional
@@ -72,32 +81,58 @@ public class OrderService {
 
         return ordersRepository.findAllByUserId(userId);
     }
+    @Transactional
     public boolean softDeleteOfOrderInRent(Order order){
         LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
-            order.setDeletedWhen(LocalDateTime.now());
+            order.setDeletedWhen(dateNow);
             // пересохраняем заказ пользователя
             ordersRepository.save(order);
             return true;
         }
         return false;
     }
+    @Transactional
+    public void softDeleteOfOrder(Order order){
+        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+            order.setDeleted(true);
+            order.setDeletedWhen(dateNow);
+            // пересохраняем заказ пользователя
+            ordersRepository.save(order);
+
+    }
 
     public String delete(Long userId, Long filmId) {
-        Optional<Order> optionalOrder = ordersRepository.findByUserIdAndFilmId(userId, filmId);
-        if (!optionalOrder.isEmpty()) {
-            Order order = ordersRepository.findByUserIdAndFilmId(userId, filmId).get();
-                    //.orElseThrow(() -> new ResourceNotFoundException(" Этого фильма нет в бд," + filmId));
-            ordersRepository.deleteById(order.getId());
-            return "";
+        List<Order> orders = ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        if (orders.size()>0) {
+            Iterator<Order> orderIterator = orders.iterator();
+            while (orderIterator.hasNext()){
+                Order orderNext= orderIterator.next();
+                softDeleteOfOrder(orderNext);
+                    // если время проката истекло то ставим статус в поле isDelete - false
+                    // пересохраняем фильм
+
+                }
+            return "Фильм перезаписан в статусе удален";
         }
         else {
             return " Этого фильма нет в бд," + filmId;
         }
     }
 
+
     public Optional<Order> findFilmByUserIdAndFilmId(Long userId, Long filmId) {
-        return ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        List<Order> orders = ordersRepository.findByUserIdAndFilmId(userId, filmId);
+        if (orders.size()>0){
+            return Optional.ofNullable(orders.get(0));
+        }
+        else return Optional.empty();
+    }
+    public List<Order> filmIsRent (Long userId){
+        return ordersRepository.findAllByUserIfFilmIsRent(userId);
+    }
+    public List<Order> filmIsSale (Long userId){
+        return ordersRepository.findAllByUserIfFilmIsSale(userId);
     }
 }

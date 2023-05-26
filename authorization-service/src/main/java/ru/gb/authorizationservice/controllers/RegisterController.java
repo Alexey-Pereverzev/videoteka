@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.gb.api.dtos.RegisterUserDto;
+import ru.gb.api.dtos.dto.AppError;
+import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.exceptions.AppError;
+
 import ru.gb.authorizationservice.services.UserService;
 
 import java.util.Optional;
@@ -71,8 +72,8 @@ public class RegisterController {
             String bcryptCachedPassword = passwordEncoder.encode(registerUserDto.getPassword());
             String tryToCreate = userService.createNewUser(registerUserDto, bcryptCachedPassword);
             if (!tryToCreate.equals("")) {
-                return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
-                        tryToCreate), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
+                            tryToCreate), HttpStatus.BAD_REQUEST);
             } else {
                 return ResponseEntity.ok(new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно создан"));

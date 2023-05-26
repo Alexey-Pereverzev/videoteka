@@ -1,15 +1,17 @@
 import {NavLink} from "react-router-dom";
 import {Avatar} from "@mui/material";
-import SearchBar from "../../../widgets/SearchBar/SearchBar";
-import DropdownItem from "../../../widgets/DropdownItem/DropdownItem";
 import {useEffect, useRef, useState} from "react";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import "./Header.css"
+import SearchBar from "../../../widgets/SearchBar/SearchBar"
+import DropdownItem from "../../../widgets/DropdownItem/DropdownItem";
 
 
 function Header(props) {
 
     let username = JSON.parse(localStorage.getItem('username'))
+    let role = JSON.parse(localStorage.getItem('role_user'))
+    console.log('Присвоена роль: ' + role)
 
     let getCurrentUser = () => {
         return JSON.parse(localStorage.getItem('customer'))
@@ -30,7 +32,21 @@ function Header(props) {
     let openMenu = () => {
         setOpen(!open)
     }
+    let roleMenu = () =>{
+        switch(role) {
+            case 'ROLE_ADMIN':
+                return <NavLink to={'cabinet/users'}>
+                    <DropdownItem text={'пользователи'}/>
+                </NavLink>
+            case 'ROLE_MANAGER':
+                return <NavLink to={'cabinet/reductor'}>
+                    <DropdownItem text={'редактор'}/>
+                </NavLink>
+            default:
+                return
+        }
 
+    }
 
     const [open, setOpen] = useState(false);
 
@@ -54,7 +70,7 @@ function Header(props) {
             <div className={'top_header'}>
                 <NavLink to={'/'} className={'logo'}>
                     <img
-                        src={'https://w7.pngwing.com/pngs/654/21/png-transparent-alphabet-letter-character-3d-font-text-capital-typography.png'}
+                        src={'https://i.pinimg.com/originals/6a/e2/02/6ae2025b41de91553621b2c8c554d61f.jpg'}
                         alt={'logo'}/>
                 </NavLink>
                 <SearchBar onChange={props.onChange}/>
@@ -73,7 +89,7 @@ function Header(props) {
                         <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
                             <h3 className={'menu_username'}>
                                 {username}
-                                <span className={'menu_location'}>Москва</span></h3>
+                                <span className={'menu_location'}></span></h3>
                             <ul>
                                 <NavLink to={'cabinet/profile'}>
                                     <DropdownItem text={'профиль'}/>
@@ -87,9 +103,11 @@ function Header(props) {
                                 <NavLink to={'cabinet/favourites'}>
                                     <DropdownItem text={'избранное'}/>
                                 </NavLink>
+                                {roleMenu()}
                                 <button className={'logout_btn'} onClick={() => logout()}>
                                     <DropdownItem text={'выход'}/>
                                 </button>
+
                             </ul>
                         </div>
                     </div>
@@ -101,7 +119,7 @@ function Header(props) {
 
                 <div className={'cart_box'}>
                     <NavLink to={'/cart'} className={'cart_box__button'}>
-                        <ShoppingCartIcon />
+                        <ShoppingCartIcon/>
                     </NavLink>
 
                 </div>

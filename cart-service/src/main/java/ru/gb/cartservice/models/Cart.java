@@ -2,10 +2,8 @@ package ru.gb.cartservice.models;
 
 
 import lombok.Data;
-import ru.gb.api.dtos.FilmDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 

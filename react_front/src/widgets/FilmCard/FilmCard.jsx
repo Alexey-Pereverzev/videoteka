@@ -4,16 +4,72 @@ import TagButton from "../TagButton/TagButton";
 import {useState} from "react";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import FilmPage from "../../components/MainPage/FilmPage/FilmPage";
+import axios from "axios";
+import {Route, Routes} from "react-router-dom";
+import ReviewsPage from "../../components/MainPage/ReviewsPage/ReviewsPage";
+import AddReviewPage from "../../components/MainPage/AddReviewPage/AddReviewPage";
 
 
 function FilmCard(props) {
+    const [ratingState, setRatingState] = useState(0.00);
+    console.log('Id фильма: ' + props.id)
+    let getRating = () => {
+        try {
+            axios.get('http://localhost:5555/catalog/api/v1/rating/total_film_rating',
+                {
+                    params: {
+                        filmId: props.id,
+                    }
+                }
+            ).then(response => response.data)
+                .then(data => {
+                    let rating = data;
+                    let dotRating = rating.replace(",", ".")
+                    setRatingState(dotRating)
+                    console.log("Ответ метода getRating: " + dotRating)
+                })
+
+        } catch (e) {
+
+        }
+    }
+    let switchScene = (command) => {
+        switch (command) {
+            case 'reviews':
+                return <ReviewsPage filmId={props.id}
+                                    title={props.title}
+                                    setCommand={setCommand}
+                />
+            case 'add-review':
+                return <AddReviewPage filmId={props.id}/>
+
+            default:
+                return <FilmPage director={props.director}
+                                 filmId={props.id}
+                                 ratingValue={ratingState}
+                                 isSale={props.isSale}
+                                 title={props.title}
+                                 premierYear={props.premierYear}
+                                 country={props.country}
+                                 description={props.description}
+                                 genre={props.genre}
+                                 rentPrice={props.rentPrice}
+                                 salePrice={props.salePrice}
+                                 cover={props.imageUrlLink}
+                                 setCommand={setCommand}
+                />
+        }
+    }
+    console.log()
+    getRating()
+    const [command, setCommand] = useState("")
     const [modalActive, setModalActive] = useState(false);
-    return(
+    return (
         <div className={style.container}>
 
             <div className={style.card} onClick={() => setModalActive(true)}>
                 <div className={style.poster}>
-                    <img src={props.imageUrlLink} alt="" />
+                    <img src={props.imageUrlLink} alt=""/>
                 </div>
 
                 <div className={style.details}>
@@ -23,17 +79,23 @@ function FilmCard(props) {
 
                     </h2>
                     <div className={style.rating}>
-                        <Rating name="read-only" value={4} readOnly />
-                        <span>4/5</span>
+                        <Rating name="half-rating-read"
+                               sx={{padding: 1}}
+                                size={'normal'}
+                                precision={0.01}
+                                value={ratingState}
+                                readOnly/>
+                        <span>{ratingState}</span>
+
                     </div>
                     {props.genre.map((genre) => <TagButton genre={genre}/>)}
 
-                    <div className={style.info}>
-                        <p>{props.description}</p>
-                    </div>
-                    <div className={style.country}>
-                        <h4>{props.country}</h4>
-                    </div>
+                    {/*<div className={style.info}>*/}
+                    {/*    <p>{props.description}</p>*/}
+                    {/*</div>*/}
+                    {/*<div className={style.country}>*/}
+                    {/*    <h4>{props.country}</h4>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="card-footer">
                     <div className="clearfix">
@@ -43,20 +105,10 @@ function FilmCard(props) {
             <ModalWindow active={modalActive}
                          setActive={setModalActive}
             >
-                <FilmPage director={props.director}
-                          filmId={props.id}
-                          isSale={props.isSale}
-                          title={props.title}
-                          premierYear={props.premierYear}
-                          country={props.country}
-                          description={props.description}
-                          genre={props.genre}
-                          rentPrice={props.rentPrice}
-                          salePrice={props.salePrice}
-                          cover={props.imageUrlLink}
-                />
+                {switchScene(command)}
             </ModalWindow>
         </div>
     )
 }
+
 export default FilmCard;
