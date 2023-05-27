@@ -47,6 +47,7 @@ public class RatingService {
                     rating.setReview(ratingDto.getReview());
                 }
                 rating.setCreatedBy("frontUser");
+                rating.setModerate(false);
                 ratingRepository.save(rating);
                 resultOperation.setResult(true);
                 resultOperation.setResultDescription("OK");
@@ -73,5 +74,9 @@ public class RatingService {
     public List<Rating> listAllGradeAndReviewsByFilmId(Long filmId) {
         Film film = filmService.findById(filmId);
         return ratingRepository.findAllByFilm(film);
+    }
+
+    public List<Rating> listAllGradeAndReviewIsNotModerate() {
+        return ratingRepository.findAllByIsModerateIsFalse();
     }
 }

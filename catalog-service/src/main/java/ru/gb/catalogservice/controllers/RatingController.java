@@ -71,4 +71,13 @@ public class RatingController {
     public List<RatingDto> listAllGradeAndReviewByFilmId(@RequestParam Long filmId) {
         return ratingService.listAllGradeAndReviewsByFilmId(filmId).stream().map(ratingConverter::entityToDto).toList();
     }
+
+    @Operation(
+            summary = "Вывод отзывов требующих модерации",
+            description = "Позволяет получить список ВСЕХ отзывов требующих модерации"
+    )
+    @GetMapping("list_all_grade_and_review_is_not_moderate")
+    public List<RatingDto> listAllGradeAndReviewIsNotModerate() {
+        return ratingService.listAllGradeAndReviewIsNotModerate().stream().map(ratingConverter::entityToDto).toList();
+    }
 }

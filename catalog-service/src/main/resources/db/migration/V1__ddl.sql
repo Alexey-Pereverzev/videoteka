@@ -87,6 +87,24 @@ CREATE TABLE prices (
                         CONSTRAINT prices_fk FOREIGN KEY (film_id) REFERENCES films(id)
 );
 
+CREATE TABLE grades_reviews (
+                        id bigserial NOT NULL,
+                        created_by varchar NULL,
+                        created_when timestamp NULL,
+                        deleted_by varchar NULL,
+                        deleted_when timestamp NULL,
+                        is_deleted bool NULL DEFAULT false,
+                        update_by varchar NULL,
+                        update_when timestamp NULL,
+                        grade int4 NOT NULL ,
+                        review text NULL,
+                        user_id int8 NOT NULL,
+                        film_id int8 NOT NULL,
+                        is_moderate bool NULL DEFAULT false,
+                        CONSTRAINT grades_pk PRIMARY KEY (id),
+                        CONSTRAINT grades_fk FOREIGN KEY (film_id) REFERENCES films(id)
+);
+
 INSERT INTO countries (title,created_by,created_when,update_by,update_when,is_deleted,deleted_by,deleted_when) VALUES
                            ('Бельгия',NULL,NULL,NULL,NULL,false,NULL,NULL),
                            ('Болгария',NULL,NULL,NULL,NULL,false,NULL,NULL),
