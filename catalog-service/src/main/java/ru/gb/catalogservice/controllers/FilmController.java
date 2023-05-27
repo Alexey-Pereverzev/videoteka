@@ -8,13 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.dto.MinMaxYearDto;
 import ru.gb.api.dtos.dto.PageFilmDto;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.converters.PageFilmConverter;
 import ru.gb.catalogservice.entities.*;
+import ru.gb.catalogservice.exceptions.IllegalInputDataException;
 import ru.gb.catalogservice.services.*;
 import ru.gb.catalogservice.utils.ResultOperation;
 
@@ -89,12 +89,12 @@ public class FilmController {
             description = "Позволяет добавлять фильмы в БД"
     )
     @PostMapping("/add_new")
-    public ResponseEntity<?> addProduct(@RequestBody FilmDto filmDto) {
+    public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddInVideoteka(filmDto);
         if (resultOperation.isResult()){
             return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
         }else {
-            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }
 

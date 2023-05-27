@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.RatingDto;
 import ru.gb.catalogservice.converters.RatingConverter;
+import ru.gb.catalogservice.exceptions.IllegalInputDataException;
 import ru.gb.catalogservice.services.RatingService;
 import ru.gb.catalogservice.utils.ResultOperation;
 
@@ -41,7 +42,7 @@ public class RatingController {
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
         } else {
-            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }
 
@@ -87,7 +88,7 @@ public class RatingController {
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
         } else {
-            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }
 
@@ -97,7 +98,7 @@ public class RatingController {
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
         } else {
-            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }
 }
