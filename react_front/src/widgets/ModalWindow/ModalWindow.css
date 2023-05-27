@@ -29,6 +29,7 @@
     transform: scale(0.5);
     transition: 0.4s all;
     width: fit-content;
+    max-width: 970px;
 }
 .modal__content.active{
     transform: scale(1);
