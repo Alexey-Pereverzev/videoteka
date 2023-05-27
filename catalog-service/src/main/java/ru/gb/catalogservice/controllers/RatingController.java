@@ -49,7 +49,7 @@ public class RatingController {
             summary = "Вывод оценки и отзыва пользователя по id фильма",
             description = "Позволяет вывести оценку и отзыв пользователя по id фильма"
     )
-    @GetMapping("grade_user_by_id_film")
+    @GetMapping("/grade_user_by_id_film")
     public RatingDto gradeUserByIdFilm(@RequestHeader String userId, @RequestParam Long filmId) {
         return ratingConverter.entityToDto(ratingService.gradeUserByIdFilm(Long.parseLong(userId), filmId));
     }
@@ -58,7 +58,7 @@ public class RatingController {
             summary = "Вывод средней оценки по всем пользователям по id фильма",
             description = "Позволяет среднюю оценку пользователей по id фильма"
     )
-    @GetMapping("total_film_rating")
+    @GetMapping("/total_film_rating")
     public String totalRatingFilmById(@RequestParam Long filmId) {
         return String.format("%.2f", ratingService.getTotalGrade(filmId));
     }
@@ -67,7 +67,7 @@ public class RatingController {
             summary = "Вывод отзывов по id фильма",
             description = "Позволяет получить список ВСЕХ отзывов и оценок по id фильма"
     )
-    @GetMapping("list_all_grade_and_review_by_filmId")
+    @GetMapping("/list_all_grade_and_review_by_filmId")
     public List<RatingDto> listAllGradeAndReviewByFilmId(@RequestParam Long filmId) {
         return ratingService.listAllGradeAndReviewsByFilmId(filmId).stream().map(ratingConverter::entityToDto).toList();
     }
@@ -76,8 +76,18 @@ public class RatingController {
             summary = "Вывод отзывов требующих модерации",
             description = "Позволяет получить список ВСЕХ отзывов требующих модерации"
     )
-    @GetMapping("list_all_grade_and_review_is_not_moderate")
+    @GetMapping("/list_all_grade_and_review_is_not_moderate")
     public List<RatingDto> listAllGradeAndReviewIsNotModerate() {
         return ratingService.listAllGradeAndReviewIsNotModerate().stream().map(ratingConverter::entityToDto).toList();
+    }
+
+    @GetMapping("/setModerateSuccess")
+    public ResponseEntity<?> setModerateSuccess(@RequestHeader String userId,@RequestParam Long filmId) {
+        ResultOperation resultOperation=ratingService.setModerateSuccess(userId,filmId);
+        if (resultOperation.isResult()) {
+            return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
+        } else {
+            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
+        }
     }
 }

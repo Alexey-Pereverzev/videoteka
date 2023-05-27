@@ -79,4 +79,17 @@ public class RatingService {
     public List<Rating> listAllGradeAndReviewIsNotModerate() {
         return ratingRepository.findAllByIsModerateIsFalse();
     }
+
+    public ResultOperation setModerateSuccess(String userId,Long filmId){
+        if ((filmId!=null || filmId>0) && (userId!=null || Long.parseLong(userId)>0)){
+            Film film=filmService.findById(filmId);
+            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserId(film,Long.parseLong(userId));
+            if (rating.isPresent()){
+                rating.get().setModerate(true);
+                ratingRepository.save(rating.get());
+                return new ResultOperation("OK",true);
+            }
+        }
+        return new ResultOperation("Отзыв не найден",false);
+    }
 }
