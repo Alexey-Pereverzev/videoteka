@@ -44,7 +44,7 @@ class CatalogPage extends Component {
     }
 
     componentDidMount() {
-
+        this.searchHandler()
         this.getMinMaxPrice()
         this.getMinMaxYear()
         this.getAllGenres()
@@ -56,39 +56,12 @@ class CatalogPage extends Component {
     getCurrentUser = () => {
         return JSON.parse(localStorage.getItem('customer'))
     }
-    getFilmByTitlePart = (currentPage, value) => {
-        const titlePart = value.nativeEvent.data
-        currentPage -= 1;
-        console.log(titlePart)
-        axios.get("http://localhost:5555/catalog/api/v1/film/find_by_title_part",
-            {
-                params: {
-                    currentPage,
-                    titlePart
-                }
-            })
-            .then(response => response.data)
-            .then((data) => {
-                if (data !== null) {
-                    console.log(data.content)
-                    this.setState({
-                        films: data.content,
-                        totalPages: data.totalPages,
-                        totalElements: data.totalElements,
-                        currentPage: data.number + 1
-                    })
-                } else {
-                    if (data === null) {
-                        return (
-                            <div>
-                                <h4>Ничего нет</h4>
-                            </div>
-                        )
-                    }
-                }
-
-            }).catch((error) => {
-            console.error("Error: " + error)
+    searchHandler = () => {
+        this.setState({
+            films: this.props.films,
+            totalPages: this.props.totalPages,
+            totalElements: this.props.totalElements,
+            currentPage: this.props.currentPage
         })
     }
 

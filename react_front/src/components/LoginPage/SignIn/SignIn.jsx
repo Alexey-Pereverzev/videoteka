@@ -34,18 +34,28 @@ class SignIn extends Component {
                         localStorage.setItem("username", JSON.stringify(username))
                         this.showCurrentUserInfo()
 
-                        console.log(localStorage.getItem("customer"))
-
+                        console.log(JSON.parse(localStorage.getItem("userId")))
+                        axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+                            params: {
+                                userId: JSON.parse(localStorage.getItem("userId"))
+                            }
+                        }).then(response => response.data)
+                            .then((data) => {
+                                console.log(data.value)
+                                localStorage.setItem("fullName", data.value)
+                            })
 
                         axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
                             .then(response => response.data)
+
+
 
                     }
                     window.location = "/"
                     return response.data
 
                 })
-                .then(data => {return<Alert severity="error">Привет, {data.username}!</Alert>
+                .then(data => {return<Alert severity="error">Привет, {username}!</Alert>
         })
         }catch (e) {
              return <Alert severity="error">{e}</Alert>

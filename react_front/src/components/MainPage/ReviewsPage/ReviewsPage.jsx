@@ -24,10 +24,17 @@ function ReviewsPage(props) {
 
         }
     }
+    // let getFullNameReviewers = () => {
+    //     axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+    //         params: {
+    //             userId:
+    //         }
+    // }
     const handleChange = () => {
         props.setCommand('') // callback-функция
     }
     getFilmIdReview()
+        const [fullName, setFullName] = useState('')
     const [filmReviews, setFilmReviews] = useState([]);
 return(
     <div className={'review-page'}>

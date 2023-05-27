@@ -6,7 +6,7 @@
     border-radius: 5px;
 }
 .movie {
-    max-width: 870px;
+    width: 870px;
     border-radius: 5px;
     display: flex;
     overflow: hidden;
@@ -26,6 +26,7 @@
 .movie__content {
     background-color: #000000;
     flex: 1;
+    width: 350px;
     padding: 35px 30px;
     display: flex;
     flex-direction: column;

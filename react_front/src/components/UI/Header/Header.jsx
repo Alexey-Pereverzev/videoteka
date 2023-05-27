@@ -10,6 +10,7 @@ import DropdownItem from "../../../widgets/DropdownItem/DropdownItem";
 function Header(props) {
 
     let username = JSON.parse(localStorage.getItem('username'))
+    let fullName = localStorage.getItem('fullName')
     let role = JSON.parse(localStorage.getItem('role_user'))
     console.log('Присвоена роль: ' + role)
 
@@ -23,6 +24,7 @@ function Header(props) {
     let logout = () => {
         localStorage.removeItem("customer")
         localStorage.removeItem("username")
+        localStorage.removeItem("fullName")
         user = null
         window.location = '/'
     }
@@ -88,7 +90,7 @@ function Header(props) {
                         </div>
                         <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
                             <h3 className={'menu_username'}>
-                                {username}
+                                {fullName}
                                 <span className={'menu_location'}></span></h3>
                             <ul>
                                 <NavLink to={'cabinet/profile'}>

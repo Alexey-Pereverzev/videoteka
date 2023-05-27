@@ -16,6 +16,9 @@ class MainPage extends Component {
         super(props);
 
         this.state = {
+            films: [],
+            totalPages:null,
+            totalElements: null,
             currentPage: 1,
             active: false,
             modal: false
@@ -24,7 +27,8 @@ class MainPage extends Component {
 
 
     getFilmByTitlePart = (currentPage, value) => {
-        const titlePart = value.nativeEvent.data
+        const titlePart = value
+        console.log(titlePart)
         currentPage -= 1;
         console.log(titlePart)
         axios.get("http://localhost:5555/catalog/api/v1/film/find_by_title_part",
@@ -64,11 +68,15 @@ class MainPage extends Component {
         return (
             <div className={style.container}>
                 <Header logout={this.props.logout}
-                        onChange={(value) => this.getFilmByTitlePart(this.state.currentPage, value)}
+                        onChange={(_, value) => this.getFilmByTitlePart(this.state.currentPage, value)}
                 />
                 <div className={style.main_container}>
                     <Routes>
-                        <Route index path={'/'} element={<CatalogPage/>}/>
+                        <Route index path={'/'} element={<CatalogPage films={this.state.films}
+                                                                      totalPages={this.state.totalPages}
+                                                                      totalElements={this.state.totalElements}
+                                                                      currentPage={this.state.currentPage}
+                        />}/>
                         <Route path={'cart'} element={<CartPage/>}/>
                         <Route path={'cabinet/*'} element={<PanelPage/>}/>
                     </Routes>
