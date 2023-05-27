@@ -82,8 +82,18 @@ public class RatingController {
     }
 
     @GetMapping("/setModerateSuccess")
-    public ResponseEntity<?> setModerateSuccess(@RequestHeader String userId,@RequestParam Long filmId) {
-        ResultOperation resultOperation=ratingService.setModerateSuccess(userId,filmId);
+    public ResponseEntity<?> setModerateStatus(@RequestHeader String userId,@RequestParam Long filmId) {
+        ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,true);
+        if (resultOperation.isResult()) {
+            return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
+        } else {
+            return new ResponseEntity<>(new AppError("ILLEGAL INPUT DATA", resultOperation.getResultDescription()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/setModerateRejected")
+    public ResponseEntity<?> setModerateRejected(@RequestHeader String userId,@RequestParam Long filmId) {
+        ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,false);
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
         } else {
