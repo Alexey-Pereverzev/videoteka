@@ -52,8 +52,9 @@ public class OrderService {
 
                 } else {
                     order.setType("SALE");
-                    ordersRepository.save(order);
+
                 }
+                ordersRepository.save(order);
 
             }
 
