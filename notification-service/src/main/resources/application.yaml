@@ -2,6 +2,21 @@ server:
   port: 8199
   servlet:
     context-path: /notification-service
+spring:
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: username@gmail.com
+    password: secret
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false
 integrations:
   auth-service:
     url: http://localhost:8187/auth-service
