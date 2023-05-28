@@ -16,5 +16,8 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<AppError> handleIncorrectFilterParametrException(IncorrectFilterParametrException e){
         return new ResponseEntity<>(new AppError("INCORRECT_FILTER_PARAMETR",e.getMessage()), HttpStatus.BAD_REQUEST);
     }
-
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleIllegalInputDataException(IllegalInputDataException e){
+        return new ResponseEntity<>(new AppError("ILLEGAL_INPUT_DATA",e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }

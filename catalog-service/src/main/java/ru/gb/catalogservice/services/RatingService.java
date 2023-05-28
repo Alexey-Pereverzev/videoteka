@@ -9,6 +9,7 @@ import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.RatingRepository;
 import ru.gb.catalogservice.utils.ResultOperation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class RatingService {
         } else {
             Rating rating = new Rating();
             Film film = filmService.findById(ratingDto.getFilm_id());
-            Optional<Rating> tempRaiting = ratingRepository.findRatingByFilmAndUserId(film, ratingDto.getUser_id());
+            Optional<Rating> tempRaiting = ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film, ratingDto.getUser_id());
             if (tempRaiting.isPresent()) {
                 resultOperation.setResult(false);
                 resultOperation.setResultDescription("Невозможно создать оценку и отзыв. Пользователь уже оценивал фильм");
@@ -47,6 +48,7 @@ public class RatingService {
                     rating.setReview(ratingDto.getReview());
                 }
                 rating.setCreatedBy("frontUser");
+                rating.setModerate(false);
                 ratingRepository.save(rating);
                 resultOperation.setResult(true);
                 resultOperation.setResultDescription("OK");
@@ -57,7 +59,7 @@ public class RatingService {
 
     public Rating gradeUserByIdFilm(Long userId, Long filmId) {
         Film film = filmService.findById(filmId);
-        return ratingRepository.findRatingByFilmAndUserId(film, userId).orElseThrow(() -> new ResourceNotFoundException("Оценка и комментарий пользователя с id=" + userId +
+        return ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film, userId).orElseThrow(() -> new ResourceNotFoundException("Оценка и комментарий пользователя с id=" + userId +
                 " для фильма с id=" + filmId + " не найдены"));
     }
 
@@ -72,6 +74,31 @@ public class RatingService {
 
     public List<Rating> listAllGradeAndReviewsByFilmId(Long filmId) {
         Film film = filmService.findById(filmId);
-        return ratingRepository.findAllByFilm(film);
+        return ratingRepository.findAllByFilmAndIsDeletedIsFalse(film);
+    }
+
+    public List<Rating> listAllGradeAndReviewIsNotModerate() {
+        return ratingRepository.findAllByIsModerateIsFalse();
+    }
+
+    public ResultOperation setModerateStatus(String userId,Long filmId,boolean status){
+        if ((filmId!=null || filmId>0) && (userId!=null || Long.parseLong(userId)>0)){
+            Film film=filmService.findById(filmId);
+            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film,Long.parseLong(userId));
+            if (rating.isPresent()){
+                if (status){
+                    rating.get().setModerate(true);
+                    rating.get().setUpdateBy("Manager");
+                    rating.get().setUpdateWhen(LocalDateTime.now());
+                }else{
+                    rating.get().setDeleted(true);
+                    rating.get().setDeletedBy("Manager");
+                    rating.get().setDeletedWhen(LocalDateTime.now());
+                }
+                ratingRepository.save(rating.get());
+                return new ResultOperation("OK",true);
+            }
+        }
+        return new ResultOperation("Отзыв не найден",false);
     }
 }
