@@ -27,9 +27,9 @@ public class MailController {
     )
 
     @GetMapping ("/send")
-    public SimpleMailMessage createMessage(@RequestHeader String userId) {
+    public void createMessage(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
-        return mailService.createMessage(userIDLong);
+       mailService.createMessage(userIDLong);
 
 
     }

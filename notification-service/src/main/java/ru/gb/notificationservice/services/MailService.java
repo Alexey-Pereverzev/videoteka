@@ -31,14 +31,14 @@ public class MailService
 //        javaMailSender.send(message);
 //        System.out.println("Scheduled task running");
 //    }
-    public SimpleMailMessage createMessage(Long id) {
+    public void createMessage(Long id) {
         SimpleMailMessage message = new SimpleMailMessage();
         UserDto userDto= authServiceIntegration.findById(id);
         message.setTo(userDto.getEmail());
         message.setFrom("Videoteka");
         message.setSubject("Оформление заказа");
-        message.setText("Здравсвуйте" + userDto.getFirstName());
+        message.setText("Здравсвуйте" + userDto.getFirstName()+" \n Ваш заказ успешно оформлен ");
         javaMailSender.send(message);
-        return message;
+
     }
 }
