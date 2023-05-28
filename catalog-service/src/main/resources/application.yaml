@@ -6,13 +6,13 @@ flyway:
   user: catalog
   password: CatalogVideoteka2023
   schemas: catalog_db
-#  url: jdbc:postgresql://catalog-db:5432/catalog_db
-  url: jdbc:postgresql://194.87.101.43:5432/catalog_db
+  url: jdbc:postgresql://catalog-db:5432/catalog_db
+#  url: jdbc:postgresql://194.87.101.43:5432/catalog_db
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://catalog-db:5432/catalog_db
-    url: jdbc:postgresql://194.87.101.43:5432/catalog_db
+    url: jdbc:postgresql://catalog-db:5432/catalog_db
+#    url: jdbc:postgresql://194.87.101.43:5432/catalog_db
     username: catalog
     password: CatalogVideoteka2023
   jpa:
