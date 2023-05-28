@@ -31,25 +31,25 @@ public class JwtUtil {
         return this.getAllClaimsFromToken(token).getExpiration().before(new Date());
     }
 
-//    public boolean isInvalid(String token) {
-//        return (!validateToken(token).equals(""));
-//    }
-
-
     public boolean isInvalid(String token) {
-        return this.isTokenExpired(token);
+        return (!validateToken(token).equals(""));
     }
+
+
+//    public boolean isInvalid(String token) {
+//        return this.isTokenExpired(token);
+//    }
 
     public String validateToken(final String token) {
         if (this.getAllClaimsFromToken(token).getExpiration().before(new Date())) {
+            return "Token is expired";
+        } else {
             try {
                 Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
                 return "";
             } catch (Exception e) {
                 return "Token is not valid";
             }
-        } else {
-            return "Token is expired";
         }
     }
 
