@@ -2,7 +2,7 @@ package ru.gb.gatewayservice.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -12,13 +12,13 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    @Value("${jwt.secret}")
-//    private final byte[] secret;
-    private String secret;
+//    @Value("${jwt.secret}")
+    private final byte[] secret;
+//    private String secret;
 
-//    public JwtUtil() throws IOException {
-//        this.secret = getPublicKey();
-//    }
+    public JwtUtil() throws IOException {
+        this.secret = getPublicKey();
+    }
 
     public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
