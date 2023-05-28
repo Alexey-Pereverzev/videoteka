@@ -5,7 +5,7 @@ server:
 flyway:
   user: orders
   password: OrdersVideoteka2023
-  schemas: orders
+  schemas: orders_db
   url: jdbc:postgresql://194.87.101.43:5432/orders_db
 spring:
   datasource:
@@ -18,6 +18,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: update
 integrations:
   cart-service:
     url: http://localhost:8190/cart-service
