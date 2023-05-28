@@ -5,7 +5,7 @@ server:
 flyway:
   user: orders
   password: OrdersVideoteka2023
-  schemas: orders_db
+  schemas: orders
   url: jdbc:postgresql://194.87.101.43:5432/orders_db
 spring:
   datasource:
