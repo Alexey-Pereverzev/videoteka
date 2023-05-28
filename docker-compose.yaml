@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  postgres-catalog:
+    container_name: catalog-db
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=catalog_db
+      - POSTGRES_USER=catalog
+      - POSTGRES_PASSWORD=CatalogVideoteka2023
+    volumes:
+      - ~/db-data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - videoteka-net
+  catalog-service:
+    container_name: catalog-service
+    build:
+      context: .
+      dockerfile: ./Dockerfile-catalog
+    ports:
+      - 8190:8189
+    networks:
+      - videoteka-net
+    restart: always
+    depends_on:
+      - postgres-catalog
+networks:
+  videoteka-net:
+    driver: bridge
