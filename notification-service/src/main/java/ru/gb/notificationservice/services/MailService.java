@@ -35,8 +35,9 @@ public class MailService
         SimpleMailMessage message = new SimpleMailMessage();
         UserDto userDto= authServiceIntegration.findById(id);
         message.setTo(userDto.getEmail());
+        message.setFrom("Videoteka");
         message.setSubject("Оформление заказа");
-        message.setText("Hellow");
+        message.setText("Здравсвуйте" + userDto.getFirstName());
         javaMailSender.send(message);
         return message;
     }
