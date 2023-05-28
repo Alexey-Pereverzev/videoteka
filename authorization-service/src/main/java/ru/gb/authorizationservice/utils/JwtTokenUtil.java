@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
+import java.io.*;
+import java.nio.file.Files;
+import java.security.*;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +21,12 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil {
     @Value("${jwt.secret}")
+//    private final byte[] secret;
     private String secret;
+
+//    public JwtTokenUtil() throws IOException {
+//        this.secret = getPrivateKey();
+//    }
 
     @Value("${jwt.lifetime}")
     private Integer jwtLifetime;
@@ -36,6 +44,7 @@ public class JwtTokenUtil {
                 .setSubject(String.valueOf(userId))         //  Id пользователя
                 .setIssuedAt(issuedDate)                    //  время создания
                 .setExpiration(expiredDate)                 //  время окончания жизни
+//                .signWith(SignatureAlgorithm.RS512, secret) //  подпись
                 .signWith(SignatureAlgorithm.HS256, secret) //  подпись
                 .compact();                                 //  сборка токена
     }
@@ -47,6 +56,47 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
+    public void generateKeyPair() throws NoSuchAlgorithmException {
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+        generator.initialize(512);
+        KeyPair pair = generator.generateKeyPair();
+
+        byte[] privateKey = pair.getPrivate().getEncoded();
+        byte[] publicKey = pair.getPublic().getEncoded();
+
+//        StringBuffer pubKeyString = new StringBuffer();
+//        for (byte b : publicKey) {
+//            pubKeyString.append(Integer.toHexString(0x0100 + (b & 0x00FF)).substring(1));
+//        }
+//        System.out.println(pubKeyString);
+//
+//        StringBuffer privKeyString = new StringBuffer();
+//        for (byte b : privateKey) {
+//            privKeyString.append(Integer.toHexString(0x0100 + (b & 0x00FF)).substring(1));
+//        }
+//        System.out.println(privKeyString);
+
+        try (FileOutputStream fos = new FileOutputStream("public.key")) {
+            fos.write(publicKey);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (FileOutputStream fos = new FileOutputStream("private.key")) {
+            fos.write(privateKey);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private byte[] getPrivateKey() throws IOException {
+        File privateKeyFile = new File("private.key");
+        return Files.readAllBytes(privateKeyFile.toPath());
+    }
+
+
+
 //    public String validateToken(final String token) {
 //        try {
 //            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
@@ -56,10 +106,6 @@ public class JwtTokenUtil {
 //        }
 //    }
 
-//    private Key getSignKey() {
-//        byte[] keyBytes = Decoders.BASE64.decode(secret);
-//        return Keys.hmacShaKeyFor(keyBytes);
-//    }
 
 
     public String getUserIdFromToken(String token) {

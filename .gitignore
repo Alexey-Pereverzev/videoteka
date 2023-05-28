@@ -7,3 +7,5 @@
 *.class
 *.iml
 .DS_Store
+/private.key
+
