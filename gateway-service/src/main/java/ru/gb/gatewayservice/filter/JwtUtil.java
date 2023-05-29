@@ -18,10 +18,6 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-//    @Value("${jwt.secret}")
-//    private final byte[] secret;
-//    private String secret;
-
     private final PublicKey secret;
 
     public JwtUtil() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
@@ -35,18 +31,14 @@ public class JwtUtil {
                 .getBody();
     }
 
-    private boolean isTokenExpired(String token) {
-        return this.getAllClaimsFromToken(token).getExpiration().before(new Date());
-    }
+//    private boolean isTokenExpired(String token) {
+//        return this.getAllClaimsFromToken(token).getExpiration().before(new Date());
+//    }
 
     public boolean isInvalid(String token) {
         return (!validateToken(token).equals(""));
     }
 
-
-//    public boolean isInvalid(String token) {
-//        return this.isTokenExpired(token);
-//    }
 
     public String validateToken(final String token) {
         if (this.getAllClaimsFromToken(token).getExpiration().before(new Date())) {
@@ -68,8 +60,6 @@ public class JwtUtil {
         EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
         return kf.generatePublic(publicKeySpec);
     }
-
-
 
 }
 

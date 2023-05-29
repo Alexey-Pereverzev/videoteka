@@ -26,9 +26,7 @@ import java.util.Map;
 
 @Component
 public class JwtTokenUtil {
-//    @Value("${jwt.secret}")
     private final byte[] secret;
-//    private String secret;
 
     public JwtTokenUtil() throws IOException {
         this.secret = getPrivateKey();
@@ -54,20 +52,13 @@ public class JwtTokenUtil {
 
         Date issuedDate = new Date();               //  время создания токена
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);    //  время окончания жизни токена
-//        return Jwts.builder()
-//                .setClaims(claims)                          //  роль пользователя
-//                .setSubject(String.valueOf(userId))         //  Id пользователя
-//                .setIssuedAt(issuedDate)                    //  время создания
-//                .setExpiration(expiredDate)                 //  время окончания жизни
-//                .signWith(buildJwtAlgorithm(getPublicKey(), getPrivateKey()), secret) //  подпись
-////                .signWith(SignatureAlgorithm.HS256, secret) //  подпись
-//                .compact();                                 //  сборка токена
+
         return JWT.create()
-                .withClaim("role", role)
-                .withSubject(String.valueOf(userId))
-                .withIssuedAt(issuedDate)
-                .withExpiresAt(expiredDate)
-                .sign(buildJwtAlgorithm(getPublicKey(), getPrivateKey()));
+                .withClaim("role", role)                              //  роль пользователя
+                .withSubject(String.valueOf(userId))                        //  Id пользователя
+                .withIssuedAt(issuedDate)                                   //  время создания
+                .withExpiresAt(expiredDate)                                 //  время окончания жизни
+                .sign(buildJwtAlgorithm(getPublicKey(), getPrivateKey()));  //  подпись
 
     }
 
@@ -85,32 +76,11 @@ public class JwtTokenUtil {
         PrivateKey privateKey = pair.getPrivate();
         PublicKey publicKey = pair.getPublic();
 
-//        byte[] privateKey = pair.getPrivate().getEncoded();
-//        byte[] publicKey = pair.getPublic().getEncoded();
-
-//        StringBuffer pubKeyString = new StringBuffer();
-//        for (byte b : publicKey) {
-//            pubKeyString.append(Integer.toHexString(0x0100 + (b & 0x00FF)).substring(1));
-//        }
-//        System.out.println(pubKeyString);
-//
-//        StringBuffer privKeyString = new StringBuffer();
-//        for (byte b : privateKey) {
-//            privKeyString.append(Integer.toHexString(0x0100 + (b & 0x00FF)).substring(1));
-//        }
-//        System.out.println(privKeyString);
-
         try (FileOutputStream fos = new FileOutputStream("public.key")) {
             fos.write(publicKey.getEncoded());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-//        try (FileOutputStream fos = new FileOutputStream("public.key")) {
-//            fos.write(publicKey);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         try (FileOutputStream fos = new FileOutputStream("private.key")) {
             fos.write(privateKey.getEncoded());
