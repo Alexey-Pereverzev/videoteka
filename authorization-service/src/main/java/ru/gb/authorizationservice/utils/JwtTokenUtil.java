@@ -41,9 +41,9 @@ public class JwtTokenUtil {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
         PublicKey publicKey = kf.generatePublic(publicKeySpec);
-        RSAPrivateKey privateKey = (RSAPrivateKey) kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+        PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
 
-        return Algorithm.RSA512((RSAPublicKey) publicKey, privateKey);
+        return Algorithm.RSA512((RSAPublicKey) publicKey, (RSAPrivateKey) privateKey);
     }
 
     public String generateToken(UserDetails userDetails, Long userId) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
@@ -121,14 +121,9 @@ public class JwtTokenUtil {
 
 
     private byte[] getPrivateKey() throws IOException
-//             NoSuchAlgorithmException, InvalidKeySpecException
     {
         File privateKeyFile = new File("private.key");
-        byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
-//        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-//        EncodedKeySpec privateKeySpec = new X509EncodedKeySpec(privateKeyBytes);
-//        return keyFactory.generatePrivate(privateKeySpec);
-        return privateKeyBytes;
+        return Files.readAllBytes(privateKeyFile.toPath());
     }
 
     private byte[] getPublicKey() throws IOException {
