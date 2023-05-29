@@ -4,10 +4,12 @@ package ru.gb.notificationservice.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.notificationservice.services.MailService;
 
 import java.util.List;
@@ -27,11 +29,18 @@ public class MailController {
     )
 
     @GetMapping ("/send")
-    public void createMessage(@RequestHeader String userId) {
+    public ResponseEntity<?> createMessage(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
-       mailService.createMessage(userIDLong);
+        try {
 
-
+            mailService.createMessage(userIDLong);
+            return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
     }
+        catch (Exception e){
+
+            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

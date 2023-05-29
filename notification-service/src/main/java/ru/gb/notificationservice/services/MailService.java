@@ -31,7 +31,7 @@ public class MailService
 //        javaMailSender.send(message);
 //        System.out.println("Scheduled task running");
 //    }
-    public void createMessage(Long id) {
+    public void createMessage(Long id) throws Exception{
         SimpleMailMessage message = new SimpleMailMessage();
         UserDto userDto= authServiceIntegration.findById(id);
         message.setTo(userDto.getEmail());
