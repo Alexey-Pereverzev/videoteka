@@ -3,7 +3,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import MainPage from "./components/MainPage/MainPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import axios from "axios";
-import {useEffect, useState} from "react";
 
 
 function App(props) {
@@ -17,19 +16,11 @@ function App(props) {
     //             let jwt = token.token
     //             let payload = JSON.parse(atob(jwt.split('.')[1]))
     //             let currentTime = parseInt(new Date().getTime() / 1000)
-    //
-    //             if(currentTime > payload.exp
-    //                 // && window.location.href !== "http://localhost:3000/gate/login"
-    //             ){
-    //                 alert("Токен простыл")
-    //                  localStorage.clear('customer')
-    //                 token.token = null
+    //             if(currentTime > payload.exp){
+    //                 alert("Токен простыл!")
+    //                 delete localStorage.getItem('customer')
     //                 axios.defaults.headers.common.Authorization = ''
-    //                 console.log( axios.defaults.headers.common)
-    //                 console.log( localStorage.getItem('customer'))
-    //                 // window.location = "/gate/login"
     //             }
-    //
     //         }catch (e) {
     //             console.log("Ошибка: " + e)
     //         }
@@ -53,10 +44,7 @@ function App(props) {
     //             })
     //     }
     // }
-    // useEffect(() => {
-    //     run()
-    // }, []);
-
+    // run()
   return (
       <div className="App">
         <BrowserRouter>
