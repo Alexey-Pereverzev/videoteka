@@ -64,7 +64,7 @@ public class FilmController {
                                  @RequestParam (name="minPrice",required = false)Integer minPrice,
                                  @RequestParam (name="maxPrice",required = false)Integer maxPrice){
 
-        return filmService.listAll(currentPage,filterCountryList,filterDirectorList,filterGenreList,
+        return filmService.findAllWithFilter(currentPage,filterCountryList,filterDirectorList,filterGenreList,
                 startPremierYear,endPremierYear,isSale,minPrice,maxPrice).map(filmConverter::entityToDto);
     }
     @Operation(
@@ -81,7 +81,7 @@ public class FilmController {
                                @RequestParam (name="isSale",required = false)Boolean isSale,
                                @RequestParam (name="minPrice",required = false)Integer minPrice,
                                @RequestParam (name="maxPrice",required = false)Integer maxPrice){
-        return pageFilmConverter.entityToDto(filmService.listAll(currentPage,filterCountryList,filterDirectorList,filterGenreList,
+        return pageFilmConverter.entityToDto(filmService.findAllWithFilter(currentPage,filterCountryList,filterDirectorList,filterGenreList,
                 startPremierYear,endPremierYear,isSale,minPrice,maxPrice));
     }
     @Operation(
