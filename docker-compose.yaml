@@ -1,0 +1,139 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  security-db:
+    image: postgres:15
+    container_name: users-roles-db
+    environment:
+      POSTGRES_DB: "users_roles_db"
+      POSTGRES_USER: "security"
+      POSTGRES_PASSWORD: "SecurityVideoteka2023"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ~/docker/users_roles_db:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - videoteka-net
+
+  catalog-db:
+    image: postgres:15
+    container_name: catalog-db
+    environment:
+      POSTGRES_DB: "catalog_db"
+      POSTGRES_USER: "catalog"
+      POSTGRES_PASSWORD: "CatalogVideoteka2023"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ~/docker/catalog_db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - videoteka-net
+
+  orders-db:
+    image: postgres:15
+    container_name: orders-db
+    environment:
+      POSTGRES_DB: "orders_db"
+      POSTGRES_USER: "orders"
+      POSTGRES_PASSWORD: "OrdersVideoteka2023"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ~/docker/orders_db:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    networks:
+      - videoteka-net
+
+  catalog-service:
+    depends_on:
+      - catalog-db
+    container_name: catalog-service
+    build:
+      context: .
+      dockerfile: Dockerfile-catalog
+    ports:
+      - "8189:8189"
+    environment:
+      SPRING_DATASOURCE_URL:  "jdbc:postgresql://catalog-db:5432/catalog_db"
+      SPRING_DATASOURCE_USERNAME: "catalog"
+      SPRING_DATASOURCE_PASSWORD: "CatalogVideoteka2023"
+    networks:
+      - videoteka-net
+
+  cabinet-service:
+    depends_on:
+      - orders-db
+    container_name: cabinet-service
+    build:
+      context: .
+      dockerfile: Dockerfile-cabinet
+    ports:
+      - "8192:8192"
+    environment:
+      SPRING_DATASOURCE_URL:  "jdbc:postgresql://orders-db:5432/orders_db"
+      SPRING_DATASOURCE_USERNAME: "orders"
+      SPRING_DATASOURCE_PASSWORD: "OrdersVideoteka2023"
+    networks:
+      - videoteka-net
+
+  cart-service:
+    depends_on:
+      - redis
+    container_name: cart-service
+    build:
+      context: .
+      dockerfile: Dockerfile-cart
+    ports:
+      - "8190:8190"
+    networks:
+      - videoteka-net
+
+  authorization-service:
+    depends_on:
+      - security-db
+    container_name: authorization-service
+    build:
+      context: .
+      dockerfile: Dockerfile-auth
+    ports:
+      - "8187:8187"
+    environment:
+      SPRING_DATASOURCE_URL:  "jdbc:postgresql://users-roles-db:5432/users_roles_db"
+      SPRING_DATASOURCE_USERNAME: "security"
+      SPRING_DATASOURCE_PASSWORD: "SecurityVideoteka2023"
+    networks:
+      - videoteka-net
+
+  gateway-service:
+    depends_on:
+      - authorization-service
+    container_name: localhost
+    build:
+      context: .
+      dockerfile: Dockerfile-gateway
+    ports:
+      - "5555:5555"
+    networks:
+      - videoteka-net
+
+  front-service:
+    depends_on:
+      - gateway-service
+    container_name: front-service
+    build:
+      context: .
+      dockerfile: Dockerfile-front
+    ports:
+      - "3000:3000"
+    networks:
+      - videoteka-net
+
+networks:
+  videoteka-net:
+    driver: bridge
