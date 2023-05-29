@@ -15,7 +15,7 @@ public class InputValidationService {
 
     private static final int MIN_LOGIN_LENGTH = 3;
     private static final int MAX_LOGIN_LENGTH = 15;
-    private static final int MIN_PASSWORD_LENGTH = 6;
+    private static final int MIN_PASSWORD_LENGTH = 5;
     private static final int MAX_PASSWORD_LENGTH = 32;
 
 
@@ -101,7 +101,7 @@ public class InputValidationService {
     public String acceptablePassword(String password)
     {
         if (password.isEmpty() || password.isBlank()) return "Пароль не может быть пустым";
-        if (password.length()<MIN_PASSWORD_LENGTH) return "Минимальная длина пароля " + MIN_PASSWORD_LENGTH + " символа";
+        if (password.length()<MIN_PASSWORD_LENGTH) return "Минимальная длина пароля " + MIN_PASSWORD_LENGTH + " символов";
         if (password.length()>MAX_PASSWORD_LENGTH) return "Максимальная длина пароля " + MAX_PASSWORD_LENGTH + " символа";
         if (!areAllSymbolsInSet(password, passwordCharacters)) {
             return "Недопутсимые символы в пароле. Допустимы латинские буквы A-Z, a-z, символы кириллицы А-Я, а-я и цифры 0-9";
