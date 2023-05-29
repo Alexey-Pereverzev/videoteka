@@ -65,6 +65,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: "CatalogVideoteka2023"
     networks:
       - videoteka-net
+    restart: always
 
   cabinet-service:
     depends_on:
@@ -81,6 +82,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: "OrdersVideoteka2023"
     networks:
       - videoteka-net
+    restart: always
 
   cart-service:
     depends_on:
@@ -93,6 +95,7 @@ services:
       - "8190:8190"
     networks:
       - videoteka-net
+    restart: always
 
   authorization-service:
     depends_on:
@@ -133,6 +136,7 @@ services:
       - "3000:3000"
     networks:
       - videoteka-net
+    restart: always
 
 networks:
   videoteka-net:
