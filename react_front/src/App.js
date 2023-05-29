@@ -3,48 +3,60 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import MainPage from "./components/MainPage/MainPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import axios from "axios";
+import {useEffect, useState} from "react";
 
 
 function App(props) {
-    function run() {
-        console.log("Вошли в метод run()")
-        if (localStorage.getItem('customer')){
-            let user = localStorage.getItem('customer')
-            let token = JSON.parse(user)
+    // function run() {
+    //     console.log("Вошли в метод run()")
+    //     if (localStorage.getItem('customer')){
+    //         let user = localStorage.getItem('customer')
+    //         let token = JSON.parse(user)
+    //
+    //         try {
+    //             let jwt = token.token
+    //             let payload = JSON.parse(atob(jwt.split('.')[1]))
+    //             let currentTime = parseInt(new Date().getTime() / 1000)
+    //
+    //             if(currentTime > payload.exp
+    //                 // && window.location.href !== "http://localhost:3000/gate/login"
+    //             ){
+    //                 alert("Токен простыл")
+    //                  localStorage.clear('customer')
+    //                 token.token = null
+    //                 axios.defaults.headers.common.Authorization = ''
+    //                 console.log( axios.defaults.headers.common)
+    //                 console.log( localStorage.getItem('customer'))
+    //                 // window.location = "/gate/login"
+    //             }
+    //
+    //         }catch (e) {
+    //             console.log("Ошибка: " + e)
+    //         }
+    //         if (localStorage.getItem('customer')){
+    //             console.log(token.token)
+    //             axios.defaults.headers.common.Authorization = 'Bearer ' + token.token
+    //         }
+    //
+    //     }
+    //     if (!localStorage.getItem("guestCartId")){
+    //         console.log('Вошли в метод генерации корзины')
+    //         axios.get("http://localhost:5555/cart/api/v1/cart/generate",{
+    //             headers: {
+    //                 'Content-Type': 'application/x-www-form-urlencoded',
+    //             }
+    //         })
+    //             .then(response =>{
+    //                 console.log('Генерация корзины. Голый респонс: '+response)
+    //                 localStorage.setItem('guestCartId',  JSON.stringify(response.data.value))
+    //                 console.log('Информация из хранилища. Корзина: '+localStorage.getItem('guestCartId'))
+    //             })
+    //     }
+    // }
+    // useEffect(() => {
+    //     run()
+    // }, []);
 
-            try {
-                let jwt = token.token
-                let payload = JSON.parse(atob(jwt.split('.')[1]))
-                let currentTime = parseInt(new Date().getTime() / 1000)
-                if(currentTime > payload.exp){
-                    alert("Токен простыл!")
-                    delete localStorage.getItem('customer')
-                    axios.defaults.headers.common.Authorization = ''
-                }
-            }catch (e) {
-                console.log("Ошибка: " + e)
-            }
-            if (localStorage.getItem('customer')){
-                console.log(token.token)
-                axios.defaults.headers.common.Authorization = 'Bearer ' + token.token
-            }
-
-        }
-        if (!localStorage.getItem("guestCartId")){
-            console.log('Вошли в метод генерации корзины')
-            axios.get("http://localhost:5555/cart/api/v1/cart/generate",{
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            })
-                .then(response =>{
-                    console.log('Генерация корзины. Голый респонс: '+response)
-                    localStorage.setItem('guestCartId',  JSON.stringify(response.data.value))
-                    console.log('Информация из хранилища. Корзина: '+localStorage.getItem('guestCartId'))
-                })
-        }
-    }
-    run()
   return (
       <div className="App">
         <BrowserRouter>

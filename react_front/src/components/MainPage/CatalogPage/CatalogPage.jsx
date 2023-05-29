@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
-import {Component} from "react";
+import {Component, useEffect} from "react";
 
 class CatalogPage extends Component {
     constructor(props) {
@@ -376,6 +376,7 @@ class CatalogPage extends Component {
             }
         }
     }
+
 
     render() {
         const {films, currentPage, filmsPerPage} = this.state;

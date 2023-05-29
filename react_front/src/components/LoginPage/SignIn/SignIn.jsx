@@ -26,7 +26,7 @@ class SignIn extends Component {
                 .post('http://localhost:5555/auth/api/v1/auth/authenticate', {
                     username: event.target.username.value,
                     password: event.target.password.value,
-                }).then(response => {
+                }).then(async response => {
                     console.log(response.data)
                     if (response.data.token) {
                         axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
@@ -35,7 +35,7 @@ class SignIn extends Component {
                         this.showCurrentUserInfo()
 
                         console.log(JSON.parse(localStorage.getItem("userId")))
-                        axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+                        await axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
                             params: {
                                 userId: JSON.parse(localStorage.getItem("userId"))
                             }
@@ -43,20 +43,20 @@ class SignIn extends Component {
                             .then((data) => {
                                 console.log(data.value)
                                 localStorage.setItem("fullName", data.value)
+
                             })
 
                         axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
                             .then(response => response.data)
 
 
-
                     }
-                    window.location = "/"
-                    return response.data
 
+                    window.location = "/"
                 })
                 .then(data => {return<Alert severity="error">Привет, {username}!</Alert>
         })
+
         }catch (e) {
              return <Alert severity="error">{e}</Alert>
 
