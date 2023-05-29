@@ -33,9 +33,10 @@ export let rerenderEntireTree = (state) =>{
                 let jwt = token.token
                 let payload = JSON.parse(atob(jwt.split('.')[1]))
                 let currentTime = parseInt(new Date().getTime() / 1000)
-                if(currentTime > payload.exp){
+                if (currentTime > payload.exp){
                     alert("Токен простыл!")
-                    delete localStorage.getItem('customer')
+                    localStorage.clear('customer')
+                    token.token = null
                     axios.defaults.headers.common.Authorization = ''
                 }
             }catch (e) {

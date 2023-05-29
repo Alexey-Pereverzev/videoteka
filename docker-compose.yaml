@@ -112,6 +112,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: "SecurityVideoteka2023"
     networks:
       - videoteka-net
+    volumes:
+      - ./secret:/opt/app/secret
 
   gateway-service:
     depends_on:
@@ -124,6 +126,8 @@ services:
       - "5555:5555"
     networks:
       - videoteka-net
+    volumes:
+      - ./secret:/opt/app/secret
 
   front-service:
     depends_on:
