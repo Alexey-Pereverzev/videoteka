@@ -65,8 +65,25 @@ class OrdersPage extends Component {
 
 
     render() {
-        function buyRentedFilm(id) {
-
+        async function buyRentedFilm(id, title, cover, price) {
+            try {
+                const response = await axios.get('http://localhost:5555/cart/api/v1/cart/add',
+                    {
+                        params: {
+                            uuid: localStorage.getItem('guestCartId'),
+                            filmId: id,
+                            filmTitle: title,
+                            filmPrice: price,
+                            filmImageUrlLink: cover,
+                            isSale: true
+                        }
+                    }
+                )
+                console.log("Ответ метода buyRentedFilm: " + response.data)
+                window.location = '/cart'
+            } catch (e) {
+                alert(e)
+            }
         }
 
         let showVideo = () => {
@@ -97,8 +114,8 @@ class OrdersPage extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}>Обложка</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
-                                                   align="right"></TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right"></TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right"></TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right">Название</TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
@@ -119,14 +136,19 @@ class OrdersPage extends Component {
                                             tabIndex={-1}
                                             key={row.username}
                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                            onClick={() => this.setState({modalActive: true})}
+
                                         >
                                             <TableCell component="th" scope="row">
                                                 <img className={'orders_img'} src={row.imageUrlLink} alt={'обложка'}/>
                                             </TableCell>
                                             <TableCell align="right">
                                                 <button className={'buy-order__btn'}
-                                                        onClick={() => buyRentedFilm(row.id)}>Купить
+                                                        onClick={() => this.setState({modalActive: true})}>Смотреть
+                                                </button>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <button className={'buy-order__btn'}
+                                                        onClick={() => buyRentedFilm(row.id, row.filmTitle, row.imageUrlLink, row.price)}>Купить
                                                 </button>
                                             </TableCell>
                                             <TableCell align="right">{row.filmTitle}</TableCell>

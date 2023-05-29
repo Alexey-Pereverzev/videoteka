@@ -5,7 +5,6 @@ import {useState} from "react";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import FilmPage from "../../components/MainPage/FilmPage/FilmPage";
 import axios from "axios";
-import {Route, Routes} from "react-router-dom";
 import ReviewsPage from "../../components/MainPage/ReviewsPage/ReviewsPage";
 import AddReviewPage from "../../components/MainPage/AddReviewPage/AddReviewPage";
 

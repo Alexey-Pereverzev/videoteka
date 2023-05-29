@@ -22,7 +22,7 @@ function AdminPanel() {
                 <div className={'menu__info'}>
                     <Avatar/>
                     <span>
-                        {JSON.parse(localStorage.getItem('username'))}
+                        {localStorage.getItem('fullName')}
                     </span>
                 </div>
                 <div className={'menu__item'}>

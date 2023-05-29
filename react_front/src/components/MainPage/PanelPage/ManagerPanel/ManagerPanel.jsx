@@ -1,6 +1,13 @@
 import "./ManagerPanel.css";
 import {Avatar} from "@mui/material";
 import axios from "axios";
+import {NavLink, Route, Routes} from "react-router-dom";
+import ProfilePage from "../../ProfilePage/ProfilePage";
+import OrdersPage from "../../OrdersPage/OrdersPage";
+import FavoritesPage from "../../FavoritesPage/FavoritesPage";
+import UsersPage from "../../UsersPage/UsersPage";
+import RedactorPage from "../../RedactorPage/RedactorPage";
+import ModeratorPage from "../../ModeratorPage/ModeratorPage";
 
 function ManagerPanel() {
     let getOrders = () => {
@@ -28,23 +35,42 @@ function ManagerPanel() {
                 <div className={'menu__info'}>
                     <Avatar/>
                     <span>
-                        {JSON.parse(localStorage.getItem('username'))}
+                        {localStorage.getItem('fullName')}
                     </span>
                 </div>
                 <div className={'menu__item'}>
-                    <button onClick={() => getProfile()}>Профиль</button>
+                    <NavLink to={'profile'}>
+                        Профиль
+                    </NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <button onClick={() => getBasket()}>Корзина</button>
+                    <NavLink to={'/cart'}>
+                        Корзина
+                    </NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <button onClick={() => getOrders()}>Мои фильмы</button>
+                    <NavLink to={'orders'}>Мои фильмы</NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <button  onClick={() => getFavourites()}>Избранное</button>
+                    <NavLink to={'favourites'}>Избранное</NavLink>
                 </div>
+                <div className={'menu__item'}>
+                    <NavLink to={'redactor'}>Редактор карточки фильма</NavLink>
+                </div>
+                <div className={'menu__item'}>
+                    <NavLink to={'moderation'}>Редактор отзывов</NavLink>
+                </div>
+
             </div>
-            <div></div>
+            <div>
+                <Routes>
+                    <Route path={'profile'} element={<ProfilePage/>}/>
+                    <Route path={'orders'} element={<OrdersPage/>}/>
+                    <Route path={'favourites'} element={<FavoritesPage/>}/>
+                    <Route path={'redactor'} element={<RedactorPage/>}/>
+                    <Route path={'moderation'} element={<ModeratorPage/>}/>
+                </Routes>
+            </div>
         </div>
     )
 }

@@ -11,6 +11,7 @@ function Header(props) {
 
     let username = JSON.parse(localStorage.getItem('username'))
     let fullName = localStorage.getItem('fullName')
+    console.log(fullName)
     let role = JSON.parse(localStorage.getItem('role_user'))
     console.log('Присвоена роль: ' + role)
 
@@ -34,14 +35,14 @@ function Header(props) {
     let openMenu = () => {
         setOpen(!open)
     }
-    let roleMenu = () =>{
-        switch(role) {
+    let roleMenu = () => {
+        switch (role) {
             case 'ROLE_ADMIN':
                 return <NavLink to={'cabinet/users'}>
                     <DropdownItem text={'пользователи'}/>
                 </NavLink>
             case 'ROLE_MANAGER':
-                return <NavLink to={'cabinet/reductor'}>
+                return <NavLink to={'cabinet/redactor'}>
                     <DropdownItem text={'редактор'}/>
                 </NavLink>
             default:
