@@ -113,7 +113,7 @@ services:
   gateway-service:
     depends_on:
       - authorization-service
-    container_name: localhost
+    container_name: gateway-service
     build:
       context: .
       dockerfile: Dockerfile-gateway

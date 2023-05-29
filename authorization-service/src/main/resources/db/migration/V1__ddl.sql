@@ -1,5 +1,3 @@
-
-
 CREATE TABLE roles (
                        id bigserial NOT NULL PRIMARY KEY,
                        title varchar NOT NULL
