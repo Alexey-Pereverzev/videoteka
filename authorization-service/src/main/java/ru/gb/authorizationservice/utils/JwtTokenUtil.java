@@ -26,10 +26,13 @@ import java.util.Map;
 
 @Component
 public class JwtTokenUtil {
-    private final byte[] secret;
+    private final PublicKey secretPublic;
 
-    public JwtTokenUtil() throws IOException {
-        this.secret = getPrivateKey();
+    public JwtTokenUtil() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] publicKeyBytes = getPublicKey();
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+        this.secretPublic = kf.generatePublic(publicKeySpec);
     }
 
     @Value("${jwt.lifetime}")
@@ -64,7 +67,7 @@ public class JwtTokenUtil {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(secretPublic)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -101,6 +104,13 @@ public class JwtTokenUtil {
         return Files.readAllBytes(publicKeyFile.toPath());
     }
 
+    public String getUserIdFromToken(String token) {
+        return getAllClaimsFromToken(token).getSubject();
+    }
+
+    public String getRole(String token) {
+        return getAllClaimsFromToken(token).get("role", String.class);
+    }
 
 
 //    public String validateToken(final String token) {
@@ -112,13 +122,4 @@ public class JwtTokenUtil {
 //        }
 //    }
 
-
-
-    public String getUserIdFromToken(String token) {
-        return getAllClaimsFromToken(token).getSubject();
-    }
-
-    public String getRole(String token) {
-        return getAllClaimsFromToken(token).get("role", String.class);
-    }
 }
