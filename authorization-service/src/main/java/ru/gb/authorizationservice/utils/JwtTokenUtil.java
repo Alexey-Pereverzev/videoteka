@@ -26,12 +26,13 @@ import java.util.Map;
 
 @Component
 public class JwtTokenUtil {
-//    @Value("${jwt.secret}")
-    private final byte[] secret;
-//    private String secret;
+    private final PublicKey secretPublic;
 
-    public JwtTokenUtil() throws IOException {
-        this.secret = getPrivateKey();
+    public JwtTokenUtil() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] publicKeyBytes = getPublicKey();
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+        this.secretPublic = kf.generatePublic(publicKeySpec);
     }
 
     @Value("${jwt.lifetime}")
@@ -41,9 +42,9 @@ public class JwtTokenUtil {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
         PublicKey publicKey = kf.generatePublic(publicKeySpec);
-        RSAPrivateKey privateKey = (RSAPrivateKey) kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+        PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
 
-        return Algorithm.RSA512((RSAPublicKey) publicKey, privateKey);
+        return Algorithm.RSA512((RSAPublicKey) publicKey, (RSAPrivateKey) privateKey);
     }
 
     public String generateToken(UserDetails userDetails, Long userId) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
@@ -54,26 +55,19 @@ public class JwtTokenUtil {
 
         Date issuedDate = new Date();               //  время создания токена
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);    //  время окончания жизни токена
-//        return Jwts.builder()
-//                .setClaims(claims)                          //  роль пользователя
-//                .setSubject(String.valueOf(userId))         //  Id пользователя
-//                .setIssuedAt(issuedDate)                    //  время создания
-//                .setExpiration(expiredDate)                 //  время окончания жизни
-//                .signWith(buildJwtAlgorithm(getPublicKey(), getPrivateKey()), secret) //  подпись
-////                .signWith(SignatureAlgorithm.HS256, secret) //  подпись
-//                .compact();                                 //  сборка токена
+
         return JWT.create()
-                .withClaim("role", role)
-                .withSubject(String.valueOf(userId))
-                .withIssuedAt(issuedDate)
-                .withExpiresAt(expiredDate)
-                .sign(buildJwtAlgorithm(getPublicKey(), getPrivateKey()));
+                .withClaim("role", role)                              //  роль пользователя
+                .withSubject(String.valueOf(userId))                        //  Id пользователя
+                .withIssuedAt(issuedDate)                                   //  время создания
+                .withExpiresAt(expiredDate)                                 //  время окончания жизни
+                .sign(buildJwtAlgorithm(getPublicKey(), getPrivateKey()));  //  подпись
 
     }
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(secretPublic)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -85,32 +79,11 @@ public class JwtTokenUtil {
         PrivateKey privateKey = pair.getPrivate();
         PublicKey publicKey = pair.getPublic();
 
-//        byte[] privateKey = pair.getPrivate().getEncoded();
-//        byte[] publicKey = pair.getPublic().getEncoded();
-
-//        StringBuffer pubKeyString = new StringBuffer();
-//        for (byte b : publicKey) {
-//            pubKeyString.append(Integer.toHexString(0x0100 + (b & 0x00FF)).substring(1));
-//        }
-//        System.out.println(pubKeyString);
-//
-//        StringBuffer privKeyString = new StringBuffer();
-//        for (byte b : privateKey) {
-//            privKeyString.append(Integer.toHexString(0x0100 + (b & 0x00FF)).substring(1));
-//        }
-//        System.out.println(privKeyString);
-
         try (FileOutputStream fos = new FileOutputStream("public.key")) {
             fos.write(publicKey.getEncoded());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-//        try (FileOutputStream fos = new FileOutputStream("public.key")) {
-//            fos.write(publicKey);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         try (FileOutputStream fos = new FileOutputStream("private.key")) {
             fos.write(privateKey.getEncoded());
@@ -121,14 +94,9 @@ public class JwtTokenUtil {
 
 
     private byte[] getPrivateKey() throws IOException
-//             NoSuchAlgorithmException, InvalidKeySpecException
     {
         File privateKeyFile = new File("private.key");
-        byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
-//        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-//        EncodedKeySpec privateKeySpec = new X509EncodedKeySpec(privateKeyBytes);
-//        return keyFactory.generatePrivate(privateKeySpec);
-        return privateKeyBytes;
+        return Files.readAllBytes(privateKeyFile.toPath());
     }
 
     private byte[] getPublicKey() throws IOException {
@@ -136,6 +104,13 @@ public class JwtTokenUtil {
         return Files.readAllBytes(publicKeyFile.toPath());
     }
 
+    public String getUserIdFromToken(String token) {
+        return getAllClaimsFromToken(token).getSubject();
+    }
+
+    public String getRole(String token) {
+        return getAllClaimsFromToken(token).get("role", String.class);
+    }
 
 
 //    public String validateToken(final String token) {
@@ -147,13 +122,4 @@ public class JwtTokenUtil {
 //        }
 //    }
 
-
-
-    public String getUserIdFromToken(String token) {
-        return getAllClaimsFromToken(token).getSubject();
-    }
-
-    public String getRole(String token) {
-        return getAllClaimsFromToken(token).get("role", String.class);
-    }
 }
