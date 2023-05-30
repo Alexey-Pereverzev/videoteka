@@ -33,13 +33,17 @@ class CatalogPage extends Component {
             endPremierYear: '',
             minYear: '',
             maxYear: '',
+            startPlaceholderYear: '',
+            endPlaceholderYear: '',
             titlePart: '',
             isSale: true,
             minPrice: '',
             maxPrice: '',
             currentPage: 1,
             active: false,
-            modal: false
+            modal: false,
+            minPlaceholderPrice: '',
+            maxPlaceholderPrice: '',
         }
     }
 
@@ -73,7 +77,9 @@ class CatalogPage extends Component {
                     console.log(data.minPriceSale)
                     this.setState({
                             minPrice: data.minPriceSale,
-                            maxPrice: data.maxPriceSale
+                            maxPrice: data.maxPriceSale,
+                            minPlaceholderPrice: data.minPriceSale,
+                            maxPlaceholderPrice: data.maxPriceSale,
                         },
                         () => this.getAllFilms(this.state.currentPage,
                             this.state.filterCountryList,
@@ -91,7 +97,9 @@ class CatalogPage extends Component {
                         console.log(data)
                         this.setState({
                             minPrice: data.minPriceRent,
-                            maxPrice: data.maxPriceRent
+                            maxPrice: data.maxPriceRent,
+                            minPlaceholderPrice: data.minPriceRent,
+                            maxPlaceholderPrice: data.maxPriceRent,
                         }, () => this.getAllFilms(this.state.currentPage,
                             this.state.filterCountryList,
                             this.state.filterDirectorList,
@@ -117,7 +125,9 @@ class CatalogPage extends Component {
                 console.log(data.minYear)
                 this.setState({
                         startPremierYear: data.minYear,
-                        endPremierYear: data.maxYear
+                        endPremierYear: data.maxYear,
+                        startPlaceholderYear: data.minYear,
+                        endPlaceholderYear: data.maxYear
                     },
                 )
             }).catch((error) => {
@@ -308,7 +318,7 @@ class CatalogPage extends Component {
     handleDateChange(name, event) {
         let value = event.target.value;
         if (name === "second") {
-            if (parseInt(this.state.startPremierYear) <= parseInt(value) && value.length === 4) {
+            if (parseInt(this.state.startPlaceholderYear) <= parseInt(value) && value.length === 4) {
                 this.setState({endPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -320,7 +330,7 @@ class CatalogPage extends Component {
                     this.state.maxPrice));
             }
         } else {
-            if (parseInt(value) <= parseInt(this.state.endPremierYear) && value.length === 4) {
+            if (parseInt(value) <= parseInt(this.state.endPlaceholderYear) && value.length === 4) {
                 this.setState({startPremierYear: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -349,7 +359,7 @@ class CatalogPage extends Component {
     handlePriceChange(name, event) {
         let value = event.target.value;
         if (name === "second") {
-            if (parseInt(this.state.minPrice) <= parseInt(value)) {
+            if (parseInt(this.state.minPlaceholderPrice) <= parseInt(value)) {
                 this.setState({maxPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -362,7 +372,7 @@ class CatalogPage extends Component {
 
             }
         } else {
-            if (parseInt(value) <= parseInt(this.state.maxPrice) && parseInt(value) >= parseInt(this.state.minPrice)) {
+            if (parseInt(value) <= parseInt(this.state.maxPlaceholderPrice) && parseInt(value) >= parseInt(this.state.minPlaceholderPrice)) {
                 this.setState({minPrice: value}, () => this.getAllFilms(this.state.currentPage,
                     this.state.filterCountryList,
                     this.state.filterDirectorList,
@@ -500,14 +510,14 @@ class CatalogPage extends Component {
                             <div className={style.field}>
                                 <input type={'number'}
                                        className={style.start__field}
-                                       placeholder={this.state.startPremierYear}
+                                       placeholder={this.state.startPlaceholderYear}
                                        onChange={this.handleDateChange.bind(this, "first")}/>
                             </div>
                             <div className={style.separator}><span>-</span></div>
                             <div className={style.field}>
                                 <input type={'number'}
                                        className={style.end__field}
-                                       placeholder={this.state.endPremierYear}
+                                       placeholder={this.state.endPlaceholderYear}
                                        onChange={this.handleDateChange.bind(this, "second")}/>
                             </div>
                         </div>
@@ -524,14 +534,14 @@ class CatalogPage extends Component {
                             <div className={style.field}>
                                 <input type={'number'}
                                        className={style.start__field}
-                                       placeholder={this.state.minPrice}
+                                       placeholder={this.state.minPlaceholderPrice}
                                        onChange={this.handlePriceChange.bind(this, "first")}/>
                             </div>
                             <div className={style.separator}><span>-</span></div>
                             <div className={style.field}>
                                 <input type={'number'}
                                        className={style.end__field}
-                                       placeholder={this.state.maxPrice}
+                                       placeholder={this.state.maxPlaceholderPrice}
                                        onChange={this.handlePriceChange.bind(this, "second")}/>
                             </div>
                         </div>

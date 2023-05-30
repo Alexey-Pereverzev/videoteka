@@ -35,6 +35,8 @@ function Header(props) {
     let openMenu = () => {
         setOpen(!open)
     }
+
+
     let roleMenu = () => {
         switch (role) {
             case 'ROLE_ADMIN':
@@ -42,9 +44,16 @@ function Header(props) {
                     <DropdownItem text={'пользователи'}/>
                 </NavLink>
             case 'ROLE_MANAGER':
-                return <NavLink to={'cabinet/redactor'}>
-                    <DropdownItem text={'редактор'}/>
-                </NavLink>
+                return (
+                    <div>
+                        <NavLink to={'cabinet/redactor'}>
+                            <DropdownItem text={'редактор фильмов'}/>
+                        </NavLink>
+                        <NavLink to={'cabinet/moderation'}>
+                            <DropdownItem text={'модерация отзывов'}/>
+                        </NavLink>
+                    </div>
+            )
             default:
                 return
         }
