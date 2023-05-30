@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.TcpClient;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -50,6 +51,7 @@ public class AppConfig {
                 .builder()
                 .baseUrl(orderServiceUrl)
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+//                .defaultUriVariables(Collections.singletonMap("url", "http://${CABINET_SERVICE_LOCATION:127.0.0.1}:8192"))
                 .build();
     }
 }

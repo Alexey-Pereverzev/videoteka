@@ -22,12 +22,14 @@ spring:
           auto: update
 integrations:
   cart-service:
-    url: http://localhost:8190/cart-service
+    url: http://localhost:8190
+#    url: http://${CART_SERVICE_LOCATION:127.0.0.1}:8190
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
   catalog-service:
-    url: http://localhost:8189/catalog-service
+    url: http://localhost:8189
+#    url: http://${CATALOG_SERVICE_LOCATION:127.0.0.1}:8189
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
