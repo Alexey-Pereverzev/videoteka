@@ -2,7 +2,6 @@ package ru.gb.gatewayservice.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -19,6 +18,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     private final PublicKey secret;
+
+    private static final String SECRET_PATH="secret/";
 
     public JwtUtil() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         this.secret = getPublicKey();
@@ -54,7 +55,7 @@ public class JwtUtil {
     }
 
     private PublicKey getPublicKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        File publicKeyFile = new File("public.key");
+        File publicKeyFile = new File(SECRET_PATH + "public.key");
         byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
         KeyFactory kf = KeyFactory.getInstance("RSA");
         EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);

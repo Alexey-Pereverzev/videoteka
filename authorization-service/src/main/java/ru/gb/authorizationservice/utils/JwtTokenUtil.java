@@ -27,6 +27,7 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil {
     private final PublicKey secretPublic;
+    private static final String SECRET_PATH="secret/";
 
     public JwtTokenUtil() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] publicKeyBytes = getPublicKey();
@@ -79,13 +80,13 @@ public class JwtTokenUtil {
         PrivateKey privateKey = pair.getPrivate();
         PublicKey publicKey = pair.getPublic();
 
-        try (FileOutputStream fos = new FileOutputStream("public.key")) {
+        try (FileOutputStream fos = new FileOutputStream(SECRET_PATH + "public.key")) {
             fos.write(publicKey.getEncoded());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        try (FileOutputStream fos = new FileOutputStream("private.key")) {
+        try (FileOutputStream fos = new FileOutputStream(SECRET_PATH + "private.key")) {
             fos.write(privateKey.getEncoded());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -95,12 +96,12 @@ public class JwtTokenUtil {
 
     private byte[] getPrivateKey() throws IOException
     {
-        File privateKeyFile = new File("private.key");
+        File privateKeyFile = new File(SECRET_PATH + "private.key");
         return Files.readAllBytes(privateKeyFile.toPath());
     }
 
     private byte[] getPublicKey() throws IOException {
-        File publicKeyFile = new File("public.key");
+        File publicKeyFile = new File(SECRET_PATH + "public.key");
         return Files.readAllBytes(publicKeyFile.toPath());
     }
 
