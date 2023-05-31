@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserNameMailDto {
-    private Long id;
     private String firstName;
     private String email;
 }

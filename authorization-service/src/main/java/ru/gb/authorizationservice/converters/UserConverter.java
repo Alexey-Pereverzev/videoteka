@@ -24,7 +24,6 @@ public class UserConverter {
 
     public UserNameMailDto entityToNameMailDto(User user) {
         UserNameMailDto result = UserNameMailDto.builder()
-                .id(user.getId())
                 .firstName(user.getFirstName())
                 .email(user.getEmail())
                 .build();
