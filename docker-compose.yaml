@@ -80,6 +80,8 @@ services:
       SPRING_DATASOURCE_URL:  "jdbc:postgresql://orders-db:5432/orders_db"
       SPRING_DATASOURCE_USERNAME: "orders"
       SPRING_DATASOURCE_PASSWORD: "OrdersVideoteka2023"
+      CATALOG_SERVICE_LOCATION: catalog-service
+      CART_SERVICE_LOCATION: cart-service
     networks:
       - videoteka-net
     restart: always
@@ -91,6 +93,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-cart
+    environment:
+      CATALOG_SERVICE_LOCATION: catalog-service
+      CABINET_SERVICE_LOCATION: cabinet-service
     ports:
       - "8190:8190"
     networks:
@@ -124,6 +129,11 @@ services:
       dockerfile: Dockerfile-gateway
     ports:
       - "5555:5555"
+    environment:
+      CATALOG_SERVICE_LOCATION: catalog-service
+      CART_SERVICE_LOCATION: cart-service
+      AUTH_SERVICE_LOCATION: authorization-service
+      CABINET_SERVICE_LOCATION: cabinet-service
     networks:
       - videoteka-net
     volumes:

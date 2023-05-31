@@ -18,7 +18,8 @@ spring:
             allowedHeaders: "*"
       routes:
         - id: authorization-service
-          uri: http://localhost:8187
+          #          uri: http://localhost:8187
+          uri: http://${AUTH_SERVICE_LOCATION:127.0.0.1}:8187
           predicates:
             - Path=/auth/**
           filters:
@@ -28,7 +29,8 @@ spring:
             - MyAuthFilter
 
         - id: cabinet-order-service
-          uri: http://localhost:8192
+          #          uri: http://localhost:8192
+          uri: http://${CABINET_SERVICE_LOCATION:127.0.0.1}:8192
           predicates:
             - Path=/cabinet/**
           filters:
@@ -38,7 +40,8 @@ spring:
             - MyAuthFilter
 
         - id: cart-service
-          uri: http://localhost:8190
+          #          uri: http://localhost:8190
+          uri: http://${CART_SERVICE_LOCATION:127.0.0.1}:8190
           predicates:
             - Path=/cart/**
           filters:
@@ -48,7 +51,8 @@ spring:
             - MyAuthFilter
 
         - id: catalog-service
-          uri: http://localhost:8189
+          #          uri: http://localhost:8189
+          uri: http://${CATALOG_SERVICE_LOCATION:127.0.0.1}:8189
           predicates:
             - Path=/catalog/**
           filters:
@@ -56,5 +60,3 @@ spring:
             - PrefixPath=/catalog-service
             - JwtAuthFilter
             - MyAuthFilter
-
-
