@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
+import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
+import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -220,5 +222,10 @@ public class UserService implements UserDetailsService {
         } else {
             return "";
         }
+    }
+
+    public User findNameEmailById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                ()->new ResourceNotFoundException("Польователь с id="+id+" не найден"));
     }
 }
