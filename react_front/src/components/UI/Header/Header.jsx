@@ -85,7 +85,7 @@ function Header(props) {
                         src={'https://i.pinimg.com/originals/6a/e2/02/6ae2025b41de91553621b2c8c554d61f.jpg'}
                         alt={'logo'}/>
                 </NavLink>
-                <SearchBar onChange={props.onChange}/>
+
                 {user ?
                     <div className={'menu_container'} ref={menuRef}>
                         <div className={'dropdown_trigger'} onClick={openMenu}>

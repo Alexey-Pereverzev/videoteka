@@ -61,7 +61,7 @@
     top: 0px;
     left: 0px;
     font-size: 16px;
-    color: #fff;
+    color: #c5c5c5;
     pointer-event: none;
     transition: all 0.5s ease-in-out;
 }
@@ -73,7 +73,7 @@
     width: 100%;
     padding: 8px 0 5px 0;
     font-size: 16px;
-    color: #fff;
+    color: #c5c5c5;
 }
 
 .input_container input:focus {
@@ -106,7 +106,7 @@
     top: 70px;
     left: 350px;
     font-size: 16px;
-    color: #fff;
+    color: #c5c5c5;
     pointer-event: none;
     transition: all 0.7s ease-in-out;
 }
@@ -118,7 +118,7 @@
     width: 100%;
     padding: 8px 0 5px 5px;
     font-size: 16px;
-    color: #fff;
+    color: #c5c5c5;
     resize: none;
 }
 

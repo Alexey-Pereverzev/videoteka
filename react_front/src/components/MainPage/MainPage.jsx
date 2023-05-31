@@ -26,49 +26,14 @@ class MainPage extends Component {
     }
 
 
-    getFilmByTitlePart = (currentPage, value) => {
-        const titlePart = value
-        console.log(titlePart)
-        currentPage -= 1;
-        console.log(titlePart)
-        axios.get("http://localhost:5555/catalog/api/v1/film/find_by_title_part",
-            {
-                params: {
-                    currentPage,
-                    titlePart
-                }
-            })
-            .then(response => response.data)
-            .then((data) => {
-                if (data !== null) {
-                    console.log(data.content)
-                    this.setState({
-                        films: data.content,
-                        totalPages: data.totalPages,
-                        totalElements: data.totalElements,
-                        currentPage: data.number + 1
-                    })
-                } else {
-                    if (data === null) {
-                        return (
-                            <div>
-                                <h4>Ничего нет</h4>
-                            </div>
-                        )
-                    }
-                }
 
-            }).catch((error) => {
-            console.error("Error: " + error)
-        })
-    }
 
     render() {
 
         return (
             <div className={style.container}>
                 <Header logout={this.props.logout}
-                        onChange={(_, value) => this.getFilmByTitlePart(this.state.currentPage, value)}
+
                 />
                 <div className={style.main_container}>
                     <Routes>
