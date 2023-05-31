@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import "./SignUp.css";
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify";
 
 //     username,
 //     password,
@@ -23,6 +24,9 @@ class SignUp extends Component {
 
     }
 
+     displayCartNotification = (message) => {
+        toast.success(message);
+    }
     sendRegisterRequest = (event) => {
         event.preventDefault(true);
         return axios.post('http://localhost:5555/auth/api/v1/reg/register',
@@ -39,8 +43,17 @@ class SignUp extends Component {
             .then(response => {
 
                 console.log(response.data)
+                alert("Вы успешно зарегистрированы")
                 window.location = "/"
-            },  function errorCallback(response) {alert(response)} )
+            },
+                function errorCallback(response) {
+                console.log(response)
+                    let displayCartNotification = (message) => {
+                        toast.error(message);
+                    }
+                    displayCartNotification(response.response.data.value)
+            }
+            )
 
     }
 
@@ -108,6 +121,18 @@ class SignUp extends Component {
                     />
                     <button id="submit" className="login-page__sign-in__button">Регистрируюсь</button>
                 </form>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         );
     }

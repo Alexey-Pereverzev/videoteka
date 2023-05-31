@@ -7,11 +7,24 @@
     margin: 10px;
 }
 .button-back_box button{
+    padding: 10px;
+    border: 1px solid #6b6b6b;
+    border-radius: 5px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: #6b6b6b;
     background: transparent;
     outline: none;
-    border: none;
-
+    cursor: pointer;
+    transition: 0.5s;
+}
+.button-back_box button:hover{
+    padding: 10px;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+.review-page__btn_group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

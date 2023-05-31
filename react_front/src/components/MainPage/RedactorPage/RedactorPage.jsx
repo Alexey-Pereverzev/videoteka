@@ -22,9 +22,13 @@ const RedactorPage = () => {
         console.log('this.state', selected);
     }
    let getBsStyle = (key) => {
-        return selected[key] ? 'primary' : 'default';
+        return selected[key] ? 'primary' : 'error';
     }
-const[selected, setSelected] = useState([])
+const[selected, setSelected] = useState([{
+    'A': false,
+    'B': false,
+    'C': false
+}])
     return(
         <div className={style.redactor_container}>
             Редактирование карточки фильма

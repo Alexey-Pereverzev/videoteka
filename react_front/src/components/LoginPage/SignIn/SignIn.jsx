@@ -26,7 +26,8 @@ class SignIn extends Component {
                 .post('http://localhost:5555/auth/api/v1/auth/authenticate', {
                     username: event.target.username.value,
                     password: event.target.password.value,
-                }).then(async response => {
+                })
+                .then(async response => {
                     console.log(response.data)
                     if (response.data.token) {
                         axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
@@ -53,12 +54,14 @@ class SignIn extends Component {
                     }
 
                     window.location = "/"
+                }, function errorCallback(response) {
+                    console.log(response)
+                    let displayCartNotification = (message) => {
+                        toast.error(message);
+                    }
+                    displayCartNotification(response.response.data.value)
                 })
-                .then(data => {return<Alert severity="error">Привет, {username}!</Alert>
-        })
-
         }catch (e) {
-             return <Alert severity="error">{e}</Alert>
 
         }
 
@@ -121,7 +124,18 @@ class SignIn extends Component {
                         Вхожу
                     </button>
                 </form>
-
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         );
     }

@@ -39,8 +39,10 @@ function FilmCard(props) {
                                     title={props.title}
                                     setCommand={setCommand}
                 />
-            case 'add-review':
-                return <AddReviewPage filmId={props.id}/>
+            case 'add_review':
+                return <AddReviewPage filmId={props.id}
+                                      setCommand={setCommand}
+                />
 
             default:
                 return <FilmPage director={props.director}

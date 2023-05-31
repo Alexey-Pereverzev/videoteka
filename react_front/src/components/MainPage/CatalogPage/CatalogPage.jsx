@@ -13,6 +13,7 @@ import {
 import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
 import {Component, useEffect} from "react";
+import SearchBar from "../../../widgets/SearchBar/SearchBar";
 
 class CatalogPage extends Component {
     constructor(props) {
@@ -387,7 +388,39 @@ class CatalogPage extends Component {
         }
     }
 
-
+    getFilmByTitlePart = (value) => {
+        const titlePart = value
+        console.log(titlePart)
+        axios.get("http://localhost:5555/catalog/api/v1/film/find_by_title_part",
+            {
+                params: {
+                    currentPage: 1,
+                    titlePart: titlePart
+                }
+            })
+            .then(response => response.data)
+            .then((data) => {
+                if (data !== null) {
+                    console.log(data.content)
+                    this.setState({
+                        films: data.content,
+                        totalPages: data.totalPages,
+                        totalElements: data.totalElements,
+                        currentPage: data.number + 1
+                    })
+                } else {
+                    if (data === null) {
+                        return (
+                            <div>
+                                <h4>Ничего нет</h4>
+                            </div>
+                        )
+                    }
+                }
+            }).catch((error) => {
+            console.error("Error: " + error)
+        })
+    }
     render() {
         const {films, currentPage, filmsPerPage} = this.state;
         const genres = this.state.genres;
@@ -397,6 +430,9 @@ class CatalogPage extends Component {
         const {active, setActive} = this.state.active;
         return (
             <div className={style.catalog_container}>
+                <SearchBar getFilmByTitlePart={(value) => this.getFilmByTitlePart(value)}
+                           currentPage={1}
+                />
                 <div className={style.genre_bar}>
                     <ButtonGroup variant="text" size="small" aria-label="outlined primary button group">
                         <Button onClick={() => this.filmFilterByGenres("Все")} className={style.unselected}>Все</Button>
