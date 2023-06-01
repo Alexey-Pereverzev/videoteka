@@ -130,7 +130,7 @@ public class InputValidationService {
 
 
     public static boolean acceptablePhoneNumber(String phoneNumber) {
-        if (phoneNumber!=null && !phoneNumber.isBlank()) {
+        if (!phoneNumber.isBlank()) {
             if (areAllSymbolsInSet(phoneNumber, phoneCharacters)) {
                 phoneNumber = phoneNumber.replace(" ", "")
                         .replace("(", "").replace(")", "")
