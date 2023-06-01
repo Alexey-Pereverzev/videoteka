@@ -77,7 +77,7 @@ public class InputValidationService {
 
     public String acceptableEmail(String email)
     {
-        if (email.isEmpty() || email.isBlank()) return "Email не может быть пустым";
+        if (email==null || email.isBlank()) return "Email не может быть пустым";
         if (!areAllSymbolsInSet(email, emailCharacters)) {
             return "Недопустимые символы в email";
         } else {
@@ -88,7 +88,7 @@ public class InputValidationService {
 
     public String acceptableLogin(String login)
     {
-        if (login.isEmpty() || login.isBlank()) return "Логин не может быть пустым";
+        if (login==null || login.isBlank()) return "Логин не может быть пустым";
         if (login.length()<MIN_LOGIN_LENGTH) return "Минимальная длина логина должна быть " + MIN_LOGIN_LENGTH + " символа";
         if (login.length()>MAX_LOGIN_LENGTH) return "Максимальная длина логина " + MAX_LOGIN_LENGTH + " символов";
         if (!areAllSymbolsInSet(login, loginCharacters)) {
@@ -100,7 +100,7 @@ public class InputValidationService {
 
     public String acceptablePassword(String password)
     {
-        if (password.isEmpty() || password.isBlank()) return "Пароль не может быть пустым";
+        if (password==null || password.isBlank()) return "Пароль не может быть пустым";
         if (password.length()<MIN_PASSWORD_LENGTH) return "Минимальная длина пароля " + MIN_PASSWORD_LENGTH + " символов";
         if (password.length()>MAX_PASSWORD_LENGTH) return "Максимальная длина пароля " + MAX_PASSWORD_LENGTH + " символа";
         if (!areAllSymbolsInSet(password, passwordCharacters)) {
@@ -111,7 +111,7 @@ public class InputValidationService {
     }
 
     public String acceptableFirstName(String firstName) {
-        if (firstName.isEmpty() || firstName.isBlank()) return "ERROR: пустое имя";
+        if (firstName==null || firstName.isBlank()) return "ERROR: пустое имя";
         if (areAllSymbolsInSet(firstName,latin) || areAllSymbolsInSet(firstName,cyrillic)) {
             return "";
         } else {
@@ -120,7 +120,7 @@ public class InputValidationService {
     }
 
     public String acceptableLastName(String lastName) {
-        if (lastName.isEmpty() || lastName.isBlank()) return "ERROR: пустая фамилия";
+        if (lastName==null || lastName.isBlank()) return "ERROR: пустая фамилия";
         if (areAllSymbolsInSet(lastName,latin) || areAllSymbolsInSet(lastName,cyrillic)) {
             return "";
         } else {
@@ -130,7 +130,7 @@ public class InputValidationService {
 
 
     public static boolean acceptablePhoneNumber(String phoneNumber) {
-        if (!phoneNumber.isEmpty() && !phoneNumber.isBlank()) {
+        if (phoneNumber!=null && !phoneNumber.isBlank()) {
             if (areAllSymbolsInSet(phoneNumber, phoneCharacters)) {
                 phoneNumber = phoneNumber.replace(" ", "")
                         .replace("(", "").replace(")", "")

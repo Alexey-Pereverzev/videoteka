@@ -6,12 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.RoleChangeDto;
-
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.services.UserService;
 
@@ -27,7 +24,8 @@ public class RoleController {
             summary = "Запрос на изменение роли пользователя",
             responses = {
                     @ApiResponse(
-                            description = "Роль успешно изменена", responseCode = "200"
+                            description = "Роль успешно изменена", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
                             description = "Пользователь не найден", responseCode = "400",
@@ -36,16 +34,12 @@ public class RoleController {
             }
     )
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody RoleChangeDto roleChangeDto,
+    public StringResponse update(@RequestBody RoleChangeDto roleChangeDto,
                                  @RequestHeader String userId) {
-        //  changeUserId - какого пользователя изменяем
+        //  RoleChangeDto - какого пользователя изменяем
         //  userId - кто послал запрос на изменение пользователя
-        String result = userService.setRoleToUser(roleChangeDto.getChangeUserId(), userId, roleChangeDto.getRole());
-        if (result.equals("")) {
-            return ResponseEntity.ok(new StringResponse("Роль успешно изменена"));
-        } else {
-            return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR", result), HttpStatus.BAD_REQUEST);
-        }
+        userService.setRoleToUser(roleChangeDto.getChangeUserId(), userId, roleChangeDto.getRole());
+        return new StringResponse("Роль успешно изменена");
     }
 
 
