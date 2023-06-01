@@ -15,7 +15,7 @@ public class InputValidationService {
 
     private static final int MIN_LOGIN_LENGTH = 3;
     private static final int MAX_LOGIN_LENGTH = 15;
-    private static final int MIN_PASSWORD_LENGTH = 6;
+    private static final int MIN_PASSWORD_LENGTH = 5;
     private static final int MAX_PASSWORD_LENGTH = 32;
 
 

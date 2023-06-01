@@ -24,6 +24,9 @@ import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.services.UserService;
 import ru.gb.authorizationservice.utils.JwtTokenUtil;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
 @RestController
@@ -49,7 +52,7 @@ public class AuthController {
             }
     )
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
+    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String username = authRequest.getUsername();
 
         Optional<User> userByUsername = userService.findNotDeletedByUsername(username);

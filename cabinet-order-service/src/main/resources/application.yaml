@@ -2,6 +2,11 @@ server:
   port: 8192
   servlet:
     context-path: /cabinet-order-service
+flyway:
+  user: orders
+  password: OrdersVideoteka2023
+  schemas: orders_db
+  url: jdbc:postgresql://194.87.101.43:5432/orders_db
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -13,14 +18,24 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: update
 integrations:
   cart-service:
-    url: http://localhost:8190/cart-service
+#    url: http://localhost:8190/cart-service
+    url: http://${CART_SERVICE_LOCATION:127.0.0.1}:8190/cart-service
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
   catalog-service:
-    url: http://localhost:8189/catalog-service
+#    url: http://localhost:8189/catalog-service
+    url: http://${CATALOG_SERVICE_LOCATION:127.0.0.1}:8189/catalog-service
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
+  notification-service:
+    url: http://localhost:8199/notification-service
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
+

@@ -9,6 +9,7 @@ import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
+import ru.gb.cabinetorderservice.integrations.MailServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
 
 import java.time.Instant;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class OrderService {
     private final OrdersRepository ordersRepository;
     private final CartServiceIntegration cartServiceIntegration;
+    private final MailServiceIntegration mailServiceIntegration;
     private static final String SERVER_TIME_ZONE = "Europe/Moscow";
     private final Integer RENT_HOURS = 24;
 
@@ -59,6 +61,8 @@ public class OrderService {
             }
 
             cartServiceIntegration.clearUserCart(userId);
+            mailServiceIntegration.createMessage(userId);
+
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){

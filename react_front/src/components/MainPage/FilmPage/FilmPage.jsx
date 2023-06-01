@@ -16,43 +16,7 @@ function FilmPage(props) {
     let displayCartNotification = (message) => {
         toast.success(message);
     };
-    let getFilmIdRating = () => {
-        // const userId = JSON.parse(localStorage.getItem("userId"))
-        try {
-            axios.get('http://localhost:5555/catalog/api/v1/rating/grade_user_by_id_film', {
-                params: {
-                    filmId: props.filmId
-                }
-            })
-                .then(response => response.data)
-                .then(data => {
-                        setDisable(true)
-                        console.log(data)
-                        setOldRatingState(data.grade)
-                    }
-                )
 
-        } catch (e) {
-
-        }
-    }
-    let setValue = (newValue) => {
-        const userId = JSON.parse(localStorage.getItem("userId"))
-        try {
-            axios.post('http://localhost:5555/catalog/api/v1/rating/add_new',
-                {
-                    film_id: props.filmId,
-                    user_id: Number(userId),
-                    grade: newValue,
-                }
-            ).then(r => r.data)
-                .then(() => getFilmIdRating())
-
-        } catch (e) {
-
-        }
-
-    }
     let getPrice = () => {
         let price = ''
         if (props.isSale) {
@@ -81,15 +45,7 @@ function FilmPage(props) {
                         }
                     }
                 )
-                // if (sale) {
                     displayCartNotification(response.data.value)
-                // } else {
-                //     if (!sale) {
-                //         displayCartNotification('Поздравляем! Вы взяли фильм в аренду!')
-                //     }
-                //
-                // }
-
                 console.log("Ответ метода addToCart: " + response.data)
             } catch (e) {
                 alert(e)
@@ -99,12 +55,20 @@ function FilmPage(props) {
         }
 
     }
-    const handleChange = () => {
-        props.setCommand('reviews') // callback-функция
+    const handleChange = (command) => {
+        switch (command) {
+            case 'reviews':
+                props.setCommand(command)
+                break
+            case 'add_review':
+                props.setCommand(command)
+                break
+            default:
+                return null
+        }
     }
-    const [oldRatingState, setOldRatingState] = useState(0.00)
-    const [disable, setDisable] = useState(false)
-    getFilmIdRating()
+
+
 
     return (
         <div className={'film-page'}>
@@ -126,26 +90,7 @@ function FilmPage(props) {
                         {props.description}
                     </p>
                     <div>
-                        {disable ?
-                            <Rating
-                                name="read-only"
-                                value={oldRatingState}
-                                emptyIcon={<StarBorderOutlinedIcon style={{opacity: 0.55, color: 'white'}}
-                                                                   fontSize="inherit"/>}
-                                readOnly
-                            />
-                            :
-                            <Rating
-                                name="simple-controlled"
-                                value={oldRatingState}
-                                emptyIcon={<StarBorderOutlinedIcon style={{opacity: 0.55, color: 'white'}}
-                                                                   fontSize="inherit"/>}
-                                onChange={(event, newValue) => {
-                                    setValue(newValue);
-                                }}
-                            />
 
-                        }
 
                     </div>
                     <div className="movie__details">
@@ -165,9 +110,13 @@ function FilmPage(props) {
                         )}
                     </div>
                     <div className={'reviews_link'}>
-                        <button onClick={() => handleChange()}>
+                        <button onClick={() => handleChange('reviews')}>
                             <span className={'to_reviews'}><h4>Отзывы на фильм</h4></span>
                         </button>
+                        <button onClick={() => handleChange('add_review')}>
+                            <span className={'to_reviews'}><h4>Оставить рецензию</h4></span>
+                        </button>
+
                     </div>
                     <p className="movie__detail"><span className="icons icons-yellow"><i
                         className="fas fa-file-invoice-dollar"></i>

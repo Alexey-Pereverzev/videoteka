@@ -44,7 +44,9 @@
 
 .menu_container {
     margin-top: 10px;
-    width: fit-content;
+    width: auto;
+    height: 50px;
+
 
 }
 

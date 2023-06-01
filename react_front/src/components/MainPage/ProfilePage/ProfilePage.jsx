@@ -2,11 +2,8 @@ import "./ProfilePage.css";
 import axios from "axios";
 
 function ProfilePage() {
-   let sendChangePasswordRequest = (username,
-                                 oldPassword,
-                                 newPassword,
-    ) => {
-       alert('Поздравляем! Пароль изменён, новый пароль: ' + newPassword)
+
+   let sendChangePasswordRequest = (event) => {
         // return axios
         //     .post("http://localhost:5555/auth/api/v1/reg/register", {
         //         username,
@@ -19,10 +16,10 @@ function ProfilePage() {
         <div className={'profile-page__container'}>
             <div className="login-box">
                 <h2>Изменить личные данные</h2>
-                <form method={'post'} onSubmit={() => sendChangePasswordRequest()}>
+                <form>
                     <div className={'box__container'}>
                         <div className="user-box">
-                            <input type="text" name="oldPassword" required=""/>
+                            <input type="password" name="oldPassword" required=""/>
                             <label>Старый пароль</label>
                         </div>
                         <div className="user-box">
@@ -31,7 +28,7 @@ function ProfilePage() {
                         </div>
                     </div>
 
-                    <button type={'submit'}>Отправить</button>
+                    <button type={'submit'} onClick={(event, ) => sendChangePasswordRequest(event)}>Отправить</button>
                 </form>
             </div>
         </div>

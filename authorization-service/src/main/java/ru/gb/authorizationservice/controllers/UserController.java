@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.api.dtos.dto.UserDto;
+import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.authorizationservice.converters.UserConverter;
 
 import ru.gb.authorizationservice.services.UserService;
@@ -67,6 +68,24 @@ public class UserController {
     @GetMapping("list_all")
     public List<UserDto> listAll() {
         return userService.findAll().stream().map(userConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Имя и мэйл по id",
+            description = "Вывод имени и емэйла пользователя по id",
+            responses = {
+                    @ApiResponse(
+                            description = "Пользователь найден, вернули результат", responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @GetMapping("get_name_and_email_by_id")
+    public UserNameMailDto getNameAndEmailById(Long id) {
+        return userConverter.entityToNameMailDto(userService.findNameEmailById(id));
     }
 
     @Operation(
