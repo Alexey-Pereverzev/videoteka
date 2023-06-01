@@ -54,17 +54,28 @@ public class RegisterController {
                 return new ResponseEntity<>(new AppError("USER_ALREADY_EXISTS",
                         "Такой пользователь уже есть в системе"), HttpStatus.BAD_REQUEST);
             } else {    // пользователь есть в системе, но был удален - восстанавливаем
-                String bcryptCachedPassword = passwordEncoder.encode(registerUserDto.getPassword());
-                String tryToRestore = userService.restoreUser(registerUserDto, bcryptCachedPassword, user.get());
-                if (!tryToRestore.equals("")) {
+                if (registerUserDto.getPassword()==null) {
                     return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
-                            tryToRestore), HttpStatus.BAD_REQUEST);
+                            "Пароль не может быть пустым"), HttpStatus.BAD_REQUEST);
+                } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
+                    return new ResponseEntity<>(new AppError("NOT_MATCHING_PASSWORDS",
+                            "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
                 } else {
-                    return ResponseEntity.ok(new StringResponse("Пользователь с именем "
-                            + registerUserDto.getUsername() + " успешно создан"));
+                    String bcryptCachedPassword = passwordEncoder.encode(registerUserDto.getPassword());
+                    String tryToRestore = userService.restoreUser(registerUserDto, bcryptCachedPassword, user.get());
+                    if (!tryToRestore.equals("")) {
+                        return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
+                                tryToRestore), HttpStatus.BAD_REQUEST);
+                    } else {
+                        return ResponseEntity.ok(new StringResponse("Пользователь с именем "
+                                + registerUserDto.getUsername() + " успешно восстановлен"));
+                    }
                 }
 
             }
+        } else if (registerUserDto.getPassword()==null) {
+            return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
+                    "Пароль не может быть пустым"), HttpStatus.BAD_REQUEST);
         } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
             return new ResponseEntity<>(new AppError("NOT_MATCHING_PASSWORDS",
                     "Пароли не совпадают"), HttpStatus.BAD_REQUEST);

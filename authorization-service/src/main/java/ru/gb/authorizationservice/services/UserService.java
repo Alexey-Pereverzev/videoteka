@@ -137,7 +137,7 @@ public class UserService implements UserDetailsService {
         }
 
 
-        if (phoneNumber==null || phoneNumber.isEmpty() || phoneNumber.isBlank()) {
+        if (phoneNumber==null || phoneNumber.isBlank()) {
             user.setPhoneNumber(null);
         } else {
             if (!validationService.acceptablePhoneNumber(phoneNumber)) {
@@ -146,7 +146,7 @@ public class UserService implements UserDetailsService {
             user.setPhoneNumber(phoneNumber);
         }
 
-        if (address==null || address.isEmpty() || address.isBlank()) {
+        if (address==null || address.isBlank()) {
             user.setAddress(null);
         } else {
             user.setAddress(address);
