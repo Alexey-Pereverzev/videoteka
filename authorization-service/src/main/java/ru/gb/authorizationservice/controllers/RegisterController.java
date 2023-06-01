@@ -43,7 +43,7 @@ public class RegisterController {
     public StringResponse registerNewUser(@RequestBody RegisterUserDto registerUserDto) {
 
         Optional<User> user = userService.findByUsername(registerUserDto.getUsername());
-
+      
         return user.map(u -> userService.restoreUser(registerUserDto, u))
                 // пользователь есть - восстанавливаем если удален
                 .orElseGet(() -> userService.createNewUser(registerUserDto));
