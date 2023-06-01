@@ -51,10 +51,10 @@ public class AuthController {
             }
     )
     @PostMapping("/authenticate")
-    public JwtResponse createAuthToken(@RequestBody JwtRequest authRequest) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String username = authRequest.getUsername();
+    public JwtResponse createAuthToken(@RequestBody JwtRequest authRequest)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        User userByUsername = userService.findNotDeletedByUsername(username);
+        User userByUsername = userService.findNotDeletedByUsername(authRequest.getUsername());
         // проверяем, есть ли не удаленный пользователь с таким именем, если нет = статус 404
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
