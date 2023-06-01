@@ -14,8 +14,6 @@ import ru.gb.catalogservice.utils.DirectorsFilter;
 import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

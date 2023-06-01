@@ -35,11 +35,29 @@ public class MailController {
 
             mailService.createMessage(userIDLong);
             return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
-    }
-        catch (Exception e){
+        } catch (Exception e) {
 
             return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+        @Operation(
+                summary = "Тест",
+                description = "Тест"
+        )
+
+        @GetMapping ("/test")
+        public ResponseEntity<?> testMessage(@RequestHeader String email) {
+
+            try {
+
+                mailService.testMessage(email);
+                return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
+            }
+            catch (Exception e){
+
+                return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
     }
 
 

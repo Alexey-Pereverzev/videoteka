@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.dto.UserDto;
+import ru.gb.api.dtos.dto.UserNameMailDto;
 
 @Component
 @RequiredArgsConstructor
@@ -12,13 +13,13 @@ public class AuthServiceIntegration {
     private final WebClient authServiceWebClient;
 
 
-    public UserDto findById(Long id) {
-        UserDto userDto = authServiceWebClient.get()
-                .uri("/api/v1/users/find_by_id?id="+id)
+    public UserNameMailDto findById(Long id) {
+        UserNameMailDto userNameMailDto = authServiceWebClient.get()
+                .uri("/api/v1/users/get_name_and_email_by_id/?id="+id)
                 //.header( "find_by_id", String.valueOf(id))
                 .retrieve()
-                .bodyToMono(UserDto.class)
+                .bodyToMono(UserNameMailDto.class)
                 .block();
-        return userDto;
+        return userNameMailDto;
     }
 }

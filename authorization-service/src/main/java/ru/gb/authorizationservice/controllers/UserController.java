@@ -84,7 +84,7 @@ public class UserController {
             }
     )
     @GetMapping("get_name_and_email_by_id")
-    public UserNameMailDto getNameAndEmailById(Long id) {
+    public UserNameMailDto getNameAndEmailById(@RequestParam Long id) {
         return userConverter.entityToNameMailDto(userService.findNameEmailById(id));
     }
 

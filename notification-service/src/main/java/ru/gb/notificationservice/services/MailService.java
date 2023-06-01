@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.UserDto;
+import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.notificationservice.integrations.AuthServiceIntegration;
 
 import java.time.LocalDateTime;
@@ -33,11 +34,20 @@ public class MailService
 //    }
     public void createMessage(Long id) throws Exception{
         SimpleMailMessage message = new SimpleMailMessage();
-        UserDto userDto= authServiceIntegration.findById(id);
+        UserNameMailDto userDto= authServiceIntegration.findById(id);
         message.setTo(userDto.getEmail());
         message.setFrom("Videoteka");
         message.setSubject("Оформление заказа");
         message.setText("Здравсвуйте" + userDto.getFirstName()+" \n Ваш заказ успешно оформлен ");
+        javaMailSender.send(message);
+
+    }
+    public void testMessage(String email) throws Exception{
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setFrom("Videoteka");
+        message.setSubject("Оформление заказа");
+        message.setText("Здравсвуйте \n Ваш заказ успешно оформлен ");
         javaMailSender.send(message);
 
     }
