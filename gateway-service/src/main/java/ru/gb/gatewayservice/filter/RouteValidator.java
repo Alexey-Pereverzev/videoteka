@@ -30,7 +30,6 @@ public class RouteValidator {
             "/api/v1/rating/grade_user_by_id_film",
             "/api/v1/rating/total_film_rating",
             "/api/v1/rating/list_all_grade_and_review_by_filmId",
-            "/api/v1/rating/list_all_grade_and_review_is_not_moderate",
 
             "/api/v1/cart",
             "/api/v1/cart/generate",
@@ -66,7 +65,8 @@ public class RouteValidator {
     );
 
     public static final List<String> managerApiEndpoints = List.of(
-            "/api/v1/film/add_new"
+            "/api/v1/film/add_new",
+            "/api/v1/rating/list_all_grade_and_review_is_not_moderate"
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
