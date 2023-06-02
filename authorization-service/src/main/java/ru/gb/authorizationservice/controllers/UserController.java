@@ -6,15 +6,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.api.dtos.dto.UserDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.authorizationservice.converters.UserConverter;
-
 import ru.gb.authorizationservice.services.UserService;
 
 import java.util.List;
@@ -34,24 +31,25 @@ public class UserController {
             summary = "Запрос на удаление пользователя",
             responses = {
                     @ApiResponse(
-                            description = "Пользователь успешно удален", responseCode = "200"
+                            description = "Пользователь успешно удален", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "400",
+                            description = "Пользователь не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Админ не найден в базе по id", responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
     )
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
+    public StringResponse deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
-        String result = userService.safeDeleteById(deleteUserId, userId);
-        if (result.equals("")) {
-            return ResponseEntity.ok(new StringResponse("Пользователь успешно удален"));
-        } else {
-            return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR", result), HttpStatus.BAD_REQUEST);
-        }
+        userService.safeDeleteById(deleteUserId, userId);
+        return new StringResponse("Пользователь успешно удален");
     }
 
     @Operation(
@@ -84,7 +82,7 @@ public class UserController {
             }
     )
     @GetMapping("get_name_and_email_by_id")
-    public UserNameMailDto getNameAndEmailById(Long id) {
+    public UserNameMailDto getNameAndEmailById(@RequestParam Long id) {
         return userConverter.entityToNameMailDto(userService.findNameEmailById(id));
     }
 
@@ -102,14 +100,8 @@ public class UserController {
     }
     )
     @GetMapping("get_fullname_by_id")
-    public ResponseEntity<?> fullNameById(@RequestParam Long userId) {
-        String fullname = userService.fullNameById(userId);
-        if (fullname.equals("")) {
-            return new ResponseEntity<>(new AppError("USER_NOT_FOUND", "Нет такого пользователя"),
-                    HttpStatus.NOT_FOUND);
-        } else {
-            return ResponseEntity.ok(new StringResponse(fullname));
-        }
+    public StringResponse fullNameById(@RequestParam Long userId) {
+            return userService.fullNameById(userId);
     }
 
 

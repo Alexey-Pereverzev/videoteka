@@ -101,7 +101,7 @@ public class InputValidationService {
     public String acceptablePassword(String password)
     {
         if (password==null || password.isBlank()) return "Пароль не может быть пустым";
-        if (password.length()<MIN_PASSWORD_LENGTH) return "Минимальная длина пароля " + MIN_PASSWORD_LENGTH + " символа";
+        if (password.length()<MIN_PASSWORD_LENGTH) return "Минимальная длина пароля " + MIN_PASSWORD_LENGTH + " символов";
         if (password.length()>MAX_PASSWORD_LENGTH) return "Максимальная длина пароля " + MAX_PASSWORD_LENGTH + " символа";
         if (!areAllSymbolsInSet(password, passwordCharacters)) {
             return "Недопутсимые символы в пароле. Допустимы латинские буквы A-Z, a-z, символы кириллицы А-Я, а-я и цифры 0-9";
