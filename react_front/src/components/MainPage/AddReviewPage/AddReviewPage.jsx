@@ -27,19 +27,20 @@ function AddReviewPage(props) {
         const userId = JSON.parse(localStorage.getItem("userId"))
         console.log(message)
         try {
-            axios.post('http://localhost:5555/catalog/api/v1/rating/add_new',
-                {
-                    film_id: props.filmId,
-                    user_id: Number(userId),
-                    grade: starValue,
-                    review: message
-                }
-            ).then(r => displayCartNotification(r.data.message))
-                .then(() => {
-                    displayCartNotification("Ваш отзыв отправлен на модерацию!")
-                    getFilmIdRating()
-                })
-
+            if (message !== ''){
+                axios.post('http://localhost:5555/catalog/api/v1/rating/add_new',
+                    {
+                        film_id: props.filmId,
+                        user_id: Number(userId),
+                        grade: starValue,
+                        review: message
+                    }
+                ).then(r => displayCartNotification(r.data.message))
+                    .then(() => {
+                        displayCartNotification("Ваш отзыв отправлен на модерацию!")
+                        getFilmIdRating()
+                    })
+            }
 
         } catch (e) {
 

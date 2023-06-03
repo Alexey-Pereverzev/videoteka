@@ -38,7 +38,10 @@ const RedactorPage = () => {
 
 
     const [genres, setGenres] = useState([])
-    const [value, setValue] = useState([]);
+    const [value, setValue] = useState([])
+    const [directors, setDirectors] = useState([])
+    const [countries, setCountries] = useState([])
+
     return (
         <div className={style.redactor_container}>
             Редактирование карточки фильма
@@ -75,10 +78,18 @@ const RedactorPage = () => {
                         </div>
                     </div>
                     <div className={style.country}>
-                        <div className={style.input_container}>
-                            <input type="text" required=""/>
-                            <label>Страны, через запятую</label>
-                        </div>
+                        {directors.map(director => {
+                            return(
+                                    <div className={style.input_container}>
+                                        <input onChange={(event) => setDirectors(event.target.value)}
+                                               value={director}
+                                               type="text"
+                                               required=""/>
+                                        <label>Страны, через запятую</label>
+                                    </div>
+                                )
+                        })}
+
                     </div>
                     <div className={style.director}>
                         <div className={style.input_container}>
@@ -93,9 +104,6 @@ const RedactorPage = () => {
                                       optionLabel="title"
                                       options={genres}
                                       multiple/>
-
-
-
 
                 </div>
             </div>
