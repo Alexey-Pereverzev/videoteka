@@ -16,7 +16,6 @@ public class AuthServiceIntegration {
     public UserNameMailDto findById(Long id) {
         UserNameMailDto userNameMailDto = authServiceWebClient.get()
                 .uri("/api/v1/users/get_name_and_email_by_id/?id="+id)
-                //.header( "find_by_id", String.valueOf(id))
                 .retrieve()
                 .onStatus(HttpStatus::is5xxServerError,
                         error -> Mono.error(new RuntimeException("Server is not responding")))
