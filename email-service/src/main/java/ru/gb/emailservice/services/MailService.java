@@ -1,19 +1,15 @@
-package ru.gb.notificationservice.services;
-
+package ru.gb.emailservice.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.gb.api.dtos.dto.UserDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
-import ru.gb.notificationservice.integrations.AuthServiceIntegration;
+import ru.gb.emailservice.exceptions.ResourceNotFoundException;
+import ru.gb.emailservice.integrations.AuthServiceIntegration;
 
-import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
-
 public class MailService
 {
     private final AuthServiceIntegration authServiceIntegration;
@@ -21,7 +17,7 @@ public class MailService
 
 
 
-//    //https://crontab.guru/
+    //    //https://crontab.guru/
 //    //http://www.cronmaker.com/?1
 //    @Scheduled(cron = "0 0/1 * 1/1 * *") //Каждую минуту
 //    public void sendMail() {
@@ -32,22 +28,26 @@ public class MailService
 //        javaMailSender.send(message);
 //        System.out.println("Scheduled task running");
 //    }
-    public void createMessage(Long id) throws Exception{
+    public void createMessage(Long id) {
         SimpleMailMessage message = new SimpleMailMessage();
-        UserNameMailDto userDto= authServiceIntegration.findById(id);
-        message.setTo(userDto.getEmail());
-        message.setFrom("Videoteka");
-        message.setSubject("Оформление заказа");
-        message.setText("Здравсвуйте" + userDto.getFirstName()+" \n Ваш заказ успешно оформлен ");
+        try {
+            UserNameMailDto userDto = authServiceIntegration.findById(id);
+            message.setTo(userDto.getEmail());
+            //message.setFrom("Videoteka");
+            message.setSubject("Оформление заказа");
+            message.setText("Здравствуйте, " + userDto.getFirstName()+"!"+" \nВаш заказ успешно оформлен ");
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Пользователь не найден");
+        }
         javaMailSender.send(message);
-
     }
-    public void testMessage(String email) throws Exception{
+
+    public void testMessage(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setFrom("Videoteka");
+        // message.setFrom("Videoteka");
         message.setSubject("Оформление заказа");
-        message.setText("Здравсвуйте \n Ваш заказ успешно оформлен ");
+        message.setText("Здравствуйте, Анна! \nВаш заказ успешно оформлен ");
         javaMailSender.send(message);
 
     }

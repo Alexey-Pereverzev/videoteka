@@ -1,13 +1,14 @@
 server:
   port: 8199
   servlet:
-    context-path: /notification-service
+    context-path: /email-service
 spring:
   mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
     username: videotekahom@gmail.com
-    password: videotekaHom123
+    password: etemmntjhoyjzxkq
+#    TODO - 16-digits code!!!!
     port: 587
     properties:
       mail:

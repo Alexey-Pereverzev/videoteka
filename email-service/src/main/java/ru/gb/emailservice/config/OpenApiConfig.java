@@ -1,4 +1,4 @@
-package ru.gb.notificationservice.config;
+package ru.gb.emailservice.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

@@ -1,13 +1,13 @@
-package ru.gb.notificationservice;
+package ru.gb.emailservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NotificationServiceApplication {
-// прописать в .yaml
+public class EmailServiceApplication {
+    // прописать в .yaml
     public static void main(String[] args) {
-        SpringApplication.run(NotificationServiceApplication.class, args);
+        SpringApplication.run(EmailServiceApplication.class, args);
     }
 
 }

@@ -1,6 +1,7 @@
 package ru.gb.catalogservice.utils;
 
 import lombok.Data;
+import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ru.gb.notificationservice.config;
+package ru.gb.emailservice.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
