@@ -1,13 +1,10 @@
 import "./FilmPage.css"
 import "react-toastify/dist/ReactToastify.css";
-import {Icon, Rating} from "@mui/material";
+import {Icon} from "@mui/material";
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
-import React, {useState} from "react";
-import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import {NavLink} from "react-router-dom";
+import React from "react";
 
 
 function FilmPage(props) {
