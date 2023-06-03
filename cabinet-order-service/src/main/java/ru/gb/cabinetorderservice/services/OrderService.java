@@ -32,7 +32,6 @@ public class OrderService {
     @Transactional
     public String createOrder(String userId) {
 
-        //String userIdString = String.valueOf(userId);
         try {
             CartDto currentCart = cartServiceIntegration.getCart(userId);
             if (currentCart.getItems().size() <= 0) {
