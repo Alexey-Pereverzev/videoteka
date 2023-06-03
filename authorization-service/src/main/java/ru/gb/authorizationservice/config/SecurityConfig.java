@@ -31,12 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll()
-                .and()
+                    .anyRequest().permitAll()
+                    .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //  эта настройка нужна, когда мы используем REST API
-//                .and()
-//                .headers().frameOptions().disable()
+                //                .and()
+                //                .headers().frameOptions().disable()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
