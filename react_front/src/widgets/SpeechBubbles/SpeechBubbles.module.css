@@ -1,0 +1,11 @@
+.speech_container{
+
+}
+.bubble{
+    display: flex;
+    flex-direction: column;
+    color: #c5c5c5;
+    background: #282c34;
+    border-left: 2px solid yellow;
+    padding: 15px 5px;
+}

@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,14 +17,12 @@ import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.JwtRequest;
 import ru.gb.api.dtos.dto.JwtResponse;
 import ru.gb.authorizationservice.entities.User;
-
 import ru.gb.authorizationservice.services.UserService;
 import ru.gb.authorizationservice.utils.JwtTokenUtil;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,35 +41,29 @@ public class AuthController {
                             content = @Content(schema = @Schema(implementation = JwtResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Некорректный логин/пароль", responseCode = "401",
+                            description = "Некорректный логин/пароль", responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
-                    )
+                    ),
+                    @ApiResponse(
+                            description = "Пользователя нет в БД (не зарегистрирован)", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
             }
     )
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String username = authRequest.getUsername();
+    public JwtResponse createAuthToken(@RequestBody JwtRequest authRequest)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        Optional<User> userByUsername = userService.findNotDeletedByUsername(username);
-        // проверяем, есть ли не удаленный пользователь с таким именем
+        User userByUsername = userService.findNotDeletedByUsername(authRequest.getUsername());
+        // проверяем, есть ли не удаленный пользователь с таким именем, если нет = статус 404
 
-        if (userByUsername.isEmpty()) {         //  если нет, кидаем ошибку
-            return new ResponseEntity<>(
-                    new AppError("CHECK_TOKEN_ERROR", "Некорректный логин или пароль"),
-                    HttpStatus.UNAUTHORIZED);
-        }
-
-        try {           //  если есть такой пользователь
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                     (authRequest.getUsername(), authRequest.getPassword()));
-        } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(
-                    new AppError("CHECK_TOKEN_ERROR", "Некорректный логин или пароль"),
-                    HttpStatus.UNAUTHORIZED);
-        }
+        // авторизация, если неуспешно - выдаем 400
+
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
-        String token = jwtTokenUtil.generateToken(userDetails,userByUsername.get().getId());
-        return ResponseEntity.ok(new JwtResponse(token, userService.getRole(authRequest.getUsername())));
+        String token = jwtTokenUtil.generateToken(userDetails,userByUsername.getId());
+        return new JwtResponse(token, userService.getRole(authRequest.getUsername()));
     }
 
 
