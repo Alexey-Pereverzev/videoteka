@@ -47,7 +47,8 @@ public class OrderService {
                 if (!cartItemDto.isSale()) {
                     order.setType("RENT");
                     // текущее время
-                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis())
+                            .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
                     order.setRentStart(dateStart);
                     // к текущей дате прибавили 24 часа
                     order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
@@ -88,7 +89,8 @@ public class OrderService {
     }
     @Transactional
     public boolean softDeleteOfOrderInRent(Order order){
-        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
             order.setDeletedWhen(dateNow);
@@ -100,7 +102,8 @@ public class OrderService {
     }
     @Transactional
     public void softDeleteOfOrder(Order order){
-        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
             order.setDeleted(true);
             order.setDeletedWhen(dateNow);
             // пересохраняем заказ пользователя

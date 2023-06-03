@@ -27,7 +27,6 @@ public class OrderConverter {
         out.setPrice(order.getPrice());
         out.setSale(order.getType().equals("SALE"));
         Long filmId = order.getFilmId();
-      //  FilmDto filmDto = filmServiceIntegration.findById(filmId).orElseThrow(() -> new ResourceNotFoundException("К сожалению  фильм был удален  id: " + filmId));
         FilmDto filmDto = filmServiceIntegration.findById(filmId);
         out.setFilmTitle(filmDto.getTitle());
         out.setDescription(filmDto.getDescription());
