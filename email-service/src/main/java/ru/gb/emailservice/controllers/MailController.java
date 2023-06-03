@@ -3,7 +3,6 @@ package ru.gb.emailservice.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,32 +25,9 @@ public class MailController {
     @GetMapping ("/send")
     public ResponseEntity<?> createMessage(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
-//        try {
-
             mailService.createMessage(userIDLong);
             return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
-//        } catch (Exception e) {
-//
-//            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
-
-//    @Operation(
-//            summary = "Отправка сообщения",
-//            description = "Отправка сообщения"
-//    )
-//    @GetMapping("/send1")
-//    public ResponseEntity<?> createMessage1(@RequestHeader String userId) {
-//        Long userIDLong = Long.valueOf(userId);
-//        try {
-//
-//            mailService.createMessage(userIDLong);
-//            return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
-//        } catch (Exception e) {
-//
-//            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
     @Operation(
             summary = "Тест",
@@ -61,8 +37,6 @@ public class MailController {
     public StringResponse testMessage(@RequestHeader String email) {
         mailService.testMessage(email);
         return new StringResponse("Письмо успешно отправлено");
-
-        // return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
