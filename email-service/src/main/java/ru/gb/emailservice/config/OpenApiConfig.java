@@ -1,4 +1,4 @@
-package ru.gb.notificationservice.config;
+package ru.gb.emailservice.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -12,7 +12,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Videoteka-Square - сервис каталога")
+                                .title("Videoteka-Square - сервис уведомлений")
                                 .version("1")
                 );
     }

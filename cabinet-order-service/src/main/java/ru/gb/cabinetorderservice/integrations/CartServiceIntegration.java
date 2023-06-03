@@ -25,7 +25,7 @@ public class CartServiceIntegration {
 
     public CartDto getCart(String userId) {
         CartDto cart = cartServiceWebClient.get()
-                .uri("/api/v1/cart?uuid="+userId)
+                .uri("/api/v1/cart/?uuid="+userId)
                 .header( "userId",userId)
                 .retrieve()
                 .onStatus(HttpStatus::is5xxServerError,
