@@ -19,7 +19,7 @@ public class AppConfig {
     private String cartServiceUrl;
     @Value("${integrations.catalog-service.url}")
     private String filmServiceUrl;
-    @Value("${integrations.notification-service.url}")
+    @Value("${integrations.email-service.url}")
     private String mailServiceUrl;
 
 
