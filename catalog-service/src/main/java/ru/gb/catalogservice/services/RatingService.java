@@ -81,10 +81,10 @@ public class RatingService {
         return ratingRepository.findAllByIsModerateIsFalse();
     }
 
-    public ResultOperation setModerateStatus(String userId,Long filmId,boolean status){
-        if ((filmId!=null || filmId>0) && (userId!=null || Long.parseLong(userId)>0)){
+    public ResultOperation setModerateStatus(Long userId,Long filmId,boolean status){
+        if ((filmId!=null || filmId>0) && (userId!=null || userId>0)){
             Film film=filmService.findById(filmId);
-            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film,Long.parseLong(userId));
+            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film,userId);
             if (rating.isPresent()){
                 if (status){
                     rating.get().setModerate(true);
