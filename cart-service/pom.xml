@@ -79,6 +79,7 @@
             <artifactId>spring-webflux</artifactId>
             <version>5.3.25</version>
             <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
