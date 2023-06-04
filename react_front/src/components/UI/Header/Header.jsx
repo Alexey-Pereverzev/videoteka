@@ -10,6 +10,8 @@ import DropdownItem from "../../../widgets/DropdownItem/DropdownItem";
 function Header(props) {
 
     let username = JSON.parse(localStorage.getItem('username'))
+    let fullName = localStorage.getItem('fullName')
+    console.log(fullName)
     let role = JSON.parse(localStorage.getItem('role_user'))
     console.log('Присвоена роль: ' + role)
 
@@ -23,6 +25,7 @@ function Header(props) {
     let logout = () => {
         localStorage.removeItem("customer")
         localStorage.removeItem("username")
+        localStorage.removeItem("fullName")
         user = null
         window.location = '/'
     }
@@ -32,16 +35,25 @@ function Header(props) {
     let openMenu = () => {
         setOpen(!open)
     }
-    let roleMenu = () =>{
-        switch(role) {
+
+
+    let roleMenu = () => {
+        switch (role) {
             case 'ROLE_ADMIN':
                 return <NavLink to={'cabinet/users'}>
                     <DropdownItem text={'пользователи'}/>
                 </NavLink>
             case 'ROLE_MANAGER':
-                return <NavLink to={'cabinet/reductor'}>
-                    <DropdownItem text={'редактор'}/>
-                </NavLink>
+                return (
+                    <div>
+                        <NavLink to={'cabinet/redactor'}>
+                            <DropdownItem text={'редактор фильмов'}/>
+                        </NavLink>
+                        <NavLink to={'cabinet/moderation'}>
+                            <DropdownItem text={'модерация отзывов'}/>
+                        </NavLink>
+                    </div>
+            )
             default:
                 return
         }
@@ -73,56 +85,57 @@ function Header(props) {
                         src={'https://i.pinimg.com/originals/6a/e2/02/6ae2025b41de91553621b2c8c554d61f.jpg'}
                         alt={'logo'}/>
                 </NavLink>
-                <SearchBar onChange={props.onChange}/>
-                {user ?
-                    <div className={'menu_container'} ref={menuRef}>
-                        <div className={'dropdown_trigger'} onClick={openMenu}>
-                            <Avatar
-                                className={'iconblock__avatar'}
-                                src={'/'}
-                                sx={{
-                                    width: 36,
-                                    height: 36,
-                                }}
-                            />
+                <div className={'menu_deck'}>
+                    {user ?
+                        <div className={'menu_container'} ref={menuRef}>
+                            <div className={'dropdown_trigger'} onClick={openMenu}>
+                                <Avatar
+                                    className={'iconblock__avatar'}
+                                    src={'/'}
+                                    sx={{
+                                        width: 36,
+                                        height: 36,
+                                    }}
+                                />
+                            </div>
+                            <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
+                                <h3 className={'menu_username'}>
+                                    {fullName}
+                                    <span className={'menu_location'}></span></h3>
+                                <ul>
+                                    <NavLink to={'cabinet/profile'}>
+                                        <DropdownItem text={'профиль'}/>
+                                    </NavLink>
+                                    <NavLink to={'cart'}>
+                                        <DropdownItem text={'корзина'}/>
+                                    </NavLink>
+                                    <NavLink to={'cabinet/orders'}>
+                                        <DropdownItem text={'мои фильмы'}/>
+                                    </NavLink>
+                                    <NavLink to={'cabinet/favourites'}>
+                                        <DropdownItem text={'избранное'}/>
+                                    </NavLink>
+                                    {roleMenu()}
+                                    <button className={'logout_btn'} onClick={() => logout()}>
+                                        <DropdownItem text={'выход'}/>
+                                    </button>
+
+                                </ul>
+                            </div>
                         </div>
-                        <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
-                            <h3 className={'menu_username'}>
-                                {username}
-                                <span className={'menu_location'}></span></h3>
-                            <ul>
-                                <NavLink to={'cabinet/profile'}>
-                                    <DropdownItem text={'профиль'}/>
-                                </NavLink>
-                                <NavLink to={'cart'}>
-                                    <DropdownItem text={'корзина'}/>
-                                </NavLink>
-                                <NavLink to={'cabinet/orders'}>
-                                    <DropdownItem text={'мои фильмы'}/>
-                                </NavLink>
-                                <NavLink to={'cabinet/favourites'}>
-                                    <DropdownItem text={'избранное'}/>
-                                </NavLink>
-                                {roleMenu()}
-                                <button className={'logout_btn'} onClick={() => logout()}>
-                                    <DropdownItem text={'выход'}/>
-                                </button>
-
-                            </ul>
+                        :
+                        <div className={'login_btn'}>
+                            <button onClick={() => loginRedirector()}>Войти</button>
                         </div>
-                    </div>
-                    :
-                    <div className={'login_btn'}>
-                        <button onClick={() => loginRedirector()}>Войти</button>
-                    </div>
-                }
+                    }
 
-                <div className={'cart_box'}>
-                    <NavLink to={'/cart'} className={'cart_box__button'}>
-                        <ShoppingCartIcon/>
-                    </NavLink>
-
+                    <div className={'cart_box'}>
+                        <NavLink to={'/cart'} className={'cart_box__button'}>
+                            <ShoppingCartIcon/>
+                        </NavLink>
+                    </div>
                 </div>
+
             </div>
 
         </div>

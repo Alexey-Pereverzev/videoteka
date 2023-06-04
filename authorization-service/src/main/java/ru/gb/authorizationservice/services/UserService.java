@@ -5,11 +5,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
+import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
+import ru.gb.authorizationservice.exceptions.InputDataErrorException;
+import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -20,6 +25,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
+
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
@@ -29,29 +36,29 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<User> findNotDeletedByUsername(String username) {   // найти не удаленного пользователя с нужным именем
-        Optional<User> found = findByUsername(username);
-        if (found.isPresent() && !found.get().isDeleted()) {
-            return found;
+
+    public User findNotDeletedByUsername(String username) {   // найти не удаленного пользователя с нужным именем
+        User user = findByUsername(username).orElseThrow
+                (() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
+        if (!user.isDeleted()) {
+            return user;
         } else {
-            return Optional.empty();
+            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
     }
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findNotDeletedByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("User '%s' not found", username)));
+    public UserDetails loadUserByUsername(String username) {
+        User user = findNotDeletedByUsername(username);
         return new org.springframework.security.core.userdetails
                 .User(user.getUsername(), user.getPassword(),
                 Collections.singleton(mapRoleToAuthority(user.getRole())));     // Singleton потому что роль может быть только 1
     }
 
-    @Transactional
+
     public String getRole(String username) {
-        User user = findNotDeletedByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("User '%s' not found", username)));
+        User user = findNotDeletedByUsername(username);
         return user.getRole().getTitle();
     }
 
@@ -59,29 +66,53 @@ public class UserService implements UserDetailsService {
         return new SimpleGrantedAuthority(role.getTitle());
     }
 
-    @Transactional
-    public String createNewUser(RegisterUserDto registerUserDto, String encryptedPassword) {
+    public StringResponse createNewUser(RegisterUserDto registerUserDto) {
+        if (registerUserDto.getPassword()==null) {
+            throw new InputDataErrorException("Пароль не может быть пустым");
+        } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
+            throw new InputDataErrorException("Пароли не совпадают");
+        } else {
+            User user = new User();
+            String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
 
-        User user = new User();
+            String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
+            if (validationMessage != null) {
+                throw new InputDataErrorException(validationMessage);
+            }
 
-        String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
-        if (validationMessage != null) return validationMessage;
-
-        userRepository.save(user);
-        return "";
+            userRepository.save(user);
+            return new StringResponse("Пользователь с именем "
+                    + registerUserDto.getUsername() + " успешно создан");
+        }
     }
 
     @Transactional
-    public String restoreUser(RegisterUserDto registerUserDto, String encryptedPassword, User user) {
-        user.setDeleted(false);
-        user.setDeletedBy(null);
-        user.setDeletedWhen(null);
+    public StringResponse restoreUser(RegisterUserDto registerUserDto, User user) {
+    // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
+        if (!user.isDeleted()) {
+            throw new NotDeletedUserException("Такой пользователь уже есть в системе");
+        } else {
+            if (registerUserDto.getPassword() == null) {
+                throw new InputDataErrorException("Пароль не может быть пустым");
+            } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
+                throw new InputDataErrorException("Пароли не совпадают");
+            } else {
+                String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
+                user.setDeleted(false);
+                user.setDeletedBy(null);
+                user.setDeletedWhen(null);
 
-        String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
-        if (validationMessage != null) return validationMessage;
+                String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
+                if (validationMessage != null) {
+                    throw new InputDataErrorException(validationMessage);
+                }
 
-        userRepository.save(user);
-        return "";
+                userRepository.save(user);
+                return new StringResponse("Пользователь с именем "
+                        + registerUserDto.getUsername() + " успешно восстановлен");
+            }
+        }
+
     }
 
     private String validateAndSaveFields(RegisterUserDto registerUserDto, String encryptedPassword, User user) {
@@ -135,7 +166,7 @@ public class UserService implements UserDetailsService {
         }
 
 
-        if (phoneNumber==null || phoneNumber.isEmpty() || phoneNumber.isBlank()) {
+        if (phoneNumber==null || phoneNumber.isBlank()) {
             user.setPhoneNumber(null);
         } else {
             if (!validationService.acceptablePhoneNumber(phoneNumber)) {
@@ -144,7 +175,7 @@ public class UserService implements UserDetailsService {
             user.setPhoneNumber(phoneNumber);
         }
 
-        if (address==null || address.isEmpty() || address.isBlank()) {
+        if (address==null || address.isBlank()) {
             user.setAddress(null);
         } else {
             user.setAddress(address);
@@ -155,27 +186,20 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
-    public String setRoleToUser(Long changeUserId, String adminId, String role) {
-        Optional<User> changeUser = userRepository.findById(changeUserId);
-        if (changeUser.isPresent()) {
-            User user = changeUser.get();
-            Optional<Role> newRole = roleService.getRoleByName(role);
-            if (newRole.isPresent()) {
-                user.setRole(newRole.get());
-            } else {
-                return "Роль " + role + " в базе не найдена";
-            }
-            Optional<User> changer = findById(adminId);
-            if (changer.isPresent()) {
-                user.setUpdateBy(changer.get().getUsername());
-            } else {
-                return "Пользователь с id: " + adminId + " не найден";
-            }
-            userRepository.save(user);
-            return "";
-        } else {
-            return "Пользователь с id: " + changeUserId + " не найден";
+    public void setRoleToUser(Long changeUserId, String adminId, String role) {
+        User user = userRepository.findById(changeUserId).orElseThrow
+                (() -> new ResourceNotFoundException("Пользователь с id: " + changeUserId + " не найден"));
+        user.setRole(roleService.getRoleByName(role).orElseThrow
+                (() -> new ResourceNotFoundException("Роль " + role + " в базе не найдена")));
+        User admin = findById(adminId).orElseThrow
+                (() -> new ResourceNotFoundException("Aдмин с id: " + adminId + " не найден"));
+        if (!admin.getRole().getTitle().equals("ROLE_ADMIN")) {
+            throw new ResourceNotFoundException("Aдмин с id: " + adminId + " не найден");
         }
+        user.setUpdateBy(findById(adminId).orElseThrow
+                (() -> new ResourceNotFoundException("Пользователь с id: " + adminId + " не найден"))
+                .getUsername());
+        userRepository.save(user);
     }
 
     public Optional<User> findById(String userId) {
@@ -183,26 +207,22 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public String safeDeleteById(Long deleteUserId, String adminId) {
-        Optional<User> u = userRepository.findById(deleteUserId);
-        if (u.isPresent()) {
-            if (!u.get().isDeleted()) {
-                u.get().setDeleted(true);
-                Optional<User> admin = findById(adminId);
-                if (admin.isPresent()) {
-                    u.get().setDeletedBy(admin.get().getUsername());
-                } else {
-                    return "Пользователь с id: " + adminId + " не найден";
-                }
-                u.get().setDeletedWhen(LocalDateTime.now());
-                userRepository.save(u.get());
-                return "";
-            } else {
-                return "Пользователь с id: " + deleteUserId + " не найден или удален";
-            }
+    public void safeDeleteById(Long deleteUserId, String adminId) {
+        User u = userRepository.findById(deleteUserId).orElseThrow(() -> new ResourceNotFoundException
+                ("Пользователь с id: " + deleteUserId + " не найден или удален"));
+
+        if (!u.isDeleted()) {
+            u.setDeleted(true);
+            u.setDeletedBy(findById(adminId).orElseThrow(() -> new InputDataErrorException
+                    ("Админ с id: " + adminId + " не найден")).getUsername());
+            u.setDeletedWhen(LocalDateTime.now());
+            userRepository.save(u);
+
         } else {
-            return "Пользователь с id: " + deleteUserId + " не найден или удален";
+            throw new ResourceNotFoundException
+                    ("Пользователь с id: " + deleteUserId + " не найден или удален");
         }
+
     }
 
     public List<User> findAllNotDeleted() {
@@ -213,12 +233,22 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public String fullNameById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent() && !user.get().isDeleted()) {
-            return user.get().getFirstName().concat(" ").concat(user.get().getLastName());
-        } else {
-            return "";
+    public StringResponse fullNameById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow
+                (() -> new ResourceNotFoundException("Нет такого пользователя"));
+//        if (!user.isDeleted()) {
+        return new StringResponse(user.getFirstName().concat(" ").concat(user.getLastName()));
+//        } else {
+//            throw new ResourceNotFoundException("Нет такого пользователя");
+//        }
+    }
+
+    public User findNameEmailById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                ()->new ResourceNotFoundException("Польователь с id="+id+" не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id="+id+" был удален");
         }
+        return user;
     }
 }

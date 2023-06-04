@@ -26,4 +26,7 @@ public class Rating extends GenericEntity {
 
     @ManyToOne
     private Film film;
+
+    @Column(name="is_moderate")
+    private boolean isModerate;
 }

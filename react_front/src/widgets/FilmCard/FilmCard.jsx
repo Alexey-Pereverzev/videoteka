@@ -5,7 +5,6 @@ import {useState} from "react";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import FilmPage from "../../components/MainPage/FilmPage/FilmPage";
 import axios from "axios";
-import {Route, Routes} from "react-router-dom";
 import ReviewsPage from "../../components/MainPage/ReviewsPage/ReviewsPage";
 import AddReviewPage from "../../components/MainPage/AddReviewPage/AddReviewPage";
 
@@ -40,8 +39,10 @@ function FilmCard(props) {
                                     title={props.title}
                                     setCommand={setCommand}
                 />
-            case 'add-review':
-                return <AddReviewPage filmId={props.id}/>
+            case 'add_review':
+                return <AddReviewPage filmId={props.id}
+                                      setCommand={setCommand}
+                />
 
             default:
                 return <FilmPage director={props.director}
@@ -82,7 +83,7 @@ function FilmCard(props) {
                         <Rating name="half-rating-read"
                                sx={{padding: 1}}
                                 size={'normal'}
-                                precision={0.01}
+                                precision={0.1}
                                 value={ratingState}
                                 readOnly/>
                         <span>{ratingState}</span>

@@ -23,6 +23,12 @@
     height: 50px;
     margin-top: 10px;
 }
+.menu_deck{
+    display: flex;
+    justify-content: space-around;
+    width: 150px;
+    height: 70px;
+}
 
 .avatar {
 
@@ -44,13 +50,13 @@
 
 .menu_container {
     margin-top: 10px;
-    width: fit-content;
-
+    width: 50px;
+    height: 50px;
 }
 
 .dropdown_trigger {
     width: fit-content;
-    margin-right: 1.5rem;
+    margin-right: 0.5rem;
 }
 
 .dropdown_menu {
@@ -135,9 +141,9 @@
 }
 
 .cart_box {
-    position: absolute;
+    position: relative;
     top: 20px;
-    right: 300px;
+    /*right: 300px;*/
 }
 
 .cart_box__button {
@@ -159,7 +165,7 @@
 .login_btn {
     position: relative;
     top: 20px;
-    right: 170px;
+    /*right: 170px;*/
 }
 .login_btn button{
     padding: 5px;

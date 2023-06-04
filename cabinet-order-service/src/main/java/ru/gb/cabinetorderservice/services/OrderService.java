@@ -9,6 +9,7 @@ import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
+import ru.gb.cabinetorderservice.integrations.MailServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
 
 import java.time.Instant;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class OrderService {
     private final OrdersRepository ordersRepository;
     private final CartServiceIntegration cartServiceIntegration;
+    private final MailServiceIntegration mailServiceIntegration;
     private static final String SERVER_TIME_ZONE = "Europe/Moscow";
     private final Integer RENT_HOURS = 24;
 
@@ -30,7 +32,6 @@ public class OrderService {
     @Transactional
     public String createOrder(String userId) {
 
-        //String userIdString = String.valueOf(userId);
         try {
             CartDto currentCart = cartServiceIntegration.getCart(userId);
             if (currentCart.getItems().size() <= 0) {
@@ -45,19 +46,23 @@ public class OrderService {
                 if (!cartItemDto.isSale()) {
                     order.setType("RENT");
                     // текущее время
-                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis())
+                            .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
                     order.setRentStart(dateStart);
                     // к текущей дате прибавили 24 часа
                     order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
 
                 } else {
                     order.setType("SALE");
-                    ordersRepository.save(order);
+
                 }
+                ordersRepository.save(order);
 
             }
 
             cartServiceIntegration.clearUserCart(userId);
+            mailServiceIntegration.createMessage(userId);
+
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){
@@ -83,7 +88,8 @@ public class OrderService {
     }
     @Transactional
     public boolean softDeleteOfOrderInRent(Order order){
-        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
             order.setDeletedWhen(dateNow);
@@ -95,7 +101,8 @@ public class OrderService {
     }
     @Transactional
     public void softDeleteOfOrder(Order order){
-        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.of(SERVER_TIME_ZONE).systemDefault()).toLocalDateTime();
+        LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
             order.setDeleted(true);
             order.setDeletedWhen(dateNow);
             // пересохраняем заказ пользователя

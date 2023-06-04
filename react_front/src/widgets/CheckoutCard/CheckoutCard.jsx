@@ -10,11 +10,21 @@ function CheckoutCard(props) {
 
     let sendPaymentRequest = async () => {
         try {
-            const response = await axios.post('http://localhost:5555/cabinet/api/v1/orders').then(() => props.clearCart())
-            console.log("Ответ метода sendPaymentRequest: " + response)
-            displayCartNotification(response.value)
+            const response = await axios.post('http://localhost:5555/cabinet/api/v1/orders')
+                .then(response => {
+                    displayCartNotification(response.data.value)
+                },  function errorCallback(response) {
+                    console.log(response)
+                    let displayCartNotification = (message) => {
+                        toast.error(message);
+                    }
+                    displayCartNotification(response.response.data.value)
+                })
+                .then(() => props.clearCart())
+
+            displayCartNotification(response.response.value)
         } catch (e) {
-            alert("Метод sendPaymentRequest: " + e)
+
         }
     }
 
