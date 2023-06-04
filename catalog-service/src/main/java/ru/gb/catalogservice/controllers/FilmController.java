@@ -64,28 +64,29 @@ public class FilmController {
                                  @RequestParam (name="endPremierYear",required = false)Integer endPremierYear,
                                  @RequestParam (name="isSale",required = false)Boolean isSale,
                                  @RequestParam (name="minPrice",required = false)Integer minPrice,
-                                 @RequestParam (name="maxPrice",required = false)Integer maxPrice){
+                                 @RequestParam (name="maxPrice",required = false)Integer maxPrice,
+                                 @RequestParam (name="findString",required = false)String findString){
 
         return filmService.findAllWithFilter(currentPage,filterCountryList,filterDirectorList,filterGenreList,
-                startPremierYear,endPremierYear,isSale,minPrice,maxPrice).map(filmConverter::entityToDto);
+                startPremierYear,endPremierYear,isSale,minPrice,maxPrice,findString).map(filmConverter::entityToDto);
     }
-    @Operation(
-            summary = "Вывод списка фильмов для главной страницы",
-            description = "Позволяет вывести полный список стран, имеющихся в БД с применением условий фильтров. Используется для подготовки главной страницы"
-    )
-    @GetMapping("list_all_dto")
-    public PageFilmDto listAllDto(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
-                               @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
-                               @RequestParam (name="filterDirectorList",required = false) String[] filterDirectorList,
-                               @RequestParam (name="filterGenreList",required = false) String[] filterGenreList,
-                               @RequestParam (name="startPremierYear",required = false)Integer startPremierYear,
-                               @RequestParam (name="endPremierYear",required = false)Integer endPremierYear,
-                               @RequestParam (name="isSale",required = false)Boolean isSale,
-                               @RequestParam (name="minPrice",required = false)Integer minPrice,
-                               @RequestParam (name="maxPrice",required = false)Integer maxPrice){
-        return pageFilmConverter.entityToDto(filmService.findAllWithFilter(currentPage,filterCountryList,filterDirectorList,filterGenreList,
-                startPremierYear,endPremierYear,isSale,minPrice,maxPrice));
-    }
+//    @Operation(
+//            summary = "Вывод списка фильмов для главной страницы",
+//            description = "Позволяет вывести полный список стран, имеющихся в БД с применением условий фильтров. Используется для подготовки главной страницы"
+//    )
+//    @GetMapping("list_all_dto")
+//    public PageFilmDto listAllDto(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
+//                               @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
+//                               @RequestParam (name="filterDirectorList",required = false) String[] filterDirectorList,
+//                               @RequestParam (name="filterGenreList",required = false) String[] filterGenreList,
+//                               @RequestParam (name="startPremierYear",required = false)Integer startPremierYear,
+//                               @RequestParam (name="endPremierYear",required = false)Integer endPremierYear,
+//                               @RequestParam (name="isSale",required = false)Boolean isSale,
+//                               @RequestParam (name="minPrice",required = false)Integer minPrice,
+//                               @RequestParam (name="maxPrice",required = false)Integer maxPrice){
+//        return pageFilmConverter.entityToDto(filmService.findAllWithFilter(currentPage,filterCountryList,filterDirectorList,filterGenreList,
+//                startPremierYear,endPremierYear,isSale,minPrice,maxPrice));
+//    }
     @Operation(
             summary = "Добавление фильма в БД",
             description = "Позволяет добавлять фильмы в БД"

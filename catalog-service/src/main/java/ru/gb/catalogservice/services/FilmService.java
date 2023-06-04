@@ -164,7 +164,7 @@ public class FilmService {
 
     public Page<Film> findAllWithFilter(int currentPage, String[] filterCountryList, String[] filterDirectorList,
                                         String[] filterGenreList, Integer startPremierYear, Integer endPremierYear,
-                                        Boolean isSale, Integer minPrice, Integer maxPrice){
+                                        Boolean isSale, Integer minPrice, Integer maxPrice, String findString){
 
         List<Country> countries=getCountries(filterCountryList);
         List<Director> directors=getDirectors(filterDirectorList);
@@ -178,8 +178,15 @@ public class FilmService {
         List<Price> prices;
         if (isSale!=null && minPrice!=null && maxPrice!=null){
             prices=getPrices(minPrice,maxPrice,isSale);
-            return filmRepository.findWithFilter(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
-                directors, genres, startPremierYear, endPremierYear, prices);
+            if (findString==null || findString.length()==0){
+                return filmRepository.findWithFilter(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
+                        directors, genres, startPremierYear, endPremierYear, prices);
+            }else{
+                findString=findString.toLowerCase();
+                return filmRepository.findWithFilterWithFindString(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
+                        directors, genres, startPremierYear, endPremierYear, prices, findString);
+            }
+
         }else{
             throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
         }

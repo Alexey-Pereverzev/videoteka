@@ -19,6 +19,12 @@ public interface FilmRepository extends JpaRepository<Film, Long>, JpaSpecificat
                               int startPremierYear, int endPremierYear,List<Price> prices);
 
     @Query("select distinct f from Film f join f.countries c join f.directors d join f.genres g" +
+            " join f.prices p where (c in :countries) and (d in :directors) and (g in :genres)" +
+            " and (p in :prices) and (f.premierYear>=:startPremierYear AND f.premierYear<=:endPremierYear) and (strpos(lower(f.title),:findString)>0) ")
+    Page<Film> findWithFilterWithFindString(PageRequest pageRequest, List<Country> countries, List<Director> directors, List<Genre> genres,
+                              int startPremierYear, int endPremierYear,List<Price> prices,String findString);
+
+    @Query("select distinct f from Film f join f.countries c join f.directors d join f.genres g" +
             " join f.prices p where (f.title like :titlePart)")
     Page<Film> findByTitlePart(PageRequest pageRequest, String titlePart);
 
