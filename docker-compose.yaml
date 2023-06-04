@@ -1,9 +1,14 @@
 version: '3.8'
 services:
   redis:
-    image: redis:7
+    image: redis:7.0.11
+    container_name: redis-videoteka
     ports:
       - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    restart: always
 
   security-db:
     image: postgres:15
@@ -96,6 +101,8 @@ services:
     environment:
       CATALOG_SERVICE_LOCATION: catalog-service
       CABINET_SERVICE_LOCATION: cabinet-service
+      SPRING_REDIS_HOST: redis-videoteka
+      SPRING_REDIS_PORT: 6379
     ports:
       - "8190:8190"
     networks:
