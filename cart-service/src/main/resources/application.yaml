@@ -28,4 +28,8 @@ integrations:
 #    show-sql: true
 #    properties:
 #      hibernate:
+spring:
+  redis:
+    host: localhost
+    port: 6379
 #        dialect: org.hibernate.dialect.PostgreSQLDialect
