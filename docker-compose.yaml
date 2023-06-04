@@ -8,6 +8,8 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    networks:
+      - videoteka-net
     restart: always
 
   security-db:
@@ -61,7 +63,7 @@ services:
     container_name: catalog-service
     build:
       context: .
-      dockerfile: Dockerfile-catalog
+      dockerfile: catalog-service/Dockerfile-catalog
     ports:
       - "8189:8189"
     environment:
@@ -78,7 +80,7 @@ services:
     container_name: cabinet-service
     build:
       context: .
-      dockerfile: Dockerfile-cabinet
+      dockerfile: cabinet-order-service/Dockerfile-cabinet
     ports:
       - "8192:8192"
     environment:
@@ -97,11 +99,12 @@ services:
     container_name: cart-service
     build:
       context: .
-      dockerfile: Dockerfile-cart
+      dockerfile: cart-service/Dockerfile-cart
     environment:
       CATALOG_SERVICE_LOCATION: catalog-service
       CABINET_SERVICE_LOCATION: cabinet-service
-      SPRING_REDIS_HOST: redis-videoteka
+      REDIS_LOCATION: redis-videoteka
+#      SPRING_REDIS_HOST: redis-videoteka
       SPRING_REDIS_PORT: 6379
     ports:
       - "8190:8190"
@@ -115,7 +118,7 @@ services:
     container_name: authorization-service
     build:
       context: .
-      dockerfile: Dockerfile-auth
+      dockerfile: authorization-service/Dockerfile-auth
     ports:
       - "8187:8187"
     environment:
@@ -133,7 +136,7 @@ services:
     container_name: gateway-service
     build:
       context: .
-      dockerfile: Dockerfile-gateway
+      dockerfile: gateway-service/Dockerfile-gateway
     ports:
       - "5555:5555"
     environment:
@@ -152,7 +155,7 @@ services:
     container_name: front-service
     build:
       context: .
-      dockerfile: Dockerfile-front
+      dockerfile: front-service/Dockerfile-front
     ports:
       - "3000:3000"
     networks:
