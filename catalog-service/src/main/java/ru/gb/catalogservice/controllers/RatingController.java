@@ -82,7 +82,7 @@ public class RatingController {
     }
 
     @GetMapping("/setModerateSuccess")
-    public ResponseEntity<?> setModerateStatus(@RequestHeader String userId,@RequestParam Long filmId) {
+    public ResponseEntity<?> setModerateStatus(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,true);
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
@@ -92,7 +92,7 @@ public class RatingController {
     }
 
     @GetMapping("/setModerateRejected")
-    public ResponseEntity<?> setModerateRejected(@RequestHeader String userId,@RequestParam Long filmId) {
+    public ResponseEntity<?> setModerateRejected(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,false);
         if (resultOperation.isResult()) {
             return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
