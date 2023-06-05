@@ -430,9 +430,7 @@ class CatalogPage extends Component {
         const {active, setActive} = this.state.active;
         return (
             <div className={style.catalog_container}>
-                <SearchBar getFilmByTitlePart={(value) => this.getFilmByTitlePart(value)}
-                           currentPage={1}
-                />
+
                 <div className={style.genre_bar}>
                     <ButtonGroup variant="text" size="small" aria-label="outlined primary button group">
                         <Button onClick={() => this.filmFilterByGenres("Все")} className={style.unselected}>Все</Button>
@@ -441,7 +439,10 @@ class CatalogPage extends Component {
                                     className={active ? style.selected : style.unselected}>{genre.title}</Button>
                         )}
                     </ButtonGroup>
+
                 </div>
+
+                <SearchBar getFilmByTitlePart={(value) => this.getFilmByTitlePart(value)} currentPage={1}/>
 
                 <div className={style.pagination}>
                     {
