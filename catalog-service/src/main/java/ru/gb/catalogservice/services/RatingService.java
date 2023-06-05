@@ -78,7 +78,7 @@ public class RatingService {
     }
 
     public List<Rating> listAllGradeAndReviewIsNotModerate() {
-        return ratingRepository.findAllByIsModerateIsFalse();
+        return ratingRepository.findAllByIsModerateIsFalseAndIsDeletedIsFalse();
     }
 
     public ResultOperation setModerateStatus(Long userId,Long filmId,boolean status){

@@ -15,5 +15,5 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     @Query("select sum(r.grade)/1.0/count(r.grade) from Rating r where r.film.id=:filmId and r.isDeleted=false")
     Double getTotalGrade(Long filmId);
     List<Rating> findAllByFilmAndIsDeletedIsFalse(Film film);
-    List<Rating> findAllByIsModerateIsFalse();
+    List<Rating> findAllByIsModerateIsFalseAndIsDeletedIsFalse();
 }
