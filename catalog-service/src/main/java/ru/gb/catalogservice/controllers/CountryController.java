@@ -28,7 +28,7 @@ public class CountryController {
             summary = "Вывод названия страны по id",
             description = "Позволяет вывести название страны по заданному id"
     )
-    @GetMapping("find_by_id")
+    @GetMapping("id")
     public CountryDto findById(@RequestParam Long id){
         return countryConverter.entityToDto(countryService.findById(id));
     }
@@ -36,7 +36,7 @@ public class CountryController {
             summary = "Вывод списка стран",
             description = "Позволяет вывести полный список стран, имеющихся в БД"
     )
-    @GetMapping("list_all")
+    @GetMapping("all")
     public List<CountryDto> listAll(){
         return countryService.findAll().stream().map(countryConverter::entityToDto).toList();
     }
@@ -45,7 +45,7 @@ public class CountryController {
             summary = "Добавление новой страны",
             description = "Позволяет добавить в БД новую страну"
     )
-    @PostMapping("/add_new")
+    @PostMapping("/new")
     public ResponseEntity<?> addNewFilm(@RequestBody CountryDto countryDto) {
         ResultOperation resultOperation=countryService.countryAddInVideoteka(countryDto);
         if (resultOperation.isResult()){

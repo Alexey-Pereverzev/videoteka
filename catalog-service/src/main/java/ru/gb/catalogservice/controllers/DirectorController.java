@@ -26,7 +26,7 @@ public class DirectorController {
             summary = "Вывод имени режиссера по id",
             description = "Позволяет вывести имя режиссера по заданному id"
     )
-    @GetMapping("find_by_id")
+    @GetMapping("id")
     public DirectorDto findById(@RequestParam Long id){
         return directorConverter.entityToDto(directorService.findById(id));
     }
@@ -34,7 +34,7 @@ public class DirectorController {
             summary = "Вывод списка режиссеров",
             description = "Позволяет вывести полный список режиссеров имеющихся в БД"
     )
-    @GetMapping("list_all")
+    @GetMapping("all")
     public List<DirectorDto> listAll(){
         return directorService.findAll().stream().map(directorConverter::entityToDto).toList();
     }
@@ -43,7 +43,7 @@ public class DirectorController {
             summary = "Добавление нового режиссера",
             description = "Позволяет добавить в БД нового режиссера"
     )
-    @PostMapping("/add_new")
+    @PostMapping("/new")
     public ResponseEntity<?> addNewFilm(@RequestBody DirectorDto directorDto) {
         ResultOperation resultOperation=directorService.directorAddInVideoteka(directorDto);
         if (resultOperation.isResult()){
