@@ -75,7 +75,12 @@ public class FilmService {
     }
 
     private Film prepareFilm(FilmDto filmDto) {
-        Film film = new Film();
+        Film film;
+        if (filmDto.getId()!=null && filmDto.getId()>0){
+            film=filmRepository.findById(filmDto.getId()).orElseThrow();
+        }else{
+            film=new Film();
+        }
         film.setTitle(filmDto.getTitle());
         film.setPremierYear(filmDto.getPremierYear());
         if (filmDto.getImageUrlLink() != null) {
@@ -94,14 +99,25 @@ public class FilmService {
         return film;
     }
 
-    public ResultOperation filmAddInVideoteka(FilmDto filmDto) {
-        ResultOperation resultOperation = new ResultOperation();
+    public ResultOperation filmAddOrChangeInVideoteka(FilmDto filmDto) {
+        ResultOperation resultOperation;
         resultOperation = checkFilmDto(filmDto);
         if (resultOperation.getResultDescription().length() == 0) {
             Film film = prepareFilm(filmDto);
             film = filmRepository.saveAndFlush(film);
-            addPriceForFilm(film, filmDto);
-            resultOperation.setResultDescription("Фильм добавлен в БД");
+            if (filmDto.getRentPrice()!=null && filmDto.getSalePrice()!=null){
+                if (filmDto.getId()>0){
+                    Price price=priceService.findByFilmAndIsNotDeleted(film);
+                    price.setDeleted(true);
+                    priceService.save(price);
+                }
+                addPriceForFilm(film, filmDto);
+            }
+            if (filmDto.getId()==null || filmDto.getId()==0){
+                resultOperation.setResultDescription("Фильм добавлен в БД");
+            }else{
+                resultOperation.setResultDescription("Фильм успешно изменен");
+            }
             resultOperation.setResult(true);
         } else {
             resultOperation.setResult(false);

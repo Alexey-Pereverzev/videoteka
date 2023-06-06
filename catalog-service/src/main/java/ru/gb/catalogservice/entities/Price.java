@@ -22,4 +22,14 @@ public class Price extends GenericEntity {
 
     @ManyToOne
     private Film film;
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "priceRent=" + priceRent +
+                ", priceSale=" + priceSale +
+                ", film=" + film.getId() +
+                ", deleted=" + isDeleted()+
+                '}';
+    }
 }

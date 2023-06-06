@@ -29,4 +29,5 @@ public interface FilmRepository extends JpaRepository<Film, Long>, JpaSpecificat
     Page<Film> findByTitlePart(PageRequest pageRequest, String titlePart);
 
     List<Film> findAllByIsDeletedIsFalse();
+
 }
