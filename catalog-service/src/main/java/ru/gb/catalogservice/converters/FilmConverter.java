@@ -10,6 +10,14 @@ import java.util.List;
 @Component
 public class FilmConverter {
     public FilmDto entityToDto(Film film) {
+        List<Price> prices = film.getPrices();
+        Price price=null;
+        for (Price p:prices){
+            if (!p.isDeleted()){
+                price=p;
+                break;
+            }
+        }
         FilmDto filmDto = FilmDto.builder()
                 .id(film.getId())
                 .title(film.getTitle())
@@ -19,8 +27,8 @@ public class FilmConverter {
                 .genre(getGenreList(film.getGenres()))
                 .country(getCountriesList(film.getCountries()))
                 .director(getDirectorList(film.getDirectors()))
-                .rentPrice(getRentPrice(film.getPrices()))
-                .salePrice(getSalePrice(film.getPrices()))
+                .rentPrice(price.getPriceRent())
+                .salePrice(price.getPriceSale())
                 .build();
         return filmDto;
     }

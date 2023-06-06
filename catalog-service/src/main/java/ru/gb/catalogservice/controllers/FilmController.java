@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.dto.MinMaxYearDto;
-import ru.gb.api.dtos.dto.PageFilmDto;
 
 
 import ru.gb.catalogservice.converters.FilmConverter;
@@ -39,7 +38,9 @@ public class FilmController {
     )
     @GetMapping("id")
     public FilmDto findById(@RequestParam Long id){
-        return filmConverter.entityToDto(filmService.findById(id));
+        Film film=filmService.findById(id);
+        System.out.println(film.getPrices());
+        return filmConverter.entityToDto(film);
     }
 
 //    @GetMapping("find_by_title_part")
@@ -93,7 +94,20 @@ public class FilmController {
     )
     @PostMapping("/new-film")
     public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
-        ResultOperation resultOperation=filmService.filmAddInVideoteka(filmDto);
+        ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
+        if (resultOperation.isResult()){
+            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
+        }else {
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
+        }
+    }
+    @Operation(
+            summary = "Изменение фильма в БД",
+            description = "Позволяет изменять фильмы в БД"
+    )
+    @PutMapping("/movie-change")
+    public ResponseEntity<?> changeFilm(@RequestBody FilmDto filmDto) {
+        ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
             return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
         }else {
@@ -102,7 +116,7 @@ public class FilmController {
     }
 
     @Operation(
-            summary = "Вывод мксимального и минимального годов для главной страницы",
+            summary = "Вывод максимального и минимального годов для главной страницы",
             description = "Позволяет вывести максимальный и минимальный годы, имеющихся в БД фильмов. Используется для подготовки главной страницы"
     )
     @GetMapping("min_max_year")

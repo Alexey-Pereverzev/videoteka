@@ -2,6 +2,7 @@ package ru.gb.catalogservice.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.gb.catalogservice.entities.Film;
 import ru.gb.catalogservice.entities.Price;
 import ru.gb.catalogservice.repositories.PriceRepository;
 
@@ -25,5 +26,9 @@ public class PriceService {
     }
     public void save(Price price){
         priceRepository.save(price);
+    }
+
+    public Price findByFilmAndIsNotDeleted(Film film){
+        return priceRepository.findByFilmAndIsDeletedIsFalse(film);
     }
 }
