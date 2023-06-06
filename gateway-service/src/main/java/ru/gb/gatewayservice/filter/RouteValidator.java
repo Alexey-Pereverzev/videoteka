@@ -66,6 +66,7 @@ public class RouteValidator {
 
     public static final List<String> managerApiEndpoints = List.of(
             "/api/v1/film/add_new",
+            "api/v1/film/all",
             "/api/v1/rating/list_all_grade_and_review_is_not_moderate",
             "/api/v1/rating/setModerateRejected",
             "/api/v1/rating/setModerateSuccess"
