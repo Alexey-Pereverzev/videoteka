@@ -13,23 +13,23 @@ public class RouteValidator {
             "/api/v1/reg/register",
             "/api/v1/auth/authenticate",
 
-            "/api/v1/country/list_all",
-            "/api/v1/country/find_by_id",
-            "/api/v1/director/list_all",
-            "/api/v1/director/find_by_id",
-            "/api/v1/film/list_all",
+            "/api/v1/country/all",
+            "/api/v1/country/id",
+            "/api/v1/director/all",
+            "/api/v1/director/id",
+            "/api/v1/film/all-with-filter",
             "/api/v1/film/list_all_dto",
             "/api/v1/film/find_by_title_part",
-            "/api/v1/film/find_by_id",
+            "/api/v1/film/id",
             "/api/v1/film/min_max_year",
-            "/api/v1/genre/list_all",
-            "/api/v1/genre/find_by_id",
+            "/api/v1/genre/all",
+            "/api/v1/genre/id",
             "/api/v1/price/prices_filter",
-            "/api/v1/rating/list_all",
+            "/api/v1/rating/all",
             "/api/v1/rating/add_new",
             "/api/v1/rating/grade_user_by_id_film",
             "/api/v1/rating/total_film_rating",
-            "/api/v1/rating/list_all_grade_and_review_by_filmId",
+            "/api/v1/rating/all_grade_and_review_by_filmId",
 
             "/api/v1/cart",
             "/api/v1/cart/generate",
@@ -65,11 +65,13 @@ public class RouteValidator {
     );
 
     public static final List<String> managerApiEndpoints = List.of(
-            "/api/v1/film/add_new",
-            "api/v1/film/all",
-            "/api/v1/rating/list_all_grade_and_review_is_not_moderate",
-            "/api/v1/rating/setModerateRejected",
-            "/api/v1/rating/setModerateSuccess"
+            "/api/v1/film/all",
+            "/api/v1/country/new",
+            "/api/v1/film/new-film",
+            "/api/v1/rating/new-comment",
+            "/api/v1/rating/all_grade_and_review_is_not_moderate",
+            "/api/v1/rating/moderate-rejected",
+            "/api/v1/rating/moderate-success"
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
