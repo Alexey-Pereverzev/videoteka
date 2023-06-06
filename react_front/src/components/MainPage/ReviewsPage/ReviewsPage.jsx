@@ -1,35 +1,52 @@
 import "./ReviewsPage.css"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 function ReviewsPage(props) {
-    let getFilmIdReview = () => {
+    let getFilmIdReview = async () => {
         try {
-            axios.get('http://localhost:5555/catalog/api/v1/rating/list_all_grade_and_review_by_filmId', {
+            return await axios.get('http://localhost:5555/catalog/api/v1/rating/list_all_grade_and_review_by_filmId', {
                 params: {
                     filmId: props.filmId
                 }
             })
-                .then(response => response.data)
+                .then((response) =>
+                    response.data,
+                    function errorCallback(response) {
+                        console.log(response)
+                        let displayCartNotification = (message) => {
+                            toast.error(message);
+                        }
+                        displayCartNotification(response.response.data.value)
+                    })
                 .then(data => {
-                    console.log(data.review)
-                        setFilmReviews({
-                            reviews: data.review,
-                            id: data.user_id
-                        })
+                        console.log(data.review)
+                        setFilmReviews(data)
                     }
                 )
         } catch (e) {
 
         }
     }
-    // let getFullNameReviewers = () => {
-    //     axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
-    //         params: {
-    //             userId:
-    //         }
-    // }
+    let getFullNameReviewers = async (userId) => {
+        return await axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+            params: {
+                userId: userId
+            }
+        }).then(r => {
+            return r.data.value
+        })
+
+    }
+   const handleName = (userId) => {
+
+       getFullNameReviewers(userId).then(r => {
+           setFullName(r)
+       })
+       return fullName
+    }
     const handleChange = (command) => {
         switch (command) {
             case '':
@@ -42,37 +59,55 @@ function ReviewsPage(props) {
                 return null
         }
     }
+    useEffect(() => {
     getFilmIdReview()
+    },[])
+
     const [fullName, setFullName] = useState('')
     const [filmReviews, setFilmReviews] = useState([]);
+
+
+
     return (
         <div className={'review-page'}>
-            <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
-                <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                        <Avatar alt="Remy Sharp" src="https://mui.com/static/images/avatar/3.jpg"/>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={props.title}
-                        secondary={
-                            <React.Fragment>
-                                <Typography
-                                    sx={{display: 'inline'}}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                >
-                                    Ali Connors
-                                </Typography>
-                                {filmReviews.review?.map((txt) => (
-                                    <span>{txt}</span>
-                                ))}
-                            </React.Fragment>
-                        }
-                    />
-                </ListItem>
-                <Divider variant="inset" component="li"/>
-            </List>
+            {filmReviews.length > 0?
+                <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
+                    {filmReviews.map((txt) => (
+                        <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                                <Avatar alt="Remy Sharp" src="https://mui.com/static/images/avatar/3.jpg"/>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={props.title}
+                                secondary={
+                                    <React.Fragment>
+
+                                        <Typography
+                                            sx={{display: 'inline'}}
+                                            component="span"
+                                            variant="subtitle2"
+                                            color="text.primary"
+                                        >
+                                            {handleName(txt.user_id)}
+                                        </Typography>
+
+                                        <Divider variant="inset" component="li"/>
+                                        <span>{txt.review}</span>
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                    ))}
+                    <Divider variant="inset" component="li"/>
+                </List>
+                :
+                <div className={'review_empty__sheet'}>
+                    <p>У этого фильма ещё нет рецензий.</p>
+                    <Divider variant="middle" />
+                    Станьте первым рецензентом!
+                </div>
+            }
+
             <div className={'review-page__btn_group'}>
                 <div className={'button-back_box'}>
                     <button onClick={() => handleChange('')}>Вернуться к фильму</button>
