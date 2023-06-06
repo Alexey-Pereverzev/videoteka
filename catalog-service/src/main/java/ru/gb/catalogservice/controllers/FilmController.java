@@ -37,25 +37,25 @@ public class FilmController {
             summary = "Вывод данных фильма по id",
             description = "Позволяет вывести данные фильма по заданному id"
     )
-    @GetMapping("find_by_id")
+    @GetMapping("id")
     public FilmDto findById(@RequestParam Long id){
         return filmConverter.entityToDto(filmService.findById(id));
     }
 
-    @GetMapping("find_by_title_part")
-    public Page<FilmDto> findByTitlePart(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
-                                         @RequestParam (name="titlePart",required = false) String titlePart){
-        if (titlePart==null)
-        {
-            titlePart="";
-        }
-        return filmService.findByTitlePart(currentPage, titlePart).map(filmConverter::entityToDto);
-    }
+//    @GetMapping("find_by_title_part")
+//    public Page<FilmDto> findByTitlePart(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
+//                                         @RequestParam (name="titlePart",required = false) String titlePart){
+//        if (titlePart==null)
+//        {
+//            titlePart="";
+//        }
+//        return filmService.findByTitlePart(currentPage, titlePart).map(filmConverter::entityToDto);
+//    }
     @Operation(
             summary = "Вывод списка фильмов для главной страницы",
             description = "Позволяет вывести полный список стран, имеющихся в БД с применением условий фильтров. Используется для подготовки главной страницы"
     )
-    @GetMapping("list_all")
+    @GetMapping("all-with-filter")
     public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
                                  @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
                                  @RequestParam (name="filterDirectorList",required = false) String[] filterDirectorList,
@@ -91,7 +91,7 @@ public class FilmController {
             summary = "Добавление фильма в БД",
             description = "Позволяет добавлять фильмы в БД"
     )
-    @PostMapping("/add_new")
+    @PostMapping("/new-film")
     public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddInVideoteka(filmDto);
         if (resultOperation.isResult()){
@@ -101,6 +101,10 @@ public class FilmController {
         }
     }
 
+    @Operation(
+            summary = "Вывод мксимального и минимального годов для главной страницы",
+            description = "Позволяет вывести максимальный и минимальный годы, имеющихся в БД фильмов. Используется для подготовки главной страницы"
+    )
     @GetMapping("min_max_year")
     public MinMaxYearDto findMinAndMaxYear() {
         List<Integer> allYears = filmService.findAll().stream().map(Film::getPremierYear).toList();

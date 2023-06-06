@@ -26,7 +26,7 @@ public class RatingController {
             summary = "Вывод таблицы оценок",
             description = "Позволяет вывести ВСЕ записи таблицы оценок и комментариев"
     )
-    @GetMapping("list_all")
+    @GetMapping("all")
     public List<RatingDto> listAll() {
         return ratingService.findAll().stream().map(ratingConverter::entityToDto).toList();
     }
@@ -35,7 +35,7 @@ public class RatingController {
             summary = "Добавление оценки и комментария к фильму",
             description = "Позволяет добавить оценку и комментарий пользователя к фильму"
     )
-    @PostMapping("/add_new")
+    @PostMapping("/new-comment")
     public ResponseEntity<?> addFilmRating(@RequestBody RatingDto ratingDto) {
         ResultOperation resultOperation = ratingService.addFilmRating(ratingDto);
         if (resultOperation.isResult()) {
@@ -67,7 +67,7 @@ public class RatingController {
             summary = "Вывод отзывов по id фильма",
             description = "Позволяет получить список ВСЕХ отзывов и оценок по id фильма"
     )
-    @GetMapping("/list_all_grade_and_review_by_filmId")
+    @GetMapping("/all_grade_and_review_by_filmId")
     public List<RatingDto> listAllGradeAndReviewByFilmId(@RequestParam Long filmId) {
         return ratingService.listAllGradeAndReviewsByFilmId(filmId).stream().map(ratingConverter::entityToDto).toList();
     }
@@ -76,12 +76,12 @@ public class RatingController {
             summary = "Вывод отзывов требующих модерации",
             description = "Позволяет получить список ВСЕХ отзывов требующих модерации"
     )
-    @GetMapping("/list_all_grade_and_review_is_not_moderate")
+    @GetMapping("/all_grade_and_review_is_not_moderate")
     public List<RatingDto> listAllGradeAndReviewIsNotModerate() {
         return ratingService.listAllGradeAndReviewIsNotModerate().stream().map(ratingConverter::entityToDto).toList();
     }
 
-    @GetMapping("/setModerateSuccess")
+    @GetMapping("/moderate-success")
     public ResponseEntity<?> setModerateStatus(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,true);
         if (resultOperation.isResult()) {
@@ -91,7 +91,7 @@ public class RatingController {
         }
     }
 
-    @GetMapping("/setModerateRejected")
+    @GetMapping("/moderate-rejected")
     public ResponseEntity<?> setModerateRejected(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,false);
         if (resultOperation.isResult()) {
