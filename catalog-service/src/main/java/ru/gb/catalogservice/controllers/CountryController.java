@@ -15,7 +15,6 @@ import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/v1/country")
 @RequiredArgsConstructor
@@ -28,14 +27,17 @@ public class CountryController {
             summary = "Вывод названия страны по id",
             description = "Позволяет вывести название страны по заданному id"
     )
+  
     @GetMapping("id")
     public CountryDto findById(@RequestParam Long id){
         return countryConverter.entityToDto(countryService.findById(id));
     }
+
     @Operation(
             summary = "Вывод списка стран",
             description = "Позволяет вывести полный список стран, имеющихся в БД"
     )
+
     @GetMapping("all")
     public List<CountryDto> listAll(){
         return countryService.findAll().stream().map(countryConverter::entityToDto).toList();
@@ -47,10 +49,10 @@ public class CountryController {
     )
     @PostMapping("/new")
     public ResponseEntity<?> addNewFilm(@RequestBody CountryDto countryDto) {
-        ResultOperation resultOperation=countryService.countryAddInVideoteka(countryDto);
-        if (resultOperation.isResult()){
-            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
-        }else {
+        ResultOperation resultOperation = countryService.countryAddInVideoteka(countryDto);
+        if (resultOperation.isResult()) {
+            return ResponseEntity.ok().body(HttpStatus.OK + " " + resultOperation.getResultDescription());
+        } else {
             throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }

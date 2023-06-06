@@ -55,7 +55,7 @@ public class DirectorService {
         }
     }
 
-    public boolean isDirectorPresent(String firstName, String lastName){
+    private boolean isDirectorPresent(String firstName, String lastName){
         Director director = directorRepository.findByFirstNameAndLastName(firstName,lastName);
         return director!=null;
     }

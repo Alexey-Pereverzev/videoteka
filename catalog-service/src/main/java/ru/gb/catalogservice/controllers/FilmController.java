@@ -113,4 +113,8 @@ public class FilmController {
         return new MinMaxYearDto(minYear, maxYear);
     }
 
+    @GetMapping("all")
+    public List<FilmDto> findAllNotDeletedFilms() {
+        return filmService.findAllNotDeletedFilms().stream().map(filmConverter::entityToDto).toList();
+    }
 }

@@ -28,4 +28,5 @@ public interface FilmRepository extends JpaRepository<Film, Long>, JpaSpecificat
             " join f.prices p where (f.title like :titlePart)")
     Page<Film> findByTitlePart(PageRequest pageRequest, String titlePart);
 
+    List<Film> findAllByIsDeletedIsFalse();
 }
