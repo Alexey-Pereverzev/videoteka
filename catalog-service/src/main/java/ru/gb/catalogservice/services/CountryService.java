@@ -48,7 +48,7 @@ public class CountryService {
         }
     }
 
-    public boolean isCountPresent (String title){
+    private boolean isCountPresent (String title){
         Country country=countryRepository.findByTitle(title);
         return country!=null;
     }

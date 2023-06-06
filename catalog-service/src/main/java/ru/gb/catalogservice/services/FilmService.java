@@ -35,82 +35,82 @@ public class FilmService {
         return filmRepository.findByTitlePart(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), "%" + titlepart + "%");
     }
 
-    private ResultOperation checkFilmDto(FilmDto filmDto){
-        ResultOperation resultOperation=new ResultOperation();
+    private ResultOperation checkFilmDto(FilmDto filmDto) {
+        ResultOperation resultOperation = new ResultOperation();
         resultOperation.setResultDescription("");
-        String temp="";
-        if (filmDto.getCountry()==null || filmDto.getCountry().size()==0){
-            temp=resultOperation.getResultDescription()+"Не задана страна"+"-=-";
+        String temp = "";
+        if (filmDto.getCountry() == null || filmDto.getCountry().size() == 0) {
+            temp = resultOperation.getResultDescription() + "Не задана страна" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getDirector()==null || filmDto.getDirector().size()==0){
-            temp=resultOperation.getResultDescription()+"Не задан режиссер"+"-=-";
+        if (filmDto.getDirector() == null || filmDto.getDirector().size() == 0) {
+            temp = resultOperation.getResultDescription() + "Не задан режиссер" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getGenre()==null || filmDto.getGenre().size()==0){
-            temp=resultOperation.getResultDescription()+"Не задан жанр"+"-=-";
+        if (filmDto.getGenre() == null || filmDto.getGenre().size() == 0) {
+            temp = resultOperation.getResultDescription() + "Не задан жанр" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getDescription()==null || filmDto.getDescription().length()==0){
-            temp=resultOperation.getResultDescription()+"Не задано описание фильма"+"-=-";
+        if (filmDto.getDescription() == null || filmDto.getDescription().length() == 0) {
+            temp = resultOperation.getResultDescription() + "Не задано описание фильма" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getPremierYear()==null || filmDto.getPremierYear()<1895){
-            temp=resultOperation.getResultDescription()+"Не задан год премьеры"+"-=-";
+        if (filmDto.getPremierYear() == null || filmDto.getPremierYear() < 1895) {
+            temp = resultOperation.getResultDescription() + "Не задан год премьеры" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getTitle()==null || filmDto.getTitle().length()==0){
-            temp=resultOperation.getResultDescription()+"Не задано название фильма"+"-=-";
+        if (filmDto.getTitle() == null || filmDto.getTitle().length() == 0) {
+            temp = resultOperation.getResultDescription() + "Не задано название фильма" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getRentPrice()==null || filmDto.getRentPrice()<0){
-            temp=resultOperation.getResultDescription()+"Не задана цена аренды"+"-=-";
+        if (filmDto.getRentPrice() == null || filmDto.getRentPrice() < 0) {
+            temp = resultOperation.getResultDescription() + "Не задана цена аренды" + "-=-";
             resultOperation.setResultDescription(temp);
         }
-        if (filmDto.getSalePrice()==null || filmDto.getSalePrice()<0){
-            temp=resultOperation.getResultDescription()+"Не задана цена продажи";
+        if (filmDto.getSalePrice() == null || filmDto.getSalePrice() < 0) {
+            temp = resultOperation.getResultDescription() + "Не задана цена продажи";
             resultOperation.setResultDescription(temp);
         }
         return resultOperation;
     }
 
-    private Film prepareFilm(FilmDto filmDto){
+    private Film prepareFilm(FilmDto filmDto) {
         Film film = new Film();
         film.setTitle(filmDto.getTitle());
         film.setPremierYear(filmDto.getPremierYear());
         if (filmDto.getImageUrlLink() != null) {
             film.setImageUrlLink(filmDto.getImageUrlLink());
         }
-        String[] tempArray= filmDto.getCountry().toArray(new String[0]);
-        List<Country> countries=countryService.findByFilter(tempArray);
+        String[] tempArray = filmDto.getCountry().toArray(new String[0]);
+        List<Country> countries = countryService.findByFilter(tempArray);
         film.setCountries(countries);
-        DirectorsFilter directorsFilter=new DirectorsFilter(filmDto.getDirector());
+        DirectorsFilter directorsFilter = new DirectorsFilter(filmDto.getDirector());
         List<Director> directors = directorService.findByFilter(directorsFilter.getFilterDirectorFirstName(), directorsFilter.getFilterDirectorLastName());
         film.setDirectors(directors);
-        tempArray= filmDto.getGenre().toArray(new String[0]);
-        List<Genre> genres=genreService.findByFilter(tempArray);
+        tempArray = filmDto.getGenre().toArray(new String[0]);
+        List<Genre> genres = genreService.findByFilter(tempArray);
         film.setGenres(genres);
         film.setDescription(filmDto.getDescription());
         return film;
     }
 
-    public ResultOperation filmAddInVideoteka(FilmDto filmDto){
-        ResultOperation resultOperation=new ResultOperation();
-        resultOperation=checkFilmDto(filmDto);
-        if (resultOperation.getResultDescription().length()==0){
-            Film film=prepareFilm(filmDto);
-            film=filmRepository.saveAndFlush(film);
-            addPriceForFilm(film,filmDto);
+    public ResultOperation filmAddInVideoteka(FilmDto filmDto) {
+        ResultOperation resultOperation = new ResultOperation();
+        resultOperation = checkFilmDto(filmDto);
+        if (resultOperation.getResultDescription().length() == 0) {
+            Film film = prepareFilm(filmDto);
+            film = filmRepository.saveAndFlush(film);
+            addPriceForFilm(film, filmDto);
             resultOperation.setResultDescription("Фильм добавлен в БД");
             resultOperation.setResult(true);
-        }else{
+        } else {
             resultOperation.setResult(false);
         }
         return resultOperation;
     }
 
-    private void addPriceForFilm(Film film, FilmDto filmDto){
-        Price price=new Price();
+    private void addPriceForFilm(Film film, FilmDto filmDto) {
+        Price price = new Price();
         price.setPriceSale(filmDto.getSalePrice());
         price.setPriceRent(filmDto.getRentPrice());
         price.setFilm(film);
@@ -121,74 +121,78 @@ public class FilmService {
         return filmRepository.findAll();
     }
 
-    private List<Country> getCountries(String[] filterCountryList){
+    private List<Country> getCountries(String[] filterCountryList) {
         List<Country> countries;
-        if (filterCountryList==null || filterCountryList.length==0){
-            countries=countryService.findAll();
-        }else {
+        if (filterCountryList == null || filterCountryList.length == 0) {
+            countries = countryService.findAll();
+        } else {
             countries = countryService.findByFilter(filterCountryList);
         }
         return countries;
     }
 
-    private List<Director> getDirectors(String[] filterDirectorList){
+    private List<Director> getDirectors(String[] filterDirectorList) {
         List<Director> directors;
-        if (filterDirectorList==null || filterDirectorList.length==0){
-            directors=directorService.findAll();
-        }else{
-            DirectorsFilter directorsFilter=new DirectorsFilter(filterDirectorList);
-            directors=directorService.findByFilter(directorsFilter.getFilterDirectorFirstName(),directorsFilter.getFilterDirectorLastName());
+        if (filterDirectorList == null || filterDirectorList.length == 0) {
+            directors = directorService.findAll();
+        } else {
+            DirectorsFilter directorsFilter = new DirectorsFilter(filterDirectorList);
+            directors = directorService.findByFilter(directorsFilter.getFilterDirectorFirstName(), directorsFilter.getFilterDirectorLastName());
         }
         return directors;
     }
 
-    private List<Genre> getGenres(String[] filterGenreList){
+    private List<Genre> getGenres(String[] filterGenreList) {
         List<Genre> genres;
-        if (filterGenreList==null || filterGenreList.length==0){
-            genres=genreService.findAll();
-        }else {
+        if (filterGenreList == null || filterGenreList.length == 0) {
+            genres = genreService.findAll();
+        } else {
             genres = genreService.findByFilter(filterGenreList);
         }
         return genres;
     }
 
-    private List<Price> getPrices(Integer minPrice, Integer maxPrice,Boolean isSale){
+    private List<Price> getPrices(Integer minPrice, Integer maxPrice, Boolean isSale) {
         List<Price> prices;
-        if (isSale){
-            prices=priceService.findByFilterSalePrice(minPrice,maxPrice);
-        }else{
-            prices=priceService.findByFilterRentPrice(minPrice,maxPrice);
+        if (isSale) {
+            prices = priceService.findByFilterSalePrice(minPrice, maxPrice);
+        } else {
+            prices = priceService.findByFilterRentPrice(minPrice, maxPrice);
         }
         return prices;
     }
 
     public Page<Film> findAllWithFilter(int currentPage, String[] filterCountryList, String[] filterDirectorList,
                                         String[] filterGenreList, Integer startPremierYear, Integer endPremierYear,
-                                        Boolean isSale, Integer minPrice, Integer maxPrice, String findString){
+                                        Boolean isSale, Integer minPrice, Integer maxPrice, String findString) {
 
-        List<Country> countries=getCountries(filterCountryList);
-        List<Director> directors=getDirectors(filterDirectorList);
-        List<Genre> genres=getGenres(filterGenreList);
-        if (startPremierYear==null||startPremierYear<1900){
-            startPremierYear=1900;
+        List<Country> countries = getCountries(filterCountryList);
+        List<Director> directors = getDirectors(filterDirectorList);
+        List<Genre> genres = getGenres(filterGenreList);
+        if (startPremierYear == null || startPremierYear < 1900) {
+            startPremierYear = 1900;
         }
-        if (endPremierYear==null||endPremierYear> LocalDate.now().getYear()){
-            endPremierYear=LocalDate.now().getYear();
+        if (endPremierYear == null || endPremierYear > LocalDate.now().getYear()) {
+            endPremierYear = LocalDate.now().getYear();
         }
         List<Price> prices;
-        if (isSale!=null && minPrice!=null && maxPrice!=null){
-            prices=getPrices(minPrice,maxPrice,isSale);
-            if (findString==null || findString.length()==0){
+        if (isSale != null && minPrice != null && maxPrice != null) {
+            prices = getPrices(minPrice, maxPrice, isSale);
+            if (findString == null || findString.length() == 0) {
                 return filmRepository.findWithFilter(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
                         directors, genres, startPremierYear, endPremierYear, prices);
-            }else{
-                findString=findString.toLowerCase();
+            } else {
+                findString = findString.toLowerCase();
                 return filmRepository.findWithFilterWithFindString(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
                         directors, genres, startPremierYear, endPremierYear, prices, findString);
             }
 
-        }else{
+        } else {
             throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
         }
+    }
+
+    public List<Film> findAllNotDeletedFilms() {
+        return filmRepository.findAllByIsDeletedIsFalse();
     }
 }
