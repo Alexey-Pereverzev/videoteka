@@ -3,10 +3,15 @@ package ru.gb.catalogservice.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.CountryDto;
+import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.catalogservice.converters.CountryConverter;
+import ru.gb.catalogservice.exceptions.IllegalInputDataException;
 import ru.gb.catalogservice.services.CountryService;
+import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.util.List;
 
@@ -34,5 +39,19 @@ public class CountryController {
     @GetMapping("list_all")
     public List<CountryDto> listAll(){
         return countryService.findAll().stream().map(countryConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Добавление новой страны",
+            description = "Позволяет добавить в БД новую страну"
+    )
+    @PostMapping("/add_new")
+    public ResponseEntity<?> addNewFilm(@RequestBody CountryDto countryDto) {
+        ResultOperation resultOperation=countryService.countryAddInVideoteka(countryDto);
+        if (resultOperation.isResult()){
+            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
+        }else {
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
+        }
     }
 }

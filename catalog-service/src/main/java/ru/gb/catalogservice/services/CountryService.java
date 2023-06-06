@@ -3,9 +3,11 @@ package ru.gb.catalogservice.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.gb.api.dtos.dto.CountryDto;
 import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.CountryRepository;
+import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.util.List;
 
@@ -22,5 +24,32 @@ public class CountryService {
     }
     public List<Country> findAll(){
         return countryRepository.findAll(SORT_COUNTRY);
+    }
+
+    public ResultOperation countryAddInVideoteka(CountryDto countryDto){
+        ResultOperation resultOperation=new ResultOperation();
+        if (countryDto!=null && countryDto.getTitle()!=null && countryDto.getTitle().length()>0){
+            if (!isCountPresent(countryDto.getTitle())){
+                Country country=new Country();
+                country.setTitle(countryDto.getTitle());
+                countryRepository.save(country);
+                resultOperation.setResult(true);
+                resultOperation.setResultDescription("Страна добавлена");
+                return resultOperation;
+            }else{
+                resultOperation.setResult(false);
+                resultOperation.setResultDescription("Заданная страна уже существует");
+                return resultOperation;
+            }
+        }else{
+            resultOperation.setResult(false);
+            resultOperation.setResultDescription("Не задано название новой страны");
+            return resultOperation;
+        }
+    }
+
+    public boolean isCountPresent (String title){
+        Country country=countryRepository.findByTitle(title);
+        return country!=null;
     }
 }
