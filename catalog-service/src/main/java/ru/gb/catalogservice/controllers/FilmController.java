@@ -39,7 +39,6 @@ public class FilmController {
     @GetMapping("id")
     public FilmDto findById(@RequestParam Long id){
         Film film=filmService.findById(id);
-        System.out.println(film.getPrices());
         return filmConverter.entityToDto(film);
     }
 
