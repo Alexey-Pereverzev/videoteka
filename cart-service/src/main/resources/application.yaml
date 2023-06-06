@@ -28,4 +28,8 @@ integrations:
 #    show-sql: true
 #    properties:
 #      hibernate:
+spring:
+  redis:
+    host: ${REDIS_LOCATION:127.0.0.1}
+    port: 6379
 #        dialect: org.hibernate.dialect.PostgreSQLDialect
