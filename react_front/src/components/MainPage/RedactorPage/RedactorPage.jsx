@@ -6,6 +6,7 @@ import {SelectButtonChangeEvent} from "primereact/selectbutton";
 import axios from "axios";
 import {PlusIcon} from "primereact/icons/plus";
 import {toast} from "react-toastify";
+import CatalogPage from "../CatalogPage/CatalogPage";
 
 // Long id;
 // String title;
@@ -50,19 +51,20 @@ const RedactorPage = () => {
 
     async function getAllFilms() {
         try {
-            return await axios.get('http://localhost:5555/catalog/api/v1/film/list_all',{
-                params:{
-                    currentPage: 1,
-                    filterCountryList: '',
-                    filterDirectorList: '',
-                    filterGenreList: '',
-                    startPremierYear: '',
-                    endPremierYear: '',
-                    isSale: '',
-                    minPrice: '',
-                    maxPrice: '',
-                }
-            }).then((response) => {
+            // return await axios.get('http://localhost:5555/catalog/api/v1/film/list_all',{
+            //     params:{
+            //         currentPage: 1,
+            //         filterCountryList: '',
+            //         filterDirectorList: '',
+            //         filterGenreList: '',
+            //         startPremierYear: '',
+            //         endPremierYear: '',
+            //         isSale: '',
+            //         minPrice: '',
+            //         maxPrice: '',
+            //     }
+            // })
+            return CatalogPage.getAllFilms(1).then((response) => {
                     setFilms(response.data)
                 },
                 function errorCallback(response) {

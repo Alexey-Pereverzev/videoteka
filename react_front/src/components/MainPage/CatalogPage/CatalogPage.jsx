@@ -40,6 +40,7 @@ class CatalogPage extends Component {
             isSale: true,
             minPrice: '',
             maxPrice: '',
+            findString: '',
             currentPage: 1,
             active: false,
             modal: false,
@@ -182,7 +183,8 @@ class CatalogPage extends Component {
                    endPremierYear,
                    isSale,
                    minPrice,
-                   maxPrice
+                   maxPrice,
+                   findString
     ) => {
         currentPage -= 1;
         axios.get("http://localhost:5555/catalog/api/v1/film/list_all",
@@ -200,6 +202,7 @@ class CatalogPage extends Component {
                     isSale,
                     minPrice,
                     maxPrice,
+                    findString,
                 }
             })
             .then(response => response.data)
@@ -226,6 +229,7 @@ class CatalogPage extends Component {
                 isSale: true,
                 minPrice: '',
                 maxPrice: '',
+                findString: '',
                 currentPage: 1,
                 active: false
             }, () => {
@@ -251,7 +255,8 @@ class CatalogPage extends Component {
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    this.state.maxPrice
+                    this.state.maxPrice,
+                    this.state.findString
                 )
             )
 
@@ -277,7 +282,8 @@ class CatalogPage extends Component {
                         this.state.endPremierYear,
                         this.state.isSale,
                         this.state.minPrice,
-                        this.state.maxPrice)
+                        this.state.maxPrice,
+                        this.state.findString)
                 )
             }
         }
@@ -296,7 +302,8 @@ class CatalogPage extends Component {
                 this.state.endPremierYear,
                 this.state.isSale,
                 this.state.minPrice,
-                this.state.maxPrice)
+                this.state.maxPrice,
+                this.state.findString)
         )
     }
 
@@ -312,9 +319,12 @@ class CatalogPage extends Component {
                 this.state.endPremierYear,
                 this.state.isSale,
                 this.state.minPrice,
-                this.state.maxPrice)
+                this.state.maxPrice,
+                this.state.findString
+            )
         )
     }
+
 
     handleDateChange(name, event) {
         let value = event.target.value;
@@ -328,7 +338,8 @@ class CatalogPage extends Component {
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    this.state.maxPrice));
+                    this.state.maxPrice,
+                    this.state.findString));
             }
         } else {
             if (parseInt(value) <= parseInt(this.state.endPlaceholderYear) && value.length === 4) {
@@ -340,7 +351,8 @@ class CatalogPage extends Component {
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    this.state.maxPrice));
+                    this.state.maxPrice,
+                    this.state.findString));
 
             }
         }
@@ -369,7 +381,8 @@ class CatalogPage extends Component {
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    this.state.maxPrice));
+                    this.state.maxPrice,
+                    this.state.findString));
 
             }
         } else {
@@ -382,45 +395,27 @@ class CatalogPage extends Component {
                     this.state.endPremierYear,
                     this.state.isSale,
                     this.state.minPrice,
-                    this.state.maxPrice));
+                    this.state.maxPrice,
+                    this.state.findString));
 
             }
         }
     }
 
     getFilmByTitlePart = (value) => {
-        const titlePart = value
-        console.log(titlePart)
-        axios.get("http://localhost:5555/catalog/api/v1/film/find_by_title_part",
-            {
-                params: {
-                    currentPage: 1,
-                    titlePart: titlePart
-                }
-            })
-            .then(response => response.data)
-            .then((data) => {
-                if (data !== null) {
-                    console.log(data.content)
-                    this.setState({
-                        films: data.content,
-                        totalPages: data.totalPages,
-                        totalElements: data.totalElements,
-                        currentPage: data.number + 1
-                    })
-                } else {
-                    if (data === null) {
-                        return (
-                            <div>
-                                <h4>Ничего нет</h4>
-                            </div>
-                        )
-                    }
-                }
-            }).catch((error) => {
-            console.error("Error: " + error)
-        })
+        console.log(value)
+        this.setState({findString: value}, () => this.getAllFilms(this.state.currentPage,
+            this.state.filterCountryList,
+            this.state.filterDirectorList,
+            this.state.filterGenreList,
+            this.state.startPremierYear,
+            this.state.endPremierYear,
+            this.state.isSale,
+            this.state.minPrice,
+            this.state.maxPrice,
+            this.state.findString));
     }
+
     render() {
         const {films, currentPage, filmsPerPage} = this.state;
         const genres = this.state.genres;
@@ -442,7 +437,7 @@ class CatalogPage extends Component {
 
                 </div>
 
-                <SearchBar getFilmByTitlePart={(value) => this.getFilmByTitlePart(value)} currentPage={1}/>
+                <SearchBar getFilmByTitlePart={(value) => this.getFilmByTitlePart(value)}/>
 
                 <div className={style.pagination}>
                     {
