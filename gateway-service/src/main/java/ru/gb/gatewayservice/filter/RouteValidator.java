@@ -65,13 +65,13 @@ public class RouteValidator {
     );
 
     public static final List<String> managerApiEndpoints = List.of(
+            "/api/v1/film/all",
             "/api/v1/country/new",
             "/api/v1/film/new-film",
             "/api/v1/rating/new-comment",
             "/api/v1/rating/all_grade_and_review_is_not_moderate",
             "/api/v1/rating/moderate-rejected",
             "/api/v1/rating/moderate-success"
-
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
