@@ -1,7 +1,5 @@
 import "./StringCard.css"
 import DeleteIcon from '@mui/icons-material/Delete';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import axios from "axios";
 
 function StringCard(props) {
@@ -31,14 +29,6 @@ function StringCard(props) {
             <div className={'string__details'}>
                 <div className={'string__title'}>{props.title}</div>
             </div>
-            {/*<div className={'string__quantity'}>*/}
-            {/*    {props.isSale?*/}
-            {/*        <AddCircleOutlineIcon fontSize={'small'} sx={{backgroundColor: 'green', borderRadius: '50px'}}/>*/}
-            {/*        :*/}
-            {/*        <span>Вы уже купили этот фильм</span>*/}
-            {/*    }*/}
-
-            {/*</div>*/}
             <div className={'string_price'}>
                 <span>цена: {props.price} руб.</span>
             </div>

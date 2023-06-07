@@ -137,7 +137,7 @@ class CatalogPage extends Component {
         })
     }
     getAllGenres = () => {
-        axios.get("http://localhost:5555/catalog/api/v1/genre/list_all")
+        axios.get("http://localhost:5555/catalog/api/v1/genre/all")
             .then(response => response.data)
             .then((data) => {
                 console.log(data)
@@ -150,7 +150,7 @@ class CatalogPage extends Component {
         })
     }
     getAllDirectors = () => {
-        axios.get("http://localhost:5555/catalog/api/v1/director/list_all")
+        axios.get("http://localhost:5555/catalog/api/v1/director/all")
             .then(response => response.data)
             .then((data) => {
                 console.log(data)
@@ -163,7 +163,7 @@ class CatalogPage extends Component {
         })
     }
     getAllCountries = () => {
-        axios.get("http://localhost:5555/catalog/api/v1/country/list_all")
+        axios.get("http://localhost:5555/catalog/api/v1/country/all")
             .then(response => response.data)
             .then((data) => {
                 console.log(data)
@@ -187,7 +187,7 @@ class CatalogPage extends Component {
                    findString
     ) => {
         currentPage -= 1;
-        axios.get("http://localhost:5555/catalog/api/v1/film/list_all",
+        axios.get("http://localhost:5555/catalog/api/v1/film/all-with-filter",
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -259,10 +259,7 @@ class CatalogPage extends Component {
                     this.state.findString
                 )
             )
-
         }
-
-
     }
 
     handleDirectorsChange(event) {

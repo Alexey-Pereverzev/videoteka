@@ -10,25 +10,25 @@ import RedactorPage from "../../RedactorPage/RedactorPage";
 import ModeratorPage from "../../ModeratorPage/ModeratorPage";
 
 function ManagerPanel() {
-    let getOrders = () => {
-        let userId = JSON.parse(localStorage.getItem('userId'))
-        console.log(userId)
-        axios.get('http://localhost:5555/cabinet/api/v1/orders/'+ userId )
-            .then(response => response.data)
-            .then(data => console.log(data))
-    }
-
-    function getBasket() {
-        console.log('Корзина')
-    }
-
-    function getProfile() {
-        console.log('Профиль')
-    }
-
-    function getFavourites() {
-        console.log('Избранное')
-    }
+    // let getOrders = () => {
+    //     let userId = JSON.parse(localStorage.getItem('userId'))
+    //     console.log(userId)
+    //     axios.get('http://localhost:5555/cabinet/api/v1/orders/'+ userId )
+    //         .then(response => response.data)
+    //         .then(data => console.log(data))
+    // }
+    //
+    // function getBasket() {
+    //     console.log('Корзина')
+    // }
+    //
+    // function getProfile() {
+    //     console.log('Профиль')
+    // }
+    //
+    // function getFavourites() {
+    //     console.log('Избранное')
+    // }
     return(
         <div className={'manager_container'}>
             <div className={'main_menu'}>

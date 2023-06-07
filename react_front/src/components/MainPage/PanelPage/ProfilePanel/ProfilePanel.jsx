@@ -9,20 +9,7 @@ import {useState} from "react";
 
 function ProfilePanel() {
 
-    const [link, setLink] = useState(null)
-
-    function getBasket() {
-        console.log('Корзина')
-    }
-
-    function getProfile() {
-        setLink('profile')
-        console.log('Профиль')
-    }
-
-    function getFavourites() {
-        console.log('Избранное')
-    }
+    // const [link, setLink] = useState(null)
 
     return (
         <div className={'profile_container'}>
