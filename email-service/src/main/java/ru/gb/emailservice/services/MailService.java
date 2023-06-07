@@ -38,21 +38,21 @@ public class MailService
         javaMailSender.send(message);
 
     }
-    public String generateVerificationCode (String username, String email){
+    public String generateVerificationCode (String firstName, String email){
         String code = String.valueOf((int) (Math.random()*1000000));
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Код верификации");
-        message.setText("Здравствуйте, " + username + "! \nВаш код верификации - " + code);
+        message.setText("Здравствуйте, " + firstName+ "! \nВаш код верификации - " + code);
         javaMailSender.send(message);
         return code;
     }
 
-    public void composePasswordLetter(String email, String username, String password){
+    public void composePasswordLetter(String email, String firstName){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Смена пароля");
-        message.setText("Здравствуйте, " + username + "! \nВаш новый пароль" + password);
+        message.setText("Здравствуйте, " + firstName + "! \nВы успешно сменили пароль");
         javaMailSender.send(message);
     }
 }
