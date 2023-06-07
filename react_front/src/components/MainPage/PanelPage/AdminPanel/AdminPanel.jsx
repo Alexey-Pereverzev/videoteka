@@ -8,14 +8,6 @@ import FavoritesPage from "../../FavoritesPage/FavoritesPage";
 import UsersPage from "../../UsersPage/UsersPage";
 
 function AdminPanel() {
-    // let getUsers = () => {
-    //     let userId = JSON.parse(localStorage.getItem('userId'))
-    //     console.log(userId)
-    //     // axios.get('http://localhost:5555/auth/api/v1/users')
-    //     //     .then(response => response.data)
-    //     //     .then(data => console.log(data))
-    // }
-    // getUsers()
     return(
         <div className={'admin_container'}>
             <div className={'main_menu'}>

@@ -2,7 +2,6 @@ import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import MainPage from "./components/MainPage/MainPage";
 import LoginPage from "./components/LoginPage/LoginPage";
-import axios from "axios";
 
 
 function App(props) {

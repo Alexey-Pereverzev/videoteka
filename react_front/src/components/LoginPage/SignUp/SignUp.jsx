@@ -3,18 +3,7 @@ import "./SignUp.css";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 
-//     username,
-//     password,
-//     confirmPassword,
-//     email,
-//     firstName,
-//     lastName,
-//     phoneNumber,
-//     address
 
-
-//http://localhost:5555/auth/api/v1/reg/register
-// register(): POST{username, email, password, firstName, lastName, phoneNumber,address}
 class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -24,9 +13,6 @@ class SignUp extends Component {
 
     }
 
-     displayCartNotification = (message) => {
-        toast.success(message);
-    }
     sendRegisterRequest = (event) => {
         event.preventDefault(true);
         return axios.post('http://localhost:5555/auth/api/v1/reg/register',

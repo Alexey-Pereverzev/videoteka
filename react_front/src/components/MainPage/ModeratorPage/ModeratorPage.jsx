@@ -8,7 +8,7 @@ import {toast, ToastContainer} from "react-toastify";
 function ModeratorPage() {
    const getMessagesOnModerate = async () => {
        try {
-           return await axios.get('http://localhost:5555/catalog/api/v1/rating/list_all_grade_and_review_is_not_moderate')
+           return await axios.get('http://localhost:5555/catalog/api/v1/rating/all_grade_and_review_is_not_moderate')
                .then((response) =>
                    response.data)
                .then((data) => {
@@ -27,7 +27,7 @@ function ModeratorPage() {
 
     async function applyReview(userId, filmId) {
         try {
-            return await axios.get('http://localhost:5555/catalog/api/v1/rating/setModerateSuccess', {
+            return await axios.get('http://localhost:5555/catalog/api/v1/rating/moderate-success', {
                 params:{
                     userId: userId,
                     filmId: filmId
@@ -50,7 +50,7 @@ function ModeratorPage() {
 
         async function rejectReview(userId, filmId) {
             try {
-                return await axios.get('http://localhost:5555/catalog/api/v1/rating/setModerateRejected', {
+                return await axios.get('http://localhost:5555/catalog/api/v1/rating/moderate-rejected', {
                     params:{
                         userId: userId,
                         filmId: filmId
