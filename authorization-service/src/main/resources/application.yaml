@@ -20,6 +20,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         hbm2ddl:
           auto: update
+logging:
+  level:
+    org.springframework.security: trace
 
 jwt:
   lifetime: 36000000

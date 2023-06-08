@@ -1,70 +1,34 @@
 package ru.gb.authorizationservice.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
-import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
+import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
 
-
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-
-    public User findNotDeletedByUsername(String username) {   // найти не удаленного пользователя с нужным именем
-        User user = findByUsername(username).orElseThrow
-                (() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
-        if (!user.isDeleted()) {
-            return user;
-        } else {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
-        }
-    }
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) {
-        User user = findNotDeletedByUsername(username);
-        return new org.springframework.security.core.userdetails
-                .User(user.getUsername(), user.getPassword(),
-                Collections.singleton(mapRoleToAuthority(user.getRole())));     // Singleton потому что роль может быть только 1
-    }
-
-
-    public String getRole(String username) {
-        User user = findNotDeletedByUsername(username);
-        return user.getRole().getTitle();
-    }
-
-    private SimpleGrantedAuthority mapRoleToAuthority(Role role) {
-        return new SimpleGrantedAuthority(role.getTitle());
-    }
 
     public StringResponse createNewUser(RegisterUserDto registerUserDto) {
         if (registerUserDto.getPassword()==null) {
@@ -222,7 +186,6 @@ public class UserService implements UserDetailsService {
             throw new ResourceNotFoundException
                     ("Пользователь с id: " + deleteUserId + " не найден или удален");
         }
-
     }
 
     public List<User> findAllNotDeleted() {
@@ -236,11 +199,7 @@ public class UserService implements UserDetailsService {
     public StringResponse fullNameById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow
                 (() -> new ResourceNotFoundException("Нет такого пользователя"));
-//        if (!user.isDeleted()) {
         return new StringResponse(user.getFirstName().concat(" ").concat(user.getLastName()));
-//        } else {
-//            throw new ResourceNotFoundException("Нет такого пользователя");
-//        }
     }
 
     public User findNameEmailById(Long id) {
