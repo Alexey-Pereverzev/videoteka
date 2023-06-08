@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 function ReviewsPage(props) {
     let getFilmIdReview = async () => {
         try {
-            return await axios.get('http://localhost:5555/catalog/api/v1/rating/list_all_grade_and_review_by_filmId', {
+            return await axios.get('http://localhost:5555/catalog/api/v1/rating/all_grade_and_review_by_filmId', {
                 params: {
                     filmId: props.filmId
                 }
@@ -36,17 +36,18 @@ function ReviewsPage(props) {
                 userId: userId
             }
         }).then(r => {
-            return r.data.value
+            setFullName(r.data.value)
         })
 
     }
-   const handleName = (userId) => {
-
-       getFullNameReviewers(userId).then(r => {
-           setFullName(r)
-       })
-       return fullName
-    }
+   // const handleName = (userId) => {
+   //
+   //     getFullNameReviewers(userId)
+   //     //     .then(r => {
+   //     //     setFullName(r)
+   //     // })
+   //     return fullName
+   //  }
     const handleChange = (command) => {
         switch (command) {
             case '':
@@ -72,7 +73,9 @@ function ReviewsPage(props) {
         <div className={'review-page'}>
             {filmReviews.length > 0?
                 <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
-                    {filmReviews.map((txt) => (
+                    {filmReviews.map((txt) => {
+                        // getFullNameReviewers(txt.user_id)
+                        return (
                         <ListItem alignItems="flex-start">
                             <ListItemAvatar>
                                 <Avatar alt="Remy Sharp" src="https://mui.com/static/images/avatar/3.jpg"/>
@@ -88,7 +91,7 @@ function ReviewsPage(props) {
                                             variant="subtitle2"
                                             color="text.primary"
                                         >
-                                            {handleName(txt.user_id)}
+                                            {/*{fullName}*/}
                                         </Typography>
 
                                         <Divider variant="inset" component="li"/>
@@ -97,7 +100,7 @@ function ReviewsPage(props) {
                                 }
                             />
                         </ListItem>
-                    ))}
+                            )})}
                     <Divider variant="inset" component="li"/>
                 </List>
                 :

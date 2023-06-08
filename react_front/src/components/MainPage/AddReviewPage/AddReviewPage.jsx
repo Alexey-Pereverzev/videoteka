@@ -28,7 +28,7 @@ function AddReviewPage(props) {
         console.log(message)
         try {
             if (message !== ''){
-                axios.post('http://localhost:5555/catalog/api/v1/rating/add_new',
+                axios.post('http://localhost:5555/catalog/api/v1/rating/new-comment',
                     {
                         film_id: props.filmId,
                         user_id: Number(userId),
