@@ -39,7 +39,8 @@ public class MailService
 
     }
     public String generateVerificationCode (String firstName, String email){
-        String code = String.valueOf((int) (Math.random()*1000000));
+        int random = (int) (100000+(Math.random()*600000));
+        String code = String.valueOf(random);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Код верификации");

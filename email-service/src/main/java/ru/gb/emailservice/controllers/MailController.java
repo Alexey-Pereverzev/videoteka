@@ -40,6 +40,7 @@ public class MailController {
             summary = "Код верефикации",
             description = "Генерирует 6 ти значный код и отправляет пользователю"
     )
+    @GetMapping ("/composeVerificationLetter")
     public StringResponse composeVerificationLetter (@RequestParam String firstName, @RequestParam String email){
         return new StringResponse(mailService.generateVerificationCode(firstName,email));
     }
@@ -48,7 +49,7 @@ public class MailController {
             summary = "Оповещение о смене пароля",
             description = "Оповещение о смене пароля"
     )
-
+    @GetMapping ("/composePasswordLetter")
     public StringResponse composePasswordLetter(@RequestParam String email, @RequestParam String firstName){
         mailService.composePasswordLetter(email, firstName);
         return new StringResponse("Письмо о смене пароля успешно отправлено ");
