@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.JwtRequest;
 import ru.gb.api.dtos.dto.JwtResponse;
+import ru.gb.authorizationservice.config.CustomUserDetailsService;
 import ru.gb.authorizationservice.entities.User;
-import ru.gb.authorizationservice.services.UserService;
 import ru.gb.authorizationservice.utils.JwtTokenUtil;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.security.spec.InvalidKeySpecException;
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Аутентификация", description = "Методы сервиса аутентификации")
 public class AuthController {
-    private final UserService userService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
@@ -54,16 +54,16 @@ public class AuthController {
     public JwtResponse createAuthToken(@RequestBody JwtRequest authRequest)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        User userByUsername = userService.findNotDeletedByUsername(authRequest.getUsername());
+        User userByUsername = customUserDetailsService.findNotDeletedByUsername(authRequest.getUsername());
         // проверяем, есть ли не удаленный пользователь с таким именем, если нет = статус 404
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                     (authRequest.getUsername(), authRequest.getPassword()));
         // авторизация, если неуспешно - выдаем 400
 
-        UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails,userByUsername.getId());
-        return new JwtResponse(token, userService.getRole(authRequest.getUsername()));
+        return new JwtResponse(token, customUserDetailsService.getRole(authRequest.getUsername()));
     }
 
 

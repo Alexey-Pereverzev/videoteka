@@ -47,8 +47,8 @@ public class RouteValidator {
     public static final List<String> adminApiEndpoints = List.of(
             "/api/v1/roles/update",
             "/api/v1/users/delete",
-            "/api/v1/users/list_all",
-            "/api/v1/users/list_all_not_deleted"
+            "/api/v1/users/all",
+            "/api/v1/users/all_not_deleted"
     );
 
     public static final List<String> userApiEndpoints = List.of(
