@@ -11,7 +11,6 @@ import ru.gb.api.dtos.dto.AppError;
 public class GlobalExceptionsHandler {
     @ExceptionHandler
     public ResponseEntity<AppError> handleMailException(MailException e){
-        System.out.println("!!!!!!!");
         return new ResponseEntity<>(new AppError("SEND_MAIL_ERROR",e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
