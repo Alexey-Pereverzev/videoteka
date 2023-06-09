@@ -172,6 +172,8 @@ services:
       dockerfile: email-service/Dockerfile-email
     ports:
       - "8199:8199"
+    environment:
+      AUTH_SERVICE_LOCATION: authorization-service
     networks:
       - videoteka-net
     restart: always
