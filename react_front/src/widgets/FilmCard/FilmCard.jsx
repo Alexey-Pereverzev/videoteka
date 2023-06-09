@@ -23,7 +23,8 @@ function FilmCard(props) {
             ).then(response => response.data)
                 .then(data => {
                     let rating = data;
-                    let dotRating = rating.replace(",", ".")
+                    let dotRating = rating
+                        // .replace(",", ".")
                     setRatingState(dotRating)
                     console.log("Ответ метода getRating: " + dotRating)
                 })

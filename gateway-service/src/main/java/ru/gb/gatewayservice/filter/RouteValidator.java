@@ -52,6 +52,8 @@ public class RouteValidator {
     );
 
     public static final List<String> userApiEndpoints = List.of(
+            "/api/v1/rating/new-comment",
+
             "/api/v1/cart/merge",
             "/api/v1/cart/pay",
 
