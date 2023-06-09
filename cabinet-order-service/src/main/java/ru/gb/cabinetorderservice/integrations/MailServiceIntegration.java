@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.gb.api.dtos.cart.CartDto;
 
+import java.time.Duration;
+
 @Component
 @RequiredArgsConstructor
 public class MailServiceIntegration {
@@ -20,6 +22,7 @@ public class MailServiceIntegration {
                 .header("userId", userId)
                 .retrieve()
                 .toBodilessEntity()
+                .timeout(Duration.ofSeconds(100))
                 .block();
     }
 

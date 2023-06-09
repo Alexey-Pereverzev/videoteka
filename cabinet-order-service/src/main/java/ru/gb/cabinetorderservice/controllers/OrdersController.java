@@ -43,7 +43,10 @@ public class OrdersController {
         }
 
         else {
-            return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Корзина пользователя пуста - заказ не сохранен"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new AppError("FILM_NOT_FOUND",
+//                    "Корзина пользователя пуста - заказ не сохранен"
+                    result
+            ), HttpStatus.NOT_FOUND);
         }
 
     }

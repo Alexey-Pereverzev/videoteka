@@ -66,7 +66,7 @@ public class OrderService {
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){
-            return "Сервис корзины недоступен";
+            return e.getMessage() + "Сервис корзины недоступен";
         }
     }
 
