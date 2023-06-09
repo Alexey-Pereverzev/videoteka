@@ -27,7 +27,6 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             boolean requestIsSecured = false;
 
-
             if (!validator.isFreeAccess.test(request)) {
 
                 if (getRoleHeader(request).equals("ROLE_ADMIN")) {

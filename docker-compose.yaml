@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  redis:
+  redis-videoteka:
     image: redis:7.0.11
     container_name: redis-videoteka
     ports:
@@ -89,13 +89,14 @@ services:
       SPRING_DATASOURCE_PASSWORD: "OrdersVideoteka2023"
       CATALOG_SERVICE_LOCATION: catalog-service
       CART_SERVICE_LOCATION: cart-service
+      EMAIL_SERVICE_LOCATION: email-service
     networks:
       - videoteka-net
     restart: always
 
   cart-service:
     depends_on:
-      - redis
+      - redis-videoteka
     container_name: cart-service
     build:
       context: .
@@ -158,6 +159,21 @@ services:
       dockerfile: front-service/Dockerfile-front
     ports:
       - "3000:3000"
+    networks:
+      - videoteka-net
+    restart: always
+
+  email-service:
+    depends_on:
+      - gateway-service
+    container_name: email-service
+    build:
+      context: .
+      dockerfile: email-service/Dockerfile-email
+    ports:
+      - "8199:8199"
+    environment:
+      AUTH_SERVICE_LOCATION: authorization-service
     networks:
       - videoteka-net
     restart: always
