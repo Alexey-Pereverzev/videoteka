@@ -38,7 +38,7 @@ public class RouteValidator {
             "/api/v1/cart/clear",
             "/api/v1/cart/rediscontent",
 
-            "/api/v1/users/get_fullname_by_id",
+            "/api/v1/users/fullname_by_id",
 
             "/api/v1/mail/send"
 

@@ -19,7 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 function UsersPage(props) {
 
     let getAllUsers = () => {
-        return axios.get("http://localhost:5555/auth/api/v1/users/list_all")
+        return axios.get("http://localhost:5555/auth/api/v1/users/all")
             .then(response => response.data)
             .then(data => setUsers(data))
     }

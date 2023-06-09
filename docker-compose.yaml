@@ -89,13 +89,14 @@ services:
       SPRING_DATASOURCE_PASSWORD: "OrdersVideoteka2023"
       CATALOG_SERVICE_LOCATION: catalog-service
       CART_SERVICE_LOCATION: cart-service
+      EMAIL_SERVICE_LOCATION: email-service
     networks:
       - videoteka-net
     restart: always
 
   cart-service:
     depends_on:
-      - redis
+      - redis-videoteka
     container_name: cart-service
     build:
       context: .

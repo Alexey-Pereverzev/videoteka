@@ -4,7 +4,7 @@ import axios from "axios";
 
 const SpeechBubbles = (props) => {
     const getNameById = () => {
-        return axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+        return axios.get('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
             params: {
                 userId: props.userId
             }

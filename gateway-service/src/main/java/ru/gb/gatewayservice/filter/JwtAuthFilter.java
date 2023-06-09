@@ -26,6 +26,12 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
             ServerHttpRequest request = exchange.getRequest();
 
+//            System.out.println(11111);
+//            System.out.println(request.getURI());
+//            System.out.println(request.getHeaders());
+//            System.out.println(request.getPath());
+//            System.out.println(request.getQueryParams());
+
             if (request.getHeaders().containsKey("userId")) {     //  защита обхода Gateway
                 return this.onError(exchange, "Invalid header username", HttpStatus.BAD_REQUEST);
             }
