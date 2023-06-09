@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.RoleChangeDto;
@@ -34,6 +35,7 @@ public class RoleController {
             }
     )
     @PutMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public StringResponse update(@RequestBody RoleChangeDto roleChangeDto,
                                  @RequestHeader String userId) {
         //  RoleChangeDto - какого пользователя изменяем

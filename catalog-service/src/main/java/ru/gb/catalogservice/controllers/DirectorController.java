@@ -3,13 +3,15 @@ package ru.gb.catalogservice.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.gb.api.dtos.dto.CountryDto;
 import ru.gb.api.dtos.dto.DirectorDto;
 import ru.gb.catalogservice.converters.DirectorConverter;
+import ru.gb.catalogservice.exceptions.IllegalInputDataException;
 import ru.gb.catalogservice.services.DirectorService;
+import ru.gb.catalogservice.utils.ResultOperation;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class DirectorController {
             summary = "Вывод имени режиссера по id",
             description = "Позволяет вывести имя режиссера по заданному id"
     )
-    @GetMapping("find_by_id")
+    @GetMapping("id")
     public DirectorDto findById(@RequestParam Long id){
         return directorConverter.entityToDto(directorService.findById(id));
     }
@@ -32,8 +34,22 @@ public class DirectorController {
             summary = "Вывод списка режиссеров",
             description = "Позволяет вывести полный список режиссеров имеющихся в БД"
     )
-    @GetMapping("list_all")
+    @GetMapping("all")
     public List<DirectorDto> listAll(){
         return directorService.findAll().stream().map(directorConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Добавление нового режиссера",
+            description = "Позволяет добавить в БД нового режиссера"
+    )
+    @PostMapping("/new")
+    public ResponseEntity<?> addNewFilm(@RequestBody DirectorDto directorDto) {
+        ResultOperation resultOperation=directorService.directorAddInVideoteka(directorDto);
+        if (resultOperation.isResult()){
+            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
+        }else {
+            throw new IllegalInputDataException(resultOperation.getResultDescription());
+        }
     }
 }

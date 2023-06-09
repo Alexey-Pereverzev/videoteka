@@ -1,7 +1,6 @@
 package ru.gb.gatewayservice.filter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -13,7 +12,6 @@ import java.security.PublicKey;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Date;
 
 @Component
 public class JwtUtil {
@@ -32,25 +30,25 @@ public class JwtUtil {
                 .getBody();
     }
 
-//    private boolean isTokenExpired(String token) {
-//        return this.getAllClaimsFromToken(token).getExpiration().before(new Date());
-//    }
-
     public boolean isInvalid(String token) {
-        return (!validateToken(token).equals(""));
+        return !validateToken(token).equals("");
     }
 
 
-    public String validateToken(final String token) {
-        if (this.getAllClaimsFromToken(token).getExpiration().before(new Date())) {
-            return "Token is expired";
-        } else {
-            try {
-                Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-                return "";
-            } catch (Exception e) {
-                return "Token is not valid";
-            }
+    public String validateToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
+            return "";
+        } catch (MalformedJwtException e) {
+            return "MalformedJwtException " + e.getMessage();
+        } catch (ExpiredJwtException e) {
+            return "ExpiredJwtException " + e.getMessage();
+        } catch (UnsupportedJwtException e) {
+            return "UnsupportedJwtException " + e.getMessage();
+        } catch (SignatureException e) {
+            return "SignatureException " + e.getMessage();
+        } catch (IllegalArgumentException e) {
+            return "IllegalArgumentException " + e.getMessage();
         }
     }
 

@@ -25,7 +25,7 @@ public class GenreController {
             summary = "Вывод названия жанра по id",
             description = "Позволяет вывести название жанра по заданному id"
     )
-    @GetMapping("find_by_id")
+    @GetMapping("id")
     public GenreDto findById(@RequestParam Long id){
         return genreConverter.entityToDto(genreService.findById(id));
     }
@@ -33,7 +33,7 @@ public class GenreController {
             summary = "Вывод списка жанров",
             description = "Позволяет вывести полный список жанров, имеющихся в БД"
     )
-    @GetMapping("list_all")
+    @GetMapping("all")
     public List<GenreDto> listAll(){
         return genreService.findAll().stream().map(genreConverter::entityToDto).toList();
     }
