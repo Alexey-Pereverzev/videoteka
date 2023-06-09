@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  redis:
+  redis-videoteka:
     image: redis:7.0.11
     container_name: redis-videoteka
     ports:
@@ -159,6 +159,19 @@ services:
       dockerfile: front-service/Dockerfile-front
     ports:
       - "3000:3000"
+    networks:
+      - videoteka-net
+    restart: always
+
+  email-service:
+    depends_on:
+      - gateway-service
+    container_name: email-service
+    build:
+      context: .
+      dockerfile: email-service/Dockerfile-email
+    ports:
+      - "8199:8199"
     networks:
       - videoteka-net
     restart: always
