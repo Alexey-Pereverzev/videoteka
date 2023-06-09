@@ -22,7 +22,6 @@ public class MailServiceIntegration {
                 .header("userId", userId)
                 .retrieve()
                 .toBodilessEntity()
-                .timeout(Duration.ofSeconds(100))
                 .block();
     }
 

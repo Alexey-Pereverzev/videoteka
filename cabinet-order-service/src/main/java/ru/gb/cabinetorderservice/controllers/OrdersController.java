@@ -38,15 +38,12 @@ public class OrdersController {
             return ResponseEntity.ok(new StringResponse(" Заказ успешно сохранен в БД"));
 
         }
-        else if (result.equals("Сервис корзины недоступен")){
-            return new ResponseEntity<>(new AppError("CART_NOT_FOUND", " Сервис корзины недоступен - попробуйте обновить страницу"), HttpStatus.SERVICE_UNAVAILABLE);
+        else if (result.equals("Ошибка интеграции")){
+            return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", "Ошибка интеграции"), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
         else {
-            return new ResponseEntity<>(new AppError("FILM_NOT_FOUND",
-//                    "Корзина пользователя пуста - заказ не сохранен"
-                    result
-            ), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Корзина пользователя пуста - заказ не сохранен"), HttpStatus.NOT_FOUND);
         }
 
     }
