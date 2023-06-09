@@ -13,6 +13,7 @@ let onChange = (event) => {
 
     function sendTitlePart() {
         props.getFilmByTitlePart(titlePart)
+        setTitlePart('')
     }
 const [titlePart, setTitlePart] = useState('')
     return(

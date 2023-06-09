@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
@@ -45,6 +46,7 @@ public class UserController {
             }
     )
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public StringResponse deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
@@ -55,7 +57,8 @@ public class UserController {
     @Operation(
             summary = "Вывод всех не удаленных пользователей на странице админа"
     )
-    @GetMapping("list_all_not_deleted")
+    @GetMapping("all_not_deleted")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> listAllNotDeleted() {
         return userService.findAllNotDeleted().stream().map(userConverter::entityToDto).toList();
     }
@@ -63,7 +66,8 @@ public class UserController {
     @Operation(
             summary = "Вывод всех пользователей на странице админа, включая удаленных"
     )
-    @GetMapping("list_all")
+    @GetMapping("all")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> listAll() {
         return userService.findAll().stream().map(userConverter::entityToDto).toList();
     }
@@ -81,7 +85,7 @@ public class UserController {
                     )
             }
     )
-    @GetMapping("get_name_and_email_by_id")
+    @GetMapping("name_and_email_by_id")
     public UserNameMailDto getNameAndEmailById(@RequestParam Long id) {
         return userConverter.entityToNameMailDto(userService.findNameEmailById(id));
     }
@@ -99,7 +103,7 @@ public class UserController {
             )
     }
     )
-    @GetMapping("get_fullname_by_id")
+    @GetMapping("fullname_by_id")
     public StringResponse fullNameById(@RequestParam Long userId) {
             return userService.fullNameById(userId);
     }

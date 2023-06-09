@@ -19,11 +19,6 @@ import CatalogPage from "../CatalogPage/CatalogPage";
 // Integer rentPrice;
 // Integer salePrice;
 const RedactorPage = () => {
-    interface Title {
-        id: number;
-        title: string;
-    }
-
 
     let getGenres = () => {
         axios.get("http://localhost:5555/catalog/api/v1/genre/all")
@@ -64,7 +59,22 @@ const RedactorPage = () => {
             setOpen(true)
         } else {
             if (event.target.value !== "Добавить фильм") {
-                setOpen(false)
+                try {
+                    return axios.get('http://localhost:5555/catalog/api/v1/film/id', {
+                        params: {
+                            id: event.target.value
+                        }
+                    }).then(response => response.data)
+                        .then((data) => {
+                            console.log(data.title)
+                            setFile(data)
+                            setOpen(false)
+                        })
+
+                } catch (e) {
+
+                }
+
             }
         }
     }
@@ -73,9 +83,10 @@ const RedactorPage = () => {
     const [value, setValue] = useState([])
     const [directors, setDirectors] = useState([])
     const [countries, setCountries] = useState([])
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
     const [films, setFilms] = useState([])
-
+    const [file, setFile] = useState([])
+    console.log(file)
     return (
         <div className={style.redactor_container}>
             Редактирование карточки фильма
@@ -86,10 +97,9 @@ const RedactorPage = () => {
                         <Select
                             labelId="demo-select-small-label"
                             id="demo-select-small"
-                            name={'director'}
+                            name={'films'}
                             value={films}
                             color={'success'}
-                            defaultValue={''}
                             sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
                             label="Age"
                             onChange={(event) => handleFilmsChange(event)}
@@ -99,110 +109,114 @@ const RedactorPage = () => {
                             </MenuItem>
                             {films.map((film) =>
                                 <MenuItem
-                                    value={film.title}>{film.title}</MenuItem>
+                                    value={film.id}>{film.title}</MenuItem>
                             )}
                         </Select>
                     </FormControl>
                 </div>
-                {open ?
-                    <div className={style.details}>
-                        <div className={style.title_input}>
-                            <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Ссылка для обложки</label>
+                {
+                    open ?
+                        <div className={style.details}>
+                            <div className={style.title_input}>
+                                <div className={style.input_container}>
+                                    <input type="text" required=""/>
+                                    <label>Ссылка для обложки</label>
+                                </div>
+                                <div className={style.input_container}>
+                                    <input type="text" required=""/>
+                                    <label>Название фильма</label>
+                                </div>
                             </div>
-                            <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Название фильма</label>
+                            <div className={style.description_area}>
+                                <textarea name="Text1" cols="40" rows="5"/>
+                                <label>Содержание</label>
+                            </div>
+                            <div className={style.details_box}>
+                                <div className={style.input_container}>
+                                    <input type="text" required=""/>
+                                    <label>Год премьеры</label>
+                                </div>
+                                <div className={style.input_container}>
+                                    <input type="text" required=""/>
+                                    <label>Цена аренды</label>
+                                </div>
+                                <div className={style.input_container}>
+                                    <input type="text" required=""/>
+                                    <label>Цена продажи</label>
+                                </div>
+                            </div>
+                            <div className={style.country}>
+                                <div className={style.input_container}>
+                                    <input onChange={(event) => setDirectors(event.target.value)}
+                                           type="text"
+                                           required=""/>
+                                    <label>Страны, через запятую</label>
+                                </div>
                             </div>
                         </div>
-                        <div className={style.description_area}>
-                            <textarea name="Text1" cols="40" rows="5"/>
-                            <label>Содержание</label>
-                        </div>
-                        <div className={style.details_box}>
-                            <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Год премьеры</label>
-                            </div>
-                            <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Цена аренды</label>
-                            </div>
-                            <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Цена продажи</label>
-                            </div>
-                        </div>
-                        <div className={style.country}>
-                            <div className={style.input_container}>
-                                <input onChange={(event) => setDirectors(event.target.value)}
-                                       type="text"
-                                       required=""/>
-                                <label>Страны, через запятую</label>
-                            </div>
-                        </div>
-                    </div>
-                    :
-                    <div className={style.details}>
-                        {films ?
-                            <div>
-                                {films.map((film) => (
-                                    <div className={style.details}>
-                                        <div className={style.title_input}>
-                                            <div className={style.input_container}>
-                                                <input type="text" required=""/>
-                                                <label>{film.imageUrlLink}</label>
-                                            </div>
-                                            <div className={style.input_container}>
-                                                <input type="text" required=""/>
-                                                <label>{film.title}</label>
-                                            </div>
-                                        </div>
-                                        <div className={style.description_area}>
-                                            <textarea name="Text1" cols="40" rows="5"/>
-                                            <label>{film.description}</label>
-                                        </div>
-                                        <div className={style.details_box}>
-                                            <div className={style.input_container}>
-                                                <input type="text" required=""/>
-                                                <label>{film.premierYear}</label>
-                                            </div>
-                                            <div className={style.input_container}>
-                                                <input type="text" required=""/>
-                                                <label>{film.rentPrice}</label>
-                                            </div>
-                                            <div className={style.input_container}>
-                                                <input type="text" required=""/>
-                                                <label>{film.salePrice}</label>
-                                            </div>
-                                        </div>
-                                        <div className={style.country}>
-                                            {countries.map((country) => (
-                                                <div className={style.input_container}>
-                                                    <input onChange={(event) => setDirectors(event.target.value)}
-                                                           type="text"
-                                                           required=""/>
-                                                    <label>{country.title}</label>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className={style.director}>
-                                            {directors.map((director) => (
-                                                <div className={style.input_container}>
-                                                    <input type="text" required=""/>
-                                                    <label>{director}</label>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))
-                                }
-                            </div>
+                        :
+                        file !== []?
+                         file.map(detail =>
+
+                             <div className={style.details}>
+
+                                 <div className={style.details}>
+                                     <div className={style.title_input}>
+                                         <div className={style.input_container}>
+                                             <input type="text" required=""/>
+                                             <label>{detail.imageUrlLink}</label>
+                                         </div>
+                                         <div className={style.input_container}>
+                                             <input type="text" required=""/>
+                                             <label>{detail.title}</label>
+                                         </div>
+                                     </div>
+                                     <div className={style.description_area}>
+                                         <textarea name="Text1" cols="40" rows="5"/>
+                                         <label>{detail.description}</label>
+                                     </div>
+                                     <div className={style.details_box}>
+                                         <div className={style.input_container}>
+                                             <input type="text" required=""/>
+                                             <label>{detail.premierYear}</label>
+                                         </div>
+                                         <div className={style.input_container}>
+                                             <input type="text" required=""/>
+                                             <label>{detail.rentPrice}</label>
+                                         </div>
+                                         <div className={style.input_container}>
+                                             <input type="text" required=""/>
+                                             <label>{detail.salePrice}</label>
+                                         </div>
+                                     </div>
+                                     {detail.country.map((country) => (
+                                         <div className={style.country}>
+
+                                             <div className={style.input_container}>
+                                                 <input type="text"
+                                                        required=""/>
+                                                 <label>{country.title}</label>
+                                             </div>
+
+                                         </div>
+                                     ))
+                                     }
+                                     <div className={style.director}>
+                                         {detail.director.map((director) => (
+                                             <div className={style.input_container}>
+                                                 <input type="text" required=""/>
+                                                 <label>{director}</label>
+                                             </div>
+                                         ))
+                                         }
+                                     </div>
+                                 </div>
+
+                             </div>
+
+                        )
                             :
-                            <div>Нет такого фильма</div>
-                        }
-                    </div>
+                            <div>НЕТЬ</div>
                 }
             </div>
         </div>

@@ -2,12 +2,12 @@ package ru.gb.authorizationservice.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.gb.authorizationservice.exceptions.PublicKeyErrorException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,6 +71,7 @@ public class JwtTokenUtil {
                 .setSigningKey(secretPublic)
                 .parseClaimsJws(token)
                 .getBody();
+
     }
 
     public void generateKeyPair() throws NoSuchAlgorithmException {
@@ -116,11 +117,34 @@ public class JwtTokenUtil {
 
 //    public String validateToken(final String token) {
 //        try {
-//            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+//            Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token);
 //            return "";
 //        } catch (Exception e) {
 //            return "Token is not valid";
 //        }
 //    }
+
+    public String validateJwtToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(secretPublic).parseClaimsJws(authToken);
+            return "";
+        } catch (MalformedJwtException e) {
+//            throw new MalformedJwtException(e.getMessage());
+            return "MalformedJwtException " + e.getMessage();
+        } catch (ExpiredJwtException e) {
+//            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
+            return "ExpiredJwtException " + e.getMessage();
+        } catch (UnsupportedJwtException e) {
+//            throw new UnsupportedJwtException(e.getMessage());
+            return "UnsupportedJwtException " + e.getMessage();
+        } catch (IllegalArgumentException e) {
+//            throw new IllegalArgumentException(e.getMessage());
+            return "IllegalArgumentException " + e.getMessage();
+        }
+//        catch (IOException e) {
+////            throw new RuntimeException(e);
+//            return "PublicKeyErrorException " + e.getMessage();
+//        }
+    }
 
 }
