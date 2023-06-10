@@ -17,7 +17,7 @@ public class RouteValidator {
             "/api/v1/country/id",
             "/api/v1/director/all",
             "/api/v1/director/id",
-            "/api/v1/film/all-with-filter",
+            "/api/v1/film/all_with_filter",
             "/api/v1/film/list_all_dto",
             "/api/v1/film/find_by_title_part",
             "/api/v1/film/id",
@@ -70,10 +70,11 @@ public class RouteValidator {
             "/api/v1/film/all",
             "/api/v1/country/new",
             "/api/v1/film/new-film",
-            "/api/v1/rating/new-comment",
+            "/api/v1/film/movie_change",
+            "/api/v1/rating/new_comment",
             "/api/v1/rating/all_grade_and_review_is_not_moderate",
-            "/api/v1/rating/moderate-rejected",
-            "/api/v1/rating/moderate-success"
+            "/api/v1/rating/moderate_rejected",
+            "/api/v1/rating/moderate_success"
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
