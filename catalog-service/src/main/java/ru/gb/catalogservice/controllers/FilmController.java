@@ -55,7 +55,7 @@ public class FilmController {
             summary = "Вывод списка фильмов для главной страницы",
             description = "Позволяет вывести полный список стран, имеющихся в БД с применением условий фильтров. Используется для подготовки главной страницы"
     )
-    @GetMapping("all-with-filter")
+    @GetMapping("all_with_filter")
     public Page<FilmDto> listAll(@RequestParam @Parameter(description = "Номер страницы (start=0)", required = true) int currentPage,
                                  @RequestParam (name="filterCountryList",required = false) String[] filterCountryList,
                                  @RequestParam (name="filterDirectorList",required = false) String[] filterDirectorList,
@@ -91,7 +91,7 @@ public class FilmController {
             summary = "Добавление фильма в БД",
             description = "Позволяет добавлять фильмы в БД"
     )
-    @PostMapping("/new-film")
+    @PostMapping("/new_film")
     public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
@@ -104,7 +104,7 @@ public class FilmController {
             summary = "Изменение фильма в БД",
             description = "Позволяет изменять фильмы в БД"
     )
-    @PutMapping("/movie-change")
+    @PutMapping("/movie_change")
     public ResponseEntity<?> changeFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
