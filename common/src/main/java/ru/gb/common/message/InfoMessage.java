@@ -1,15 +1,16 @@
 package ru.gb.common.message;
 
-public enum InfoMessage {
+public interface InfoMessage {
 
-    FILE_NOT_FOUND("Файл не найден");
-    //Новые строки добавлять сюда!!!
-    String infoMessage;
-    InfoMessage (String infoMessage){
-        this.infoMessage=infoMessage;
-    }
+    String FILE_NOT_FOUND="Файл не найден";
 
-    public String getInfoMessage() {
-        return infoMessage;
-    }
+//    //Новые строки добавлять сюда!!!
+//    String infoMessage;
+//    InfoMessage (String infoMessage){
+//        this.infoMessage=infoMessage;
+//    }
+//
+//    public String getInfoMessage() {
+//        return infoMessage;
+//    }
 }
