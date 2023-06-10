@@ -35,7 +35,7 @@ public class RatingController {
             summary = "Добавление оценки и комментария к фильму",
             description = "Позволяет добавить оценку и комментарий пользователя к фильму"
     )
-    @PostMapping("/new-comment")
+    @PostMapping("/new_comment")
     public ResponseEntity<?> addFilmRating(@RequestBody RatingDto ratingDto) {
         ResultOperation resultOperation = ratingService.addFilmRating(ratingDto);
         if (resultOperation.isResult()) {
@@ -81,7 +81,7 @@ public class RatingController {
         return ratingService.listAllGradeAndReviewIsNotModerate().stream().map(ratingConverter::entityToDto).toList();
     }
 
-    @GetMapping("/moderate-success")
+    @GetMapping("/moderate_success")
     public ResponseEntity<?> setModerateStatus(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,true);
         if (resultOperation.isResult()) {
@@ -91,7 +91,7 @@ public class RatingController {
         }
     }
 
-    @GetMapping("/moderate-rejected")
+    @GetMapping("/moderate_rejected")
     public ResponseEntity<?> setModerateRejected(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,false);
         if (resultOperation.isResult()) {
