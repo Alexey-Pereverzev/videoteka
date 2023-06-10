@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
-    Optional<Rating> findRatingByFilmAndUserIdAndIsDeletedIsFalse(Film film, Long userId);
-    @Query("select sum(r.grade)/1.0/count(r.grade) from Rating r where r.film.id=:filmId and r.isDeleted=false")
+    Optional<Rating> findRatingByFilmAndUserIdAndIsDeletedIsFalseAndIsModerateIsTrue(Film film, Long userId);
+    @Query("select sum(r.grade)/1.0/count(r.grade) from Rating r where r.film.id=:filmId and r.isDeleted=false and r.isModerate=true")
     Double getTotalGrade(Long filmId);
-    List<Rating> findAllByFilmAndIsDeletedIsFalse(Film film);
+    List<Rating> findAllByFilmAndIsDeletedIsFalseAndIsModerateIsTrue(Film film);
     List<Rating> findAllByIsModerateIsFalseAndIsDeletedIsFalse();
 }
