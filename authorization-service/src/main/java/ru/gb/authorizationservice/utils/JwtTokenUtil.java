@@ -3,6 +3,7 @@ package ru.gb.authorizationservice.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -124,27 +125,32 @@ public class JwtTokenUtil {
 //        }
 //    }
 
-    public String validateJwtToken(String authToken) {
+    public String validateJwtToken(String authToken) throws Exception {
         try {
             Jwts.parser().setSigningKey(secretPublic).parseClaimsJws(authToken);
             return "";
         } catch (MalformedJwtException e) {
-//            throw new MalformedJwtException(e.getMessage());
-            return "MalformedJwtException " + e.getMessage();
+            throw new MalformedJwtException(e.getMessage());
+//            return "MalformedJwtException " + e.getMessage();
         } catch (ExpiredJwtException e) {
-//            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
-            return "ExpiredJwtException " + e.getMessage();
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
+//            return "ExpiredJwtException " + e.getMessage();
         } catch (UnsupportedJwtException e) {
-//            throw new UnsupportedJwtException(e.getMessage());
-            return "UnsupportedJwtException " + e.getMessage();
+            throw new UnsupportedJwtException(e.getMessage());
+//            return "UnsupportedJwtException " + e.getMessage();
         } catch (IllegalArgumentException e) {
-//            throw new IllegalArgumentException(e.getMessage());
-            return "IllegalArgumentException " + e.getMessage();
+            throw new IllegalArgumentException(e.getMessage());
+//            return "IllegalArgumentException " + e.getMessage();
+        }catch (SignatureException e) {
+            throw new SignatureException(e.getMessage());
+//            return "IllegalArgumentException " + e.getMessage();
         }
+    }
+
 //        catch (IOException e) {
 ////            throw new RuntimeException(e);
 //            return "PublicKeyErrorException " + e.getMessage();
 //        }
-    }
+
 
 }
