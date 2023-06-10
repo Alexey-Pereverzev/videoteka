@@ -18,7 +18,6 @@
         <module>gateway-service</module>
         <module>common</module>
         <module>authorization-service</module>
-        <module>mvc-front</module>
         <module>email-service</module>
     </modules>
 
