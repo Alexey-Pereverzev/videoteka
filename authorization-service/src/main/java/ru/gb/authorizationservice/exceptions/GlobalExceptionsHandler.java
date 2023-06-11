@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.gb.api.dtos.dto.AppError;
-import ru.gb.common.message.InfoMessage;
+import ru.gb.common.constants.InfoMessage;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler implements InfoMessage {

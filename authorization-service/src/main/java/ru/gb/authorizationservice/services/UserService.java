@@ -14,8 +14,11 @@ import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
+import ru.gb.common.constants.Constant;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +32,7 @@ public class UserService {
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
     private final MailServiceIntegration mailServiceIntegration;
+    Constant constant;
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -216,6 +220,7 @@ public class UserService {
         return user;
     }
 
+    @Transactional
     public void updatePassword(String userId, String email) {
         User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() ->
                 new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
@@ -227,9 +232,16 @@ public class UserService {
         }
         String code = mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
 
-
-        PasswordChangeAttempt attempt = new PasswordChangeAttempt();
-
-
+        Optional<PasswordChangeAttempt> attempt = attemptRepository.findById(user.getId());
+        PasswordChangeAttempt putAttempt = new PasswordChangeAttempt();
+        if (attempt.isPresent()) {
+            putAttempt = attempt.get();
+        }
+        LocalDateTime createdWhen = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
+        putAttempt.setCreatedWhen(createdWhen);
+        putAttempt.setCode(code);
+        putAttempt.setVerified(false);
+        attemptRepository.save(putAttempt);
     }
 }

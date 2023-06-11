@@ -11,6 +11,8 @@ import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
 import ru.gb.cabinetorderservice.integrations.MailServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
+import ru.gb.common.constants.Constant;
+import ru.gb.common.constants.InfoMessage;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -21,11 +23,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrderService implements Constant {
     private final OrdersRepository ordersRepository;
     private final CartServiceIntegration cartServiceIntegration;
     private final MailServiceIntegration mailServiceIntegration;
-    private static final String SERVER_TIME_ZONE = "Europe/Moscow";
+    Constant constant;
     private final Integer RENT_HOURS = 24;
 
 
@@ -47,7 +49,7 @@ public class OrderService {
                     order.setType("RENT");
                     // текущее время
                     LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis())
-                            .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
+                            .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
                     order.setRentStart(dateStart);
                     // к текущей дате прибавили 24 часа
                     order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
@@ -89,7 +91,7 @@ public class OrderService {
     @Transactional
     public boolean softDeleteOfOrderInRent(Order order){
         LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis())
-                .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
+                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
         if (order.getRentEnd().isBefore(dateNow)) {
             order.setDeleted(true);
             order.setDeletedWhen(dateNow);
@@ -102,7 +104,7 @@ public class OrderService {
     @Transactional
     public void softDeleteOfOrder(Order order){
         LocalDateTime dateNow = Instant.ofEpochMilli(System.currentTimeMillis())
-                .atZone(ZoneId.of(SERVER_TIME_ZONE)).toLocalDateTime();
+                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
             order.setDeleted(true);
             order.setDeletedWhen(dateNow);
             // пересохраняем заказ пользователя
