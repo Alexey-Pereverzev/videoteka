@@ -22,8 +22,8 @@ public class MailController {
     @GetMapping ("/send")
     public ResponseEntity<?> createMessage(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
-            mailService.createMessage(userIDLong);
-            return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
+        mailService.createMessage(userIDLong);
+        return ResponseEntity.ok(new StringResponse(" Письмо успешно отправлено"));
     }
 
     @Operation(
