@@ -10,6 +10,7 @@ import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
+import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
+    private final MailServiceIntegration mailServiceIntegration;
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -209,5 +211,22 @@ public class UserService {
             throw new ResourceNotFoundException("Польователь с id="+id+" был удален");
         }
         return user;
+    }
+
+    public void updatePassword(String userId, String email) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() ->
+                new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        }
+        if (!user.getEmail().equals(email)) {
+            throw new InputDataErrorException("Некорректный емэйл");
+        }
+        String code = mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
+
+
+        //TODO
+
+
     }
 }

@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ru.gb.common.generic.entities.GenericEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="users")
@@ -37,7 +34,6 @@ public class User extends GenericEntity {
 
     @ManyToOne
     private Role role;
-
 
 }
 

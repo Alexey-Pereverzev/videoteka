@@ -86,6 +86,12 @@ public class GlobalExceptionsHandler implements InfoMessage {
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleIntegrationException(IntegrationException e){
+        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+                HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
 
 
 

@@ -45,10 +45,10 @@ public class RouteValidator {
     );
 
     public static final List<String> adminApiEndpoints = List.of(
-            "/api/v1/roles/update",
-            "/api/v1/users/delete",
-            "/api/v1/users/all",
-            "/api/v1/users/all_not_deleted"
+            "/api/v1/roles",
+            "/api/v1/users",
+            "/api/v1/users/not_deleted",
+            "/api/v1/users/password"
     );
 
     public static final List<String> userApiEndpoints = List.of(
@@ -62,7 +62,9 @@ public class RouteValidator {
             "/api/v1/orders/userFilm",
             "/api/v1/orders/delete",
             "/api/v1/orders/rent",
-            "/api/v1/orders/sale"
+            "/api/v1/orders/sale",
+
+            "/api/v1/users/password"
 
     );
 
