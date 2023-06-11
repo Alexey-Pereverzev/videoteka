@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.integrations.MailServiceIntegration;
+import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final PasswordChangeAttemptRepository attemptRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
     private final MailServiceIntegration mailServiceIntegration;
@@ -225,7 +228,7 @@ public class UserService {
         String code = mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
 
 
-        //TODO
+        PasswordChangeAttempt attempt = new PasswordChangeAttempt();
 
 
     }
