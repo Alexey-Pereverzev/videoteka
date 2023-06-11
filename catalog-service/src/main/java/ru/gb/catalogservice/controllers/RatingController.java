@@ -35,7 +35,7 @@ public class RatingController {
             summary = "Добавление оценки и комментария к фильму",
             description = "Позволяет добавить оценку и комментарий пользователя к фильму"
     )
-    @PostMapping("/new-comment")
+    @PostMapping("/new_comment")
     public ResponseEntity<?> addFilmRating(@RequestBody RatingDto ratingDto) {
         ResultOperation resultOperation = ratingService.addFilmRating(ratingDto);
         if (resultOperation.isResult()) {
@@ -81,7 +81,11 @@ public class RatingController {
         return ratingService.listAllGradeAndReviewIsNotModerate().stream().map(ratingConverter::entityToDto).toList();
     }
 
-    @GetMapping("/moderate-success")
+    @Operation(
+            summary = "Простановка положительного статуса модерации",
+            description = "Позволяет проставить для отзыва положительный статус модерации"
+    )
+    @GetMapping("/moderate_success")
     public ResponseEntity<?> setModerateStatus(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,true);
         if (resultOperation.isResult()) {
@@ -90,8 +94,11 @@ public class RatingController {
             throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }
-
-    @GetMapping("/moderate-rejected")
+    @Operation(
+            summary = "Отклонение отзыва после модерации",
+            description = "Позволяет при отрицательной модерации проставить для отзыва статус УДАЛЕН"
+    )
+    @GetMapping("/moderate_rejected")
     public ResponseEntity<?> setModerateRejected(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,false);
         if (resultOperation.isResult()) {

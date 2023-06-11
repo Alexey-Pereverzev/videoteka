@@ -6,13 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
+import ru.gb.authorizationservice.integrations.MailServiceIntegration;
+import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
+import ru.gb.common.constants.Constant;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +28,11 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final PasswordChangeAttemptRepository attemptRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
+    private final MailServiceIntegration mailServiceIntegration;
+    Constant constant;
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -209,5 +218,30 @@ public class UserService {
             throw new ResourceNotFoundException("Польователь с id="+id+" был удален");
         }
         return user;
+    }
+
+    @Transactional
+    public void updatePassword(String userId, String email) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() ->
+                new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        }
+        if (!user.getEmail().equals(email)) {
+            throw new InputDataErrorException("Некорректный емэйл");
+        }
+        String code = mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
+
+        Optional<PasswordChangeAttempt> attempt = attemptRepository.findById(user.getId());
+        PasswordChangeAttempt putAttempt = new PasswordChangeAttempt();
+        if (attempt.isPresent()) {
+            putAttempt = attempt.get();
+        }
+        LocalDateTime createdWhen = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
+        putAttempt.setCreatedWhen(createdWhen);
+        putAttempt.setCode(code);
+        putAttempt.setVerified(false);
+        attemptRepository.save(putAttempt);
     }
 }

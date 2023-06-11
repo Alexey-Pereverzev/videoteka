@@ -11,12 +11,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.gb.api.dtos.dto.AppError;
+import ru.gb.common.constants.InfoMessage;
 
 @ControllerAdvice
-public class GlobalExceptionsHandler {
+public class GlobalExceptionsHandler implements InfoMessage {
+    InfoMessage infoMessage;
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e){
-        return new ResponseEntity<>(new AppError("RESOURCE_NOT_FOUND",e.getMessage()),
+        return new ResponseEntity<>(new AppError(FILE_NOT_FOUND,
+//                "RESOURCE_NOT_FOUND",
+                e.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -80,6 +84,12 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<AppError> handlePublicKeyErrorException(PublicKeyErrorException e){
         return new ResponseEntity<>(new AppError("PUBLIC_KEY_ERROR",
                 e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleIntegrationException(IntegrationException e){
+        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+                HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 
