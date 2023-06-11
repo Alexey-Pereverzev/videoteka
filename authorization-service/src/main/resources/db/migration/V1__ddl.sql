@@ -3,6 +3,7 @@ CREATE TABLE roles (
                        title varchar NOT NULL
 );
 
+
 CREATE TABLE users (
                        id bigserial NOT NULL PRIMARY KEY,
                        username varchar NOT NULL,
@@ -20,8 +21,18 @@ CREATE TABLE users (
                        is_deleted bool NULL DEFAULT false,
                        deleted_by varchar NULL,
                        deleted_when timestamp NULL,
-                       CONSTRAINT users_fk FOREIGN KEY (role_id) REFERENCES roles(id)
+                       CONSTRAINT users_roles_fk FOREIGN KEY (role_id) REFERENCES roles(id)
 );
+
+CREATE TABLE attempts (
+                          id bigserial NOT NULL PRIMARY KEY,
+                          created_when timestamp NULL,
+                          is_verified bool NULL DEFAULT false,
+                          verification_code varchar NOT NULL,
+                          CONSTRAINT attempts_users_fk FOREIGN KEY (id) REFERENCES users(id)
+);
+
+
 
 INSERT INTO roles (title) VALUES
                               ('ROLE_ADMIN'),
