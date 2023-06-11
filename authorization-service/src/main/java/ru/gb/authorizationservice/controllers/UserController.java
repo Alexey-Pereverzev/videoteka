@@ -90,19 +90,19 @@ public class UserController {
     @Operation(
             summary = "Фамилия и имя по id",
             responses = {
-            @ApiResponse(
-                    description = "Имя и фамилия", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = StringResponse.class))
-            ),
-            @ApiResponse(
-                    description = "Пользователь не найден", responseCode = "404",
-                    content = @Content(schema = @Schema(implementation = AppError.class))
-            )
-    }
+                    @ApiResponse(
+                            description = "Имя и фамилия", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
     )
     @GetMapping("fullname_by_id")
     public StringResponse fullNameById(@RequestParam Long userId) {
-            return userService.fullNameById(userId);
+        return userService.fullNameById(userId);
     }
 
 

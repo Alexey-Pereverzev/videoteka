@@ -169,7 +169,7 @@ services:
     container_name: email-service
     build:
       context: .
-      dockerfile: email-service/Dockerfile-email
+      dockerfile: email-service1/Dockerfile-email
     ports:
       - "8199:8199"
     environment:
