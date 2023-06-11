@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.CountryDto;
-import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.catalogservice.converters.CountryConverter;
 import ru.gb.catalogservice.exceptions.IllegalInputDataException;
 import ru.gb.catalogservice.services.CountryService;
