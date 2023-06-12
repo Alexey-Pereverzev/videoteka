@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
+
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
@@ -15,6 +16,7 @@ import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
 import ru.gb.common.constants.Constant;
+
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -220,8 +222,18 @@ public class UserService {
         return user;
     }
 
+    public LocalDateTime currentTime() {
+        return Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
+    }
+
+    public String generateVerificationCode() {
+        int random = (int) (100000+(Math.random()*600000));
+        return String.valueOf(random);
+    }
+
     @Transactional
-    public void updatePassword(String userId, String email) {
+    public void setPasswordChangeAttempt(String userId, String email) {
         User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() ->
                 new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
         if (user.isDeleted()) {
@@ -230,18 +242,76 @@ public class UserService {
         if (!user.getEmail().equals(email)) {
             throw new InputDataErrorException("Некорректный емэйл");
         }
-        String code = mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
 
-        Optional<PasswordChangeAttempt> attempt = attemptRepository.findById(user.getId());
-        PasswordChangeAttempt putAttempt = new PasswordChangeAttempt();
-        if (attempt.isPresent()) {
-            putAttempt = attempt.get();
+        String code =  mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
+
+        PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElse(new PasswordChangeAttempt());
+        LocalDateTime createdWhen = currentTime();
+        attempt.setUser(user);
+        attempt.setCreatedWhen(createdWhen);
+        attempt.setCode(code);
+        attempt.setVerified(false);
+        attemptRepository.save(attempt);
+
+    }
+
+
+    public StringResponse  checkCodeForPasswordChange(String userId, String code) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(
+                () -> new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        } else {
+            PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElseThrow(
+                    () -> new InputDataErrorException("Код некорректный, повторите попытку"));
+            if (!attempt.getCode().equals(code)) {
+                attemptRepository.deleteById(attempt.getId());
+                throw new InputDataErrorException("Код некорректный, повторите попытку");
+            }
+            LocalDateTime expiredCodeTime = attempt.getCreatedWhen().plusMinutes(5);
+            LocalDateTime time = currentTime();
+            if (expiredCodeTime.isBefore(time)) {
+                attemptRepository.delete(attempt);
+                throw new InputDataErrorException("Время истекло, повторите попытку");
+            }
+            attempt.setVerified(true);
+            attemptRepository.save(attempt);
         }
-        LocalDateTime createdWhen = Instant.ofEpochMilli(System.currentTimeMillis())
-                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
-        putAttempt.setCreatedWhen(createdWhen);
-        putAttempt.setCode(code);
-        putAttempt.setVerified(false);
-        attemptRepository.save(putAttempt);
+        return new StringResponse("Код правильный");
+    }
+
+
+    @Transactional
+    public StringResponse updatePassword(String userId, String password, String confirmPassword) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(
+                () -> new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        } else {
+            PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElseThrow(
+                    () -> new InputDataErrorException("Ошибка, повторите попытку"));
+            if (!attempt.isVerified()) {
+                attemptRepository.delete(attempt);
+                throw new InputDataErrorException("Ошибка, повторите попытку");
+            } else {
+                attemptRepository.delete(attempt);
+                if (password==null || password.isBlank()) {
+                    throw new InputDataErrorException("Пароль не может быть пустым");
+                } else if (!password.equals(confirmPassword)) {
+                    throw new InputDataErrorException("Пароли не совпадают");
+                } else {
+                    String encryptedPassword = passwordEncoder.encode(password);
+                    String validationMessage = validationService.acceptablePassword(password);
+                    if (validationMessage.equals("")) {
+                        user.setPassword(encryptedPassword);
+                        userRepository.save(user);
+                        mailServiceIntegration.composePasswordLetter(user.getEmail(), user.getFirstName());
+                    } else {
+                        throw new InputDataErrorException(validationMessage);
+                    }
+                }
+            }
+        }
+        return new StringResponse("Пароль успешно обновлен");
     }
 }

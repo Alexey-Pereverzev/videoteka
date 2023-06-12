@@ -25,11 +25,11 @@ CREATE TABLE users (
 );
 
 CREATE TABLE attempts (
-                          id bigserial NOT NULL PRIMARY KEY,
+                          user_id bigserial NOT NULL PRIMARY KEY,
                           created_when timestamp NULL,
                           is_verified bool NULL DEFAULT false,
                           verification_code varchar NOT NULL,
-                          CONSTRAINT attempts_users_fk FOREIGN KEY (id) REFERENCES users(id)
+                          CONSTRAINT attempts_users_fk FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
