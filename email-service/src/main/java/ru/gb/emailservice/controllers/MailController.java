@@ -54,5 +54,14 @@ public class MailController {
         mailService.composePasswordLetter(email, firstName);
         return new StringResponse("Письмо о смене пароля успешно отправлено ");
     }
+    @Operation(
+            summary = "Регистрация пользователя",
+            description = "Отправляем письмо на email  об успешной регистрации пользователя"
+    )
+    @GetMapping ("/composeRegistrationLetter")
+    public StringResponse composeRegistrationLetter(@RequestParam String firstName, String userName, String email) {
+        mailService.composeRegistrationLetter(firstName, userName, email);
+        return new StringResponse("Письмо успешно отправлено");
+    }
 
 }
