@@ -56,5 +56,4 @@ public class MailService
         message.setText("Здравствуйте, " + firstName + "! \nВы успешно сменили пароль");
         javaMailSender.send(message);
     }
-
 }
