@@ -227,11 +227,6 @@ public class UserService {
                 .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
     }
 
-    public String generateVerificationCode() {
-        int random = (int) (100000+(Math.random()*600000));
-        return String.valueOf(random);
-    }
-
     @Transactional
     public void setPasswordChangeAttempt(String userId, String email) {
         User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() ->
