@@ -36,6 +36,6 @@ integrations:
   email-service:
     url: http://${EMAIL_SERVICE_LOCATION:127.0.0.1}:8199/email-service
     connect-timeout: 5000
-    read-timeout: 10000
+    read-timeout: 20000
     write-timeout: 5000
 
