@@ -11,12 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface PasswordChangeAttemptRepository extends JpaRepository<PasswordChangeAttempt, Long> {
-//    @Query("select a from PasswordChangeAttempt a where a.id = ?1")
-//    Optional<PasswordChangeAttempt> findByUserId(Long id);
-
-//    @Modifying
-//    @Query("delete from PasswordChangeAttempt a where a.id = :userId")
-//    void deleteById(@Param("userId") Long id);
-
 
 }
