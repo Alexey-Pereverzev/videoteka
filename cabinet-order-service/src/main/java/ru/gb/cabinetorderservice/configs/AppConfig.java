@@ -21,6 +21,13 @@ public class AppConfig {
     private String filmServiceUrl;
     @Value("${integrations.email-service.url}")
     private String mailServiceUrl;
+    @Value("${integrations.email-service.connect-timeout}")
+    private int connectTimeout;
+    @Value("${integrations.email-service.read-timeout}")
+    private int readTimeout;
+    @Value("${integrations.email-service.write-timeout}")
+    private int writeTimeout;
+
 
 
 
@@ -60,10 +67,10 @@ public class AppConfig {
     public WebClient mailServiceWebClient() {
         TcpClient tcpClient = TcpClient
                 .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout)
                 .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(2000, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new ReadTimeoutHandler(readTimeout, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(writeTimeout, TimeUnit.MILLISECONDS));
                 });
 
         return WebClient
