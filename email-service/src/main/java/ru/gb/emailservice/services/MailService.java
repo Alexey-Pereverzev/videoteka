@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.emailservice.exceptions.ResourceNotFoundException;
 import ru.gb.emailservice.integrations.AuthServiceIntegration;
@@ -15,17 +16,29 @@ public class MailService
     private final AuthServiceIntegration authServiceIntegration;
     private final JavaMailSender javaMailSender;
 
-    public void createMessage(Long id) {
+//    public void createMessage(Long id) {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        try {
+//            UserNameMailDto userDto = authServiceIntegration.findById(id);
+//            message.setTo(userDto.getEmail());
+//            //message.setFrom("Videoteka");
+//            message.setSubject("Оформление заказа");
+//            message.setText("Здравствуйте, " + userDto.getFirstName()+"!"+" \nВаш заказ успешно оформлен ");
+//        } catch (Exception e) {
+//            throw new ResourceNotFoundException("Пользователь не найден");
+//        }
+//        javaMailSender.send(message);
+//    }
+
+    public void sendMessage(EmailDto emailDto) {
+        String email = emailDto.getEmail();
+        String subject = emailDto.getSubject();
+        String firstName = emailDto.getFirstName();
+        String text = emailDto.getMessage();
         SimpleMailMessage message = new SimpleMailMessage();
-        try {
-            UserNameMailDto userDto = authServiceIntegration.findById(id);
-            message.setTo(userDto.getEmail());
-            //message.setFrom("Videoteka");
-            message.setSubject("Оформление заказа");
-            message.setText("Здравствуйте, " + userDto.getFirstName()+"!"+" \nВаш заказ успешно оформлен ");
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Пользователь не найден");
-        }
+            message.setTo(email);
+            message.setSubject(subject);
+            message.setText("Здравствуйте, " + firstName+"! \n" + text);
         javaMailSender.send(message);
     }
 
@@ -49,11 +62,7 @@ public class MailService
         return code;
     }
 
-    public void composePasswordLetter(String email, String firstName){
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Смена пароля");
-        message.setText("Здравствуйте, " + firstName + "! \nВы успешно сменили пароль");
-        javaMailSender.send(message);
+    public void composePasswordLetter(EmailDto emailDto){
+        sendMessage(emailDto);
     }
 }
