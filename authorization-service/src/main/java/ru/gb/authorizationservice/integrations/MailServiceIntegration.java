@@ -1,16 +1,10 @@
 package ru.gb.authorizationservice.integrations;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.exceptions.IntegrationException;
-
-import java.time.Duration;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor

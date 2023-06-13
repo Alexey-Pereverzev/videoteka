@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
-
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
@@ -15,12 +14,9 @@ import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
-import ru.gb.common.constants.Constant;
+import ru.gb.common.utils.TimeUtil;
 
-
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +30,13 @@ public class UserService {
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
     private final MailServiceIntegration mailServiceIntegration;
-    Constant constant;
+
+    private final TimeUtil timeUtil;
+
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
 
     public StringResponse createNewUser(RegisterUserDto registerUserDto) {
         if (registerUserDto.getPassword()==null) {
@@ -222,10 +219,6 @@ public class UserService {
         return user;
     }
 
-    public LocalDateTime currentTime() {
-        return Instant.ofEpochMilli(System.currentTimeMillis())
-                .atZone(ZoneId.of(constant.SERVER_TIME_ZONE)).toLocalDateTime();
-    }
 
     @Transactional
     public void setPasswordChangeAttempt(String userId, String email) {
@@ -241,7 +234,7 @@ public class UserService {
         String code =  mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
 
         PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElse(new PasswordChangeAttempt());
-        LocalDateTime createdWhen = currentTime();
+        LocalDateTime createdWhen = timeUtil.currentTime();
         attempt.setUser(user);
         attempt.setCreatedWhen(createdWhen);
         attempt.setCode(code);
@@ -264,7 +257,7 @@ public class UserService {
                 throw new InputDataErrorException("Код некорректный, повторите попытку");
             }
             LocalDateTime expiredCodeTime = attempt.getCreatedWhen().plusMinutes(5);
-            LocalDateTime time = currentTime();
+            LocalDateTime time = timeUtil.currentTime();
             if (expiredCodeTime.isBefore(time)) {
                 attemptRepository.delete(attempt);
                 throw new InputDataErrorException("Время истекло, повторите попытку");
@@ -276,7 +269,6 @@ public class UserService {
     }
 
 
-    @Transactional
     public StringResponse updatePassword(String userId, String password, String confirmPassword) {
         User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(
                 () -> new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));

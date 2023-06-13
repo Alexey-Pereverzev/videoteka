@@ -49,7 +49,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         }
         catch (Exception ignored) {
-//                    catch (Exception e) {
         }
         filterChain.doFilter(request, response);
     }

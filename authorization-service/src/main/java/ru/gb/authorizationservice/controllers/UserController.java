@@ -182,6 +182,5 @@ public class UserController {
         return userService.updatePassword(userId, password, confirmPassword);
     }
 
-
 }
 
