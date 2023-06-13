@@ -6,4 +6,5 @@ import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
 
 @Repository
 public interface PasswordChangeAttemptRepository extends JpaRepository<PasswordChangeAttempt, Long> {
+
 }

@@ -8,7 +8,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.dto.*;
+import ru.gb.api.dtos.dto.AppError;
+import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.api.dtos.dto.UserDto;
+import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.authorizationservice.converters.UserConverter;
 import ru.gb.authorizationservice.services.UserService;
 
@@ -107,22 +110,78 @@ public class UserController {
 
 
     @Operation(
-            summary = "Запрос на изменение роли пользователя",
+            summary = "Создание попытки смены пароля",
             responses = {
                     @ApiResponse(
-                            description = "Роль успешно изменена", responseCode = "200",
+                            description = "Код подтверждения отправлен на емэйл", responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
                             description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Некорректный емэйл", responseCode = "403",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @PostMapping("/password_attempt")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
+    public StringResponse setPasswordChangeAttempt(@RequestHeader String userId,
+                                                   @RequestParam String email) {
+        userService.setPasswordChangeAttempt(userId, email);
+        return new StringResponse("Код подтверждения отправлен на емэйл");
+    }
+
+    @Operation(
+            summary = "Проверка кода на смену пароля",
+            responses = {
+                    @ApiResponse(
+                            description = "Код правильный", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Некорректный код", responseCode = "403",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @PutMapping("/code_check")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
+    public StringResponse checkCodeForPasswordChange(@RequestHeader String userId,
+                                                   @RequestParam String code) {
+        return userService.checkCodeForPasswordChange(userId, code);
+    }
+
+    @Operation(
+            summary = "Сохранение пароля в базу",
+            responses = {
+                    @ApiResponse(
+                            description = "Пароль успешно обновлен", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Ошибка проверки пароля", responseCode = "403",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
     )
     @PutMapping("/password")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
-    public StringResponse updatePassword(@RequestHeader String userId, @RequestParam String email) {
-        userService.updatePassword(userId, email);
-        return new StringResponse("Код подтверждения отправлен на емэйл");
+    public StringResponse updatePassword(@RequestHeader String userId, @RequestParam String password,
+                                         @RequestParam String confirmPassword) {
+        return userService.updatePassword(userId, password, confirmPassword);
     }
+
+
 }
+

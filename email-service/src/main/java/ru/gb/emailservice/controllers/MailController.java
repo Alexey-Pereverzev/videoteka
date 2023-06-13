@@ -52,7 +52,7 @@ public class MailController {
     @GetMapping ("/composePasswordLetter")
     public StringResponse composePasswordLetter(@RequestParam String email, @RequestParam String firstName){
         mailService.composePasswordLetter(email, firstName);
-        return new StringResponse("Письмо о смене пароля успешно отправлено ");
+        return new StringResponse("Письмо о смене пароля успешно отправлено");
     }
     @Operation(
             summary = "Регистрация пользователя",

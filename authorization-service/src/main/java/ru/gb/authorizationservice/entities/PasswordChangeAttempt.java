@@ -11,13 +11,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="attempts")
 @Data
-@RequiredArgsConstructor
 public class PasswordChangeAttempt {
     @Id
     private Long id;
 
     @Column(name="created_when")
-    @CreationTimestamp
     private LocalDateTime createdWhen;
 
     @Column(name = "is_verified")
