@@ -59,7 +59,8 @@ public class MailController {
             description = "Отправляем письмо на email  об успешной регистрации пользователя"
     )
     @GetMapping ("/composeRegistrationLetter")
-    public StringResponse composeRegistrationLetter(@RequestParam String firstName, String userName, String email) {
+    public StringResponse composeRegistrationLetter(@RequestParam String firstName, @RequestParam String userName,
+                                                    @RequestParam String email) {
         mailService.composeRegistrationLetter(firstName, userName, email);
         return new StringResponse("Письмо успешно отправлено");
     }

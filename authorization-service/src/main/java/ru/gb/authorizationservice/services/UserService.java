@@ -56,12 +56,13 @@ public class UserService {
             }
 
             userRepository.save(user);
+            mailServiceIntegration.composeRegistrationLetter(user.getFirstName(), user.getUsername(),
+                    user.getEmail());
             return new StringResponse("Пользователь с именем "
                     + registerUserDto.getUsername() + " успешно создан");
         }
     }
 
-    @Transactional
     public StringResponse restoreUser(RegisterUserDto registerUserDto, User user) {
     // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
         if (!user.isDeleted()) {
@@ -83,6 +84,8 @@ public class UserService {
                 }
 
                 userRepository.save(user);
+                mailServiceIntegration.composeRegistrationLetter(user.getFirstName(), user.getUsername(),
+                        user.getEmail());
                 return new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно восстановлен");
             }
