@@ -105,7 +105,6 @@ services:
       CATALOG_SERVICE_LOCATION: catalog-service
       CABINET_SERVICE_LOCATION: cabinet-service
       REDIS_LOCATION: redis-videoteka
-#      SPRING_REDIS_HOST: redis-videoteka
       SPRING_REDIS_PORT: 6379
     ports:
       - "8190:8190"
@@ -126,6 +125,7 @@ services:
       SPRING_DATASOURCE_URL:  "jdbc:postgresql://users-roles-db:5432/users_roles_db"
       SPRING_DATASOURCE_USERNAME: "security"
       SPRING_DATASOURCE_PASSWORD: "SecurityVideoteka2023"
+      EMAIL_SERVICE_LOCATION: email-service
     networks:
       - videoteka-net
     volumes:
@@ -169,7 +169,7 @@ services:
     container_name: email-service
     build:
       context: .
-      dockerfile: email-service/Dockerfile-email
+      dockerfile: email-service1/Dockerfile-email
     ports:
       - "8199:8199"
     environment:

@@ -81,6 +81,10 @@ public class RatingController {
         return ratingService.listAllGradeAndReviewIsNotModerate().stream().map(ratingConverter::entityToDto).toList();
     }
 
+    @Operation(
+            summary = "Простановка положительного статуса модерации",
+            description = "Позволяет проставить для отзыва положительный статус модерации"
+    )
     @GetMapping("/moderate_success")
     public ResponseEntity<?> setModerateStatus(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,true);
@@ -90,7 +94,10 @@ public class RatingController {
             throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
     }
-
+    @Operation(
+            summary = "Отклонение отзыва после модерации",
+            description = "Позволяет при отрицательной модерации проставить для отзыва статус УДАЛЕН"
+    )
     @GetMapping("/moderate_rejected")
     public ResponseEntity<?> setModerateRejected(@RequestParam Long userId,@RequestParam Long filmId) {
         ResultOperation resultOperation=ratingService.setModerateStatus(userId,filmId,false);

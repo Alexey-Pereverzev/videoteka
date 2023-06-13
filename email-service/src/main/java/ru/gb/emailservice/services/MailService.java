@@ -56,6 +56,7 @@ public class MailService
         message.setText("Здравствуйте, " + firstName + "! \nВы успешно сменили пароль");
         javaMailSender.send(message);
     }
+
     public void composeRegistrationLetter(String firstName, String userName, String email){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
@@ -65,3 +66,4 @@ public class MailService
 
     }
 }
+

@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.dto.AppError;
-import ru.gb.api.dtos.dto.StringResponse;
-import ru.gb.api.dtos.dto.UserDto;
-import ru.gb.api.dtos.dto.UserNameMailDto;
+import ru.gb.api.dtos.dto.*;
 import ru.gb.authorizationservice.converters.UserConverter;
 import ru.gb.authorizationservice.services.UserService;
 
@@ -45,7 +42,7 @@ public class UserController {
                     )
             }
     )
-    @DeleteMapping("/delete")
+    @DeleteMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public StringResponse deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
@@ -57,7 +54,7 @@ public class UserController {
     @Operation(
             summary = "Вывод всех не удаленных пользователей на странице админа"
     )
-    @GetMapping("all_not_deleted")
+    @GetMapping("not_deleted")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> listAllNotDeleted() {
         return userService.findAllNotDeleted().stream().map(userConverter::entityToDto).toList();
@@ -66,7 +63,7 @@ public class UserController {
     @Operation(
             summary = "Вывод всех пользователей на странице админа, включая удаленных"
     )
-    @GetMapping("all")
+    @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> listAll() {
         return userService.findAll().stream().map(userConverter::entityToDto).toList();
@@ -93,20 +90,39 @@ public class UserController {
     @Operation(
             summary = "Фамилия и имя по id",
             responses = {
-            @ApiResponse(
-                    description = "Имя и фамилия", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = StringResponse.class))
-            ),
-            @ApiResponse(
-                    description = "Пользователь не найден", responseCode = "404",
-                    content = @Content(schema = @Schema(implementation = AppError.class))
-            )
-    }
+                    @ApiResponse(
+                            description = "Имя и фамилия", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
     )
     @GetMapping("fullname_by_id")
     public StringResponse fullNameById(@RequestParam Long userId) {
-            return userService.fullNameById(userId);
+        return userService.fullNameById(userId);
     }
 
 
+    @Operation(
+            summary = "Запрос на изменение роли пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Роль успешно изменена", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @PutMapping("/password")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
+    public StringResponse updatePassword(@RequestHeader String userId, @RequestParam String email) {
+        userService.updatePassword(userId, email);
+        return new StringResponse("Код подтверждения отправлен на емэйл");
+    }
 }

@@ -34,7 +34,7 @@ public class RoleController {
                     )
             }
     )
-    @PutMapping("/update")
+    @PutMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public StringResponse update(@RequestBody RoleChangeDto roleChangeDto,
                                  @RequestHeader String userId) {

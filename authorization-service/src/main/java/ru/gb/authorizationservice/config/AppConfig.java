@@ -1,4 +1,4 @@
-package ru.gb.emailservice.config;
+package ru.gb.authorizationservice.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -15,24 +15,23 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class AppConfig {
-    @Value("${integrations.auth-service.url}")
-    private String authServiceUrl;
+    @Value("${integrations.email-service.url}")
+    private String mailServiceUrl;
 
     @Bean
-    public WebClient authServiceWebClient() {
+    public WebClient mailServiceWebClient() {
         TcpClient tcpClient = TcpClient
                 .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
                 .doOnConnected(connection -> {
                     connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(2000, TimeUnit.MILLISECONDS));
                 });
 
         return WebClient
                 .builder()
-                .baseUrl(authServiceUrl)
+                .baseUrl(mailServiceUrl)
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }
-
 }

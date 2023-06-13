@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.gb.api.dtos.dto.AppError;
-import ru.gb.common.message.InfoMessage;
+import ru.gb.common.constants.InfoMessage;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler implements InfoMessage {
@@ -84,6 +84,12 @@ public class GlobalExceptionsHandler implements InfoMessage {
     public ResponseEntity<AppError> handlePublicKeyErrorException(PublicKeyErrorException e){
         return new ResponseEntity<>(new AppError("PUBLIC_KEY_ERROR",
                 e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleIntegrationException(IntegrationException e){
+        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+                HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 
