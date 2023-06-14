@@ -65,4 +65,14 @@ public class MailService
     public void composePasswordLetter(EmailDto emailDto){
         sendMessage(emailDto);
     }
+
+    public void composeRegistrationLetter(String firstName, String userName, String email){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Регистрация пользователя ");
+        message.setText("Здравствуйте, "+ firstName +  "! \nПоздравляем! Вы успешно зарегистрировались.  Ваш логин -  " + userName);
+        javaMailSender.send(message);
+
+    }
 }
+

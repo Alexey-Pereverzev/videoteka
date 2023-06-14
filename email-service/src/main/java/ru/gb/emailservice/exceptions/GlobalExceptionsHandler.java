@@ -19,4 +19,3 @@ public class GlobalExceptionsHandler {
         return new ResponseEntity<>(new AppError("RESOURCE_NOT_FOUND",e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
-

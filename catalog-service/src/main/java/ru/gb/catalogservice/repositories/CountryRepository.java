@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long>{
     List<Country> findAllByTitleIsIn(String[] strings);
-
     Country findByTitle(String title);
-
 }

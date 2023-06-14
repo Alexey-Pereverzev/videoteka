@@ -31,10 +31,6 @@ public class FilmService {
         return filmRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Фильм с id=" + id + " не найден"));
     }
 
-    public Page<Film> findByTitlePart(int currentPage, String titlepart) {
-        return filmRepository.findByTitlePart(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), "%" + titlepart + "%");
-    }
-
     private ResultOperation checkFilmDto(FilmDto filmDto) {
         ResultOperation resultOperation = new ResultOperation();
         resultOperation.setResultDescription("");

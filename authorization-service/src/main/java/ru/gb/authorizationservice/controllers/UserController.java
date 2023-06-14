@@ -45,7 +45,7 @@ public class UserController {
                     )
             }
     )
-    @DeleteMapping("/delete")
+    @DeleteMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public StringResponse deleteUserById(@RequestParam Long deleteUserId, @RequestHeader String userId) {
         //  deleteUserId - какого пользователя удаляем
@@ -57,7 +57,7 @@ public class UserController {
     @Operation(
             summary = "Вывод всех не удаленных пользователей на странице админа"
     )
-    @GetMapping("all_not_deleted")
+    @GetMapping("not_deleted")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> listAllNotDeleted() {
         return userService.findAllNotDeleted().stream().map(userConverter::entityToDto).toList();
@@ -66,7 +66,7 @@ public class UserController {
     @Operation(
             summary = "Вывод всех пользователей на странице админа, включая удаленных"
     )
-    @GetMapping("all")
+    @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> listAll() {
         return userService.findAll().stream().map(userConverter::entityToDto).toList();
@@ -93,20 +93,95 @@ public class UserController {
     @Operation(
             summary = "Фамилия и имя по id",
             responses = {
-            @ApiResponse(
-                    description = "Имя и фамилия", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = StringResponse.class))
-            ),
-            @ApiResponse(
-                    description = "Пользователь не найден", responseCode = "404",
-                    content = @Content(schema = @Schema(implementation = AppError.class))
-            )
-    }
+                    @ApiResponse(
+                            description = "Имя и фамилия", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
     )
     @GetMapping("fullname_by_id")
     public StringResponse fullNameById(@RequestParam Long userId) {
-            return userService.fullNameById(userId);
+        return userService.fullNameById(userId);
+    }
+
+
+    @Operation(
+            summary = "Создание попытки смены пароля",
+            responses = {
+                    @ApiResponse(
+                            description = "Код подтверждения отправлен на емэйл", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Некорректный емэйл", responseCode = "403",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @PostMapping("/password_attempt")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
+    public StringResponse setPasswordChangeAttempt(@RequestHeader String userId,
+                                                   @RequestParam String email) {
+        userService.setPasswordChangeAttempt(userId, email);
+        return new StringResponse("Код подтверждения отправлен на емэйл");
+    }
+
+    @Operation(
+            summary = "Проверка кода на смену пароля",
+            responses = {
+                    @ApiResponse(
+                            description = "Код правильный", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Некорректный код", responseCode = "403",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @PutMapping("/code_check")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
+    public StringResponse checkCodeForPasswordChange(@RequestHeader String userId,
+                                                   @RequestParam String code) {
+        return userService.checkCodeForPasswordChange(userId, code);
+    }
+
+    @Operation(
+            summary = "Сохранение пароля в базу",
+            responses = {
+                    @ApiResponse(
+                            description = "Пароль успешно обновлен", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден", responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    ),
+                    @ApiResponse(
+                            description = "Ошибка проверки пароля", responseCode = "403",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
+    @PutMapping("/password")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
+    public StringResponse updatePassword(@RequestHeader String userId, @RequestParam String password,
+                                         @RequestParam String confirmPassword) {
+        return userService.updatePassword(userId, password, confirmPassword);
     }
 
 
 }
+

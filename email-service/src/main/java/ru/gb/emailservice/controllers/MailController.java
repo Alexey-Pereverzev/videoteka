@@ -55,6 +55,7 @@ public class MailController {
         return new StringResponse(mailService.generateVerificationCode(firstName,email));
     }
 
+
 //    @Operation(
 //            summary = "Оповещение о смене пароля",
 //            description = "Оповещение о смене пароля"
