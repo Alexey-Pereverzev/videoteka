@@ -1,0 +1,11 @@
+.country_list__container{
+    position: absolute;
+    top: 10px;
+    left: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 90%;
+}
