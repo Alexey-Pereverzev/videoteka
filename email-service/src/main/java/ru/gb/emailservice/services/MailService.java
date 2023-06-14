@@ -5,30 +5,15 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.EmailDto;
-import ru.gb.api.dtos.dto.UserNameMailDto;
-import ru.gb.emailservice.exceptions.ResourceNotFoundException;
-import ru.gb.emailservice.integrations.AuthServiceIntegration;
+
 
 @Service
 @RequiredArgsConstructor
 public class MailService
 {
-    private final AuthServiceIntegration authServiceIntegration;
     private final JavaMailSender javaMailSender;
 
-//    public void createMessage(Long id) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        try {
-//            UserNameMailDto userDto = authServiceIntegration.findById(id);
-//            message.setTo(userDto.getEmail());
-//            //message.setFrom("Videoteka");
-//            message.setSubject("Оформление заказа");
-//            message.setText("Здравствуйте, " + userDto.getFirstName()+"!"+" \nВаш заказ успешно оформлен ");
-//        } catch (Exception e) {
-//            throw new ResourceNotFoundException("Пользователь не найден");
-//        }
-//        javaMailSender.send(message);
-//    }
+
 
     public void sendMessage(EmailDto emailDto) {
         String email = emailDto.getEmail();
@@ -52,17 +37,17 @@ public class MailService
 
     }
     public String generateVerificationCode (String firstName, String email){
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmail(email);
+        emailDto.setFirstName(firstName);
+        emailDto.setSubject("Код верификации");
         int random = (int) (100000+(Math.random()*600000));
         String code = String.valueOf(random);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Код верификации");
-        message.setText("Здравствуйте, " + firstName+ "! \nВаш код верификации - " + code);
-        javaMailSender.send(message);
+        emailDto.setMessage("Здравствуйте, " + firstName+ "! \nВаш код верификации - " + code);
+        sendMessage(emailDto);
         return code;
     }
 
-    public void composePasswordLetter(EmailDto emailDto){
-        sendMessage(emailDto);
-    }
+
 }

@@ -24,22 +24,11 @@ integrations:
   cart-service:
 #    url: http://localhost:8190/cart-service
     url: http://${CART_SERVICE_LOCATION:127.0.0.1}:8190/cart-service
-    connect-timeout: 5000
-    read-timeout: 10000
-    write-timeout: 5000
   catalog-service:
 #    url: http://localhost:8189/catalog-service
     url: http://${CATALOG_SERVICE_LOCATION:127.0.0.1}:8189/catalog-service
-    connect-timeout: 5000
-    read-timeout: 10000
-    write-timeout: 5000
   email-service:
     url: http://${EMAIL_SERVICE_LOCATION:127.0.0.1}:8199/email-service
-    connect-timeout: 5000
-    read-timeout: 10000
-    write-timeout: 5000
   auth-service:
     url: http://${AUTH_SERVICE_LOCATION:127.0.0.1}:8187/auth-service
-    connect-timeout: 5000
-    read-timeout: 10000
-    write-timeout: 5000
+
