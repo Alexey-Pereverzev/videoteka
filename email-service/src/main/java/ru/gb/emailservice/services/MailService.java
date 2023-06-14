@@ -44,7 +44,7 @@ public class MailService
         int random = (int) (100000+(Math.random()*600000));
         String code = String.valueOf(random);
         SimpleMailMessage message = new SimpleMailMessage();
-        emailDto.setMessage("Здравствуйте, " + firstName+ "! \nВаш код верификации - " + code);
+        emailDto.setMessage("Ваш код верификации - " + code);
         sendMessage(emailDto);
         return code;
     }
