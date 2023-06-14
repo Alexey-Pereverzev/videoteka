@@ -141,7 +141,7 @@ public class JwtTokenUtil {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
 //            return "IllegalArgumentException " + e.getMessage();
-        }catch (SignatureException e) {
+        } catch (SignatureException e) {
             throw new SignatureException(e.getMessage());
 //            return "IllegalArgumentException " + e.getMessage();
         }

@@ -10,15 +10,16 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import ru.gb.api.dtos.dto.AppError;
-import ru.gb.common.message.InfoMessage;
+import ru.gb.common.constants.InfoMessage;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler implements InfoMessage {
     InfoMessage infoMessage;
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e){
-        return new ResponseEntity<>(new AppError(FILE_NOT_FOUND,
+        return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND,
 //                "RESOURCE_NOT_FOUND",
                 e.getMessage()),
                 HttpStatus.NOT_FOUND);
@@ -86,7 +87,16 @@ public class GlobalExceptionsHandler implements InfoMessage {
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleIntegrationException(IntegrationException e){
+        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+                HttpStatus.SERVICE_UNAVAILABLE);
+    }
 
-
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleWebClientRequestException(WebClientRequestException e) {
+        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

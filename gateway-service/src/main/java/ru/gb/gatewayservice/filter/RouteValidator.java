@@ -45,10 +45,12 @@ public class RouteValidator {
     );
 
     public static final List<String> adminApiEndpoints = List.of(
-            "/api/v1/roles/update",
-            "/api/v1/users/delete",
-            "/api/v1/users/all",
-            "/api/v1/users/all_not_deleted"
+            "/api/v1/roles",
+            "/api/v1/users",
+            "/api/v1/users/not_deleted",
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password"
     );
 
     public static final List<String> userApiEndpoints = List.of(
@@ -62,19 +64,27 @@ public class RouteValidator {
             "/api/v1/orders/userFilm",
             "/api/v1/orders/delete",
             "/api/v1/orders/rent",
-            "/api/v1/orders/sale"
+            "/api/v1/orders/sale",
+
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password"
 
     );
 
     public static final List<String> managerApiEndpoints = List.of(
             "/api/v1/film/all",
             "/api/v1/country/new",
-            "/api/v1/film/new-film",
+            "/api/v1/film/new_film",
             "/api/v1/film/movie_change",
             "/api/v1/rating/new_comment",
             "/api/v1/rating/all_grade_and_review_is_not_moderate",
             "/api/v1/rating/moderate_rejected",
-            "/api/v1/rating/moderate_success"
+            "/api/v1/rating/moderate_success",
+
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password"
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
@@ -95,7 +105,6 @@ public class RouteValidator {
     public Predicate<ServerHttpRequest> isManagerAccess =
             request -> managerApiEndpoints
                     .stream()
-//                    .anyMatch(uri -> request.getURI().getPath().contains(uri));
                     .anyMatch(uri -> truncateUri(request.getURI().getPath()).equals(uri));
 
     public static String truncateUri(String uri) {
