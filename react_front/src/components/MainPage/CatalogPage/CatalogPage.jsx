@@ -187,7 +187,7 @@ class CatalogPage extends Component {
                    findString
     ) => {
         currentPage -= 1;
-        axios.get("http://localhost:5555/catalog/api/v1/film/all-with-filter/",
+        axios.get("http://localhost:5555/catalog/api/v1/film/all_with_filter/",
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

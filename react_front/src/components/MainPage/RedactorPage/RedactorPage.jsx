@@ -59,16 +59,15 @@ const RedactorPage = () => {
             setOpen(true)
         } else {
             if (event.target.value !== "Добавить фильм") {
+                setOpen(false)
                 try {
                     return axios.get('http://localhost:5555/catalog/api/v1/film/id', {
                         params: {
                             id: event.target.value
                         }
-                    }).then(response => response.data)
+                    }).then(response => setFile(response.data))
                         .then((data) => {
-                            console.log(data.title)
-                            setFile(data)
-                            setOpen(false)
+
                         })
 
                 } catch (e) {
@@ -85,7 +84,7 @@ const RedactorPage = () => {
     const [countries, setCountries] = useState([])
     const [open, setOpen] = useState(true)
     const [films, setFilms] = useState([])
-    const [file, setFile] = useState([])
+    let [file, setFile] = useState([])
     console.log(file)
     return (
         <div className={style.redactor_container}>
@@ -114,8 +113,7 @@ const RedactorPage = () => {
                         </Select>
                     </FormControl>
                 </div>
-                {
-                    open ?
+                {open ?
                         <div className={style.details}>
                             <div className={style.title_input}>
                                 <div className={style.input_container}>
@@ -147,16 +145,21 @@ const RedactorPage = () => {
                             </div>
                             <div className={style.country}>
                                 <div className={style.input_container}>
-                                    <input onChange={(event) => setDirectors(event.target.value)}
-                                           type="text"
+                                    <input type="text"
                                            required=""/>
                                     <label>Страны, через запятую</label>
                                 </div>
                             </div>
+                            <div className={style.director}>
+                                <div className={style.input_container}>
+                                    <input type="text"
+                                           required=""/>
+                                    <label>Режисёр, через запятую</label>
+                                </div>
+                            </div>
                         </div>
                         :
-                        file !== []?
-                         file.map(detail =>
+                // file.map((detail) => (
 
                              <div className={style.details}>
 
@@ -164,59 +167,84 @@ const RedactorPage = () => {
                                      <div className={style.title_input}>
                                          <div className={style.input_container}>
                                              <input type="text" required=""/>
-                                             <label>{detail.imageUrlLink}</label>
+                                             <label>{file.imageUrlLink}</label>
                                          </div>
                                          <div className={style.input_container}>
                                              <input type="text" required=""/>
-                                             <label>{detail.title}</label>
+                                             <label>{file.title}</label>
                                          </div>
                                      </div>
                                      <div className={style.description_area}>
-                                         <textarea name="Text1" cols="40" rows="5"/>
-                                         <label>{detail.description}</label>
+                                         <textarea name="Text1" cols="40" rows="5" value={file.description}/>
                                      </div>
                                      <div className={style.details_box}>
                                          <div className={style.input_container}>
                                              <input type="text" required=""/>
-                                             <label>{detail.premierYear}</label>
+                                             <label>{file.premierYear}</label>
                                          </div>
                                          <div className={style.input_container}>
                                              <input type="text" required=""/>
-                                             <label>{detail.rentPrice}</label>
+                                             <label>{file.rentPrice}</label>
                                          </div>
                                          <div className={style.input_container}>
                                              <input type="text" required=""/>
-                                             <label>{detail.salePrice}</label>
+                                             <label>{file.salePrice}</label>
                                          </div>
                                      </div>
-                                     {detail.country.map((country) => (
-                                         <div className={style.country}>
 
+                                         <div className={style.country}>
                                              <div className={style.input_container}>
-                                                 <input type="text"
-                                                        required=""/>
-                                                 <label>{country.title}</label>
+                                                 <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
+                                                     <InputLabel id="demo-select-small-label">Фильмы</InputLabel>
+                                                     <Select
+                                                         labelId="demo-select-small-label"
+                                                         id="demo-select-small"
+                                                         name={'films'}
+                                                         value={films}
+                                                         color={'success'}
+                                                         sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
+                                                         label="Age"
+                                                         onChange={(event) => handleFilmsChange(event)}
+                                                     >
+                                                         <MenuItem value="Добавить страну">
+                                                             <em><PlusIcon/>Добавить страну</em>
+                                                         </MenuItem>
+                                                 {file.country.map((country) =>   <MenuItem>{country}</MenuItem>)}
+                                                     </Select>
+                                                 </FormControl>
                                              </div>
 
                                          </div>
-                                     ))
-                                     }
+
                                      <div className={style.director}>
-                                         {detail.director.map((director) => (
+
                                              <div className={style.input_container}>
-                                                 <input type="text" required=""/>
-                                                 <label>{director}</label>
+                                                 <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
+                                                     <InputLabel id="demo-select-small-label">Фильмы</InputLabel>
+                                                     <Select
+                                                         labelId="demo-select-small-label"
+                                                         id="demo-select-small"
+                                                         name={'films'}
+                                                         value={films}
+                                                         color={'success'}
+                                                         sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
+                                                         label="Age"
+                                                         onChange={(event) => handleFilmsChange(event)}
+                                                     >
+                                                         <MenuItem value="Добавить страну">
+                                                             <em><PlusIcon/>Добавить страну</em>
+                                                         </MenuItem>
+                                                 {file.director.map((director) => <MenuItem>{director}</MenuItem>)}
+                                                     </Select>
+                                                 </FormControl>
                                              </div>
-                                         ))
-                                         }
+
                                      </div>
                                  </div>
-
                              </div>
+                    // )
+                        // )
 
-                        )
-                            :
-                            <div>НЕТЬ</div>
                 }
             </div>
         </div>

@@ -8,6 +8,8 @@ import FavoritesPage from "../../FavoritesPage/FavoritesPage";
 import UsersPage from "../../UsersPage/UsersPage";
 import RedactorPage from "../../RedactorPage/RedactorPage";
 import ModeratorPage from "../../ModeratorPage/ModeratorPage";
+import CountryListPage from "../../CountryListPage/CountryListPage";
+import DirectorsListPage from "../../DirectorsListPage/DirectorsListPage";
 
 function ManagerPanel() {
     // let getOrders = () => {
@@ -60,6 +62,12 @@ function ManagerPanel() {
                 <div className={'menu__item'}>
                     <NavLink to={'moderation'}>Редактор отзывов</NavLink>
                 </div>
+                      <div className={'menu__item'}>
+                    <NavLink to={'country_list'}>Список стран</NavLink>
+                </div>
+                      <div className={'menu__item'}>
+                    <NavLink to={'directors_list'}>Список режиссёров</NavLink>
+                </div>
 
             </div>
             <div>
@@ -69,6 +77,8 @@ function ManagerPanel() {
                     <Route path={'favourites'} element={<FavoritesPage/>}/>
                     <Route path={'redactor'} element={<RedactorPage/>}/>
                     <Route path={'moderation'} element={<ModeratorPage/>}/>
+                    <Route path={'country_list'} element={<CountryListPage/>}/>
+                    <Route path={'directors_list'} element={<DirectorsListPage/>}/>
                 </Routes>
             </div>
         </div>
