@@ -1,4 +1,4 @@
-package ru.gb.emailservice.integrations;
+package ru.gb.cabinetorderservice.integrations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
