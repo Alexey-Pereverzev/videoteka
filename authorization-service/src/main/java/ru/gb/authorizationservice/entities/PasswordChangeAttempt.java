@@ -1,9 +1,6 @@
 package ru.gb.authorizationservice.entities;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import ru.gb.common.generic.entities.GenericEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

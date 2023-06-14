@@ -2,13 +2,12 @@ package ru.gb.authorizationservice.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.gb.authorizationservice.exceptions.PublicKeyErrorException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -116,15 +115,6 @@ public class JwtTokenUtil {
     }
 
 
-//    public String validateToken(final String token) {
-//        try {
-//            Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token);
-//            return "";
-//        } catch (Exception e) {
-//            return "Token is not valid";
-//        }
-//    }
-
     public String validateJwtToken(String authToken) throws Exception {
         try {
             Jwts.parser().setSigningKey(secretPublic).parseClaimsJws(authToken);
@@ -147,10 +137,6 @@ public class JwtTokenUtil {
         }
     }
 
-//        catch (IOException e) {
-////            throw new RuntimeException(e);
-//            return "PublicKeyErrorException " + e.getMessage();
-//        }
 
 
 }
