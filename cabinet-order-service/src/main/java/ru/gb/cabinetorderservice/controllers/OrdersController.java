@@ -77,7 +77,7 @@ public class OrdersController {
             summary = " Фильм пользоватея ",
             description = "Возвращает фильм пользователя  "
     )
-    @GetMapping("/user_Film")
+    @GetMapping("/user_film")
     public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
