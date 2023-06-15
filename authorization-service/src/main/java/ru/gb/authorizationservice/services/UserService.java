@@ -16,6 +16,7 @@ import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
 import ru.gb.authorizationservice.utils.Time;
+import ru.gb.common.constants.InfoMessage;
 
 
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements InfoMessage {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -42,9 +43,9 @@ public class UserService {
 
     public StringResponse createNewUser(RegisterUserDto registerUserDto) {
         if (registerUserDto.getPassword()==null) {
-            throw new InputDataErrorException("Пароль не может быть пустым");
+            throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
         } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
-            throw new InputDataErrorException("Пароли не совпадают");
+            throw new InputDataErrorException(PASSWORD_MISMATCH);
         } else {
             User user = new User();
             String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
@@ -59,12 +60,12 @@ public class UserService {
     public StringResponse restoreUser(RegisterUserDto registerUserDto, User user) {
         // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
         if (!user.isDeleted()) {
-            throw new NotDeletedUserException("Такой пользователь уже есть в системе");
+            throw new NotDeletedUserException(USER_ALREADY_EXISTS);
         } else {
             if (registerUserDto.getPassword() == null) {
-                throw new InputDataErrorException("Пароль не может быть пустым");
+                throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
             } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
-                throw new InputDataErrorException("Пароли не совпадают");
+                throw new InputDataErrorException(PASSWORD_MISMATCH);
             } else {
                 String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
                 user.setDeleted(false);
@@ -88,7 +89,7 @@ public class UserService {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .message("Поздравляем! Вы успешно зарегистрировались. Ваш логин - " + user.getUsername())
-                .subject("Регистрация пользователя")
+                .subject(SIGN_UP)
                 .build();
         mailServiceIntegration.sendEmailMessage(emailDto);
     }
@@ -148,7 +149,7 @@ public class UserService {
             user.setPhoneNumber(null);
         } else {
             if (!validationService.acceptablePhoneNumber(phoneNumber)) {
-                return "Некорректный номер телефона";
+                return INCORRECT_PHONE;
             }
             user.setPhoneNumber(phoneNumber);
         }
@@ -212,7 +213,7 @@ public class UserService {
 
     public StringResponse fullNameById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow
-                (() -> new ResourceNotFoundException("Нет такого пользователя"));
+                (() -> new ResourceNotFoundException(USER_NOT_FOUND));
         return new StringResponse(user.getFirstName().concat(" ").concat(user.getLastName()));
     }
 
@@ -234,7 +235,7 @@ public class UserService {
             throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
         }
         if (!user.getEmail().equals(email)) {
-            throw new InputDataErrorException("Некорректный емэйл");
+            throw new InputDataErrorException(INCORRECT_EMAIL);
         }
 
         String code =  mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
@@ -257,20 +258,20 @@ public class UserService {
             throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
         } else {
             PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElseThrow(
-                    () -> new InputDataErrorException("Код некорректный, повторите попытку"));
+                    () -> new InputDataErrorException(INCORRECT_CODE));
             if (!attempt.getCode().equals(code)) {
                 attemptRepository.deleteById(attempt.getId());
-                throw new InputDataErrorException("Код некорректный, повторите попытку");
+                throw new InputDataErrorException(INCORRECT_CODE);
             }
             LocalDateTime expiredCodeTime = attempt.getCreatedWhen().plusMinutes(5);
             if (expiredCodeTime.isBefore(time.now())) {
                 attemptRepository.delete(attempt);
-                throw new InputDataErrorException("Время истекло, повторите попытку");
+                throw new InputDataErrorException(TIME_IS_UP);
             }
             attempt.setVerified(true);
             attemptRepository.save(attempt);
         }
-        return new StringResponse("Код правильный");
+        return new StringResponse(CORRECT_CODE);
     }
 
 
@@ -281,16 +282,16 @@ public class UserService {
             throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
         } else {
             PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElseThrow(
-                    () -> new InputDataErrorException("Ошибка, повторите попытку"));
+                    () -> new InputDataErrorException(TRY_AGAIN));
             if (!attempt.isVerified()) {
                 attemptRepository.delete(attempt);
-                throw new InputDataErrorException("Ошибка, повторите попытку");
+                throw new InputDataErrorException(TRY_AGAIN);
             } else {
                 attemptRepository.delete(attempt);
                 if (password==null || password.isBlank()) {
-                    throw new InputDataErrorException("Пароль не может быть пустым");
+                    throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
                 } else if (!password.equals(confirmPassword)) {
-                    throw new InputDataErrorException("Пароли не совпадают");
+                    throw new InputDataErrorException(PASSWORD_MISMATCH);
                 } else {
                     String encryptedPassword = passwordEncoder.encode(password);
                     String validationMessage = validationService.acceptablePassword(password);
@@ -300,8 +301,8 @@ public class UserService {
                         EmailDto emailDto = EmailDto.builder()
                                 .email(user.getEmail())
                                 .firstName(user.getFirstName())
-                                .message("Вы успешно сменили пароль")
-                                .subject("Смена пароля")
+                                .message(PASSWORD_UPDATED_SUCCESSFULLY)
+                                .subject(PASSWORD_UPDATE)
                                 .build();
                         mailServiceIntegration.sendEmailMessage(emailDto);
                     } else {
@@ -310,6 +311,6 @@ public class UserService {
                 }
             }
         }
-        return new StringResponse("Пароль успешно обновлен");
+        return new StringResponse(PASSWORD_UPDATED_SUCCESSFULLY);
     }
 }

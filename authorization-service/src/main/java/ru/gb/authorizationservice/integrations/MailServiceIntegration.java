@@ -8,10 +8,11 @@ import reactor.core.publisher.Mono;
 import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.exceptions.IntegrationException;
+import ru.gb.common.constants.InfoMessage;
 
 @Component
 @RequiredArgsConstructor
-public class MailServiceIntegration {
+public class MailServiceIntegration implements InfoMessage {
     private final WebClient mailServiceWebClient;
 
     public void sendEmailMessage(EmailDto emailDto) {
@@ -35,7 +36,7 @@ public class MailServiceIntegration {
         if (!(response == null)) {
             return response.getValue();
         } else {
-            throw new IntegrationException("Ошибка сервиса уведомлений");
+            throw new IntegrationException(EMAIL_SERVICE_ERROR);
         }
     }
 
