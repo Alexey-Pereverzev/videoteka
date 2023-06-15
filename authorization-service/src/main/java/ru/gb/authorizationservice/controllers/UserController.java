@@ -14,6 +14,7 @@ import ru.gb.api.dtos.dto.UserDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
 import ru.gb.authorizationservice.converters.UserConverter;
 import ru.gb.authorizationservice.services.UserService;
+import ru.gb.common.constants.InfoMessage;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 @Tag(name = "Пользователи", description = "Методы работы с базой пользователей")
-public class UserController {
+public class UserController implements InfoMessage {
 
     private final UserService userService;
 
@@ -32,15 +33,15 @@ public class UserController {
             summary = "Запрос на удаление пользователя",
             responses = {
                     @ApiResponse(
-                            description = "Пользователь успешно удален", responseCode = "200",
+                            description = USER_DELETED_SUCCESSFULLY, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "404",
+                            description = USER_NOT_FOUND, responseCode = "404",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     ),
                     @ApiResponse(
-                            description = "Админ не найден в базе по id", responseCode = "400",
+                            description = ADMIN_NOT_FOUND, responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
@@ -51,7 +52,7 @@ public class UserController {
         //  deleteUserId - какого пользователя удаляем
         //  userId - кто послал запрос на удаление пользователя
         userService.safeDeleteById(deleteUserId, userId);
-        return new StringResponse("Пользователь успешно удален");
+        return new StringResponse(USER_DELETED_SUCCESSFULLY);
     }
 
     @Operation(
@@ -77,10 +78,10 @@ public class UserController {
             description = "Вывод имени и емэйла пользователя по id",
             responses = {
                     @ApiResponse(
-                            description = "Пользователь найден, вернули результат", responseCode = "200"
+                            description = USER_FOUND, responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "404",
+                            description = USER_NOT_FOUND, responseCode = "404",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
@@ -94,11 +95,11 @@ public class UserController {
             summary = "Фамилия и имя по id",
             responses = {
                     @ApiResponse(
-                            description = "Имя и фамилия", responseCode = "200",
+                            description = FULLNAME, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "404",
+                            description = USER_NOT_FOUND, responseCode = "404",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
@@ -113,15 +114,15 @@ public class UserController {
             summary = "Создание попытки смены пароля",
             responses = {
                     @ApiResponse(
-                            description = "Код подтверждения отправлен на емэйл", responseCode = "200",
+                            description = CONFIRMATION_CODE_SENT, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "400",
+                            description = USER_NOT_FOUND, responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     ),
                     @ApiResponse(
-                            description = "Некорректный емэйл", responseCode = "403",
+                            description = INCORRECT_EMAIL, responseCode = "403",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
@@ -131,22 +132,22 @@ public class UserController {
     public StringResponse setPasswordChangeAttempt(@RequestHeader String userId,
                                                    @RequestParam String email) {
         userService.setPasswordChangeAttempt(userId, email);
-        return new StringResponse("Код подтверждения отправлен на емэйл");
+        return new StringResponse(CONFIRMATION_CODE_SENT);
     }
 
     @Operation(
             summary = "Проверка кода на смену пароля",
             responses = {
                     @ApiResponse(
-                            description = "Код правильный", responseCode = "200",
+                            description = CORRECT_CODE, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "400",
+                            description = USER_NOT_FOUND, responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     ),
                     @ApiResponse(
-                            description = "Некорректный код", responseCode = "403",
+                            description = INCORRECT_CODE, responseCode = "403",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
@@ -162,15 +163,15 @@ public class UserController {
             summary = "Сохранение пароля в базу",
             responses = {
                     @ApiResponse(
-                            description = "Пароль успешно обновлен", responseCode = "200",
+                            description = PASSWORD_UPDATED_SUCCESSFULLY, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "400",
+                            description = USER_NOT_FOUND, responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     ),
                     @ApiResponse(
-                            description = "Ошибка проверки пароля", responseCode = "403",
+                            description = PASSWORD_VERIFICATION_ERROR, responseCode = "403",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }

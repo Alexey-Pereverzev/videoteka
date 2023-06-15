@@ -19,15 +19,13 @@ public class GlobalExceptionsHandler implements InfoMessage {
     InfoMessage infoMessage;
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e){
-        return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND,
-//                "RESOURCE_NOT_FOUND",
-                e.getMessage()),
+        return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND_CODE, e.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleUsernameNotFoundException(UsernameNotFoundException e){
-        return new ResponseEntity<>(new AppError("USERNAME_NOT_FOUND",e.getMessage()),
+        return new ResponseEntity<>(new AppError(USERNAME_NOT_FOUND_CODE,e.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -35,67 +33,67 @@ public class GlobalExceptionsHandler implements InfoMessage {
     @ExceptionHandler
     public ResponseEntity<AppError> handleBadCredentialsException(BadCredentialsException e){
         return new ResponseEntity<>(
-                new AppError("CHECK_USERNAME_PASSWORD_ERROR", "Некорректный логин или пароль"),
+                new AppError(CHECK_USERNAME_PASSWORD_ERROR_CODE, INVALID_USERNAME_OR_PASSWORD),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleInputDataErrorException(InputDataErrorException e){
-        return new ResponseEntity<>(new AppError("INPUT_DATA_ERROR",
+        return new ResponseEntity<>(new AppError(INPUT_DATA_ERROR_CODE,
                 e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleNotDeletedUserException(NotDeletedUserException e){
-        return new ResponseEntity<>(new AppError("USER_ALREADY_EXISTS",
+        return new ResponseEntity<>(new AppError(USER_ALREADY_EXISTS_CODE,
                 e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleExpiredJwtException(ExpiredJwtException e){
-        return new ResponseEntity<>(new AppError("TOKEN_IS_EXPIRED",
+        return new ResponseEntity<>(new AppError(TOKEN_IS_EXPIRED_CODE,
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleMalformedJwtException(MalformedJwtException e){
-        return new ResponseEntity<>(new AppError("TOKEN_IS_MALFORMED",
+        return new ResponseEntity<>(new AppError(TOKEN_IS_MALFORMED_CODE,
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleSignatureException(SignatureException e){
-        return new ResponseEntity<>(new AppError("INVALID_SIGNATURE",
+        return new ResponseEntity<>(new AppError(INVALID_SIGNATURE_CODE,
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleUnsupportedJwtException(UnsupportedJwtException e){
-        return new ResponseEntity<>(new AppError("UNSUPPORTED_JWT_TOKEN",
+        return new ResponseEntity<>(new AppError(UNSUPPORTED_JWT_TOKEN_CODE,
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleIllegalArgumentException(IllegalArgumentException e){
-        return new ResponseEntity<>(new AppError("EMPTY_JWT_CLAIMS_STRING",
+        return new ResponseEntity<>(new AppError(ILLEGAL_ARGUMENT_CODE,
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handlePublicKeyErrorException(PublicKeyErrorException e){
-        return new ResponseEntity<>(new AppError("PUBLIC_KEY_ERROR",
+        return new ResponseEntity<>(new AppError(PUBLIC_KEY_ERROR_CODE,
                 e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleIntegrationException(IntegrationException e){
-        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+        return new ResponseEntity<>(new AppError(INTEGRATION_ERROR_CODE, e.getMessage()),
                 HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleWebClientRequestException(WebClientRequestException e) {
-        return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", e.getMessage()),
+        return new ResponseEntity<>(new AppError(INTEGRATION_ERROR_CODE, e.getMessage()),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

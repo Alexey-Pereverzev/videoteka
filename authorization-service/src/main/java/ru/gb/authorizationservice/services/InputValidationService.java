@@ -1,10 +1,11 @@
 package ru.gb.authorizationservice.services;
 
 import org.apache.commons.validator.routines.EmailValidator;
+import ru.gb.common.constants.InfoMessage;
 
 import java.util.ArrayList;
 
-public class InputValidationService {
+public class InputValidationService implements InfoMessage {
     private static ArrayList<Character> digits;
     private static ArrayList<Character> latin;
     private static ArrayList<Character> cyrillic;
@@ -77,22 +78,22 @@ public class InputValidationService {
 
     public String acceptableEmail(String email)
     {
-        if (email==null || email.isBlank()) return "Email не может быть пустым";
+        if (email==null || email.isBlank()) return EMAIL_CANNOT_BE_EMPTY;
         if (!areAllSymbolsInSet(email, emailCharacters)) {
-            return "Недопустимые символы в email";
+            return INVALID_EMAIL_CHARACTERS;
         } else {
             EmailValidator validator = EmailValidator.getInstance();
-            return validator.isValid(email) ? "" : "Некорректный e-mail";
+            return validator.isValid(email) ? "" : INCORRECT_EMAIL;
         }
     }
 
     public String acceptableLogin(String login)
     {
-        if (login==null || login.isBlank()) return "Логин не может быть пустым";
+        if (login==null || login.isBlank()) return LOGIN_CANNOT_BE_EMPTY;
         if (login.length()<MIN_LOGIN_LENGTH) return "Минимальная длина логина должна быть " + MIN_LOGIN_LENGTH + " символа";
         if (login.length()>MAX_LOGIN_LENGTH) return "Максимальная длина логина " + MAX_LOGIN_LENGTH + " символов";
         if (!areAllSymbolsInSet(login, loginCharacters)) {
-            return "Недопутсимые символы в логине. Допустимы латинские буквы A-Z, a-z и цифры 0-9";
+            return INVALID_LOGIN_CHARACTERS;
         } else {
             return "";
         }
@@ -100,31 +101,31 @@ public class InputValidationService {
 
     public String acceptablePassword(String password)
     {
-        if (password==null || password.isBlank()) return "Пароль не может быть пустым";
+        if (password==null || password.isBlank()) return PASSWORD_CANNOT_BE_EMPTY;
         if (password.length()<MIN_PASSWORD_LENGTH) return "Минимальная длина пароля " + MIN_PASSWORD_LENGTH + " символов";
         if (password.length()>MAX_PASSWORD_LENGTH) return "Максимальная длина пароля " + MAX_PASSWORD_LENGTH + " символа";
         if (!areAllSymbolsInSet(password, passwordCharacters)) {
-            return "Недопутсимые символы в пароле. Допустимы латинские буквы A-Z, a-z, символы кириллицы А-Я, а-я и цифры 0-9";
+            return INVALID_PASSWORD_CHARACTERS;
         } else {
             return "";
         }
     }
 
     public String acceptableFirstName(String firstName) {
-        if (firstName==null || firstName.isBlank()) return "ERROR: пустое имя";
+        if (firstName==null || firstName.isBlank()) return FIRSTNAME_CANNOT_BE_EMPTY;
         if (areAllSymbolsInSet(firstName,latin) || areAllSymbolsInSet(firstName,cyrillic)) {
             return "";
         } else {
-            return "Ошибка ввода: имя должно быть введено полностью на кириллице или на латинице";
+            return INVALID_FIRSTNAME;
         }
     }
 
     public String acceptableLastName(String lastName) {
-        if (lastName==null || lastName.isBlank()) return "ERROR: пустая фамилия";
+        if (lastName==null || lastName.isBlank()) return LASTNAME_CANNOT_BE_EMPTY;
         if (areAllSymbolsInSet(lastName,latin) || areAllSymbolsInSet(lastName,cyrillic)) {
             return "";
         } else {
-            return "Ошибка ввода: фамилия должна быть введена полностью на кириллице или на латинице";
+            return INVALID_LASTNAME;
         }
     }
 
