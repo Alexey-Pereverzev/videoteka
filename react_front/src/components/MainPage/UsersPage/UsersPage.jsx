@@ -1,25 +1,15 @@
 import './UsersPage.css';
-import {
-    MenuItem,
-    Paper,
-    Select,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow
-} from "@mui/material";
+import {MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-///api/v1/roles/update
+
 
 function UsersPage(props) {
+    const USER_SERVICE_URL = "http://localhost:5555/auth/api/v1/users"
 
     let getAllUsers = () => {
-        return axios.get("http://localhost:5555/auth/api/v1/users/all")
+        return axios.get(USER_SERVICE_URL)
             .then(response => response.data)
             .then(data => setUsers(data))
     }
@@ -32,7 +22,7 @@ function UsersPage(props) {
     const handleChange = (event, whomChangeId) => {
         try {
         console.log(event.target)
-        axios.put("http://localhost:5555/auth/api/v1/roles/update", {
+        axios.put("http://localhost:5555/auth/api/v1/roles", {
             changeUserId: whomChangeId,
                 role: event.target.value
         })
@@ -47,7 +37,7 @@ function UsersPage(props) {
     let banToUser = async (userId) => {
         console.log(userId)
         try {
-            const response = await axios.delete('http://localhost:5555/auth/api/v1/users/delete',
+            const response = await axios.delete(USER_SERVICE_URL,
                 {
                     params: {
                         deleteUserId: userId
@@ -111,7 +101,6 @@ function UsersPage(props) {
                                             <MenuItem value={'ROLE_ADMIN'}>ADMIN</MenuItem>
                                             <MenuItem value={'ROLE_MANAGER'}>MANAGER</MenuItem>
                                         </Select>
-                                        {/*{row.role}*/}
                                     </TableCell>
                                     <TableCell align="right">
                                         {row.deleted ?
