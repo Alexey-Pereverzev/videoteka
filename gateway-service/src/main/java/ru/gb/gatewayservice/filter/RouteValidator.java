@@ -34,7 +34,6 @@ public class RouteValidator {
             "/api/v1/cart",
             "/api/v1/cart/generate",
             "/api/v1/cart/add",
-            "/api/v1/cart/remove",
             "/api/v1/cart/clear",
             "/api/v1/cart/rediscontent",
 
@@ -60,8 +59,8 @@ public class RouteValidator {
             "/api/v1/cart/pay",
 
             "/api/v1/orders",
-            "/api/v1/orders/playFilm",
-            "/api/v1/orders/userFilm",
+            "/api/v1/orders/play_film",
+            "/api/v1/orders/user_film",
             "/api/v1/orders/delete",
             "/api/v1/orders/rent",
             "/api/v1/orders/sale",
