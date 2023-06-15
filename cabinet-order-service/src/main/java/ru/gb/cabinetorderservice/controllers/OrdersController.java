@@ -63,7 +63,7 @@ public class OrdersController {
             summary = "Просмотр фильма  ",
             description = "Просмотр фильма   "
     )
-    @GetMapping("/playFilm")
+    @GetMapping("/play_film")
     public String findByFilmId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
@@ -77,7 +77,7 @@ public class OrdersController {
             summary = " Фильм пользоватея ",
             description = "Возвращает фильм пользователя  "
     )
-    @GetMapping("/userFilm")
+    @GetMapping("/user_Film")
     public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
@@ -94,7 +94,7 @@ public class OrdersController {
             summary = "удаление заказа  ",
             description = "удаление заказа из бд   "
     )
-    @GetMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> delete(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         String result = orderService.delete(userIDLong, filmId);
