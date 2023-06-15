@@ -31,6 +31,21 @@ public class SecurityConfig{
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+            // other public endpoints of your API may be appended to this array
+    };
+
     @Bean
     public UserDetailsService userDetailsService(){
         return new CustomUserDetailsService(userRepository);
@@ -38,6 +53,7 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
          SecurityFilterChain securityFilterChain = http
                  .csrf().disable()
                  .cors().disable()
@@ -46,6 +62,7 @@ public class SecurityConfig{
                  .antMatchers("/api/v1/reg/**").permitAll()
                  .antMatchers("/api/v1/roles/**").permitAll()
                  .antMatchers("/api/v1/users/**").permitAll()
+                 .antMatchers(AUTH_WHITELIST).permitAll()
                  .anyRequest().authenticated()
                  .and()
                  .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

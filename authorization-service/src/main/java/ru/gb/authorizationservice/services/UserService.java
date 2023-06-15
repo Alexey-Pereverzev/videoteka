@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
@@ -14,7 +15,8 @@ import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
-import ru.gb.common.utils.TimeUtil;
+import ru.gb.authorizationservice.utils.Time;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +33,7 @@ public class UserService {
     private final InputValidationService validationService = new InputValidationService();
     private final MailServiceIntegration mailServiceIntegration;
 
-    private final TimeUtil timeUtil;
+    private final Time time;
 
 
     public Optional<User> findByUsername(String username) {
@@ -47,21 +49,15 @@ public class UserService {
             User user = new User();
             String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
 
-            String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
-            if (validationMessage != null) {
-                throw new InputDataErrorException(validationMessage);
-            }
+            saveAndNotify(registerUserDto, user, encryptedPassword);
 
-            userRepository.save(user);
-            mailServiceIntegration.composeRegistrationLetter(user.getFirstName(), user.getUsername(),
-                    user.getEmail());
             return new StringResponse("Пользователь с именем "
                     + registerUserDto.getUsername() + " успешно создан");
         }
     }
 
     public StringResponse restoreUser(RegisterUserDto registerUserDto, User user) {
-    // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
+        // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
         if (!user.isDeleted()) {
             throw new NotDeletedUserException("Такой пользователь уже есть в системе");
         } else {
@@ -75,19 +71,26 @@ public class UserService {
                 user.setDeletedBy(null);
                 user.setDeletedWhen(null);
 
-                String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
-                if (validationMessage != null) {
-                    throw new InputDataErrorException(validationMessage);
-                }
-
-                userRepository.save(user);
-                mailServiceIntegration.composeRegistrationLetter(user.getFirstName(), user.getUsername(),
-                        user.getEmail());
+                saveAndNotify(registerUserDto, user, encryptedPassword);
                 return new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно восстановлен");
             }
         }
+    }
 
+    private void saveAndNotify(RegisterUserDto registerUserDto, User user, String encryptedPassword) {
+        String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
+        if (validationMessage != null) {
+            throw new InputDataErrorException(validationMessage);
+        }
+        userRepository.save(user);
+        EmailDto emailDto = EmailDto.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .message("Поздравляем! Вы успешно зарегистрировались. Ваш логин - " + user.getUsername())
+                .subject("Регистрация пользователя")
+                .build();
+        mailServiceIntegration.sendEmailMessage(emailDto);
     }
 
     private String validateAndSaveFields(RegisterUserDto registerUserDto, String encryptedPassword, User user) {
@@ -172,7 +175,7 @@ public class UserService {
             throw new ResourceNotFoundException("Aдмин с id: " + adminId + " не найден");
         }
         user.setUpdateBy(findById(adminId).orElseThrow
-                (() -> new ResourceNotFoundException("Пользователь с id: " + adminId + " не найден"))
+                        (() -> new ResourceNotFoundException("Пользователь с id: " + adminId + " не найден"))
                 .getUsername());
         userRepository.save(user);
     }
@@ -237,7 +240,7 @@ public class UserService {
         String code =  mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
 
         PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElse(new PasswordChangeAttempt());
-        LocalDateTime createdWhen = timeUtil.currentTime();
+        LocalDateTime createdWhen = time.now();
         attempt.setUser(user);
         attempt.setCreatedWhen(createdWhen);
         attempt.setCode(code);
@@ -260,8 +263,7 @@ public class UserService {
                 throw new InputDataErrorException("Код некорректный, повторите попытку");
             }
             LocalDateTime expiredCodeTime = attempt.getCreatedWhen().plusMinutes(5);
-            LocalDateTime time = timeUtil.currentTime();
-            if (expiredCodeTime.isBefore(time)) {
+            if (expiredCodeTime.isBefore(time.now())) {
                 attemptRepository.delete(attempt);
                 throw new InputDataErrorException("Время истекло, повторите попытку");
             }
@@ -295,7 +297,13 @@ public class UserService {
                     if (validationMessage.equals("")) {
                         user.setPassword(encryptedPassword);
                         userRepository.save(user);
-                        mailServiceIntegration.composePasswordLetter(user.getEmail(), user.getFirstName());
+                        EmailDto emailDto = EmailDto.builder()
+                                .email(user.getEmail())
+                                .firstName(user.getFirstName())
+                                .message("Вы успешно сменили пароль")
+                                .subject("Смена пароля")
+                                .build();
+                        mailServiceIntegration.sendEmailMessage(emailDto);
                     } else {
                         throw new InputDataErrorException(validationMessage);
                     }
