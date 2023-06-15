@@ -7,7 +7,7 @@ function StringCard(props) {
     let removeFromCart = async () => {
         console.log(props.filmId)
         try {
-            const response = await axios.get('http://localhost:5555/cart/api/v1/cart/remove/',
+            const response = await axios.delete('http://localhost:5555/cart/api/v1/cart/',
                 {
                     params: {
                         uuid: localStorage.getItem('guestCartId'),
