@@ -19,9 +19,7 @@ public class GlobalExceptionsHandler implements InfoMessage {
     InfoMessage infoMessage;
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e){
-        return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND_CODE,
-//                "RESOURCE_NOT_FOUND",
-                e.getMessage()),
+        return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND_CODE, e.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
