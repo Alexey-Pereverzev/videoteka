@@ -115,26 +115,10 @@ public class JwtTokenUtil {
     }
 
 
-    public String validateJwtToken(String authToken) throws Exception {
-        try {
-            Jwts.parser().setSigningKey(secretPublic).parseClaimsJws(authToken);
-            return "";
-        } catch (MalformedJwtException e) {
-            throw new MalformedJwtException(e.getMessage());
-//            return "MalformedJwtException " + e.getMessage();
-        } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
-//            return "ExpiredJwtException " + e.getMessage();
-        } catch (UnsupportedJwtException e) {
-            throw new UnsupportedJwtException(e.getMessage());
-//            return "UnsupportedJwtException " + e.getMessage();
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-//            return "IllegalArgumentException " + e.getMessage();
-        } catch (SignatureException e) {
-            throw new SignatureException(e.getMessage());
-//            return "IllegalArgumentException " + e.getMessage();
-        }
+    public String validateJwtToken(String authToken)
+    {
+        Jwts.parser().setSigningKey(secretPublic).parseClaimsJws(authToken);
+        return "";
     }
 
 

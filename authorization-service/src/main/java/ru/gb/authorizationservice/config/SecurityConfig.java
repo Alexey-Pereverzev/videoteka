@@ -46,10 +46,10 @@ public class SecurityConfig{
             // other public endpoints of your API may be appended to this array
     };
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new CustomUserDetailsService(userRepository);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        return new CustomUserDetailsService(userRepository);
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -97,7 +97,7 @@ public class SecurityConfig{
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
