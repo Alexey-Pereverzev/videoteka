@@ -90,6 +90,7 @@ services:
       CATALOG_SERVICE_LOCATION: catalog-service
       CART_SERVICE_LOCATION: cart-service
       EMAIL_SERVICE_LOCATION: email-service
+      AUTH_SERVICE_LOCATION: authorization-service
     networks:
       - videoteka-net
     restart: always
@@ -169,11 +170,9 @@ services:
     container_name: email-service
     build:
       context: .
-      dockerfile: email-service1/Dockerfile-email
+      dockerfile: email-service/Dockerfile-email
     ports:
       - "8199:8199"
-    environment:
-      AUTH_SERVICE_LOCATION: authorization-service
     networks:
       - videoteka-net
     restart: always
