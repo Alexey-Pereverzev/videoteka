@@ -31,7 +31,7 @@ function ReviewsPage(props) {
         }
     }
     let getFullNameReviewers = async (userId) => {
-        return await axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+        return await axios.get('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
             params: {
                 userId: userId
             }

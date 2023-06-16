@@ -17,7 +17,7 @@ public class RouteValidator {
             "/api/v1/country/id",
             "/api/v1/director/all",
             "/api/v1/director/id",
-            "/api/v1/film/all-with-filter",
+            "/api/v1/film/all_with_filter",
             "/api/v1/film/list_all_dto",
             "/api/v1/film/find_by_title_part",
             "/api/v1/film/id",
@@ -34,44 +34,57 @@ public class RouteValidator {
             "/api/v1/cart",
             "/api/v1/cart/generate",
             "/api/v1/cart/add",
-            "/api/v1/cart/remove",
             "/api/v1/cart/clear",
             "/api/v1/cart/rediscontent",
 
-            "/api/v1/users/get_fullname_by_id",
+            "/api/v1/users/fullname_by_id",
 
             "/api/v1/mail/send"
 
     );
 
     public static final List<String> adminApiEndpoints = List.of(
-            "/api/v1/roles/update",
-            "/api/v1/users/delete",
-            "/api/v1/users/all",
-            "/api/v1/users/all_not_deleted"
+            "/api/v1/roles",
+            "/api/v1/users",
+            "/api/v1/users/not_deleted",
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password"
     );
 
     public static final List<String> userApiEndpoints = List.of(
+            "/api/v1/rating/new-comment",
+
             "/api/v1/cart/merge",
             "/api/v1/cart/pay",
 
             "/api/v1/orders",
-            "/api/v1/orders/playFilm",
-            "/api/v1/orders/userFilm",
+            "/api/v1/orders/play_film",
+            "/api/v1/orders/user_film",
             "/api/v1/orders/delete",
             "/api/v1/orders/rent",
-            "/api/v1/orders/sale"
+            "/api/v1/orders/sale",
+
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password"
 
     );
 
     public static final List<String> managerApiEndpoints = List.of(
             "/api/v1/film/all",
             "/api/v1/country/new",
-            "/api/v1/film/new-film",
-            "/api/v1/rating/new-comment",
+            "/api/v1/director/new",
+            "/api/v1/film/new_film",
+            "/api/v1/film/movie_change",
+            "/api/v1/rating/new_comment",
             "/api/v1/rating/all_grade_and_review_is_not_moderate",
-            "/api/v1/rating/moderate-rejected",
-            "/api/v1/rating/moderate-success"
+            "/api/v1/rating/moderate_rejected",
+            "/api/v1/rating/moderate_success",
+
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password"
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =
@@ -92,7 +105,6 @@ public class RouteValidator {
     public Predicate<ServerHttpRequest> isManagerAccess =
             request -> managerApiEndpoints
                     .stream()
-//                    .anyMatch(uri -> request.getURI().getPath().contains(uri));
                     .anyMatch(uri -> truncateUri(request.getURI().getPath()).equals(uri));
 
     public static String truncateUri(String uri) {

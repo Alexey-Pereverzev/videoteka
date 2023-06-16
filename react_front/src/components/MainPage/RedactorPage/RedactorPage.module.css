@@ -62,7 +62,7 @@
     left: 0px;
     font-size: 16px;
     color: #c5c5c5;
-    pointer-event: none;
+    pointer-events: none;
     transition: all 0.5s ease-in-out;
 }
 

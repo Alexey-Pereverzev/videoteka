@@ -38,8 +38,8 @@ public class OrdersController {
             return ResponseEntity.ok(new StringResponse(" Заказ успешно сохранен в БД"));
 
         }
-        else if (result.equals("Сервис корзины недоступен")){
-            return new ResponseEntity<>(new AppError("CART_NOT_FOUND", " Сервис корзины недоступен - попробуйте обновить страницу"), HttpStatus.SERVICE_UNAVAILABLE);
+        else if (result.equals("Ошибка интеграции")){
+            return new ResponseEntity<>(new AppError("INTEGRATION_ERROR", "Ошибка интеграции"), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
         else {
@@ -63,7 +63,7 @@ public class OrdersController {
             summary = "Просмотр фильма  ",
             description = "Просмотр фильма   "
     )
-    @GetMapping("/playFilm")
+    @GetMapping("/play_film")
     public String findByFilmId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
@@ -77,7 +77,7 @@ public class OrdersController {
             summary = " Фильм пользоватея ",
             description = "Возвращает фильм пользователя  "
     )
-    @GetMapping("/userFilm")
+    @GetMapping("/user_film")
     public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
@@ -94,7 +94,7 @@ public class OrdersController {
             summary = "удаление заказа  ",
             description = "удаление заказа из бд   "
     )
-    @GetMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> delete(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         String result = orderService.delete(userIDLong, filmId);

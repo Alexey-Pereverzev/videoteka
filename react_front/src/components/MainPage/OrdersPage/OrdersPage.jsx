@@ -114,8 +114,10 @@ class OrdersPage extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}>Обложка</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right"></TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right"></TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
+                                                   align="right"></TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
+                                                   align="right"></TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right">Название</TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
@@ -209,8 +211,8 @@ class OrdersPage extends Component {
                                             <TableCell component="th" scope="row">
                                                 <img className={'orders_img'} src={row.imageUrlLink}/>
                                             </TableCell>
-                                            <TableCell align="right">{row.filmTitle}</TableCell>
-                                            <TableCell align="right">{row.price}</TableCell>
+                                            <TableCell align="center">{row.filmTitle}</TableCell>
+                                            <TableCell align="center">{row.price}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

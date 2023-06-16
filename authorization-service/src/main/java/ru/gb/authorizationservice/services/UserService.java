@@ -4,13 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
+import ru.gb.authorizationservice.integrations.MailServiceIntegration;
+import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
+import ru.gb.authorizationservice.utils.Time;
+import ru.gb.common.constants.InfoMessage;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,65 +25,73 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements InfoMessage {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final PasswordChangeAttemptRepository attemptRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
+    private final MailServiceIntegration mailServiceIntegration;
+
+    private final Time time;
+
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-
     public StringResponse createNewUser(RegisterUserDto registerUserDto) {
         if (registerUserDto.getPassword()==null) {
-            throw new InputDataErrorException("Пароль не может быть пустым");
+            throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
         } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
-            throw new InputDataErrorException("Пароли не совпадают");
+            throw new InputDataErrorException(PASSWORD_MISMATCH);
         } else {
             User user = new User();
             String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
 
-            String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
-            if (validationMessage != null) {
-                throw new InputDataErrorException(validationMessage);
-            }
+            saveAndNotify(registerUserDto, user, encryptedPassword);
 
-            userRepository.save(user);
             return new StringResponse("Пользователь с именем "
                     + registerUserDto.getUsername() + " успешно создан");
         }
     }
 
-    @Transactional
     public StringResponse restoreUser(RegisterUserDto registerUserDto, User user) {
-    // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
+        // восстанавливаем пользователя, если он есть в системе со статусом isDeleted = true
         if (!user.isDeleted()) {
-            throw new NotDeletedUserException("Такой пользователь уже есть в системе");
+            throw new NotDeletedUserException(USER_ALREADY_EXISTS);
         } else {
             if (registerUserDto.getPassword() == null) {
-                throw new InputDataErrorException("Пароль не может быть пустым");
+                throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
             } else if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
-                throw new InputDataErrorException("Пароли не совпадают");
+                throw new InputDataErrorException(PASSWORD_MISMATCH);
             } else {
                 String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
                 user.setDeleted(false);
                 user.setDeletedBy(null);
                 user.setDeletedWhen(null);
 
-                String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
-                if (validationMessage != null) {
-                    throw new InputDataErrorException(validationMessage);
-                }
-
-                userRepository.save(user);
+                saveAndNotify(registerUserDto, user, encryptedPassword);
                 return new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно восстановлен");
             }
         }
+    }
 
+    private void saveAndNotify(RegisterUserDto registerUserDto, User user, String encryptedPassword) {
+        String validationMessage = validateAndSaveFields(registerUserDto, encryptedPassword, user);
+        if (validationMessage != null) {
+            throw new InputDataErrorException(validationMessage);
+        }
+        userRepository.save(user);
+        EmailDto emailDto = EmailDto.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .message("Поздравляем! Вы успешно зарегистрировались. Ваш логин - " + user.getUsername())
+                .subject(SIGN_UP)
+                .build();
+        mailServiceIntegration.sendEmailMessage(emailDto);
     }
 
     private String validateAndSaveFields(RegisterUserDto registerUserDto, String encryptedPassword, User user) {
@@ -134,7 +149,7 @@ public class UserService {
             user.setPhoneNumber(null);
         } else {
             if (!validationService.acceptablePhoneNumber(phoneNumber)) {
-                return "Некорректный номер телефона";
+                return INCORRECT_PHONE;
             }
             user.setPhoneNumber(phoneNumber);
         }
@@ -161,7 +176,7 @@ public class UserService {
             throw new ResourceNotFoundException("Aдмин с id: " + adminId + " не найден");
         }
         user.setUpdateBy(findById(adminId).orElseThrow
-                (() -> new ResourceNotFoundException("Пользователь с id: " + adminId + " не найден"))
+                        (() -> new ResourceNotFoundException("Пользователь с id: " + adminId + " не найден"))
                 .getUsername());
         userRepository.save(user);
     }
@@ -198,7 +213,7 @@ public class UserService {
 
     public StringResponse fullNameById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow
-                (() -> new ResourceNotFoundException("Нет такого пользователя"));
+                (() -> new ResourceNotFoundException(USER_NOT_FOUND));
         return new StringResponse(user.getFirstName().concat(" ").concat(user.getLastName()));
     }
 
@@ -209,5 +224,93 @@ public class UserService {
             throw new ResourceNotFoundException("Польователь с id="+id+" был удален");
         }
         return user;
+    }
+
+
+    @Transactional
+    public void setPasswordChangeAttempt(String userId, String email) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() ->
+                new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        }
+        if (!user.getEmail().equals(email)) {
+            throw new InputDataErrorException(INCORRECT_EMAIL);
+        }
+
+        String code =  mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
+
+        PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElse(new PasswordChangeAttempt());
+        LocalDateTime createdWhen = time.now();
+        attempt.setUser(user);
+        attempt.setCreatedWhen(createdWhen);
+        attempt.setCode(code);
+        attempt.setVerified(false);
+        attemptRepository.save(attempt);
+
+    }
+
+
+    public StringResponse  checkCodeForPasswordChange(String userId, String code) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(
+                () -> new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        } else {
+            PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElseThrow(
+                    () -> new InputDataErrorException(INCORRECT_CODE));
+            if (!attempt.getCode().equals(code)) {
+                attemptRepository.deleteById(attempt.getId());
+                throw new InputDataErrorException(INCORRECT_CODE);
+            }
+            LocalDateTime expiredCodeTime = attempt.getCreatedWhen().plusMinutes(5);
+            if (expiredCodeTime.isBefore(time.now())) {
+                attemptRepository.delete(attempt);
+                throw new InputDataErrorException(TIME_IS_UP);
+            }
+            attempt.setVerified(true);
+            attemptRepository.save(attempt);
+        }
+        return new StringResponse(CORRECT_CODE);
+    }
+
+
+    public StringResponse updatePassword(String userId, String password, String confirmPassword) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(
+                () -> new ResourceNotFoundException("Польователь с id=" + userId + " не найден"));
+        if (user.isDeleted()) {
+            throw new ResourceNotFoundException("Польователь с id=" + userId + " не найден");
+        } else {
+            PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElseThrow(
+                    () -> new InputDataErrorException(TRY_AGAIN));
+            if (!attempt.isVerified()) {
+                attemptRepository.delete(attempt);
+                throw new InputDataErrorException(TRY_AGAIN);
+            } else {
+                attemptRepository.delete(attempt);
+                if (password==null || password.isBlank()) {
+                    throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
+                } else if (!password.equals(confirmPassword)) {
+                    throw new InputDataErrorException(PASSWORD_MISMATCH);
+                } else {
+                    String encryptedPassword = passwordEncoder.encode(password);
+                    String validationMessage = validationService.acceptablePassword(password);
+                    if (validationMessage.equals("")) {
+                        user.setPassword(encryptedPassword);
+                        userRepository.save(user);
+                        EmailDto emailDto = EmailDto.builder()
+                                .email(user.getEmail())
+                                .firstName(user.getFirstName())
+                                .message(PASSWORD_UPDATED_SUCCESSFULLY)
+                                .subject(PASSWORD_UPDATE)
+                                .build();
+                        mailServiceIntegration.sendEmailMessage(emailDto);
+                    } else {
+                        throw new InputDataErrorException(validationMessage);
+                    }
+                }
+            }
+        }
+        return new StringResponse(PASSWORD_UPDATED_SUCCESSFULLY);
     }
 }

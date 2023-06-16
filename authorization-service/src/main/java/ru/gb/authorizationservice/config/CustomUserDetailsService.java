@@ -9,13 +9,14 @@ import org.springframework.stereotype.Component;
 import ru.gb.authorizationservice.entities.Role;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.repositories.UserRepository;
+import ru.gb.common.constants.InfoMessage;
 
 import java.util.Collections;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService, InfoMessage {
 
     private final UserRepository userRepository;
 
@@ -23,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         User user = findNotDeletedByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password");
+            throw new UsernameNotFoundException(INVALID_USERNAME_OR_PASSWORD);
         }
         return new org.springframework.security.core.userdetails
                 .User(user.getUsername(), user.getPassword(),

@@ -34,7 +34,7 @@ public class RatingService {
         } else {
             Rating rating = new Rating();
             Film film = filmService.findById(ratingDto.getFilm_id());
-            Optional<Rating> tempRaiting = ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film, ratingDto.getUser_id());
+            Optional<Rating> tempRaiting = ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalseAndIsModerateIsTrue(film, ratingDto.getUser_id());
             if (tempRaiting.isPresent()) {
                 resultOperation.setResult(false);
                 resultOperation.setResultDescription("Невозможно создать оценку и отзыв. Пользователь уже оценивал фильм");
@@ -59,7 +59,7 @@ public class RatingService {
 
     public Rating gradeUserByIdFilm(Long userId, Long filmId) {
         Film film = filmService.findById(filmId);
-        return ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film, userId).orElseThrow(() -> new ResourceNotFoundException("Оценка и комментарий пользователя с id=" + userId +
+        return ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalseAndIsModerateIsTrue(film, userId).orElseThrow(() -> new ResourceNotFoundException("Оценка и комментарий пользователя с id=" + userId +
                 " для фильма с id=" + filmId + " не найдены"));
     }
 
@@ -74,7 +74,7 @@ public class RatingService {
 
     public List<Rating> listAllGradeAndReviewsByFilmId(Long filmId) {
         Film film = filmService.findById(filmId);
-        return ratingRepository.findAllByFilmAndIsDeletedIsFalse(film);
+        return ratingRepository.findAllByFilmAndIsDeletedIsFalseAndIsModerateIsTrue(film);
     }
 
     public List<Rating> listAllGradeAndReviewIsNotModerate() {
@@ -84,7 +84,7 @@ public class RatingService {
     public ResultOperation setModerateStatus(Long userId,Long filmId,boolean status){
         if ((filmId!=null || filmId>0) && (userId!=null || userId>0)){
             Film film=filmService.findById(filmId);
-            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalse(film,userId);
+            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalseAndIsModerateIsTrue(film,userId);
             if (rating.isPresent()){
                 if (status){
                     rating.get().setModerate(true);

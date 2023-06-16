@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  redis:
+  redis-videoteka:
     image: redis:7.0.11
     container_name: redis-videoteka
     ports:
@@ -89,13 +89,14 @@ services:
       SPRING_DATASOURCE_PASSWORD: "OrdersVideoteka2023"
       CATALOG_SERVICE_LOCATION: catalog-service
       CART_SERVICE_LOCATION: cart-service
+      EMAIL_SERVICE_LOCATION: email-service
     networks:
       - videoteka-net
     restart: always
 
   cart-service:
     depends_on:
-      - redis
+      - redis-videoteka
     container_name: cart-service
     build:
       context: .
@@ -104,7 +105,6 @@ services:
       CATALOG_SERVICE_LOCATION: catalog-service
       CABINET_SERVICE_LOCATION: cabinet-service
       REDIS_LOCATION: redis-videoteka
-#      SPRING_REDIS_HOST: redis-videoteka
       SPRING_REDIS_PORT: 6379
     ports:
       - "8190:8190"
@@ -125,6 +125,7 @@ services:
       SPRING_DATASOURCE_URL:  "jdbc:postgresql://users-roles-db:5432/users_roles_db"
       SPRING_DATASOURCE_USERNAME: "security"
       SPRING_DATASOURCE_PASSWORD: "SecurityVideoteka2023"
+      EMAIL_SERVICE_LOCATION: email-service
     networks:
       - videoteka-net
     volumes:
@@ -158,6 +159,21 @@ services:
       dockerfile: front-service/Dockerfile-front
     ports:
       - "3000:3000"
+    networks:
+      - videoteka-net
+    restart: always
+
+  email-service:
+    depends_on:
+      - gateway-service
+    container_name: email-service
+    build:
+      context: .
+      dockerfile: email-service1/Dockerfile-email
+    ports:
+      - "8199:8199"
+    environment:
+      AUTH_SERVICE_LOCATION: authorization-service
     networks:
       - videoteka-net
     restart: always

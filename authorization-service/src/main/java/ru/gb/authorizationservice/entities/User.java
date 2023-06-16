@@ -38,7 +38,17 @@ public class User extends GenericEntity {
     @ManyToOne
     private Role role;
 
+    @Override
+    public String toString() {
+        return "User [id=" + super.getId() +
+                ", username=" + username +
+                ", password=" + password +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", email=" + email +
+                ", phoneNumber=" + phoneNumber +
+                ", address=" + address +
+                ", Role title=" + role.getTitle() + "]";
+    }
 
 }
-
-

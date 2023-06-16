@@ -12,12 +12,13 @@ import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.RoleChangeDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.services.UserService;
+import ru.gb.common.constants.InfoMessage;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/roles")
 @Tag(name = "Роли", description = "Методы работы с ролями пользователя")
-public class RoleController {
+public class RoleController implements InfoMessage {
 
     private final UserService userService;
 
@@ -25,23 +26,23 @@ public class RoleController {
             summary = "Запрос на изменение роли пользователя",
             responses = {
                     @ApiResponse(
-                            description = "Роль успешно изменена", responseCode = "200",
+                            description = ROLE_CHANGED_SUCCESSFULLY, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователь не найден", responseCode = "400",
+                            description = USER_NOT_FOUND, responseCode = "404",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )
             }
     )
-    @PutMapping("/update")
+    @PutMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public StringResponse update(@RequestBody RoleChangeDto roleChangeDto,
                                  @RequestHeader String userId) {
         //  RoleChangeDto - какого пользователя изменяем
         //  userId - кто послал запрос на изменение пользователя
         userService.setRoleToUser(roleChangeDto.getChangeUserId(), userId, roleChangeDto.getRole());
-        return new StringResponse("Роль успешно изменена");
+        return new StringResponse(ROLE_CHANGED_SUCCESSFULLY);
     }
 
 

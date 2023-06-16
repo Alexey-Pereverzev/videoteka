@@ -86,6 +86,7 @@ function Header(props) {
                 </NavLink>
                 <div className={'menu_deck'}>
                     {user ?
+                        <div className={'auth_container'}>
                         <div className={'menu_container'} ref={menuRef}>
                             <div className={'dropdown_trigger'} onClick={openMenu}>
                                 <Avatar
@@ -121,6 +122,13 @@ function Header(props) {
 
                                 </ul>
                             </div>
+
+                        </div>
+                            <div className={'cart_box'}>
+                                <NavLink to={'/cart'} className={'cart_box__button'}>
+                                    <ShoppingCartIcon/>
+                                </NavLink>
+                            </div>
                         </div>
                         :
                         <div className={'login_btn'}>
@@ -128,11 +136,7 @@ function Header(props) {
                         </div>
                     }
 
-                    <div className={'cart_box'}>
-                        <NavLink to={'/cart'} className={'cart_box__button'}>
-                            <ShoppingCartIcon/>
-                        </NavLink>
-                    </div>
+
                 </div>
 
             </div>

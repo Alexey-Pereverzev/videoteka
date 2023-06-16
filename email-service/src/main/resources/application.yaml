@@ -17,12 +17,8 @@ spring:
             enable: true
     protocol: smtp
     test-connection: false
-integrations:
-  auth-service:
-    url: http://${AUTH_SERVICE_LOCATION:127.0.0.1}:8187/auth-service
-    connect-timeout: 5000
-    read-timeout: 10000
-    write-timeout: 5000
+
+
 
 #spring:
 #  datasource:

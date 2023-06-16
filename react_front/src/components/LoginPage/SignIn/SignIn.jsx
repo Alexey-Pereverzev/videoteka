@@ -36,7 +36,7 @@ class SignIn extends Component {
                         this.showCurrentUserInfo()
 
                         console.log(JSON.parse(localStorage.getItem("userId")))
-                        await axios.get('http://localhost:5555/auth/api/v1/users/get_fullname_by_id', {
+                        await axios.get('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
                             params: {
                                 userId: JSON.parse(localStorage.getItem("userId"))
                             }

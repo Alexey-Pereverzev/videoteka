@@ -23,7 +23,8 @@ function FilmCard(props) {
             ).then(response => response.data)
                 .then(data => {
                     let rating = data;
-                    let dotRating = rating.replace(",", ".")
+                    let dotRating = rating
+                        .replace(",", ".")
                     setRatingState(dotRating)
                     console.log("Ответ метода getRating: " + dotRating)
                 })
@@ -91,12 +92,6 @@ function FilmCard(props) {
                     </div>
                     {props.genre.map((genre) => <TagButton genre={genre}/>)}
 
-                    {/*<div className={style.info}>*/}
-                    {/*    <p>{props.description}</p>*/}
-                    {/*</div>*/}
-                    {/*<div className={style.country}>*/}
-                    {/*    <h4>{props.country}</h4>*/}
-                    {/*</div>*/}
                 </div>
                 <div className="card-footer">
                     <div className="clearfix">

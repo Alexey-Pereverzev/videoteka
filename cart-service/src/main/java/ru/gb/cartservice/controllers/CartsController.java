@@ -51,7 +51,7 @@ public class CartsController {
             description = "Удаляем фильм из корзины "
     )
 
-    @GetMapping("/remove")
+    @DeleteMapping
     public void remove(@RequestHeader(required = false) String userId, @RequestParam  String uuid, @RequestParam  Long filmId) {
         cartService.removeItemFromCart(getCurrentCartUuid(userId, uuid), filmId);
     }
@@ -85,7 +85,7 @@ public class CartsController {
     public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
         return cartService.validateCart(userId);
     }
-    @GetMapping ("/rediscontent")
+    @GetMapping ("/redis_content")
     public StringResponse redisContent (){
         return cartService.redisContent();
     }

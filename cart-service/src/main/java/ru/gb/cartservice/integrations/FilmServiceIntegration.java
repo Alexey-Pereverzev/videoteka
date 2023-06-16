@@ -13,8 +13,7 @@ public class FilmServiceIntegration {
 
     public FilmDto findById(Long id) {
         FilmDto filmDto = filmServiceWebClient.get()
-                .uri("/api/v1/film/find_by_id/?id="+id)
-                //.header( "find_by_id", String.valueOf(id))
+                .uri("/api/v1/film/id/?id="+id)
                 .retrieve()
                 .bodyToMono(FilmDto.class)
                 .block();

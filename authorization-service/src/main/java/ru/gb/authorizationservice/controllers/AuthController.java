@@ -19,6 +19,7 @@ import ru.gb.api.dtos.dto.JwtResponse;
 import ru.gb.authorizationservice.config.CustomUserDetailsService;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.utils.JwtTokenUtil;
+import ru.gb.common.constants.InfoMessage;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +29,7 @@ import java.security.spec.InvalidKeySpecException;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Аутентификация", description = "Методы сервиса аутентификации")
-public class AuthController {
+public class AuthController implements InfoMessage {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
@@ -37,15 +38,15 @@ public class AuthController {
             summary = "Запрос на создание токена (аутентификацию)",
             responses = {
                     @ApiResponse(
-                            description = "Токен успешно создан", responseCode = "200",
+                            description = TOKEN_CREATED_SUCCESSFULLY, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = JwtResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Некорректный логин/пароль", responseCode = "400",
+                            description = INVALID_USERNAME_OR_PASSWORD, responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     ),
                     @ApiResponse(
-                            description = "Пользователя нет в БД (не зарегистрирован)", responseCode = "404",
+                            description = USER_NOT_FOUND, responseCode = "404",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     ),
             }

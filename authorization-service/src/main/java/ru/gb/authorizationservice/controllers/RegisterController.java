@@ -15,6 +15,7 @@ import ru.gb.api.dtos.dto.RegisterUserDto;
 import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.services.UserService;
+import ru.gb.common.constants.InfoMessage;
 
 import java.util.Optional;
 
@@ -22,18 +23,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reg")
 @Tag(name = "Регистрация", description = "Метод регистрации пользователя")
-public class RegisterController {
+public class RegisterController implements InfoMessage {
     private final UserService userService;
 
     @Operation(
             summary = "Запрос на регистрацию пользователя",
             responses = {
                     @ApiResponse(
-                            description = "Заказ успешно создан", responseCode = "200",
+                            description = ORDER_CREATED_SUCCESSFULLY, responseCode = "200",
                             content = @Content(schema = @Schema(implementation = StringResponse.class))
                     ),
                     @ApiResponse(
-                            description = "Ошибка (пользователь уже есть в системе, не совпадают пароли или ошибка ввода данных)",
+                            description = INPUT_DATA_ERROR,
                             responseCode = "400",
                             content = @Content(schema = @Schema(implementation = AppError.class))
                     )

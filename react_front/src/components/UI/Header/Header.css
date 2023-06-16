@@ -47,7 +47,9 @@
 .tool_bar {
     display: flex;
 }
-
+.auth_container{
+    display: flex;
+}
 .menu_container {
     margin-top: 10px;
     width: 50px;
