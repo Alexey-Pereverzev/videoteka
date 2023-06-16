@@ -16,7 +16,6 @@ import ru.gb.common.constants.InfoMessage;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler implements InfoMessage {
-    InfoMessage infoMessage;
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e){
         return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND_CODE, e.getMessage()),

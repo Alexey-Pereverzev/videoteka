@@ -2,8 +2,8 @@ package ru.gb.authorizationservice.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -120,7 +120,5 @@ public class JwtTokenUtil {
         Jwts.parser().setSigningKey(secretPublic).parseClaimsJws(authToken);
         return "";
     }
-
-
 
 }
