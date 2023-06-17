@@ -15,6 +15,12 @@ public interface InfoMessage {
     String PUBLIC_KEY_ERROR_CODE = "PUBLIC_KEY_ERROR";
     String ILLEGAL_ARGUMENT_CODE = "ILLEGAL_ARGUMENT";
     String INTEGRATION_ERROR_CODE = "INTEGRATION_ERROR";
+    String INVALID_HEADER_USERID = "Invalid header UserId";
+    String ACCESS_DENIED = "Access denied!";
+    String NOT_FOR_GUESTS = "Not for guests";
+    String BEARER = "Bearer ";
+    String USER_ID = "userId";
+    String ROLE = "role";
     String TOKEN_CREATED_SUCCESSFULLY = "Токен успешно создан";
     String INVALID_USERNAME_OR_PASSWORD = "Некорректный логин или пароль";
     String USER_NOT_FOUND = "Пользователь не найден";

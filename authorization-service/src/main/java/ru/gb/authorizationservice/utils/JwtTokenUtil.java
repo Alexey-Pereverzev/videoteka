@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.gb.common.constants.InfoMessage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class JwtTokenUtil {
+public class JwtTokenUtil implements InfoMessage {
     private final PublicKey secretPublic;
     private static final String SECRET_PATH="secret/";
 
@@ -52,13 +53,13 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         String role = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList().get(0);   //  в UserDetails только 1 роль
-        claims.put("role", role);                           // список ролей
+        claims.put(ROLE, role);                           // список ролей
 
         Date issuedDate = new Date();               //  время создания токена
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);    //  время окончания жизни токена
 
         return JWT.create()
-                .withClaim("role", role)                              //  роль пользователя
+                .withClaim(ROLE, role)                              //  роль пользователя
                 .withSubject(String.valueOf(userId))                        //  Id пользователя
                 .withIssuedAt(issuedDate)                                   //  время создания
                 .withExpiresAt(expiredDate)                                 //  время окончания жизни
@@ -111,7 +112,7 @@ public class JwtTokenUtil {
     }
 
     public String getRole(String token) {
-        return getAllClaimsFromToken(token).get("role", String.class);
+        return getAllClaimsFromToken(token).get(ROLE, String.class);
     }
 
 
