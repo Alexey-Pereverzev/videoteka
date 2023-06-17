@@ -1,6 +1,5 @@
 import "./AddReviewPage.css"
 import {Paper, Rating} from "@mui/material";
-import style from "../RedactorPage/RedactorPage.module.css";
 import React, {useRef, useState} from "react";
 import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";

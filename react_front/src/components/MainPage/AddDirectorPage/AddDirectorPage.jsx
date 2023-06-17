@@ -33,7 +33,7 @@ const AddDirectorPage = (props) => {
                     <label>Имя</label>
                 </div>
                 <div className={'input_container'}>
-                    <input type="text" required="" value={firstName || ''} onChange={(event) => onChangeLastHandler(event)}
+                    <input type="text" required="" value={lastName || ''} onChange={(event) => onChangeLastHandler(event)}
                            onfocusout={clear}/>
                     <label>Фамилия</label>
                 </div>

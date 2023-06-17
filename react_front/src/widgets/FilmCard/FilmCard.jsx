@@ -10,7 +10,7 @@ import AddReviewPage from "../../components/MainPage/AddReviewPage/AddReviewPage
 
 
 function FilmCard(props) {
-    const [ratingState, setRatingState] = useState(0.00);
+    const [ratingState, setRatingState] = useState('');
     console.log('Id фильма: ' + props.id)
     let getRating = () => {
         try {
@@ -23,9 +23,9 @@ function FilmCard(props) {
             ).then(response => response.data)
                 .then(data => {
                     let rating = data;
-                    let dotRating = rating
-                        // .replace(",", ".")
-                    setRatingState(dotRating)
+                    setRatingState(rating)
+
+                 
                     console.log("Ответ метода getRating: " + dotRating)
                 })
 

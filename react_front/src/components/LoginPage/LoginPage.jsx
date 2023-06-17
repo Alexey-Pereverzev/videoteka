@@ -1,9 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Grid from "@mui/material/Grid";
 import "./LoginPage.css";
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 import {NavLink, Route, Routes} from "react-router-dom";
+import ModalWindow from "../../widgets/ModalWindow/ModalWindow";
+import MailPage from "./MailPage/MailPage";
+import CodeVerificationPage from "./CodeVerificationPage/CodeVerificationPage";
+import ChangePasswordPage from "./ChangePasswordPage/ChangePasswordPage";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -11,6 +15,8 @@ class LoginPage extends Component {
 
     this.state = {
       isLogin: true,
+      command: '',
+      active: false
     };
   }
   changeLoginState = () => {
@@ -21,6 +27,20 @@ class LoginPage extends Component {
   render() {
 
 
+    let switchScene = (command) => {
+      switch (command) {
+        case 'mail':
+          return <MailPage setCommand={this.setState()}
+          />
+        case 'code':
+          return <CodeVerificationPage setCommand={this.setState()}
+          />
+
+        default:
+          return <ChangePasswordPage setCommand={this.setState()}
+          />
+      }
+    }
 
 
     return (
@@ -39,8 +59,6 @@ class LoginPage extends Component {
                     <Route index path={'/login'} element={<SignIn/>}/>
                     <Route path={'/register'} element={<SignUp/>}/>
                   </Routes>
-                  {/*<SignIn/>*/}
-                  {/*<SignUp/>*/}
 
                   <div className="login-page__ordiv">
                     <div className="login-page__divider"></div>
@@ -53,7 +71,7 @@ class LoginPage extends Component {
                     {/*</button>*/}
                   </div>
                   <div className="login-page__forgot-password">
-                    Забыл пароль?
+                    <button>Забыл пароль?</button>
                   </div>
                 </div>
               </div>
@@ -83,6 +101,11 @@ class LoginPage extends Component {
           </div>
         </Grid>
         <Grid item xs={3}></Grid>
+        <ModalWindow active={modalActive}
+                     setActive={setModalActive}
+        >
+          {switchScene(command)}
+        </ModalWindow>
       </Grid>
     );
   }
