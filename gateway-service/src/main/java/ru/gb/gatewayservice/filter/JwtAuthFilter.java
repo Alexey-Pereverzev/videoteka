@@ -9,9 +9,12 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import ru.gb.common.constants.InfoMessage;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
-public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
+public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> implements InfoMessage {
 
     private final JwtUtil jwtUtil;
 
@@ -26,8 +29,8 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
             ServerHttpRequest request = exchange.getRequest();
 
-            if (request.getHeaders().containsKey("userId")) {     //  защита обхода Gateway
-                return this.onError(exchange, "Invalid header username", HttpStatus.BAD_REQUEST);
+            if (request.getHeaders().containsKey(USER_ID)) {     //  защита обхода Gateway
+                return this.onError(exchange, INVALID_HEADER_USERID, HttpStatus.BAD_REQUEST);
             }
 
             if (isAuthPresent(request)) {
@@ -51,21 +54,21 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     }
 
     private String getAuthHeader(ServerHttpRequest request) {
-        return request.getHeaders().getOrEmpty("Authorization").get(0).substring(7);
+        return request.getHeaders().getOrEmpty(AUTHORIZATION).get(0).substring(7);
     }
 
     private boolean isAuthPresent(ServerHttpRequest request) {
-        if (!request.getHeaders().containsKey("Authorization")) {
+        if (!request.getHeaders().containsKey(AUTHORIZATION)) {
             return false;
         }
-        return request.getHeaders().getOrEmpty("Authorization").get(0).startsWith("Bearer ");
+        return request.getHeaders().getOrEmpty(AUTHORIZATION).get(0).startsWith(BEARER);
     }
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         Claims claims = jwtUtil.getAllClaimsFromToken(token);
         exchange.getRequest().mutate()
-                .header("userId", claims.getSubject())
-                .header("role", String.valueOf(claims.get("role")))     //  ЕСЛИ В ТОКЕНЕ БУДЕТ role
+                .header(USER_ID, claims.getSubject())
+                .header(ROLE, String.valueOf(claims.get(ROLE)))     //  ЕСЛИ В ТОКЕНЕ БУДЕТ role
                 .build();
     }
 }

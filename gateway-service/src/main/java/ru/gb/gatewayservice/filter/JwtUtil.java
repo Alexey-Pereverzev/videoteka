@@ -39,16 +39,8 @@ public class JwtUtil {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return "";
-        } catch (MalformedJwtException e) {
-            return "MalformedJwtException " + e.getMessage();
-        } catch (ExpiredJwtException e) {
-            return "ExpiredJwtException " + e.getMessage();
-        } catch (UnsupportedJwtException e) {
-            return "UnsupportedJwtException " + e.getMessage();
-        } catch (SignatureException e) {
-            return "SignatureException " + e.getMessage();
-        } catch (IllegalArgumentException e) {
-            return "IllegalArgumentException " + e.getMessage();
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 

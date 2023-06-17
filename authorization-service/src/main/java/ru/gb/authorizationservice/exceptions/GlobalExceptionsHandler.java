@@ -16,7 +16,6 @@ import ru.gb.common.constants.InfoMessage;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler implements InfoMessage {
-    InfoMessage infoMessage;
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e){
         return new ResponseEntity<>(new AppError(RESOURCE_NOT_FOUND_CODE, e.getMessage()),
@@ -52,37 +51,37 @@ public class GlobalExceptionsHandler implements InfoMessage {
     @ExceptionHandler
     public ResponseEntity<AppError> handleExpiredJwtException(ExpiredJwtException e){
         return new ResponseEntity<>(new AppError(TOKEN_IS_EXPIRED_CODE,
-                e.getMessage()), HttpStatus.FORBIDDEN);
+                e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleMalformedJwtException(MalformedJwtException e){
         return new ResponseEntity<>(new AppError(TOKEN_IS_MALFORMED_CODE,
-                e.getMessage()), HttpStatus.FORBIDDEN);
+                e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleSignatureException(SignatureException e){
         return new ResponseEntity<>(new AppError(INVALID_SIGNATURE_CODE,
-                e.getMessage()), HttpStatus.FORBIDDEN);
+                e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleUnsupportedJwtException(UnsupportedJwtException e){
         return new ResponseEntity<>(new AppError(UNSUPPORTED_JWT_TOKEN_CODE,
-                e.getMessage()), HttpStatus.FORBIDDEN);
+                e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleIllegalArgumentException(IllegalArgumentException e){
         return new ResponseEntity<>(new AppError(ILLEGAL_ARGUMENT_CODE,
-                e.getMessage()), HttpStatus.FORBIDDEN);
+                e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<AppError> handlePublicKeyErrorException(PublicKeyErrorException e){
         return new ResponseEntity<>(new AppError(PUBLIC_KEY_ERROR_CODE,
-                e.getMessage()), HttpStatus.FORBIDDEN);
+                e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
