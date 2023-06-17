@@ -33,7 +33,7 @@ public class MailServiceIntegration implements InfoMessage {
                 .bodyToMono(StringResponse.class)
                 .block();
 
-        if (!(response == null)) {
+        if (response != null) {
             return response.getValue();
         } else {
             throw new IntegrationException(EMAIL_SERVICE_ERROR);
