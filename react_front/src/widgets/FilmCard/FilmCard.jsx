@@ -24,6 +24,8 @@ function FilmCard(props) {
                 .then(data => {
                     let rating = data;
                     setRatingState(rating)
+
+                 
                     console.log("Ответ метода getRating: " + dotRating)
                 })
 
