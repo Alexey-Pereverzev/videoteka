@@ -10,7 +10,8 @@ public class CartItemDto {
     private Long filmId;
     private String title;
     private String imageUrlLink;
-    private int price;
+    private int salePrice;
+    private int rentPrice;
     private boolean isSale;
 
 }

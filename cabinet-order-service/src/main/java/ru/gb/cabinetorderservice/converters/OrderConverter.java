@@ -24,7 +24,8 @@ public class OrderConverter {
         out.setId(order.getId());
         out.setUserId(order.getUserId());
         out.setFilmId(order.getFilmId());
-        out.setPrice(order.getPrice());
+        out.setSalePrice(order.getSalePrice());
+        out.setRentPrice(order.getRentPrice());
         out.setSale(order.getType().equals("SALE"));
         Long filmId = order.getFilmId();
         FilmDto filmDto = filmServiceIntegration.findById(filmId);
