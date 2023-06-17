@@ -1,7 +1,13 @@
 package ru.gb.api.dtos.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "Запрос на авторизацию")
 public class JwtRequest {
 
@@ -10,28 +16,4 @@ public class JwtRequest {
 
     @Schema(description = "Пароль", required = true, maxLength = 80, minLength = 2, example = "some1password2")
     private String password;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public JwtRequest() {
-    }
-
-    public JwtRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }
