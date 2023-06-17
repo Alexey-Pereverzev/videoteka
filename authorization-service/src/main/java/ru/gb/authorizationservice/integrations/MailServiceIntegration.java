@@ -27,8 +27,11 @@ public class MailServiceIntegration implements InfoMessage {
 
     public String composeVerificationLetter(String firstName, String email) {
         StringResponse response = mailServiceWebClient.get()
-                .uri("/api/v1/mail/verification_code/?firstName=" + firstName
-                        + "&email=" + email)
+                .uri(uriBuilder -> uriBuilder
+                                .path("/api/v1/mail/verification_code")
+                                .queryParam("firstName", firstName)
+                                .queryParam("email", email)
+                                .build())
                 .retrieve()
                 .bodyToMono(StringResponse.class)
                 .block();
