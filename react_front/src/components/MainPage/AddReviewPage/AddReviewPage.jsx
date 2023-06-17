@@ -1,6 +1,5 @@
 import "./AddReviewPage.css"
 import {Paper, Rating} from "@mui/material";
-import style from "../RedactorPage/RedactorPage.module.css";
 import React, {useRef, useState} from "react";
 import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";
@@ -28,7 +27,7 @@ function AddReviewPage(props) {
         console.log(message)
         try {
             if (message !== ''){
-                axios.post('http://localhost:5555/catalog/api/v1/rating/new-comment',
+                axios.post('http://localhost:5555/catalog/api/v1/rating/new_comment',
                     {
                         film_id: props.filmId,
                         user_id: Number(userId),

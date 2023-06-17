@@ -115,7 +115,13 @@ input[type="password"i] {
     margin-top: 12px;
     line-height: 14px;
 }
-
+.login-page__forgot-password button {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: rgb(128, 255, 139);
+    cursor: pointer;
+}
 .login-page__signup-option {
     width: 350px;
     height: 50px;
