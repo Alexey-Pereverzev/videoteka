@@ -84,7 +84,7 @@ function FilmCard(props) {
                         <Rating name="half-rating-read"
                                sx={{padding: 1}}
                                 size={'normal'}
-                                precision={0.1}
+                                precision={0.01}
                                 value={ratingState}
                                 readOnly/>
                         <span>{ratingState}</span>
