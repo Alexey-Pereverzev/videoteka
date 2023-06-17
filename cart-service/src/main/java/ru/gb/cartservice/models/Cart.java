@@ -6,6 +6,7 @@ import ru.gb.api.dtos.cart.CartItemDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class Cart {
@@ -19,9 +20,10 @@ public class Cart {
     public void add(CartItemDto cartItemDto, boolean isSale) {
         if (add(cartItemDto.getFilmId())) {
             for (CartItem o : items) {
-            if (!o.isSale()&& isSale ){
-                o.setPrice(cartItemDto.getPrice());
-                o.setSale(isSale);
+            if (!o.isSale() && isSale ){
+                o.setSalePrice(cartItemDto.getSalePrice());
+                o.setSale(true);
+
             }
             }
 
@@ -33,9 +35,10 @@ public class Cart {
 
     public boolean add(Long id) {
         for (CartItem o : items) {
-            if (o.getFilmId().equals(id)) {
+            if (Objects.equals(o.getFilmId(), id)) {
                 return true;
             }
+
         }
         return false;
     }
@@ -53,9 +56,13 @@ public class Cart {
     private void recalculate() {
         totalPrice = 0;
         for (CartItem o : items) {
-            totalPrice += o.getPrice();
+            if (o.isSale()) {
+                totalPrice += o.getSalePrice();
+            } else
+                totalPrice += o.getRentPrice();
         }
     }
+
 
     public void merge(Cart another) {
         for (CartItem anotherItem : another.items) {

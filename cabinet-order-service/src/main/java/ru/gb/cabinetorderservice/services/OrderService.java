@@ -54,7 +54,8 @@ public class OrderService implements Constant {
             for (CartItemDto cartItemDto : currentCart.getItems()) {
                 Order order = new Order();
                 order.setUserId(userIDLong);
-                order.setPrice(cartItemDto.getPrice());
+                order.setSalePrice(cartItemDto.getSalePrice());
+                order.setRentPrice(cartItemDto.getRentPrice());
                 order.setFilmId(cartItemDto.getFilmId());
                 if (!cartItemDto.isSale()) {
                     order.setType("RENT");

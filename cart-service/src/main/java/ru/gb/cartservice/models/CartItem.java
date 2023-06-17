@@ -13,7 +13,8 @@ public class CartItem {
     private Long filmId;
     private String filmTitle;
     private String filmImageUrlLink;
-    private int price;
+    private int rentPrice;
+    private int salePrice;
     private boolean isSale;
 
 //    public CartItem(CartItemDto cartItemDto) {
@@ -24,7 +25,8 @@ public class CartItem {
         this.filmId = cartItemDto.getFilmId();
         this.filmTitle = cartItemDto.getTitle();
         this.filmImageUrlLink = cartItemDto.getImageUrlLink();
-        this.price = cartItemDto.getPrice();
+        this.salePrice = cartItemDto.getSalePrice();
+        this.rentPrice = cartItemDto.getRentPrice();
         this.isSale = cartItemDto.isSale();
 
     }

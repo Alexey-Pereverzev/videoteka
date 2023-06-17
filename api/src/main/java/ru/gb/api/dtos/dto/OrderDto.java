@@ -16,7 +16,8 @@ public class OrderDto {
     private String filmTitle;
     private String description;
     private String imageUrlLink;
-    private int price;
+    private int salePrice;
+    private int rentPrice;
     private boolean isSale;
     private LocalDateTime rentStart;
     private LocalDateTime rentEnd;

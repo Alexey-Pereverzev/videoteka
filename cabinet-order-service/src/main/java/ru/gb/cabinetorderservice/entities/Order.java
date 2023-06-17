@@ -28,8 +28,11 @@ public class Order extends GenericEntity{
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "price")
-    private Integer price;
+    @Column(name = "sale_price")
+    private Integer salePrice;
+
+    @Column(name = "rent_price")
+    private Integer rentPrice;
 
     @Column(name = "type")
     private String type;
