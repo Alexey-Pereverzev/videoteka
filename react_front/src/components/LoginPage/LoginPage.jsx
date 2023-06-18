@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import Grid from "@mui/material/Grid";
 import "./LoginPage.css";
 import SignIn from "./SignIn/SignIn";
@@ -9,35 +9,26 @@ import MailPage from "./MailPage/MailPage";
 import CodeVerificationPage from "./CodeVerificationPage/CodeVerificationPage";
 import ChangePasswordPage from "./ChangePasswordPage/ChangePasswordPage";
 
-class LoginPage extends Component {
-  constructor(props) {
-    super(props);
+const LoginPage = (props) => {
+ const[isLogin, setIsLogin] = useState(true)
+ const[command, setCommand] = useState("")
+ const[modalActive, setModalActive] = useState(false)
 
-    this.state = {
-      isLogin: true,
-      command: '',
-      active: false
-    };
+  let changeLoginState = () => {
+    if (isLogin) setIsLogin(false)
+    else setIsLogin( true )
   }
-  changeLoginState = () => {
-    if (this.state.isLogin) this.setState({ isLogin: false });
-    else this.setState({ isLogin: true });
-  };
-
-  render() {
-
 
     let switchScene = (command) => {
       switch (command) {
         case 'mail':
-          return <MailPage setCommand={this.setState()}
+          return <MailPage setCommand={setCommand}
           />
         case 'code':
-          return <CodeVerificationPage setCommand={this.setState()}
+          return <CodeVerificationPage setCommand={setCommand}
           />
-
-        default:
-          return <ChangePasswordPage setCommand={this.setState()}
+       case 'change':
+          return <ChangePasswordPage setCommand={setCommand}
           />
       }
     }
@@ -77,11 +68,11 @@ class LoginPage extends Component {
               </div>
 
               <div className="login-page__signup-option">
-                {this.state.isLogin ? (
+                {isLogin ? (
                   <div className="login-page__sign-in-prop">
                     <span>
                       Ты ещё не с нами?{" "}
-                      <NavLink to={'register'} onClick={() => this.changeLoginState()}>
+                      <NavLink to={'register'} onClick={() => changeLoginState()}>
                         Регистрируйся!
                       </NavLink>
 
@@ -90,7 +81,7 @@ class LoginPage extends Component {
                 ) : (
                   <div className="login-page__sign-up-prop">
                     Есть регистрация?{" "}
-                    <NavLink to={'login'} onClick={() => this.changeLoginState()}>
+                    <NavLink to={'login'} onClick={() => changeLoginState()}>
                       Входи!
                     </NavLink>
 
@@ -108,7 +99,7 @@ class LoginPage extends Component {
         </ModalWindow>
       </Grid>
     );
-  }
+
 }
 
 export default LoginPage;

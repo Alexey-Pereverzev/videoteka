@@ -23,10 +23,8 @@ function FilmCard(props) {
             ).then(response => response.data)
                 .then(data => {
                     let rating = data;
-                    setRatingState(rating)
 
-                 
-                    console.log("Ответ метода getRating: " + dotRating)
+                    setRatingState(rating)
                 })
 
         } catch (e) {
