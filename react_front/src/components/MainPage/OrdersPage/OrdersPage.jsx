@@ -157,16 +157,20 @@ class OrdersPage extends Component {
                                             <TableCell align="right">{row.price}</TableCell>
 
                                             <TableCell
-                                                align="right">{new Date(row.rentStart).toLocaleDateString("ru-RU", {
+                                                align="right">{new Date(row.rentStart).toLocaleString("ru-RU", {
                                                 day: "numeric",
                                                 month: "long",
-                                                year: "numeric"
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
                                             })}</TableCell>
                                             <TableCell
-                                                align="right">{new Date(row.rentEnd).toLocaleDateString("ru-RU", {
+                                                align="right">{new Date(row.rentEnd).toLocaleString("ru-RU", {
                                                 day: "numeric",
                                                 month: "long",
-                                                year: "numeric"
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
                                             })}</TableCell>
                                             <TableCell align="right">
 
