@@ -4,7 +4,8 @@
 }
 .user_name__under_avatar{
     color: #ef9223;
-
+    font-size: 14px;
+    width: 110px;
 }
 .top_header {
     position: fixed;
@@ -148,7 +149,7 @@
 .cart_box {
     position: relative;
     top: 20px;
-    /*right: 300px;*/
+    right: -40px;
 }
 
 .cart_box__button {
