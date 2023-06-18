@@ -25,7 +25,7 @@ import ru.gb.authorizationservice.utils.JwtTokenUtil;
 @EnableWebSecurity(debug = true)
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
