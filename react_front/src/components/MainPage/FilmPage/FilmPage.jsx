@@ -14,7 +14,7 @@ function FilmPage(props) {
         toast.success(message);
     };
 
-
+    let role = JSON.parse(localStorage.getItem('role_user'))
     let addToCart = async (event, sale) => {
 
         const stringCover = props.cover
@@ -104,21 +104,27 @@ function FilmPage(props) {
                         <button onClick={() => handleChange('reviews')}>
                             <span className={'to_reviews'}><h4>Отзывы на фильм</h4></span>
                         </button>
+                        {role === 'ROLE_USER'?
                         <button onClick={() => handleChange('add_review')}>
                             <span className={'to_reviews'}><h4>Оставить рецензию</h4></span>
                         </button>
+                            :
+                            null
+                        }
 
                     </div>
                     <p className="movie__detail"><span className="icons icons-yellow"><i
                         className="fas fa-file-invoice-dollar"></i>
                     </span>
-                        <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
-                                onClick={(event,_) => {
-                                    addToCart(event, props.isSale)
-                                }}
+                        {role === 'ROLE_USER'?
+                            <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
+                                    onClick={(event,_) => {addToCart(event, props.isSale)}}>
+                                В Корзину
+                            </button>
+                            :
+                            null
+                        }
 
-                        >В Корзину
-                        </button>
                     </p>
                 </div>
 

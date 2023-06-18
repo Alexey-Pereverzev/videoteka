@@ -28,17 +28,6 @@ function ManagerPanel() {
                     </NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <NavLink to={'/cart'}>
-                        Корзина
-                    </NavLink>
-                </div>
-                <div className={'menu__item'}>
-                    <NavLink to={'orders'}>Мои фильмы</NavLink>
-                </div>
-                <div className={'menu__item'}>
-                    <NavLink to={'favourites'}>Избранное</NavLink>
-                </div>
-                <div className={'menu__item'}>
                     <NavLink to={'redactor'}>Редактор карточки фильма</NavLink>
                 </div>
                 <div className={'menu__item'}>
@@ -55,8 +44,6 @@ function ManagerPanel() {
             <div>
                 <Routes>
                     <Route path={'profile'} element={<ProfilePage/>}/>
-                    <Route path={'orders'} element={<OrdersPage/>}/>
-                    <Route path={'favourites'} element={<FavoritesPage/>}/>
                     <Route path={'redactor'} element={<RedactorPage/>}/>
                     <Route path={'moderation'} element={<ModeratorPage/>}/>
                     <Route path={'country_list'} element={<CountryListPage/>}/>
