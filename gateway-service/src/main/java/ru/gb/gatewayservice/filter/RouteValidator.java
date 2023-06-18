@@ -26,7 +26,6 @@ public class RouteValidator {
             "/api/v1/genre/id",
             "/api/v1/price/prices_filter",
             "/api/v1/rating/all",
-            "/api/v1/rating/add_new",
             "/api/v1/rating/grade_user_by_id_film",
             "/api/v1/rating/total_film_rating",
             "/api/v1/rating/all_grade_and_review_by_filmId",
@@ -53,7 +52,7 @@ public class RouteValidator {
     );
 
     public static final List<String> userApiEndpoints = List.of(
-            "/api/v1/rating/new-comment",
+            "/api/v1/rating/new_comment",
 
             "/api/v1/cart/merge",
             "/api/v1/cart/pay",
