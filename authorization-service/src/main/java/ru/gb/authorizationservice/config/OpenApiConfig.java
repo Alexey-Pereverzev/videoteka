@@ -16,4 +16,5 @@ public class OpenApiConfig {
                                 .version("1")
                 );
     }
+
 }
