@@ -125,3 +125,6 @@ input[type="number"]::-webkit-inner-spin-button{
     background-color: #63386d;
     color: white;
 }
+.filter_btn{
+    color: #ef9223;
+}

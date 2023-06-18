@@ -23,17 +23,6 @@ function AdminPanel() {
                     </NavLink>
                 </div>
                 <div className={'menu__item'}>
-                    <NavLink to={'/cart'}>
-                        Корзина
-                    </NavLink>
-                </div>
-                <div className={'menu__item'}>
-                    <NavLink to={'orders'}>Мои фильмы</NavLink>
-                </div>
-                <div className={'menu__item'}>
-                    <NavLink to={'favourites'}>Избранное</NavLink>
-                </div>
-                <div className={'menu__item'}>
                     <NavLink to={'users'}>Пользователи</NavLink>
                 </div>
             </div>

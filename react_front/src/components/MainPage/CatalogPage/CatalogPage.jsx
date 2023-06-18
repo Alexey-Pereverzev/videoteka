@@ -454,6 +454,9 @@ class CatalogPage extends Component {
                                                 onChange={(_, num) => this.usePageHandler(num)}
                                     />
                                 </div>
+                                <Button onClick={this.handleSaleChange} className={style.filter_btn}>Купить фильмы</Button>
+
+                                <Button onClick={this.handleSaleChange} className={style.filter_btn}>Взять фильмы в аренду</Button>
                             </div>
                             :
                             <div className={style.empty}>
@@ -578,12 +581,12 @@ class CatalogPage extends Component {
                         </div>
                     </div>
                     {!this.state.isSale ?
-                        <Button onClick={this.handleSaleChange} className={style.clear}>Продажа</Button>
+                        <Button onClick={this.handleSaleChange} className={style.filter_btn}>Продажа</Button>
                         :
-                        <Button onClick={this.handleSaleChange} className={style.clear}>Аренда</Button>
+                        <Button onClick={this.handleSaleChange} className={style.filter_btn}>Аренда</Button>
                     }
 
-                    <Button onClick={() => this.filmFilterByGenres("Все")} className={style.clear}>Сбросить</Button>
+                    <Button onClick={() => this.filmFilterByGenres("Все")} className={style.filter_btn}>Сбросить</Button>
 
                 </div>
 
