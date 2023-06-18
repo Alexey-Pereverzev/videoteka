@@ -65,7 +65,7 @@ class OrdersPage extends Component {
 
 
     render() {
-        async function buyRentedFilm(id, title, cover, price) {
+        async function buyRentedFilm(id, title, cover, price, rentPrice) {
             try {
                 const response = await axios.get('http://localhost:5555/cart/api/v1/cart/add',
                     {
@@ -73,9 +73,10 @@ class OrdersPage extends Component {
                             uuid: localStorage.getItem('guestCartId'),
                             filmId: id,
                             filmTitle: title,
-                            filmPrice: price,
+                            salePrice: price,
+                            rentPrice: rentPrice,
                             filmImageUrlLink: cover,
-                            isSale: true
+                           isSale: true
                         }
                     }
                 )
@@ -150,7 +151,7 @@ class OrdersPage extends Component {
                                             </TableCell>
                                             <TableCell align="right">
                                                 <button className={'buy-order__btn'}
-                                                        onClick={() => buyRentedFilm(row.id, row.filmTitle, row.imageUrlLink, row.price)}>Купить
+                                                        onClick={() => buyRentedFilm(row.filmId, row.filmTitle, row.imageUrlLink, row.salePrice, row.rentPrice)}>Купить
                                                 </button>
                                             </TableCell>
                                             <TableCell align="right">{row.filmTitle}</TableCell>

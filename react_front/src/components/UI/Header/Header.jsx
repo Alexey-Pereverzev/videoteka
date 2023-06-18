@@ -97,6 +97,7 @@ function Header(props) {
                                         height: 36,
                                     }}
                                 />
+                                <div className={'user_name__under_avatar'}>{fullName}</div>
                             </div>
                             <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
                                 <h3 className={'menu_username'}>
