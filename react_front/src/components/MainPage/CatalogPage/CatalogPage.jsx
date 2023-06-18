@@ -421,6 +421,7 @@ class CatalogPage extends Component {
         const countries = this.state.countries;
         const totalPages = this.state.totalPages;
         const {active, setActive} = this.state.active;
+        const role = JSON.parse(localStorage.getItem('role_user'));
         return (
             <div className={style.catalog_container}>
 

@@ -3,8 +3,8 @@ import SpeechBubbles from "../../../widgets/SpeechBubbles/SpeechBubbles";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
-// /
-// /
+
+
 function ModeratorPage() {
    const getMessagesOnModerate = async () => {
        try {

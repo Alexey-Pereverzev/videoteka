@@ -198,6 +198,9 @@ class OrdersPage extends Component {
                                             color: 'white',
                                             maxWidth: 50
                                         }}>Обложка</TableCell>
+
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
+                                                   align="right"></TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white', maxWidth: 77}}
                                                    align="center">Название</TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white', maxWidth: 77}}
@@ -211,10 +214,14 @@ class OrdersPage extends Component {
                                             tabIndex={-1}
                                             key={row.username}
                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                            onClick={() => this.setState({modalActive: true})}
                                         >
                                             <TableCell component="th" scope="row">
                                                 <img className={'orders_img'} src={row.imageUrlLink}/>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <button className={'buy-order__btn'}
+                                                        onClick={() => this.setState({modalActive: true})}>Смотреть
+                                                </button>
                                             </TableCell>
                                             <TableCell align="center">{row.filmTitle}</TableCell>
                                             <TableCell align="center">{row.price}</TableCell>

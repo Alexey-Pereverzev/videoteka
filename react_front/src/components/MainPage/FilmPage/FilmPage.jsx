@@ -14,19 +14,9 @@ function FilmPage(props) {
         toast.success(message);
     };
 
-    // let getPrice = () => {
-    //     let price = ''
-    //     if (props.isSale) {
-    //         price = props.salePrice
-    //     } else {
-    //         if (!props.isSale) {
-    //             price = props.rentPrice
-    //         }
-    //     }
-    //     return price
-    // }
-    let addToCart = async (sale) => {
-        // const price = getPrice()
+
+    let addToCart = async (event, sale) => {
+
         const stringCover = props.cover
         if (localStorage.getItem("customer")) {
             try {
@@ -43,7 +33,9 @@ function FilmPage(props) {
                         }
                     }
                 )
-                    displayCartNotification(response.data.value)
+                event.target.disabled = true;
+                displayCartNotification(response.data.value)
+
                 console.log("Ответ метода addToCart: " + response.data)
             } catch (e) {
                 alert(e)
@@ -53,6 +45,7 @@ function FilmPage(props) {
         }
 
     }
+
     const handleChange = (command) => {
         switch (command) {
             case 'reviews':
@@ -120,7 +113,9 @@ function FilmPage(props) {
                         className="fas fa-file-invoice-dollar"></i>
                     </span>
                         <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
-                                onClick={() => addToCart(props.isSale)}
+                                onClick={(event,_) => {
+                                    addToCart(event, props.isSale)
+                                }}
 
                         >В Корзину
                         </button>
