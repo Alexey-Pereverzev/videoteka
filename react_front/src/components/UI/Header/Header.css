@@ -2,7 +2,10 @@
     height: 70px;
     z-index: 1;
 }
+.user_name__under_avatar{
+    color: #ef9223;
 
+}
 .top_header {
     position: fixed;
     display: flex;

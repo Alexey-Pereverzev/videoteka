@@ -60,7 +60,7 @@ public class RatingController {
     )
     @GetMapping("/total_film_rating")
     public String totalRatingFilmById(@RequestParam Long filmId) {
-        return String.format("%.2f", ratingService.getTotalGrade(filmId));
+        return String.format("%.2f", ratingService.getTotalGrade(filmId)).replace(",",".");
     }
 
     @Operation(

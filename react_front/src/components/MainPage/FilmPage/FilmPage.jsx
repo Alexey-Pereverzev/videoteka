@@ -14,19 +14,19 @@ function FilmPage(props) {
         toast.success(message);
     };
 
-    let getPrice = () => {
-        let price = ''
-        if (props.isSale) {
-            price = props.salePrice
-        } else {
-            if (!props.isSale) {
-                price = props.rentPrice
-            }
-        }
-        return price
-    }
+    // let getPrice = () => {
+    //     let price = ''
+    //     if (props.isSale) {
+    //         price = props.salePrice
+    //     } else {
+    //         if (!props.isSale) {
+    //             price = props.rentPrice
+    //         }
+    //     }
+    //     return price
+    // }
     let addToCart = async (sale) => {
-        const price = getPrice()
+        // const price = getPrice()
         const stringCover = props.cover
         if (localStorage.getItem("customer")) {
             try {
@@ -36,7 +36,8 @@ function FilmPage(props) {
                             uuid: localStorage.getItem('guestCartId'),
                             filmId: props.filmId,
                             filmTitle: props.title,
-                            filmPrice: price,
+                            rentPrice: props.rentPrice,
+                            salePrice: props.salePrice,
                             filmImageUrlLink: stringCover,
                             isSale: sale
                         }

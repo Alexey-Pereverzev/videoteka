@@ -33,6 +33,7 @@ class CartPage extends Component{
                 bayPack: data.items,
                 totalPrice: data.totalPrice
             })
+                console.log(data)
                 localStorage.setItem("totalPrice", JSON.stringify(data.totalPrice))
 
             })
@@ -80,7 +81,9 @@ class CartPage extends Component{
                         {this.state.bayPack.map((item) =>
                                 <StringCard filmId={item.filmId}
                                             title={item.title}
-                                            price={item.price}
+                                            isSale={item.sale}
+                                            salePrice={item.salePrice}
+                                            rentPrice={item.rentPrice}
                                             cover={item.imageUrlLink}
                                             loadCart={this.loadCart}
 
