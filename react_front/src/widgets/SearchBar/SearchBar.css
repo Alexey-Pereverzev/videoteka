@@ -43,7 +43,7 @@
     border: none;
     font-size: 10pt;
     float: left;
-    color: #262626;
+    color: #a9a5a5;
     padding-left: 55px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -84,6 +84,7 @@
 .container-1 input#search:focus, .container-1 input#search:active {
     outline: none;
     background: #ffffff;
+    color: #4f5b66;
 }
 .back_btn{
     position: absolute;
