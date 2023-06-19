@@ -54,6 +54,7 @@
     position: relative;
     margin-bottom: 25px;
     margin-right: 25px;
+    overflow-x: clip;
 }
 
 .input_container label {
@@ -83,14 +84,13 @@
 }
 
 .input_container input:focus ~ label {
-    top: -12px;
+    top: -14px;
     font-size: 12px;
     color: #e74c3c;
 }
 
 .title_input {
     width: 525px;
-    height: 50px;
 }
 
 .description_area {
@@ -144,14 +144,18 @@
 .details_box input {
     width: 150px;
 }
+.select_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .country {
-    margin-top: 25px;
-    margin-bottom: 25px;
+
 }
 
 .director {
-    margin-top: 25px;
+
 }
 
 .genre_box {
@@ -174,4 +178,7 @@
 }
 .redactor_btn label{
     margin-left: 5px;
+}
+.genre_container{
+
 }

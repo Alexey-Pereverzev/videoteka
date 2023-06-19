@@ -20,7 +20,8 @@ class CatalogPage extends Component {
         super(props);
         this.handleDirectorsChange = this.handleDirectorsChange.bind(this);
         this.handleCountriesChange = this.handleCountriesChange.bind(this);
-        this.handleSaleChange = this.handleSaleChange.bind(this);
+        this.handleSaleSet = this.handleSaleSet.bind(this);
+        this.handleRentSet = this.handleRentSet.bind(this);
 
         this.state = {
             films: [],
@@ -355,16 +356,14 @@ class CatalogPage extends Component {
         }
     }
 
-    handleSaleChange() {
-        if (this.state.isSale === true) {
-            this.setState({active: true})
-            this.setState({isSale: false}, () => this.getMinMaxPrice())
-        } else {
-            if (this.state.isSale === false) {
-                this.setState({isSale: true}, () => this.getMinMaxPrice())
-            }
-        }
 
+    handleSaleSet() {
+        this.setState({isSale: true}, () => this.getMinMaxPrice())
+    }
+
+
+    handleRentSet() {
+        this.setState({isSale: false}, () => this.getMinMaxPrice())
     }
 
     handlePriceChange(name, event) {
@@ -447,8 +446,8 @@ class CatalogPage extends Component {
                                 {/*    <h4>Это {currentPage} страница из {totalPages}</h4>*/}
                                 {/*</div>*/}
                                 <div className={style.change_state}>
-                                    <Button onClick={this.handleSaleChange} className={style.filter_btn}>Купить фильмы</Button>
-                                    <Button onClick={this.handleSaleChange} className={active ? style.filter_btn : style.active_btn}>Взять фильмы в аренду</Button>
+                                    <Button onClick={this.handleSaleSet} className={style.filter_btn}>Купить фильмы</Button>
+                                    <Button onClick={this.handleRentSet} className={active ? style.filter_btn : style.active_btn}>Взять фильмы в аренду</Button>
                                 </div>
                                 <div className={style.pagination_items}>
                                     <Pagination count={totalPages}
@@ -588,7 +587,8 @@ class CatalogPage extends Component {
                     {/*    <Button onClick={this.handleSaleChange} className={style.filter_btn}>Аренда</Button>*/}
                     {/*}*/}
 
-                    <Button onClick={() => this.filmFilterByGenres("Все")} className={style.filter_btn}>Сбросить</Button>
+                    <Button onClick={() => this.filmFilterByGenres("Все")}
+                            className={style.filter_btn}>Сбросить</Button>
 
                 </div>
 
