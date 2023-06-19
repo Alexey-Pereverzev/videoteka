@@ -53,33 +53,44 @@ public class OrderService implements Constant {
             }
 
             for (CartItemDto cartItemDto : currentCart.getItems()) {
-                Order order = new Order();
-                order.setUserId(userIDLong);
-                order.setSalePrice(cartItemDto.getSalePrice());
-                order.setRentPrice(cartItemDto.getRentPrice());
-                order.setFilmId(cartItemDto.getFilmId());
-                if (!cartItemDto.isSale()) {
-                    order.setType("RENT");
-                    // текущее время
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-                    LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis())
-                            .atZone(ZoneId.of(Constant.SERVER_TIME_ZONE)).toLocalDateTime();
-                    order.setRentStart(dateStart);
-                    // к текущей дате прибавили 24 часа
-                    order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
-                    String formattedDateTime = dateStart.plusHours(RENT_HOURS).format(formatter);
-                    emailDto.setMessage( "Ваш заказ успешно оформлен. Вы оплатили прокат фильма \n -" + cartItemDto.getTitle()
-                            + " Срок аренды составляет 24 часа и закончится " + formattedDateTime + "\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
-
-
-                } else {
+                Optional<Order> optionalOrder = findFilmByUserIdAndFilmId(userIDLong, cartItemDto.getFilmId());
+                if (!optionalOrder.isEmpty()) {
+                    Order order = findFilmByUserIdAndFilmId(userIDLong, cartItemDto.getFilmId()).get();
                     order.setType("SALE");
-                    emailDto.setMessage( "Ваш заказ успешно оформлен. Вы купили фильм \n - " + cartItemDto.getTitle() + "\n \n Приятного просмотра ");
+                    order.setRentStart(null);
+                    order.setRentEnd(null);
+                    emailDto.setMessage("Ваш заказ успешно оформлен. Вы купили фильм \n - " + cartItemDto.getTitle() + "\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+                    mailServiceIntegration.sendMessage(emailDto);
+                } else {
+                    Order newOrder = new Order();
+                    newOrder.setUserId(userIDLong);
+                    newOrder.setSalePrice(cartItemDto.getSalePrice());
+                    newOrder.setRentPrice(cartItemDto.getRentPrice());
+                    newOrder.setFilmId(cartItemDto.getFilmId());
+                    if (!cartItemDto.isSale()) {
+                        newOrder.setType("RENT");
+                        // текущее время
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+                        LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis())
+                                .atZone(ZoneId.of(Constant.SERVER_TIME_ZONE)).toLocalDateTime();
+                        newOrder.setRentStart(dateStart);
+                        // к текущей дате прибавили 24 часа
+                        newOrder.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
+                        String formattedDateTime = dateStart.plusHours(RENT_HOURS).format(formatter);
+                        emailDto.setMessage("Ваш заказ успешно оформлен. Вы оплатили прокат фильма \"" + cartItemDto.getTitle()
+                                + "\" \nСрок аренды составляет 24 часа и закончится " + formattedDateTime + "\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+
+
+                    } else {
+                        newOrder.setType("SALE");
+                        emailDto.setMessage("Ваш заказ успешно оформлен. Вы купили фильм \" " + cartItemDto.getTitle() + "\"\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+
+                    }
+
+                    ordersRepository.save(newOrder);
+                    mailServiceIntegration.sendMessage(emailDto);
 
                 }
-                ordersRepository.save(order);
-                mailServiceIntegration.sendMessage(emailDto);
-
             }
 
             cartServiceIntegration.clearUserCart(userId);
@@ -88,7 +99,7 @@ public class OrderService implements Constant {
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){
-            return "Ошибка интеграции";
+            return  " Ошибка интеграции";
         }
     }
 
