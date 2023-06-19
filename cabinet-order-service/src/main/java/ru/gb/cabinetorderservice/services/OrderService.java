@@ -59,7 +59,7 @@ public class OrderService implements Constant {
                     order.setType("SALE");
                     order.setRentStart(null);
                     order.setRentEnd(null);
-                    emailDto.setMessage("Ваш заказ успешно оформлен. Вы купили фильм \n - " + cartItemDto.getTitle() + "\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+                    emailDto.setMessage("Ваш заказ успешно оформлен.  Вы купили фильм \"" + cartItemDto.getTitle() + "\"\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
                     mailServiceIntegration.sendMessage(emailDto);
                 } else {
                     Order newOrder = new Order();
