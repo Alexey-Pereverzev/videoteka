@@ -1,9 +1,10 @@
 import style from "./RedactorPage.module.css"
-import React, {createRef, useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Button,
-    ButtonGroup, Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
     DialogTitle,
     FormControl,
@@ -11,12 +12,9 @@ import {
     MenuItem,
     Select
 } from "@mui/material";
-import {SelectButton} from "primereact/selectbutton";
-import {SelectButtonChangeEvent} from "primereact/selectbutton";
 import axios from "axios";
 import {PlusIcon} from "primereact/icons/plus";
 import {toast} from "react-toastify";
-import CatalogPage from "../CatalogPage/CatalogPage";
 
 // Long id;
 // String title;
@@ -57,15 +55,16 @@ const RedactorPage = () => {
                         }
                         displayCartNotification(response.response.data.value)
                     })
-
         } catch (e) {
 
         }
     }
+
     let getAllDirectors = () => {
+        console.log("Вошли в метод getAllDirectors")
         setOpenDirectorMenu(true)
         axios.get('http://localhost:5555/catalog/api/v1/director/all')
-            .then(r => r.data )
+            .then(r => r.data)
             .then(data => {
                 setDirectors(data)
             })
@@ -73,9 +72,7 @@ const RedactorPage = () => {
     let handleDirectorsChange = () => {
 
     }
- let getFilmById = () => {
 
- }
     function handleFilmsChange(event) {
         console.log(event.target.value)
         if (event.target.value === "Добавить фильм") {
@@ -90,13 +87,10 @@ const RedactorPage = () => {
                         }
                     }).then(response => setFile(response.data))
                         .then((data) => {
-
                         })
-
                 } catch (e) {
 
                 }
-
             }
         }
     }
@@ -108,8 +102,9 @@ const RedactorPage = () => {
     const [open, setOpen] = useState(true)
     const [openCountryMenu, setOpenCountryMenu] = useState(false)
     const [openDirectorMenu, setOpenDirectorMenu] = useState(false)
+    const [openGenreMenu, setOpenGenreMenu] = useState(false)
     const [films, setFilms] = useState([])
-    let [file, setFile] = useState([])
+    const [file, setFile] = useState([])
     console.log(file)
 
     function saveDirector() {
@@ -118,7 +113,9 @@ const RedactorPage = () => {
 
     return (
         <div className={style.redactor_container}>
-            Редактирование карточки фильма
+            <h3>
+                Редактирование карточки фильма
+            </h3>
             <div className={style.redactor__box}>
                 <div className={style.redactor__img_container}>
                     <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
@@ -127,9 +124,9 @@ const RedactorPage = () => {
                             labelId="demo-select-small-label"
                             id="demo-select-small"
                             name={'films'}
-                            value={films}
+                            value={''}
                             color={'success'}
-                            sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
+                            sx={{backgroundColor: 'white', borderColor: "success"}}
                             label="Age"
                             onChange={(event) => handleFilmsChange(event)}
                         >
@@ -221,93 +218,173 @@ const RedactorPage = () => {
                                     <label>{file.salePrice}</label>
                                 </div>
                             </div>
+                            <div className={style.select_box}>
 
-                            <div className={style.country}>
-                                <div className={style.input_container}>
-                                    <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
-                                        <InputLabel id="demo-select-small-label">Страны</InputLabel>
-                                        <Select
-                                            labelId="demo-select-small-label"
-                                            id="demo-select-small"
-                                            name={'films'}
-                                            value={films}
-                                            color={'success'}
-                                            sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
-                                            label="Age"
-                                            onChange={(event) => handleFilmsChange(event)}
-                                        >
-                                            <MenuItem value="Добавить страну">
-                                                <button className={style.redactor_btn} onClick={() => setOpenCountryMenu(true)}><PlusIcon/><label>Добавить страну</label></button>
-                                            </MenuItem>
-                                            {file.country > 1?
-                                            file.country.map((country) => <MenuItem>{country}</MenuItem>)
-                                            :
-                                                <MenuItem>{file.country}</MenuItem>
-                                            }
-                                        </Select>
-                                    </FormControl>
+                                <div className={style.country}>
+                                    <div className={style.input_container}>
+                                        <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
+                                            <InputLabel id="demo-select-small-label">Страны</InputLabel>
+                                            <Select
+                                                labelId="demo-select-small-label"
+                                                id="demo-select-small"
+                                                name={'films'}
+                                                value={''}
+                                                color={'success'}
+                                                sx={{
+                                                    backgroundColor: '#2b303b',
+                                                    borderColor: '#c5c5c5',
+                                                    outlineColor: '#c5c5c5',
+                                                    color: '#c5c5c5'
+                                                }}
+                                                label="Age"
+                                                onChange={(event) => handleFilmsChange(event)}
+                                            >
+                                                <MenuItem value="Добавить страну">
+                                                    <button className={style.redactor_btn}
+                                                            onClick={() => setOpenCountryMenu(true)}><PlusIcon/><label>Добавить
+                                                        страну</label></button>
+                                                </MenuItem>
+                                                {file.country?.map((country) => <MenuItem>{country}</MenuItem>)}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                                <div className={style.director}>
 
-                            <div className={style.director}>
+                                    <div className={style.input_container}>
+                                        <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
+                                            <InputLabel id="demo-select-small-label">Режиссёры</InputLabel>
+                                            <Select
+                                                labelId="demo-select-small-label"
+                                                id="demo-select-small"
+                                                name={'films'}
+                                                value={''}
+                                                color={'success'}
+                                                sx={{
+                                                    backgroundColor: '#2b303b',
+                                                    borderColor: '#c5c5c5',
+                                                    outlineColor: '#c5c5c5',
+                                                    color: '#c5c5c5'
+                                                }}
+                                                label="Age"
+                                                // onChange={(event) => handleFilmsChange(event)}
+                                            >
+                                                <MenuItem value="Добавить режисёра">
+                                                    <button className={style.redactor_btn}
+                                                            onClick={() => getAllDirectors()}><PlusIcon/><label>Добавить
+                                                        режиссёра</label></button>
+                                                </MenuItem>
+                                                {file.director?.map((director) => <MenuItem>{director}</MenuItem>)}
+                                                {openDirectorMenu ?
+                                                    <Dialog disableEscapeKeyDown open={openDirectorMenu}
+                                                            onClose={() => setOpenDirectorMenu(false)}>
+                                                        <DialogTitle>Выберайте режиссёра</DialogTitle>
+                                                        <DialogContent>
+                                                            <Box component="form"
+                                                                 sx={{display: 'flex', flexWrap: 'wrap'}}>
+                                                                <Select
+                                                                    labelId="demo-select-small-label"
+                                                                    id="demo-select-small"
+                                                                    name={'films'}
+                                                                    value={directors}
+                                                                    multiple
+                                                                    color={'success'}
+                                                                    sx={{
+                                                                        width: 100,
+                                                                        backgroundColor: 'darkgrey',
+                                                                        borderColor: "success"
+                                                                    }}
+                                                                    label="Age"
+                                                                    onChange={(event) => handleDirectorsChange(event)}
+                                                                >
+                                                                    {directors.map((director) =>
+                                                                        <MenuItem
+                                                                            key={director.id}>{director.firstName + ' ' + director.lastName}</MenuItem>)}
+                                                                </Select>
+                                                            </Box>
+                                                        </DialogContent>
+                                                        <DialogActions>
+                                                            <Button
+                                                                onClick={() => setOpenDirectorMenu(false)}>Отменить</Button>
+                                                            <Button onClick={() => saveDirector()}>Сохранить</Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                    :
+                                                    null
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </div>
+                                <div className={style.genre_container}>
+                                    <div className={style.input_container}>
+                                        <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
+                                            <InputLabel id="demo-select-small-label">Жанры</InputLabel>
+                                            <Select
+                                                labelId="demo-select-small-label"
+                                                id="demo-select-small"
+                                                name={'films'}
+                                                value={''}
+                                                color={'success'}
+                                                sx={{
+                                                    backgroundColor: '#2b303b',
+                                                    borderColor: '#c5c5c5',
+                                                    outlineColor: '#c5c5c5',
+                                                    color: '#c5c5c5'
+                                                }}
+                                                label="Age"
 
-                                <div className={style.input_container}>
-                                    <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
-                                        <InputLabel id="demo-select-small-label">Режиссёры</InputLabel>
-                                        <Select
-                                            labelId="demo-select-small-label"
-                                            id="demo-select-small"
-                                            name={'films'}
-                                            value={file}
-                                            color={'success'}
-                                            sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
-                                            label="Age"
-                                            onChange={(event) => handleFilmsChange(event)}
-                                        >
-                                            <MenuItem value="Добавить режисёра">
-                                                <button className={style.redactor_btn} onClick={() => getAllDirectors()}><PlusIcon/><label>Добавить режиссёра</label></button>
-                                            </MenuItem>
-                                            {file.director > 1 ?
-                                                file.director.map((director) => <MenuItem>{director}</MenuItem>)
-                                                :
-                                                <MenuItem>{file.director}</MenuItem>
-                                            }
-                                            {openDirectorMenu?
-                                                <Dialog disableEscapeKeyDown open={open} onClose={() => setOpenDirectorMenu(false)}>
-                                                    <DialogTitle>Выберайте режиссёра</DialogTitle>
-                                                    <DialogContent>
-                                                        <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                                            <Select
-                                                                labelId="demo-select-small-label"
-                                                                id="demo-select-small"
-                                                                name={'films'}
-                                                                value={directors}
-                                                                multiple
-                                                                color={'success'}
-                                                                sx={{backgroundColor: 'darkgrey', borderColor: "success"}}
-                                                                label="Age"
-                                                                onChange={(event) => handleDirectorsChange(event)}
-                                                            >
-                                                                {directors.map((director) => <MenuItem>{director}</MenuItem>)}
-                                                            </Select>
-                                                        </Box>
-                                                    </DialogContent>
-                                                    <DialogActions>
-                                                        <Button onClick={() => setOpenDirectorMenu(false)}>Отменить</Button>
-                                                        <Button onClick={() => saveDirector()}>Сохранить</Button>
-                                                    </DialogActions>
-                                                </Dialog>
-                                                :
-                                                null
-                                            }
-                                        </Select>
-                                    </FormControl>
+                                            >
+                                                <MenuItem value="Добавить режисёра">
+                                                    <button className={style.redactor_btn}
+                                                            onClick={() => getAllDirectors()}><PlusIcon/><label>Добавить
+                                                        жанр</label></button>
+                                                </MenuItem>
+                                                {file.genre?.map((director) => <MenuItem>{director}</MenuItem>)}
+                                                {openGenreMenu ?
+                                                    <Dialog open={open}
+                                                            onClose={() => setOpenDirectorMenu(false)}>
+                                                        <DialogTitle>Выберайте режиссёра</DialogTitle>
+                                                        <DialogContent>
+                                                            <Box component="form"
+                                                                 sx={{display: 'flex', flexWrap: 'wrap'}}>
+                                                                <Select
+                                                                    labelId="demo-select-small-label"
+                                                                    id="demo-select-small"
+                                                                    name={'films'}
+                                                                    value={directors}
+                                                                    multiple
+                                                                    color={'success'}
+                                                                    sx={{
+                                                                        backgroundColor: 'darkgrey',
+                                                                        borderColor: "success"
+                                                                    }}
+                                                                    label="Age"
+                                                                    onChange={(event) => handleDirectorsChange(event)}
+                                                                >
+                                                                    {directors.map((director) =>
+                                                                        <MenuItem>{director}</MenuItem>)}
+                                                                </Select>
+                                                            </Box>
+                                                        </DialogContent>
+                                                        <DialogActions>
+                                                            <Button
+                                                                onClick={() => setOpenDirectorMenu(false)}>Отменить</Button>
+                                                            <Button onClick={() => saveDirector()}>Сохранить</Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                    :
+                                                    null
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 }
             </div>
         </div>

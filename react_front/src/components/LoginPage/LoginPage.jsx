@@ -34,6 +34,10 @@ const LoginPage = (props) => {
     }
 
 
+    function startEvent() {
+        switchScene('mail')
+    }
+
     return (
       <Grid container>
         <Grid item xs={3}></Grid>
@@ -62,7 +66,7 @@ const LoginPage = (props) => {
                     {/*</button>*/}
                   </div>
                   <div className="login-page__forgot-password">
-                    <button>Забыл пароль?</button>
+                    <button onClick={() => startEvent()}>Забыл пароль?</button>
                   </div>
                 </div>
               </div>
