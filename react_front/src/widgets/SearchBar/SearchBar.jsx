@@ -5,17 +5,24 @@ import {useRef, useState} from "react";
 
 function SearchBar(props) {
 
-let onChange = (event) => {
-    console.log(event.target.value)
-      setTitlePart(event.target.value)
-    setActive(true)
-}
+    let onChange = (event) => {
+        console.log(event.target.value)
+        setTitlePart(event.target.value)
+        setActive(true)
+    }
+    let handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            console.log("Клавиша нажата")
+            sendTitlePart()
+        }
+    }
 
     function sendTitlePart() {
         props.getFilmByTitlePart(titlePart)
     }
-const [titlePart, setTitlePart] = useState('')
-const [active, setActive] = useState(false)
+
+    const [titlePart, setTitlePart] = useState('')
+    const [active, setActive] = useState(false)
     const refInput = useRef()
 
     function clearInput() {
@@ -24,20 +31,24 @@ const [active, setActive] = useState(false)
         setActive(false)
     }
 
-    return(
+    return (
         <div className={'search_container'}>
             <div className="box">
                 <div className="container-1">
-                    <input type="text" id="search" placeholder="Поиск..." ref={refInput} onChange={(event) => onChange(event)}/>
-                    {active?
+                    <input type="text" id="search" placeholder="Поиск..." ref={refInput}
+                           onChange={(event) => onChange(event)}
+                           onKeyDown={handleKeyPress}
+                    />
+                    {active ?
                         <button className={'back_btn'} onClick={() => clearInput()}><ArrowBackIcon/></button>
                         :
                         null
                     }
-                    <span className="icon"><button onClick={() => sendTitlePart()} className="fa fa-search"><SearchIcon /></button></span>
+                    <span className="icon"><button onClick={() => sendTitlePart()} className="fa fa-search"><SearchIcon/></button></span>
                 </div>
             </div>
         </div>
     )
 }
+
 export default SearchBar;

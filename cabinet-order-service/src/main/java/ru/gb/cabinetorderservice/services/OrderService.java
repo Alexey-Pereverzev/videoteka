@@ -20,6 +20,7 @@ import ru.gb.common.constants.InfoMessage;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -60,14 +61,16 @@ public class OrderService implements Constant {
                 if (!cartItemDto.isSale()) {
                     order.setType("RENT");
                     // текущее время
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
                     LocalDateTime dateStart = Instant.ofEpochMilli(System.currentTimeMillis())
                             .atZone(ZoneId.of(Constant.SERVER_TIME_ZONE)).toLocalDateTime();
                     order.setRentStart(dateStart);
                     // к текущей дате прибавили 24 часа
                     order.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
-                    message = String.valueOf(dateStart.plusHours(RENT_HOURS));
+                    String formattedDateTime = dateStart.plusHours(RENT_HOURS).format(formatter);
                     emailDto.setMessage( "Ваш заказ успешно оформлен. Вы оплатили прокат фильма \n -" + cartItemDto.getTitle()
-                            + " Срок аренды составляет 24 часа и закончится " + message + "\n \n Приятного просмотра ");
+                            + " Срок аренды составляет 24 часа и закончится " + formattedDateTime + "\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+
 
                 } else {
                     order.setType("SALE");
