@@ -16,7 +16,10 @@ public class CartServiceIntegration {
 
     public void clearUserCart(String userId) {
         cartServiceWebClient.get()
-                .uri("/api/v1/cart/clear?uuid="+userId)
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/cart/clear")
+                        .queryParam("userId", userId)
+                        .build())
                 .header("userId", userId)
                 .retrieve()
                 .toBodilessEntity()
