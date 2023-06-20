@@ -18,7 +18,7 @@ public class CartServiceIntegration {
         cartServiceWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/v1/cart/clear")
-                        .queryParam("userId", userId)
+                        .queryParam("uuid", userId)
                         .build())
                 .header("userId", userId)
                 .retrieve()
@@ -28,7 +28,11 @@ public class CartServiceIntegration {
 
     public CartDto getCart(String userId) {
         CartDto cart = cartServiceWebClient.get()
-                .uri("/api/v1/cart/?uuid="+userId)
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/cart")
+                        .queryParam("uuid", userId)
+                        .build())
+               // .uri("/api/v1/cart/?uuid="+userId)
                 .header( "userId",userId)
                 .retrieve()
                 .onStatus(HttpStatus::is5xxServerError,
