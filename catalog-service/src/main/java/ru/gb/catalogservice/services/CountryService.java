@@ -8,14 +8,15 @@ import ru.gb.catalogservice.entities.Country;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.CountryRepository;
 import ru.gb.catalogservice.utils.ResultOperation;
+import ru.gb.common.constants.Constant;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CountryService {
+public class CountryService implements Constant {
     private final CountryRepository countryRepository;
-    private final Sort SORT_COUNTRY = Sort.by("title").ascending();
+    private final Sort SORT_COUNTRY = Sort.by(SORT_MODE_TITLE).ascending();
     public Country findById(Long id){
         return countryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Страна с id="+id+" не найдена"));
     }

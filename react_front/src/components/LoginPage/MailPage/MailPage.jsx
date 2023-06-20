@@ -13,7 +13,10 @@ const MailPage = (props) => {
         return null
     }
   }
-
+  // String email;
+  // String subject;
+  // String firstName;
+  // String message;
   function sendEmail() {
     handleChange('code')
   }

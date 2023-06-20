@@ -56,6 +56,6 @@ public interface InfoMessage {
     String INVALID_LASTNAME = "Ошибка ввода: фамилия должна быть введена полностью на кириллице или на латинице";
     String PASSWORD_MISMATCH = "Пароли не совпадают";
     String SIGN_UP = "Регистрация пользователя";
-
-
+    String NO_DATA="Ничего не найдено";
+    String INCORRECT_FILTER_PARAMETR="Некорректный параметр фильтра";
 }
