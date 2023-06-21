@@ -7,8 +7,6 @@ spring:
     default-encoding: UTF-8
     host: smtp.gmail.com
     username: videotekahom@gmail.com
-
-
     port: 587
     properties:
       mail:

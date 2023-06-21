@@ -3,15 +3,40 @@ package ru.gb.emailservice.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.EmailDto;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class MailService
 {
-    private final JavaMailSender javaMailSender;
+    private final JavaMailSenderImpl javaMailSender;
+    private static final String SECRET_PATH="secret/";
+
+    public MailService(JavaMailSenderImpl javaMailSender) {
+        this.javaMailSender = javaMailSender;
+        String line = null;
+
+        try {
+            FileReader reader = new FileReader(SECRET_PATH + "password.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            line = bufferedReader.readLine();
+
+            javaMailSender.setPassword(line);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+    }
+
 
 
 

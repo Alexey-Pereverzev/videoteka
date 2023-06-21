@@ -175,6 +175,8 @@ services:
       - "8199:8199"
     networks:
       - videoteka-net
+    volumes:
+      - ./secret:/opt/app/secret
     restart: always
 
 networks:
