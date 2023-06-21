@@ -14,7 +14,11 @@ public class OrderServiceIntegration {
 
     public OrderDto findByFilmIdAndUserId(String userId, Long filmId) {
         OrderDto orderDto = orderServiceWebClient.get()
-                .uri("/api/v1/orders/user_film/?filmId="+filmId)
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/orders/user_film")
+                        .queryParam("filmId", filmId)
+                        .build())
+                //.uri("/api/v1/orders/user_film/?filmId="+filmId)
                 .header( "userId", userId)
                 .retrieve()
                 .bodyToMono(OrderDto.class)
