@@ -5,7 +5,6 @@ import StringCard from "../../../widgets/StringCard/StringCard";
 import React, {Component} from "react";
 import axios from "axios";
 import CheckoutCard from "../../../widgets/CheckoutCard/CheckoutCard";
-import {toast, ToastContainer} from "react-toastify";
 
 class CartPage extends Component{
     constructor(props) {

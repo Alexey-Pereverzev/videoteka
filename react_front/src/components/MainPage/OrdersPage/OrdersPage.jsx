@@ -115,18 +115,18 @@ class OrdersPage extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}>Обложка</TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="center">Название</TableCell>
+
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="center">Старт
+                                            аренды</TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="center">Финиш
+                                            аренды</TableCell>
+
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right"></TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right"></TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
-                                                   align="right">Название</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
-                                                   align="right">Цена</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Старт
-                                            аренды</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Финиш
-                                            аренды</TableCell>
+
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right"></TableCell>
 
@@ -142,37 +142,40 @@ class OrdersPage extends Component {
 
                                         >
                                             <TableCell component="th" scope="row">
-                                                <img className={'orders_img'} src={row.imageUrlLink} alt={'обложка'}/>
+                                                <div className={'orders_img'}>
+                                                    <img src={row.imageUrlLink} alt={'обложка'}/>
+                                                </div>
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">{row.filmTitle}</TableCell>
+
+                                            <TableCell
+                                                align="center">{new Date(row.rentStart).toLocaleString("ru-RU", {
+                                                day: "numeric",
+                                                month: "long",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
+                                            })}</TableCell>
+                                            <TableCell
+                                                align="center">{new Date(row.rentEnd).toLocaleString("ru-RU", {
+                                                day: "numeric",
+                                                month: "long",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
+                                            })}</TableCell>
+
+                                            <TableCell align="center">
                                                 <button className={'buy-order__btn'}
                                                         onClick={() => this.setState({modalActive: true})}>Смотреть
                                                 </button>
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">
                                                 <button className={'buy-order__btn'}
                                                         onClick={() => buyRentedFilm(row.filmId, row.filmTitle, row.imageUrlLink, row.salePrice, row.rentPrice)}>Купить
                                                 </button>
                                             </TableCell>
-                                            <TableCell align="right">{row.filmTitle}</TableCell>
-                                            <TableCell align="right">{row.price}</TableCell>
 
-                                            <TableCell
-                                                align="right">{new Date(row.rentStart).toLocaleString("ru-RU", {
-                                                day: "numeric",
-                                                month: "long",
-                                                year: "numeric",
-                                                hour: "numeric",
-                                                minute: "numeric",
-                                            })}</TableCell>
-                                            <TableCell
-                                                align="right">{new Date(row.rentEnd).toLocaleString("ru-RU", {
-                                                day: "numeric",
-                                                month: "long",
-                                                year: "numeric",
-                                                hour: "numeric",
-                                                minute: "numeric",
-                                            })}</TableCell>
                                             <TableCell align="right">
 
                                             </TableCell>
@@ -198,13 +201,12 @@ class OrdersPage extends Component {
                                             color: 'white',
                                             maxWidth: 50
                                         }}>Обложка</TableCell>
-
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
-                                                   align="right"></TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white', maxWidth: 77}}
                                                    align="center">Название</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white', maxWidth: 77}}
-                                                   align="center">Цена</TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
+                                                   align="right"></TableCell>
+
+
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -216,15 +218,17 @@ class OrdersPage extends Component {
                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                         >
                                             <TableCell component="th" scope="row">
-                                                <img className={'orders_img'} src={row.imageUrlLink}/>
+                                                <div className={'orders_img'}>
+                                                <img src={row.imageUrlLink}/>
+                                                </div>
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">{row.filmTitle}</TableCell>
+                                            <TableCell align="center">
                                                 <button className={'buy-order__btn'}
                                                         onClick={() => this.setState({modalActive: true})}>Смотреть
                                                 </button>
                                             </TableCell>
-                                            <TableCell align="center">{row.filmTitle}</TableCell>
-                                            <TableCell align="center">{row.price}</TableCell>
+
                                         </TableRow>
                                     ))}
                                 </TableBody>

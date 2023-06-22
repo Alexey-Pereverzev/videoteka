@@ -9,5 +9,6 @@
 .DS_Store
 **/private.key
 **/public.key
+**/password.txt
 **/target/*
 **/password.txt
