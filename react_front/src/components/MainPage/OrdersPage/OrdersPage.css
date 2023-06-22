@@ -79,8 +79,11 @@ position: absolute;
     display: none;
 }
 .orders_img{
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
+}
+.orders_img img{
+    height: 100%;
 }
 .buy-order__btn{
     height: 30px;

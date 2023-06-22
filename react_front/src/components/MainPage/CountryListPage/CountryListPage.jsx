@@ -56,7 +56,9 @@ const CountryListPage = (props) => {
             <ModalWindow active={modalActive}
                          setActive={setModalActive}
             >
-                <AddCountryPage getCountries={() => getCountries()}/>
+                <AddCountryPage getCountries={() => getCountries()}
+                                setActive={setModalActive}
+                />
             </ModalWindow>
         </div>
     )

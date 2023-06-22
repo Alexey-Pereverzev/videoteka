@@ -12,7 +12,8 @@ const AddCountryPage = (props) => {
         }).then(r => r)
             .then(() => {
                 props.getCountries()
-
+                setCountry('')
+                props.setActive(false)
             }, () => setCountry(''))
     }
     let onChangeHandler = (event) => {
@@ -24,8 +25,7 @@ const AddCountryPage = (props) => {
           <div className={'add_country__title'}>Добавить страну</div>
           <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
           <div className={'input_container'}>
-              <input type="text" required="" value={country || ''} onChange={(event) => onChangeHandler(event)} onfocusout={clear}/>
-              <label>Название страны</label>
+              <input type="text" required="" placeholder={'Название страны'} value={country || ''} onChange={(event) => onChangeHandler(event)} onfocusout={clear}/>
           </div>
           <div className={'add_country__send_btn'}>
               <button onClick={() => addNewCountry()}>Сохранить страну</button>
