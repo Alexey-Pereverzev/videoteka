@@ -13,6 +13,9 @@ spring:
     url: jdbc:postgresql://194.87.101.43:5432/orders_db
     username: orders
     password: OrdersVideoteka2023
+  rabbitmq:
+    host: ${CABINET_SERVICE_LOCATION:127.0.0.1}
+    port: 5672
 #spring:
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/orders_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
@@ -33,8 +36,6 @@ integrations:
   catalog-service:
 #    url: http://localhost:8189/catalog-service
     url: http://${CATALOG_SERVICE_LOCATION:127.0.0.1}:8189/catalog-service
-  email-service:
-    url: http://${EMAIL_SERVICE_LOCATION:127.0.0.1}:8199/email-service
   auth-service:
     url: http://${AUTH_SERVICE_LOCATION:127.0.0.1}:8187/auth-service
 

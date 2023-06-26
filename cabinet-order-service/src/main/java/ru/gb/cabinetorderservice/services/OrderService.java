@@ -1,21 +1,27 @@
 package ru.gb.cabinetorderservice.services;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.api.dtos.cart.CartDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.AuthServiceIntegration;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
-import ru.gb.cabinetorderservice.integrations.MailServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
 import ru.gb.common.constants.Constant;
-import ru.gb.common.constants.InfoMessage;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -30,10 +36,14 @@ import java.util.Optional;
 public class OrderService implements Constant {
     private final OrdersRepository ordersRepository;
     private final CartServiceIntegration cartServiceIntegration;
-    private final MailServiceIntegration mailServiceIntegration;
     private final AuthServiceIntegration authServiceIntegration;
+    private final ObjectMapper objectMapper;
+
 
     private final Integer RENT_HOURS = 24;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
 
 
     @Transactional
@@ -88,7 +98,9 @@ public class OrderService implements Constant {
                     }
 
                     ordersRepository.save(newOrder);
-                    mailServiceIntegration.sendMessage(emailDto);
+                    rabbitTemplate.convertAndSend(emailDto);
+                    rabbitSend(emailDto);
+
 
                 }
             }
@@ -99,7 +111,27 @@ public class OrderService implements Constant {
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){
-            return  " Ошибка интеграции";
+            return  "Ошибка интеграции";
+        }
+    }
+
+
+    public void rabbitSend(EmailDto emailDto) {
+        this.rabbitTemplate.setExchange(MAIL_EXCHANGE_NAME);
+        this.rabbitTemplate.setRoutingKey(MAIL_ROUTE_KEY);
+        Message message = null;
+        try {
+            // Сообщение Этот класс предоставляется Rabbitmq, и преобразует почтовую информацию по почте в организм для хранения памяти сообщения, установите режим передачи сообщения.
+            message = MessageBuilder.withBody(objectMapper.writeValueAsBytes(emailDto))
+                    .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                    .build();
+            // Установите атрибут головного сигнала сообщения, формат контента JSON
+            message.getMessageProperties()
+                    .setHeader(AbstractJavaTypeMapper.DEFAULT_CONTENT_CLASSID_FIELD_NAME, MessageProperties.CONTENT_TYPE_JSON);
+            // Отправить почтовую информацию для переключения
+            this.rabbitTemplate.convertAndSend(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
     }
 
