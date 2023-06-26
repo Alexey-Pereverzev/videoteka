@@ -19,8 +19,6 @@ public class AppConfig {
     private String cartServiceUrl;
     @Value("${integrations.catalog-service.url}")
     private String filmServiceUrl;
-    @Value("${integrations.email-service.url}")
-    private String mailServiceUrl;
     @Value("${integrations.auth-service.url}")
     private String authServiceUrl;
 
@@ -59,22 +57,6 @@ public class AppConfig {
                 .build();
     }
 
-    @Bean
-    public WebClient mailServiceWebClient() {
-        TcpClient tcpClient = TcpClient
-                .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-                .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(60000, TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
-                });
-
-        return WebClient
-                .builder()
-                .baseUrl(mailServiceUrl)
-                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
-                .build();
-    }
 
     @Bean
     public WebClient authServiceWebClient() {

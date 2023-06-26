@@ -8,7 +8,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.config.BindingFactoryBean;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +17,11 @@ import ru.gb.api.dtos.cart.CartDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.AuthServiceIntegration;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
-import ru.gb.cabinetorderservice.integrations.MailServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
 import ru.gb.common.constants.Constant;
-import ru.gb.common.constants.InfoMessage;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -40,7 +36,6 @@ import java.util.Optional;
 public class OrderService implements Constant {
     private final OrdersRepository ordersRepository;
     private final CartServiceIntegration cartServiceIntegration;
-    //private final MailServiceIntegration mailServiceIntegration;
     private final AuthServiceIntegration authServiceIntegration;
     private final ObjectMapper objectMapper;
 
@@ -76,7 +71,7 @@ public class OrderService implements Constant {
                     order.setRentEnd(null);
                     emailDto.setMessage("Ваш заказ успешно оформлен.  Вы купили фильм \"" + cartItemDto.getTitle() + "\"\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
                     rabbitTemplate.convertAndSend(emailDto);
-                   // mailServiceIntegration.sendMessage(emailDto);
+
                 } else {
                     Order newOrder = new Order();
                     newOrder.setUserId(userIDLong);
@@ -106,7 +101,7 @@ public class OrderService implements Constant {
                     ordersRepository.save(newOrder);
                     rabbitTemplate.convertAndSend(emailDto);
                     rabbitSend(emailDto);
-                    //mailServiceIntegration.sendMessage(emailDto);
+
 
                 }
             }

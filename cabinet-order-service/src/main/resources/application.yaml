@@ -36,8 +36,6 @@ integrations:
   catalog-service:
 #    url: http://localhost:8189/catalog-service
     url: http://${CATALOG_SERVICE_LOCATION:127.0.0.1}:8189/catalog-service
-  email-service:
-    url: http://${EMAIL_SERVICE_LOCATION:127.0.0.1}:8199/email-service
   auth-service:
     url: http://${AUTH_SERVICE_LOCATION:127.0.0.1}:8187/auth-service
 
