@@ -30,13 +30,11 @@ public class RouteValidator {
             "/api/v1/rating/total_film_rating",
             "/api/v1/rating/all_grade_and_review_by_filmId",
 
-            "/api/v1/cart",
             "/api/v1/cart/generate",
-            "/api/v1/cart/add",
-            "/api/v1/cart/clear",
             "/api/v1/cart/rediscontent",
 
             "/api/v1/users/fullname_by_id",
+            "/api/v1/users/adding_names_to_ratings",
 
             "/api/v1/mail/send"
 
@@ -54,6 +52,9 @@ public class RouteValidator {
     public static final List<String> userApiEndpoints = List.of(
             "/api/v1/rating/new_comment",
 
+            "/api/v1/cart",
+            "/api/v1/cart/add",
+            "/api/v1/cart/clear",
             "/api/v1/cart/merge",
             "/api/v1/cart/pay",
 

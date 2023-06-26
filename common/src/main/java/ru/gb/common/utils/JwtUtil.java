@@ -1,7 +1,9 @@
-package ru.gb.gatewayservice.filter;
+package ru.gb.common.utils;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
+import ru.gb.common.constants.InfoMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
 @Component
-public class JwtUtil {
+public class JwtUtil implements InfoMessage {
     private final PublicKey secret;
 
     private static final String SECRET_PATH="secret/";
@@ -53,4 +55,3 @@ public class JwtUtil {
     }
 
 }
-

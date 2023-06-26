@@ -8,14 +8,12 @@ import ru.gb.api.dtos.cart.CartDto;
 import ru.gb.api.dtos.cart.CartItemDto;
 import ru.gb.api.dtos.dto.EmailDto;
 import ru.gb.api.dtos.dto.UserNameMailDto;
-import ru.gb.api.dtos.exceptions.ResourceNotFoundException;
 import ru.gb.cabinetorderservice.entities.Order;
 import ru.gb.cabinetorderservice.integrations.AuthServiceIntegration;
 import ru.gb.cabinetorderservice.integrations.CartServiceIntegration;
 import ru.gb.cabinetorderservice.integrations.MailServiceIntegration;
 import ru.gb.cabinetorderservice.repositories.OrdersRepository;
 import ru.gb.common.constants.Constant;
-import ru.gb.common.constants.InfoMessage;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -37,11 +35,11 @@ public class OrderService implements Constant {
 
 
     @Transactional
-    public String createOrder(String userId) {
+    public String createOrder(String userId, String token) {
         EmailDto emailDto = new EmailDto();
 
         try {
-            CartDto currentCart = cartServiceIntegration.getCart(userId);
+            CartDto currentCart = cartServiceIntegration.getCart(userId, token);
             Long userIDLong = Long.valueOf(userId);
             UserNameMailDto userNameMailDto = authServiceIntegration.findById(userIDLong);
             emailDto.setEmail(userNameMailDto.getEmail());
@@ -93,13 +91,13 @@ public class OrderService implements Constant {
                 }
             }
 
-            cartServiceIntegration.clearUserCart(userId);
+            cartServiceIntegration.clearUserCart(userId, token);
 
 
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){
-            return  " Ошибка интеграции";
+            return  "Ошибка интеграции" + e.getMessage();
         }
     }
 

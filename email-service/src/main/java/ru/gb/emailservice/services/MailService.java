@@ -1,20 +1,15 @@
 package ru.gb.emailservice.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.EmailDto;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 
 @Service
-//@RequiredArgsConstructor
 public class MailService
 {
     private final JavaMailSenderImpl javaMailSender;

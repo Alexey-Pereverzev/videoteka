@@ -88,7 +88,7 @@ public class UserService implements InfoMessage {
         EmailDto emailDto = EmailDto.builder()
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
-                .message("Поздравляем! Вы успешно зарегистрировались. Ваш логин - " + user.getUsername())
+                .message("Поздравляем! Вы успешно зарегистрировались. \nВаш логин — " + user.getUsername())
                 .subject(SIGN_UP)
                 .build();
         mailServiceIntegration.sendEmailMessage(emailDto);
