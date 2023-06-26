@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import {PlusIcon} from "primereact/icons/plus";
 import {toast} from "react-toastify";
+import ListCard from "../../../widgets/ListCard/ListCard";
 
 // Long id;
 // String title;
@@ -28,7 +29,7 @@ import {toast} from "react-toastify";
 // Integer salePrice;
 const RedactorPage = () => {
 
-    let getGenres = () => {
+    let getAllGenres = () => {
         axios.get("http://localhost:5555/catalog/api/v1/genre/all")
             .then(response => response.data)
             .then((data) => {
@@ -38,9 +39,6 @@ const RedactorPage = () => {
             console.error("Error: " + error)
         })
     }
-    useEffect(() => {
-        getAllFilms()
-    }, [])
 
     async function getAllFilms() {
         try {
@@ -61,17 +59,71 @@ const RedactorPage = () => {
     }
 
     let getAllDirectors = () => {
-        console.log("Вошли в метод getAllDirectors")
-        setOpenDirectorMenu(true)
         axios.get('http://localhost:5555/catalog/api/v1/director/all')
             .then(r => r.data)
             .then(data => {
                 setDirectors(data)
+                setDirectorBoard([{
+                    id:1,
+                    DirectorList: data
+                }])
             })
     }
+    let getAllCountries = () => {
+        axios.get('http://localhost:5555/catalog/api/v1/country/all')
+            .then(r => r.data)
+            .then(data => {
+                setCountries(data)
+            })
+    }
+    useEffect(() => {
+        getAllFilms()
+        getAllDirectors()
+        getAllGenres()
+        getAllCountries()
+    }, [])
+
+
     let handleDirectorsChange = () => {
 
     }
+    let dragStartHandler = (event, card, board) => {
+        setCurrentBoard(board)
+        setCurrentCard(card)
+
+    }
+    let dropHandler = (event, card, board) => {
+        event.preventDefault()
+        const currentIndex = currentBoard.DirectorList.indexOf(currentItem)
+        currentBoard.getDirectors.splice(currentIndex, 1)
+        const dropIndex = board.DirectorList.indexOf(card)
+        board.getDirectors.splice(dropIndex + 1, 0, currentIndex)
+        setDirectorBoard(directorBoards.map(b => {
+            if (b.id === board.id){
+                return board
+            }
+            if(b.id === currentBoard.id){
+                return currentBoard
+            }
+            return b
+        }))
+        console.log('drop', card)
+    }
+
+    let dragEndHandler = (event) => {
+        event.target.style.boxShadow = 'none'
+    }
+    let dragLeaveHandler = (event) => {
+        event.target.style.boxShadow = 'none'
+    }
+    let dragOverHandler = (event) => {
+        event.preventDefault()
+        if(event.target.className === 'list_card__container'){
+            event.target.style.boxShadow = '0 2px 3px gray'
+        }
+
+    }
+
 
     function handleFilmsChange(event) {
         console.log(event.target.value)
@@ -96,15 +148,28 @@ const RedactorPage = () => {
     }
 
     const [genres, setGenres] = useState([])
-    const [value, setValue] = useState([])
+    const [directorBoards, setDirectorBoard] = useState([
+        { id: 1,
+          DirectorList: []
+        },
+        { id: 2,
+            DirectorList: []
+        }
+
+
+    ])
     const [directors, setDirectors] = useState([])
     const [countries, setCountries] = useState([])
     const [open, setOpen] = useState(true)
+    const [currentBoard, setCurrentBoard] = useState(null)
+    const [currentItem, setCurrentItem] = useState(null)
     const [openCountryMenu, setOpenCountryMenu] = useState(false)
     const [openDirectorMenu, setOpenDirectorMenu] = useState(false)
     const [openGenreMenu, setOpenGenreMenu] = useState(false)
     const [films, setFilms] = useState([])
     const [file, setFile] = useState([])
+    const [postDirectorList, setPostDirectorList] = useState([])
+    const [currentCard, setCurrentCard] = useState(null)
     console.log(file)
 
     function saveDirector() {
@@ -170,19 +235,65 @@ const RedactorPage = () => {
                                 <label>Цена продажи</label>
                             </div>
                         </div>
-                        <div className={style.country}>
-                            <div className={style.input_container}>
-                                <input type="text"
-                                       required=""/>
-                                <label>Страны, через запятую</label>
+                        <div className={style.option_box}>
+
+                            <div className={style.director_box}>
+                                <span>Режиссёры</span>
+                                {directorBoards.map((board) =>
+                                        <div className={style.board_box}>
+                                            <div className={style.left_board} >
+                                                {board.DirectorList?.map((new_director) => <ListCard
+                                                    onDragStart={(event) =>dragStartHandler(event,new_director, board.DirectorList)}
+                                                    onDragEnd={(event) => dragEndHandler(event)}
+                                                    onDragLeave={(event) => dragLeaveHandler(event)}
+                                                    onDrop={(event) => dropHandler(event,new_director, board.DirectorList)}
+                                                    onDragOver={dragOverHandler}
+                                                    msg={new_director.firstName + ' ' + new_director.lastName}/>)}
+                                            </div>
+                                            <div className={style.right_board} >
+                                                {board.DirectorList?.map((director) => <ListCard
+                                                    onDragStart={(event) =>dragStartHandler(event,director, board.DirectorList)}
+                                                    onDragEnd={(event) => dragEndHandler(event)}
+                                                    onDrop={(event) => dropHandler(event,director, board.DirectorList)}
+                                                    onDragOver={dragOverHandler}
+                                                    msg={director.firstName + ' ' + director.lastName}/>)}
+                                            </div>
+                                        </div>
+                                    )}
                             </div>
-                        </div>
-                        <div className={style.director}>
-                            <div className={style.input_container}>
-                                <input type="text"
-                                       required=""/>
-                                <label>Режисёр, через запятую</label>
+
+                            <div className={style.country_box}>
+                                <span>Страны</span>
+                                <div className={style.board_box}>
+                                    <div className={style.left_board}></div>
+                                    <div className={style.right_board}>
+                                        {countries?.map((country) => <ListCard
+                                            onDragStart={() =>dragStartHandler()}
+                                            onDragEnd={() => dragEndHandler()}
+                                            onDrop={() => dropHandler()}
+                                            onDragOver={() => dragOverHandler.bind(this)}
+                                            msg={country.title}/>)}
+                                    </div>
+                                </div>
                             </div>
+
+                            <div className={style.genre_box}>
+                                <span>Жанры</span>
+                                <div className={style.board_box}>
+                                    <div className={style.left_board}></div>
+                                    <div className={style.right_board}>
+                                        {genres?.map((genre) => <ListCard
+                                            onDragStart={() =>dragStartHandler()}
+                                            onDragEnd={() => dragEndHandler()}
+                                            onDrop={() => dropHandler()}
+                                            onDragOver={() => dragOverHandler.bind(this)}
+                                            id={genre.id}
+                                            msg={genre.title}/>)}
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                     :

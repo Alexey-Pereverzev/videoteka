@@ -3,6 +3,7 @@ package ru.gb.cartservice.models;
 
 import lombok.Data;
 import ru.gb.api.dtos.cart.CartItemDto;
+import ru.gb.cartservice.exceptions.DuplicateInCartException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,22 +19,21 @@ public class Cart {
     }
 // проверка если фильм есть корзине и статус в аренде и мы добавляем этот же фильм со статусом покупки то меняем цену и статус в корзине
     public void add(CartItemDto cartItemDto, boolean isSale) {
-        if (add(cartItemDto.getFilmId())) {
+        if (ifIdInCart(cartItemDto.getFilmId())) {
             for (CartItem o : items) {
-            if (!o.isSale() && isSale ){
-                o.setSalePrice(cartItemDto.getSalePrice());
-                o.setSale(true);
-
+                if (!o.isSale() && isSale && o.getFilmId() == cartItemDto.getFilmId() ){
+                    o.setSalePrice(cartItemDto.getSalePrice());
+                    o.setSale(true);
+                    return;
+                }
             }
-            }
-
-            return;
+            throw new DuplicateInCartException("Такой фильм уже есть в корзине");
         }
         items.add(new CartItem(cartItemDto));
         recalculate();
     }
 
-    public boolean add(Long id) {
+    public boolean ifIdInCart(Long id) {
         for (CartItem o : items) {
             if (Objects.equals(o.getFilmId(), id)) {
                 return true;

@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
-import {Component, useEffect} from "react";
+import React, {Component, useEffect} from "react";
 import SearchBar from "../../../widgets/SearchBar/SearchBar";
+import {toast, ToastContainer} from "react-toastify";
 
 class CatalogPage extends Component {
     constructor(props) {
@@ -214,6 +215,12 @@ class CatalogPage extends Component {
                     totalElements: data.totalElements,
                     currentPage: data.number + 1
                 })
+            }, function errorCallback(response) {
+                console.log(response)
+                let displayNotification = (message) => {
+                    toast.error(message);
+                }
+                displayNotification(response.response.data.value)
             }).catch((error) => {
             console.error("Error: " + error)
         })
@@ -591,7 +598,18 @@ class CatalogPage extends Component {
                             className={style.filter_btn}>Сбросить</Button>
 
                 </div>
-
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         )
     }
