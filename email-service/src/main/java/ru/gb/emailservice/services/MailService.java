@@ -38,8 +38,6 @@ public class MailService
     }
 
 
-
-
     public void sendMessage(EmailDto emailDto) {
         String email = emailDto.getEmail();
         String subject = emailDto.getSubject();
@@ -50,6 +48,20 @@ public class MailService
             message.setSubject(subject);
             message.setText("Здравствуйте, " + firstName+"! \n" + text);
         javaMailSender.send(message);
+//        Message message = null;
+//        try {
+//            // Сообщение Этот класс предоставляется Rabbitmq, и преобразует почтовую информацию по почте в организм для хранения памяти сообщения, установите режим передачи сообщения.
+//            message = MessageBuilder.withBody(objectMapper.writeValueAsBytes(emailDto))
+//                    .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+//                    .build();
+//            // Установите атрибут головного сигнала сообщения, формат контента JSON
+//            message.getMessageProperties()
+//                    .setHeader(AbstractJavaTypeMapper.DEFAULT_CONTENT_CLASSID_FIELD_NAME, 		            MessageProperties.CONTENT_TYPE_JSON);
+//            // Отправить почтовую информацию для переключения
+//            this.rabbitTemplate.convertAndSend(message);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void testMessage(String email) {
