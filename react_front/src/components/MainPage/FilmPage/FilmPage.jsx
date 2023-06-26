@@ -117,10 +117,18 @@ function FilmPage(props) {
                         className="fas fa-file-invoice-dollar"></i>
                     </span>
                         {role === 'ROLE_USER'?
-                            <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
-                                    onClick={(event,_) => {addToCart(event, props.isSale)}}>
-                                В Корзину
-                            </button>
+                            <div className={'btn_box'}>
+                                <h5>Купить</h5>
+                                <button className={'sale'}
+                                        onClick={(event,_) => {addToCart(event, true)}}>
+                                    {props.salePrice}
+                                </button>
+                                <h5>Аренда</h5>
+                                <button className={'pay_btn'}
+                                        onClick={(event,_) => {addToCart(event, false)}}>
+                                    {props.rentPrice}
+                                </button>
+                            </div>
                             :
                             null
                         }
@@ -128,17 +136,13 @@ function FilmPage(props) {
                     </p>
                 </div>
 
-                {props.isSale ?
                     <div className="movie__price">
                         Цена продажи: {props.salePrice}<Icon sx={{transform: 'rotate(90deg)'}}
-                                                             component={CurrencyRubleIcon}/>
-                    </div>
-                    :
-                    <div className="movie__price">
+                                                             component={CurrencyRubleIcon}/> /
                         Цена аренды: {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}}
                                                             component={CurrencyRubleIcon}/>
                     </div>
-                }
+
             </div>
             <ToastContainer
                 position="top-right"

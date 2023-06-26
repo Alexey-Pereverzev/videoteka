@@ -84,7 +84,7 @@ public class RatingService {
     public ResultOperation setModerateStatus(Long userId,Long filmId,boolean status){
         if ((filmId!=null || filmId>0) && (userId!=null || userId>0)){
             Film film=filmService.findById(filmId);
-            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalseAndIsModerateIsTrue(film,userId);
+            Optional<Rating> rating=ratingRepository.findRatingByFilmAndUserIdAndIsDeletedIsFalseAndIsModerateIsFalse(film,userId);
             if (rating.isPresent()){
                 if (status){
                     rating.get().setModerate(true);

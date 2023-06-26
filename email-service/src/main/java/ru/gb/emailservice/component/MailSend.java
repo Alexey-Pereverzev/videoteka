@@ -1,21 +1,30 @@
-package ru.gb.emailservice.services;
+package ru.gb.emailservice.component;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Service;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
 import ru.gb.api.dtos.dto.EmailDto;
+import ru.gb.common.constants.Constant;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 
-@Service
-public class MailService
+@Component
+public class MailSend implements Constant
 {
+
+    private final ObjectMapper objectMapper;
+
     private final JavaMailSenderImpl javaMailSender;
     private static final String SECRET_PATH="secret/";
 
-    public MailService(JavaMailSenderImpl javaMailSender) {
+    public MailSend(JavaMailSenderImpl javaMailSender) {
+        objectMapper = new ObjectMapper();
         this.javaMailSender = javaMailSender;
         String line = null;
 
@@ -32,18 +41,24 @@ public class MailService
         }
     }
 
+    @RabbitListener(queues = MAIL_QUEUE_NAME)
+    public void sendMessage(@Payload byte[] message) {
 
-    public void sendMessage(EmailDto emailDto) {
+        try {
+            EmailDto  emailDto = this.objectMapper.readValue(message, EmailDto.class);
+
         String email = emailDto.getEmail();
         String subject = emailDto.getSubject();
         String firstName = emailDto.getFirstName();
         String text = emailDto.getMessage();
-        SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(email);
-            message.setSubject(subject);
-            message.setText("Здравствуйте, " + firstName+"! \n" + text);
-        javaMailSender.send(message);
-
+        SimpleMailMessage simpleMessage = new SimpleMailMessage();
+            simpleMessage.setTo(email);
+            simpleMessage.setSubject(subject);
+            simpleMessage.setText("Здравствуйте, " + firstName+"! \n" + text);
+        javaMailSender.send(simpleMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void testMessage(String email) {
@@ -55,18 +70,7 @@ public class MailService
         javaMailSender.send(message);
 
     }
-    public String generateVerificationCode (String firstName, String email){
-        EmailDto emailDto = new EmailDto();
-        emailDto.setEmail(email);
-        emailDto.setFirstName(firstName);
-        emailDto.setSubject("Код верификации");
-        int random = (int) (100000+(Math.random()*600000));
-        String code = String.valueOf(random);
-        SimpleMailMessage message = new SimpleMailMessage();
-        emailDto.setMessage("Ваш код верификации - " + code);
-        sendMessage(emailDto);
-        return code;
-    }
+
 
 
 }
