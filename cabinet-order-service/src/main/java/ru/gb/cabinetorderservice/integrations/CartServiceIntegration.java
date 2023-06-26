@@ -35,7 +35,6 @@ public class CartServiceIntegration implements InfoMessage {
                         .path("/api/v1/cart")
                         .queryParam("uuid", userId)
                         .build())
-                // .uri("/api/v1/cart/?uuid="+userId)
                 .header( "userId", userId)
                 .header(HttpHeaders.AUTHORIZATION, BEARER + token)
                 .retrieve()
