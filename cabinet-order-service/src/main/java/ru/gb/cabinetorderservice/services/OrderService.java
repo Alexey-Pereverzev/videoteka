@@ -69,9 +69,8 @@ public class OrderService implements Constant {
                     order.setType("SALE");
                     order.setRentStart(null);
                     order.setRentEnd(null);
-                    emailDto.setMessage("Ваш заказ успешно оформлен.  Вы купили фильм \"" + cartItemDto.getTitle() + "\"\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
-                    rabbitTemplate.convertAndSend(emailDto);
-
+                    emailDto.setMessage("\nВаш заказ успешно оформлен. Вы купили фильм \"" + cartItemDto.getTitle() + "\"\n \nСпасибо за покупку. Приятного просмотра \n \nВаша команда \"Видеотека\"");
+                    mailServiceIntegration.sendMessage(emailDto);
                 } else {
                     Order newOrder = new Order();
                     newOrder.setUserId(userIDLong);
@@ -88,13 +87,13 @@ public class OrderService implements Constant {
                         // к текущей дате прибавили 24 часа
                         newOrder.setRentEnd(dateStart.plusHours(RENT_HOURS));// завести константу,
                         String formattedDateTime = dateStart.plusHours(RENT_HOURS).format(formatter);
-                        emailDto.setMessage("Ваш заказ успешно оформлен. Вы оплатили прокат фильма \"" + cartItemDto.getTitle()
-                                + "\" \nСрок аренды составляет 24 часа и закончится " + formattedDateTime + "\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+                        emailDto.setMessage("\nВаш заказ успешно оформлен. Вы оплатили прокат фильма \"" + cartItemDto.getTitle()
+                                + "\" \nСрок аренды составляет 24 часа и закончится " + formattedDateTime + "\n \nСпасибо за покупку. Приятного просмотра \n \nВаша команда \"Видеотека\"");
 
 
                     } else {
                         newOrder.setType("SALE");
-                        emailDto.setMessage("Ваш заказ успешно оформлен. Вы купили фильм \" " + cartItemDto.getTitle() + "\"\n \n Спасибо за покупку. Приятного просмотра \n \n Ваша команда \"Видеотека\"");
+                        emailDto.setMessage("\nВаш заказ успешно оформлен. Вы купили фильм \" " + cartItemDto.getTitle() + "\"\n \nСпасибо за покупку. Приятного просмотра \n \nВаша команда \"Видеотека\"");
 
                     }
 

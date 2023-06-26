@@ -23,22 +23,6 @@ const[film, setFilm] = useState([])
         }
     }
 
-    // let filmById = async () => {
-    //     console.log(props.filmId)
-    //     try {
-    //         const response = await axios.get('http://localhost:5555/catalog/api/v1/film/id',
-    //             {
-    //                 params: {
-    //                     id: props.filmId,
-    //                 }
-    //             }
-    //         ).then( response => setFilm(response.data))
-    //         // props.loadCart()
-    //     } catch (e) {
-    //         alert(e)
-    //     }
-    // }
-
     return(
         <div className={'string_container'}>
             <div className={'string__cover'}>
