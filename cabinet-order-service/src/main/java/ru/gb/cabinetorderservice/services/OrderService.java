@@ -112,7 +112,7 @@ public class OrderService implements Constant {
             return "Заказ успено сохранен в БД";
         }
         catch (Exception e){
-            return  "Ошибка интеграции" + e.getMessage();
+            return  "Ошибка интеграции";
         }
     }
 

@@ -14,48 +14,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
-//    @Bean
-//    Queue queueA() {
-//        return new Queue("queue.A", false);
-//    }
-//
-//    @Bean
-//    Queue queueB() {
-//        return new Queue("queue.B", false);
-//    }
-//
-//    @Bean
-//    DirectExchange exchange() {
-//        return new DirectExchange("exchange.direct");
-//    }
-//
-//    @Bean
-//    Binding bindingA(Queue queueA, DirectExchange exchange) {
-//        return BindingBuilder.bind(queueA).to(exchange).with("event_A");
-//    }
-//
-//    @Bean
-//    Binding bindingB(Queue queueB, DirectExchange exchange) {
-//        return BindingBuilder.bind(queueB).to(exchange).with("event_B");
-//    }
-//
-//    @Bean
-//    ApplicationRunner runner(ConnectionFactory cf) {
-//        return args -> cf.createConnection().close();
-//    }
-//
-//    @Bean
-//    MessageConverter messageConverter() {
-//        return new Jackson2JsonMessageConverter();
-//    }
-//
-//    @Bean
-//    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-//        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-//        rabbitTemplate.setMessageConverter(messageConverter());
-//        return rabbitTemplate;
-//    }
-
     @Autowired
     private CachingConnectionFactory connectionFactory;
 
@@ -73,10 +31,9 @@ public class RabbitConfig {
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
                 if (ack) {
-                    System.out.println("Сообщение Отправить успех");
-                   // log.info(«Сообщение Отправить успех: CorrelationData ({}), ACK ({}), причина ({})», correlationData, ack, cause);
+                    System.out.println("Сообщение отправлено ");
                 }else{
-                    System.out.println("Сообщение Отправить не успех");
+                    System.out.println("Сообщение не отправлено ");
                   //  log.info(«Ошибка сообщения: CorrelationData ({}), ACK ({}), причина ({})", correlationData, ack, cause);
                 }
             }
@@ -87,7 +44,7 @@ public class RabbitConfig {
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-                //log.info(«Потеря сообщения: Exchange ({}), маршрут ({}), RepeCode ({}), ReplyText ({}), сообщение: {}",exchange,routingKey,replyCode,replyText,message);
+                System.out.println("Потеря сообщения ");
             }
         });
         return rabbitTemplate;

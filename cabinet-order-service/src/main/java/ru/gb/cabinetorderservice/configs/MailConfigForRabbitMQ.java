@@ -8,9 +8,6 @@ import ru.gb.common.constants.Constant;
 @Configuration
 public class MailConfigForRabbitMQ implements Constant {
 
-//    @Autowired(required=true)
-//    private Environment environment;
-
     // Создать очередь
     @Bean
     public Queue mailQueue(){
