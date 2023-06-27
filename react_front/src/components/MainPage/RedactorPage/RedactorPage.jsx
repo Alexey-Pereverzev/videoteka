@@ -1,22 +1,12 @@
 import style from "./RedactorPage.module.css"
 import React, {useEffect, useState} from "react";
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select
-} from "@mui/material";
+import {Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select} from "@mui/material";
 import axios from "axios";
 import {PlusIcon} from "primereact/icons/plus";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import ListCard from "../../../widgets/ListCard/ListCard";
 import ListCardDeleteable from "../../../widgets/ListCardDeleteable/ListCardDeleteable";
+// import {Checkbox, Input} from "antd";
 
 // Long id;
 // String title;
@@ -79,10 +69,12 @@ const RedactorPage = () => {
         getAllGenres()
         getAllCountries()
     }, [])
-
+    let displayCartNotification = (message) => {
+        toast.success(message);
+    };
     let addNewFilm = () => {
         axios.post('http://localhost:5555/catalog/api/v1/film/new_film', {
-            id: 0,
+            id: filmId,
             title: filmTitle,
             premierYear: filmDate,
             description: filmDescription,
@@ -93,37 +85,26 @@ const RedactorPage = () => {
             rentPrice: filmRentPrice,
             salePrice: filmSalePrice
 
-        }).then(response => console.log(response))
+        }).then(response => console.log(response.data))
+            .then((data) => {
+                getAllFilms()
+                displayCartNotification(data.value)
+            })
     }
 
     let changeDirectorsStateHandler = (event) => {
-        console.log(event.target)
-        if (!postDirectorList.includes(event.target.value)) {
-            setPostDirectorList((prevState => prevState.concat([event.target.value])))
-        }
-    }
-    let changeCountriesStateHandler = (event) => {
-        console.log(event.target)
-        if (!postCountriesList.includes(event.target.value)) {
-            setPostCountriesList((prevState => prevState.concat([event.target.value])))
-        }
-    }
-    let changeGenresStateHandler = (event) => {
-        console.log(event.target)
-        if (!postGenresList.includes(event.target.value)) {
-            setPostGenresList((prevState => prevState.concat([event.target.value])))
-        }
+        setPostDirectorList(event.target.value)
     }
 
-    let clearPostDirectorList = () => {
-        setPostDirectorList([])
+
+    let changeCountriesStateHandler = (event) => {
+        setPostCountriesList(event.target.value)
+
     }
-    let clearPostCountryList = () => {
-        setPostCountriesList([])
+    let changeGenresStateHandler = (event) => {
+        setPostGenresList(event.target.value)
     }
-    let clearPostGenreList = () => {
-        setPostGenresList([])
-    }
+
 
     let addLinkToCover = (event) => {
         setLinkToCover(event.target.value)
@@ -132,6 +113,16 @@ const RedactorPage = () => {
     function handleFilmsChange(event) {
         console.log(event.target.value)
         if (event.target.value === "Добавить фильм") {
+            setFilmId(0)
+            setLinkToCover('')
+            setFilmTitle('')
+            setFilmDate(2023)
+            setFilmDescription('')
+            setFilmSalePrice(119)
+            setFilmRentPrice(19)
+            setPostGenresList([])
+            setPostDirectorList([])
+            setPostCountriesList([])
             setOpen(true)
         } else {
             if (event.target.value !== "Добавить фильм") {
@@ -141,8 +132,19 @@ const RedactorPage = () => {
                         params: {
                             id: event.target.value
                         }
-                    }).then(response => setFile(response.data))
+                    }).then(response => response.data)
                         .then((data) => {
+                            setFile(data)
+                            setFilmId(data.id)
+                            setLinkToCover(data.imageUrlLink)
+                            setFilmTitle(data.title)
+                            setFilmDate(data.premierYear)
+                            setFilmDescription(data.description)
+                            setFilmSalePrice(data.salePrice)
+                            setFilmRentPrice(data.rentPrice)
+                            setPostGenresList(data.genre)
+                            setPostDirectorList(data.director)
+                            setPostCountriesList(data.country)
                         })
                 } catch (e) {
 
@@ -152,6 +154,7 @@ const RedactorPage = () => {
     }
 
     const [genres, setGenres] = useState([])
+    const [filmId, setFilmId] = useState(0)
     const [directors, setDirectors] = useState([])
     const [countries, setCountries] = useState([])
     const [open, setOpen] = useState(true)
@@ -190,6 +193,17 @@ const RedactorPage = () => {
         setFilmSalePrice(event.target.value)
     }
 
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+
     return (
         <div className={style.redactor_container}>
             <h3>
@@ -223,27 +237,27 @@ const RedactorPage = () => {
                     <div className={style.details}>
                         <div className={style.title_input}>
                             <div className={style.input_container}>
-                                <input type="text" required="" placeholder={'Ссылка для обложки'}
+                                <input type="text" required="" value={linkToCover} placeholder={'Ссылка для обложки'}
                                        onChange={addLinkToCover}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="text" required="" placeholder={'Название фильма'} onChange={addFilmTitle}/>
+                                <input type="text" required=""  value={filmTitle} placeholder={'Название фильма'} onChange={addFilmTitle}/>
                             </div>
                         </div>
                         <div className={style.description_area}>
-                            <textarea name="Text1" cols="40" rows="5" placeholder={'Содержание'}
+                            <textarea name="Text1" cols="40" rows="5" value={filmDescription} placeholder={'Содержание'}
                                       onChange={addFilmDescription}/>
                         </div>
                         <div className={style.details_box}>
                             <div className={style.input_container}>
-                                <input type="number" required="" placeholder={'Год премьеры'}
+                                <input type="number" required="" value={filmDate} placeholder={'Год премьеры'}
                                        onChange={addPremierYear}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="number" required="" placeholder={'Цена аренды'} onChange={addRentPrice}/>
+                                <input type="number" required="" value={filmRentPrice} placeholder={'Цена аренды'} onChange={addRentPrice}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="number" required="" placeholder={'Цена продажи'} onChange={addSalePrice}/>
+                                <input type="number" required="" value={filmSalePrice} placeholder={'Цена продажи'} onChange={addSalePrice}/>
                             </div>
                         </div>
 
@@ -252,17 +266,44 @@ const RedactorPage = () => {
                                 <span>Режиссёры</span>
                                 <div className={style.board_box}>
                                     <div className={style.left_board}>
-                                        <button className={style.clear_directors__btn}
-                                                onClick={() => clearPostDirectorList()}>Очистить
-                                        </button>
                                         {postDirectorList?.map((new_director) => <ListCardDeleteable
                                             msg={new_director}/>)}
                                     </div>
                                     <div className={style.right_board}>
-                                        {directors?.map((director) => <ListCard
-                                            changeStateHandler={(e) => changeDirectorsStateHandler(e)}
-                                            checked={checked}
-                                            msg={director.firstName + ' ' + director.lastName}/>)}
+                                        <FormControl className={style.formControl} focused={false}>
+
+                                            <Select
+                                                labelId="demo-mutiple-checkbox-label"
+                                                id="demo-mutiple-checkbox"
+                                                multiple
+                                                value={postDirectorList}
+                                                onChange={changeDirectorsStateHandler}
+                                                input={<Input/>}
+                                                placeholder={'Режиссёры'}
+                                                sx={{backgroundColor: 'white', color: 'black'}}
+                                                renderValue={(selected) => {
+                                                    if (selected.length === 0) {
+                                                        return <em>Placeholder</em>;
+                                                    }
+
+                                                    return selected.join(', ');
+                                                }
+                                                }
+                                                MenuProps={MenuProps}
+                                            >
+                                                <MenuItem disabled value="">
+                                                    <em>Режиссёры</em>
+                                                </MenuItem>
+                                                {directors.map((name) => (
+                                                    <MenuItem key={name.id}
+                                                              value={name.firstName + ' ' + name.lastName}>
+                                                        <Checkbox
+                                                            checked={postDirectorList.indexOf(name.firstName + ' ' + name.lastName) > -1}/>
+                                                        <ListItemText primary={name.firstName + ' ' + name.lastName}/>
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
                                     </div>
                                 </div>
                             </div>
@@ -271,17 +312,47 @@ const RedactorPage = () => {
                                 <span>Страны</span>
                                 <div className={style.board_box}>
                                     <div className={style.left_board}>
-                                        <button className={style.clear_directors__btn}
-                                                onClick={() => clearPostCountryList()}>Очистить
-                                        </button>
+
                                         {postCountriesList?.map((new_country) => <ListCardDeleteable
                                             msg={new_country}/>)}
                                     </div>
+
                                     <div className={style.right_board}>
-                                        {countries?.map((country) => <ListCard
-                                            changeStateHandler={(e) => changeCountriesStateHandler(e)}
-                                            checked={checked}
-                                            msg={country.title}/>)}
+                                        <FormControl className={style.formControl} focused={false}>
+
+                                            <Select
+                                                labelId="demo-mutiple-checkbox-label"
+                                                id="demo-mutiple-checkbox"
+                                                multiple
+                                                value={postCountriesList}
+                                                onChange={changeCountriesStateHandler}
+                                                input={<Input/>}
+                                                placeholder={'Режиссёры'}
+                                                sx={{backgroundColor: 'white', color: 'black'}}
+                                                renderValue={(selected) => {
+                                                    if (selected.length === 0) {
+                                                        return <em>Placeholder</em>;
+                                                    }
+
+                                                    return selected.join(', ');
+                                                }
+                                                }
+                                                MenuProps={MenuProps}
+                                            >
+                                                <MenuItem disabled value="">
+                                                    <em>Режиссёры</em>
+                                                </MenuItem>
+                                                {countries.map((name) => (
+                                                    <MenuItem key={name.id}
+                                                              value={name.title}>
+                                                        <Checkbox
+                                                            checked={postCountriesList.indexOf(name.title) > -1}/>
+                                                        <ListItemText primary={name.title}/>
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+
                                     </div>
                                 </div>
                             </div>
@@ -289,17 +360,44 @@ const RedactorPage = () => {
                                 <span>Жанры</span>
                                 <div className={style.board_box}>
                                     <div className={style.left_board}>
-                                        <button className={style.clear_directors__btn}
-                                                onClick={() => clearPostGenreList()}>Очистить
-                                        </button>
                                         {postGenresList?.map((new_genre) => <ListCardDeleteable
                                             msg={new_genre}/>)}
                                     </div>
                                     <div className={style.right_board}>
-                                        {genres?.map((genre) => <ListCard
-                                            changeStateHandler={(e) => changeGenresStateHandler(e)}
-                                            checked={checked}
-                                            msg={genre.title}/>)}
+                                        <FormControl className={style.formControl} focused={false}>
+
+                                            <Select
+                                                labelId="demo-mutiple-checkbox-label"
+                                                id="demo-mutiple-checkbox"
+                                                multiple
+                                                value={postGenresList}
+                                                onChange={changeGenresStateHandler}
+                                                input={<Input/>}
+                                                placeholder={'Режиссёры'}
+                                                sx={{backgroundColor: 'white', color: 'black'}}
+                                                renderValue={(selected) => {
+                                                    if (selected.length === 0) {
+                                                        return <em>Placeholder</em>;
+                                                    }
+
+                                                    return selected.join(', ');
+                                                }
+                                                }
+                                                MenuProps={MenuProps}
+                                            >
+                                                <MenuItem disabled value="">
+                                                    <em>Жанры</em>
+                                                </MenuItem>
+                                                {genres.map((name) => (
+                                                    <MenuItem key={name.id}
+                                                              value={name.title}>
+                                                        <Checkbox
+                                                            checked={postGenresList.indexOf(name.title) > -1}/>
+                                                        <ListItemText primary={name.title}/>
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
                                     </div>
                                 </div>
                             </div>
@@ -315,97 +413,187 @@ const RedactorPage = () => {
                         <div className={style.details}>
                             <div className={style.title_input}>
                                 <div className={style.input_container}>
-                                    <input type="text" required="" value={file.imageUrlLink}/>
+                                    <input type="text" required="" value={linkToCover} onChange={addLinkToCover}/>
                                 </div>
                                 <div className={style.input_container}>
-                                    <input type="text" required="" value={file.title}/>
+                                    <input type="text" required="" value={filmTitle} onChange={addFilmTitle}/>
                                 </div>
                             </div>
                             <div className={style.description_area}>
-                                <textarea name="Text1" cols="40" rows="5" value={file.description}/>
+                                <textarea name="Text1" cols="40" rows="5" value={filmDescription} onChange={addFilmDescription}/>
                             </div>
                             <div className={style.details_box}>
                                 <div className={style.input_container}>
-                                    <input type="text" required="" value={file.premierYear}/>
+                                    <input type="text" required="" value={filmDate} onChange={addPremierYear}/>
                                 </div>
                                 <div className={style.input_container}>
-                                    <input type="text" required="" value={file.rentPrice}/>
+                                    <input type="text" required="" value={filmRentPrice} onChange={addRentPrice}/>
                                 </div>
                                 <div className={style.input_container}>
-                                    <input type="text" required="" value={file.salePrice}/>
+                                    <input type="text" required="" value={filmSalePrice} onChange={addSalePrice}/>
                                 </div>
                             </div>
                             <div className={style.select_box}>
+                                <div className={style.option_box}>
+                                    <div className={style.country}>
+                                        <div className={style.input_container}>
+                                            <div className={style.director_box}>
+                                                <span>Страны</span>
+                                                <div className={style.board_box}>
+                                                    <div className={style.left_board}>
+                                                        {postCountriesList?.map((country) => <ListCardDeleteable
+                                                            msg={country}/>)}
+                                                    </div>
+                                                    <div className={style.right_board}>
+                                                        <FormControl className={style.formControl} focused={false}>
 
-                                <div className={style.country}>
-                                    <div className={style.input_container}>
-                                        <div className={style.director_box}>
-                                            <span>Страны</span>
-                                            <div className={style.board_box}>
-                                                <div className={style.left_board}>
-                                                    <button className={style.clear_directors__btn}
-                                                            onClick={() => clearPostCountryList()}>Очистить
-                                                    </button>
-                                                    {file.country?.map((country) => <ListCardDeleteable
-                                                        msg={country}/>)}
-                                                </div>
-                                                <div className={style.right_board}>
-                                                    {countries?.map((country) => <ListCard
-                                                        changeStateHandler={(e) => changeCountriesStateHandler(e)}
-                                                        checked={checked}
-                                                        msg={country.title}/>)}
+                                                            <Select
+                                                                labelId="demo-mutiple-checkbox-label"
+                                                                id="demo-mutiple-checkbox"
+                                                                multiple
+                                                                value={postCountriesList}
+                                                                onChange={changeCountriesStateHandler}
+                                                                input={<Input/>}
+                                                                placeholder={'Страны'}
+                                                                sx={{backgroundColor: 'white', color: 'black'}}
+                                                                renderValue={(selected) => {
+                                                                    if (selected.length === 0) {
+                                                                        return <em>Placeholder</em>;
+                                                                    }
+
+                                                                    return selected.join(', ');
+                                                                }
+                                                                }
+                                                                MenuProps={MenuProps}
+                                                            >
+                                                                <MenuItem disabled value="">
+                                                                    <em>Страны</em>
+                                                                </MenuItem>
+                                                                {countries.map((name) => (
+                                                                    <MenuItem key={name.id}
+                                                                              value={name.title}>
+                                                                        <Checkbox
+                                                                            checked={postCountriesList.indexOf(name.title) > -1}/>
+                                                                        <ListItemText primary={name.title}/>
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        </FormControl>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className={style.director}>
+                                    <div className={style.director}>
 
-                                    <div className={style.input_container}>
-                                        <div className={style.director_box}>
-                                            <span>Режиссёры</span>
-                                            <div className={style.board_box}>
-                                                <div className={style.left_board}>
-                                                    <button className={style.clear_directors__btn}
-                                                            onClick={() => clearPostDirectorList()}>Очистить
-                                                    </button>
-                                                    {file.director?.map((new_director) => <ListCardDeleteable
-                                                        msg={new_director}/>)}
+                                        <div className={style.input_container}>
+                                            <div className={style.director_box}>
+                                                <span>Режиссёры</span>
+                                                <div className={style.board_box}>
+                                                    <div className={style.left_board}>
+                                                        {postDirectorList?.map((new_director) => <ListCardDeleteable
+                                                            msg={new_director}/>)}
+                                                    </div>
+                                                    <div className={style.right_board}>
+                                                        <FormControl className={style.formControl}>
+                                                            <Select
+                                                                labelId="demo-mutiple-checkbox-label"
+                                                                id="demo-mutiple-checkbox"
+                                                                multiple
+                                                                value={postDirectorList}
+                                                                onChange={changeDirectorsStateHandler}
+                                                                input={<Input/>}
+                                                                renderValue={(selected) => selected.join(', ')}
+                                                                MenuProps={MenuProps}
+                                                            >
+                                                                <MenuItem disabled value="">
+                                                                    <em>Режиссёры</em>
+                                                                </MenuItem>
+                                                                {directors.map((name) => (
+                                                                    <MenuItem key={name.id}
+                                                                              value={name.firstName + ' ' + name.lastName}>
+                                                                        <Checkbox
+                                                                            checked={postDirectorList.indexOf(name.firstName + ' ' + name.lastName) > -1}/>
+                                                                        <ListItemText
+                                                                            primary={name.firstName + ' ' + name.lastName}/>
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        </FormControl>
+                                                    </div>
                                                 </div>
-                                                <div className={style.right_board}>
-                                                    {directors?.map((director) => <ListCard
-                                                        changeStateHandler={(e) => changeDirectorsStateHandler(e)}
-                                                        checked={checked}
-                                                        msg={director.firstName + ' ' + director.lastName}/>)}
-                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div className={style.director_box}>
+                                        <span>Жанры</span>
+                                        <div className={style.board_box}>
+                                            <div className={style.left_board}>
+
+                                                {postGenresList?.map((new_genre) => <ListCardDeleteable
+                                                    msg={new_genre}/>)}
+                                            </div>
+                                            <div className={style.right_board}>
+                                                <FormControl className={style.formControl} focused={false}>
+
+                                                    <Select
+                                                        labelId="demo-mutiple-checkbox-label"
+                                                        id="demo-mutiple-checkbox"
+                                                        multiple
+                                                        value={postGenresList}
+                                                        onChange={changeGenresStateHandler}
+                                                        input={<Input/>}
+                                                        placeholder={'Жанры'}
+                                                        sx={{backgroundColor: 'white', color: 'black'}}
+                                                        renderValue={(selected) => {
+                                                            if (selected.length === 0) {
+                                                                return <em>Placeholder</em>;
+                                                            }
+
+                                                            return selected.join(', ');
+                                                        }
+                                                        }
+                                                        MenuProps={MenuProps}
+                                                    >
+                                                        <MenuItem disabled value="">
+                                                            <em>Жанры</em>
+                                                        </MenuItem>
+                                                        {genres.map((name) => (
+                                                            <MenuItem key={name.id}
+                                                                      value={name.title}>
+                                                                <Checkbox
+                                                                    checked={postGenresList.indexOf(name.title) > -1}/>
+                                                                <ListItemText primary={name.title}/>
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className={style.director_box}>
-                                    <span>Жанры</span>
-                                    <div className={style.board_box}>
-                                        <div className={style.left_board}>
-                                            <button className={style.clear_directors__btn}
-                                                    onClick={() => clearPostGenreList()}>Очистить
-                                            </button>
-                                            {file.genre?.map((new_genre) => <ListCardDeleteable
-                                                msg={new_genre}/>)}
-                                        </div>
-                                        <div className={style.right_board}>
-                                            {genres?.map((genre) => <ListCard
-                                                changeStateHandler={(e) => changeGenresStateHandler(e)}
-                                                checked={checked}
-                                                msg={genre.title}/>)}
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div className={style.send_new_film__btn}>
+                                <button onClick={() => addNewFilm()}>Сохранить</button>
                             </div>
                         </div>
                     </div>
                 }
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }

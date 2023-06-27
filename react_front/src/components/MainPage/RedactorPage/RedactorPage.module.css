@@ -166,9 +166,10 @@
 /*    margin-bottom: 1rem;*/
 /*}*/
 
-.option_box{
+.option_box {
     display: flex;
 }
+
 .option_box,
 .director_box,
 .country_box,
@@ -177,15 +178,16 @@
     border: 1px solid #c5c5c5;
     border-radius: 10px;
 }
+
 .director_box,
 .country_box,
-.genre_box{
+.genre_box {
     margin: 10px;
     font-weight: 500;
     color: #c5c5c5;
 }
 
-.director_box{
+.director_box {
 
 }
 
@@ -195,9 +197,11 @@
 
 .genre_box {
 }
-.board_box{
+
+.board_box {
     display: flex;
 }
+
 .left_board,
 .right_board {
     display: flex;
@@ -205,23 +209,59 @@
     align-items: center;
     margin: 5px;
     width: 170px;
-    height:320px;
+    height: 320px;
     background: #EFEFEF;
     overflow-y: auto;
 }
 
 .right_board {
 }
-.btn_post{
+
+.btn_post {
     height: 30px;
     background-color: #3f00df;
     border-radius: 5px;
     outline: none;
     border: none;
 }
-.send_new_film__btn{
+
+.send_new_film__btn {
+    position: absolute;
+    top: 30px;
+    right: 300px
+}
+
+.send_new_film__btn button{
+    padding: 10px 20px;
+    background: #63386d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.clear_directors__btn {
 
 }
-.clear_directors__btn{
 
+.formControl {
+    width: 120px;
+
+}
+
+.select_fields {
+    position: absolute;
+    top: 30px;
+    right: 300px;
+    width: 220px;
+    color: white;
+}
+
+.select_fields__label {
+    display: flex;
+    justify-content: space-between;
+}
+.select_fields__label label{
+    margin-right: 5px;
 }

@@ -455,10 +455,7 @@ class CatalogPage extends Component {
                                 {/*<div className={style.current_pages}>*/}
                                 {/*    <h4>Это {currentPage} страница из {totalPages}</h4>*/}
                                 {/*</div>*/}
-                                <div className={style.change_state}>
-                                    <Button onClick={this.handleSaleSet} className={style.filter_btn}>Купить фильмы</Button>
-                                    <Button onClick={this.handleRentSet} className={active ? style.filter_btn : style.active_btn}>Взять фильмы в аренду</Button>
-                                </div>
+
                                 <div className={style.pagination_items}>
                                     <Pagination count={totalPages}
                                                 page={currentPage}
@@ -591,12 +588,11 @@ class CatalogPage extends Component {
                             </div>
                         </div>
                     </div>
-                    {/*{!this.state.isSale ?*/}
-                    {/*    <Button onClick={this.handleSaleChange} className={style.filter_btn}>Продажа</Button>*/}
-                    {/*    :*/}
-                    {/*    <Button onClick={this.handleSaleChange} className={style.filter_btn}>Аренда</Button>*/}
-                    {/*}*/}
-
+                    {!this.state.isSale ?
+                        <Button onClick={this.handleSaleSet} className={style.filter_btn}>Продажа</Button>
+                        :
+                        <Button onClick={this.handleRentSet} className={style.filter_btn}>Аренда</Button>
+                    }
                     <Button onClick={() => this.filmFilterByGenres("Все")}
                             className={style.filter_btn}>Сбросить</Button>
 
