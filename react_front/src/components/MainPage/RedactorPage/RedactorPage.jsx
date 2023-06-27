@@ -16,6 +16,7 @@ import axios from "axios";
 import {PlusIcon} from "primereact/icons/plus";
 import {toast} from "react-toastify";
 import ListCard from "../../../widgets/ListCard/ListCard";
+import ListCardDeleteable from "../../../widgets/ListCardDeleteable/ListCardDeleteable";
 
 // Long id;
 // String title;
@@ -63,10 +64,6 @@ const RedactorPage = () => {
             .then(r => r.data)
             .then(data => {
                 setDirectors(data)
-                setDirectorBoard([{
-                    id:1,
-                    DirectorList: data
-                }])
             })
     }
     let getAllCountries = () => {
@@ -83,47 +80,54 @@ const RedactorPage = () => {
         getAllCountries()
     }, [])
 
+    let addNewFilm = () => {
+        axios.post('http://localhost:5555/catalog/api/v1/film/new_film', {
+            id: 0,
+            title: filmTitle,
+            premierYear: filmDate,
+            description: filmDescription,
+            imageUrlLink: linkToCover,
+            genre: postGenresList,
+            country: postCountriesList,
+            director: postDirectorList,
+            rentPrice: filmRentPrice,
+            salePrice: filmSalePrice
 
-    let handleDirectorsChange = () => {
-
-    }
-    let dragStartHandler = (event, card, board) => {
-        setCurrentBoard(board)
-        setCurrentCard(card)
-
-    }
-    let dropHandler = (event, card, board) => {
-        event.preventDefault()
-        const currentIndex = currentBoard.DirectorList.indexOf(currentItem)
-        currentBoard.getDirectors.splice(currentIndex, 1)
-        const dropIndex = board.DirectorList.indexOf(card)
-        board.getDirectors.splice(dropIndex + 1, 0, currentIndex)
-        setDirectorBoard(directorBoards.map(b => {
-            if (b.id === board.id){
-                return board
-            }
-            if(b.id === currentBoard.id){
-                return currentBoard
-            }
-            return b
-        }))
-        console.log('drop', card)
+        }).then(response => console.log(response))
     }
 
-    let dragEndHandler = (event) => {
-        event.target.style.boxShadow = 'none'
-    }
-    let dragLeaveHandler = (event) => {
-        event.target.style.boxShadow = 'none'
-    }
-    let dragOverHandler = (event) => {
-        event.preventDefault()
-        if(event.target.className === 'list_card__container'){
-            event.target.style.boxShadow = '0 2px 3px gray'
+    let changeDirectorsStateHandler = (event) => {
+        console.log(event.target)
+        if (!postDirectorList.includes(event.target.value)) {
+            setPostDirectorList((prevState => prevState.concat([event.target.value])))
         }
-
+    }
+    let changeCountriesStateHandler = (event) => {
+        console.log(event.target)
+        if (!postCountriesList.includes(event.target.value)) {
+            setPostCountriesList((prevState => prevState.concat([event.target.value])))
+        }
+    }
+    let changeGenresStateHandler = (event) => {
+        console.log(event.target)
+        if (!postGenresList.includes(event.target.value)) {
+            setPostGenresList((prevState => prevState.concat([event.target.value])))
+        }
     }
 
+    let clearPostDirectorList = () => {
+        setPostDirectorList([])
+    }
+    let clearPostCountryList = () => {
+        setPostCountriesList([])
+    }
+    let clearPostGenreList = () => {
+        setPostGenresList([])
+    }
+
+    let addLinkToCover = (event) => {
+        setLinkToCover(event.target.value)
+    }
 
     function handleFilmsChange(event) {
         console.log(event.target.value)
@@ -148,32 +152,42 @@ const RedactorPage = () => {
     }
 
     const [genres, setGenres] = useState([])
-    const [directorBoards, setDirectorBoard] = useState([
-        { id: 1,
-          DirectorList: []
-        },
-        { id: 2,
-            DirectorList: []
-        }
-
-
-    ])
     const [directors, setDirectors] = useState([])
     const [countries, setCountries] = useState([])
     const [open, setOpen] = useState(true)
-    const [currentBoard, setCurrentBoard] = useState(null)
-    const [currentItem, setCurrentItem] = useState(null)
     const [openCountryMenu, setOpenCountryMenu] = useState(false)
-    const [openDirectorMenu, setOpenDirectorMenu] = useState(false)
-    const [openGenreMenu, setOpenGenreMenu] = useState(false)
     const [films, setFilms] = useState([])
     const [file, setFile] = useState([])
+    const [linkToCover, setLinkToCover] = useState('')
+    const [filmTitle, setFilmTitle] = useState('')
+    const [filmDescription, setFilmDescription] = useState('')
+    const [filmDate, setFilmDate] = useState(0)
+    const [filmRentPrice, setFilmRentPrice] = useState(0)
+    const [filmSalePrice, setFilmSalePrice] = useState(0)
     const [postDirectorList, setPostDirectorList] = useState([])
-    const [currentCard, setCurrentCard] = useState(null)
-    console.log(file)
+    const [postCountriesList, setPostCountriesList] = useState([])
+    const [postGenresList, setPostGenresList] = useState([])
+    const [checked, setChecked] = useState(false)
 
-    function saveDirector() {
 
+    function addFilmTitle(event) {
+        setFilmTitle(event.target.value)
+    }
+
+    function addFilmDescription(event) {
+        setFilmDescription(event.target.value)
+    }
+
+    function addPremierYear(event) {
+        setFilmDate(event.target.value)
+    }
+
+    function addRentPrice(event) {
+        setFilmRentPrice(event.target.value)
+    }
+
+    function addSalePrice(event) {
+        setFilmSalePrice(event.target.value)
     }
 
     return (
@@ -209,107 +223,102 @@ const RedactorPage = () => {
                     <div className={style.details}>
                         <div className={style.title_input}>
                             <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Ссылка для обложки</label>
+                                <input type="text" required="" placeholder={'Ссылка для обложки'}
+                                       onChange={addLinkToCover}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Название фильма</label>
+                                <input type="text" required="" placeholder={'Название фильма'} onChange={addFilmTitle}/>
                             </div>
                         </div>
                         <div className={style.description_area}>
-                            <textarea name="Text1" cols="40" rows="5"/>
-                            <label>Содержание</label>
+                            <textarea name="Text1" cols="40" rows="5" placeholder={'Содержание'}
+                                      onChange={addFilmDescription}/>
                         </div>
                         <div className={style.details_box}>
                             <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Год премьеры</label>
+                                <input type="number" required="" placeholder={'Год премьеры'}
+                                       onChange={addPremierYear}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Цена аренды</label>
+                                <input type="number" required="" placeholder={'Цена аренды'} onChange={addRentPrice}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="text" required=""/>
-                                <label>Цена продажи</label>
+                                <input type="number" required="" placeholder={'Цена продажи'} onChange={addSalePrice}/>
                             </div>
                         </div>
-                        <div className={style.option_box}>
 
+                        <div className={style.option_box}>
                             <div className={style.director_box}>
                                 <span>Режиссёры</span>
-                                {directorBoards.map((board) =>
-                                        <div className={style.board_box}>
-                                            <div className={style.left_board} >
-                                                {board.DirectorList?.map((new_director) => <ListCard
-                                                    onDragStart={(event) =>dragStartHandler(event,new_director, board.DirectorList)}
-                                                    onDragEnd={(event) => dragEndHandler(event)}
-                                                    onDragLeave={(event) => dragLeaveHandler(event)}
-                                                    onDrop={(event) => dropHandler(event,new_director, board.DirectorList)}
-                                                    onDragOver={dragOverHandler}
-                                                    msg={new_director.firstName + ' ' + new_director.lastName}/>)}
-                                            </div>
-                                            <div className={style.right_board} >
-                                                {board.DirectorList?.map((director) => <ListCard
-                                                    onDragStart={(event) =>dragStartHandler(event,director, board.DirectorList)}
-                                                    onDragEnd={(event) => dragEndHandler(event)}
-                                                    onDrop={(event) => dropHandler(event,director, board.DirectorList)}
-                                                    onDragOver={dragOverHandler}
-                                                    msg={director.firstName + ' ' + director.lastName}/>)}
-                                            </div>
-                                        </div>
-                                    )}
-                            </div>
-
-                            <div className={style.country_box}>
-                                <span>Страны</span>
                                 <div className={style.board_box}>
-                                    <div className={style.left_board}></div>
+                                    <div className={style.left_board}>
+                                        <button className={style.clear_directors__btn}
+                                                onClick={() => clearPostDirectorList()}>Очистить
+                                        </button>
+                                        {postDirectorList?.map((new_director) => <ListCardDeleteable
+                                            msg={new_director}/>)}
+                                    </div>
                                     <div className={style.right_board}>
-                                        {countries?.map((country) => <ListCard
-                                            onDragStart={() =>dragStartHandler()}
-                                            onDragEnd={() => dragEndHandler()}
-                                            onDrop={() => dropHandler()}
-                                            onDragOver={() => dragOverHandler.bind(this)}
-                                            msg={country.title}/>)}
+                                        {directors?.map((director) => <ListCard
+                                            changeStateHandler={(e) => changeDirectorsStateHandler(e)}
+                                            checked={checked}
+                                            msg={director.firstName + ' ' + director.lastName}/>)}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className={style.genre_box}>
+                            <div className={style.director_box}>
+                                <span>Страны</span>
+                                <div className={style.board_box}>
+                                    <div className={style.left_board}>
+                                        <button className={style.clear_directors__btn}
+                                                onClick={() => clearPostCountryList()}>Очистить
+                                        </button>
+                                        {postCountriesList?.map((new_country) => <ListCardDeleteable
+                                            msg={new_country}/>)}
+                                    </div>
+                                    <div className={style.right_board}>
+                                        {countries?.map((country) => <ListCard
+                                            changeStateHandler={(e) => changeCountriesStateHandler(e)}
+                                            checked={checked}
+                                            msg={country.title}/>)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={style.director_box}>
                                 <span>Жанры</span>
                                 <div className={style.board_box}>
-                                    <div className={style.left_board}></div>
+                                    <div className={style.left_board}>
+                                        <button className={style.clear_directors__btn}
+                                                onClick={() => clearPostGenreList()}>Очистить
+                                        </button>
+                                        {postGenresList?.map((new_genre) => <ListCardDeleteable
+                                            msg={new_genre}/>)}
+                                    </div>
                                     <div className={style.right_board}>
                                         {genres?.map((genre) => <ListCard
-                                            onDragStart={() =>dragStartHandler()}
-                                            onDragEnd={() => dragEndHandler()}
-                                            onDrop={() => dropHandler()}
-                                            onDragOver={() => dragOverHandler.bind(this)}
-                                            id={genre.id}
+                                            changeStateHandler={(e) => changeGenresStateHandler(e)}
+                                            checked={checked}
                                             msg={genre.title}/>)}
                                     </div>
                                 </div>
                             </div>
 
-
+                        </div>
+                        <div className={style.send_new_film__btn}>
+                            <button onClick={() => addNewFilm()}>Сохранить</button>
                         </div>
                     </div>
                     :
-                    // file.map((detail) => (
-
                     <div className={style.details}>
 
                         <div className={style.details}>
                             <div className={style.title_input}>
                                 <div className={style.input_container}>
-                                    <input type="text" required=""/>
-                                    <label>{file.imageUrlLink}</label>
+                                    <input type="text" required="" value={file.imageUrlLink}/>
                                 </div>
                                 <div className={style.input_container}>
-                                    <input type="text" required=""/>
-                                    <label>{file.title}</label>
+                                    <input type="text" required="" value={file.title}/>
                                 </div>
                             </div>
                             <div className={style.description_area}>
@@ -317,180 +326,79 @@ const RedactorPage = () => {
                             </div>
                             <div className={style.details_box}>
                                 <div className={style.input_container}>
-                                    <input type="text" required=""/>
-                                    <label>{file.premierYear}</label>
+                                    <input type="text" required="" value={file.premierYear}/>
                                 </div>
                                 <div className={style.input_container}>
-                                    <input type="text" required=""/>
-                                    <label>{file.rentPrice}</label>
+                                    <input type="text" required="" value={file.rentPrice}/>
                                 </div>
                                 <div className={style.input_container}>
-                                    <input type="text" required=""/>
-                                    <label>{file.salePrice}</label>
+                                    <input type="text" required="" value={file.salePrice}/>
                                 </div>
                             </div>
                             <div className={style.select_box}>
 
                                 <div className={style.country}>
                                     <div className={style.input_container}>
-                                        <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
-                                            <InputLabel id="demo-select-small-label">Страны</InputLabel>
-                                            <Select
-                                                labelId="demo-select-small-label"
-                                                id="demo-select-small"
-                                                name={'films'}
-                                                value={''}
-                                                color={'success'}
-                                                sx={{
-                                                    backgroundColor: '#2b303b',
-                                                    borderColor: '#c5c5c5',
-                                                    outlineColor: '#c5c5c5',
-                                                    color: '#c5c5c5'
-                                                }}
-                                                label="Age"
-                                                onChange={(event) => handleFilmsChange(event)}
-                                            >
-                                                <MenuItem value="Добавить страну">
-                                                    <button className={style.redactor_btn}
-                                                            onClick={() => setOpenCountryMenu(true)}><PlusIcon/><label>Добавить
-                                                        страну</label></button>
-                                                </MenuItem>
-                                                {file.country?.map((country) => <MenuItem>{country}</MenuItem>)}
-                                            </Select>
-                                        </FormControl>
+                                        <div className={style.director_box}>
+                                            <span>Страны</span>
+                                            <div className={style.board_box}>
+                                                <div className={style.left_board}>
+                                                    <button className={style.clear_directors__btn}
+                                                            onClick={() => clearPostCountryList()}>Очистить
+                                                    </button>
+                                                    {file.country?.map((country) => <ListCardDeleteable
+                                                        msg={country}/>)}
+                                                </div>
+                                                <div className={style.right_board}>
+                                                    {countries?.map((country) => <ListCard
+                                                        changeStateHandler={(e) => changeCountriesStateHandler(e)}
+                                                        checked={checked}
+                                                        msg={country.title}/>)}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
 
                                 <div className={style.director}>
 
                                     <div className={style.input_container}>
-                                        <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
-                                            <InputLabel id="demo-select-small-label">Режиссёры</InputLabel>
-                                            <Select
-                                                labelId="demo-select-small-label"
-                                                id="demo-select-small"
-                                                name={'films'}
-                                                value={''}
-                                                color={'success'}
-                                                sx={{
-                                                    backgroundColor: '#2b303b',
-                                                    borderColor: '#c5c5c5',
-                                                    outlineColor: '#c5c5c5',
-                                                    color: '#c5c5c5'
-                                                }}
-                                                label="Age"
-                                                // onChange={(event) => handleFilmsChange(event)}
-                                            >
-                                                <MenuItem value="Добавить режисёра">
-                                                    <button className={style.redactor_btn}
-                                                            onClick={() => getAllDirectors()}><PlusIcon/><label>Добавить
-                                                        режиссёра</label></button>
-                                                </MenuItem>
-                                                {file.director?.map((director) => <MenuItem>{director}</MenuItem>)}
-                                                {openDirectorMenu ?
-                                                    <Dialog disableEscapeKeyDown open={openDirectorMenu}
-                                                            onClose={() => setOpenDirectorMenu(false)}>
-                                                        <DialogTitle>Выберайте режиссёра</DialogTitle>
-                                                        <DialogContent>
-                                                            <Box component="form"
-                                                                 sx={{display: 'flex', flexWrap: 'wrap'}}>
-                                                                <Select
-                                                                    labelId="demo-select-small-label"
-                                                                    id="demo-select-small"
-                                                                    name={'films'}
-                                                                    value={directors}
-                                                                    multiple
-                                                                    color={'success'}
-                                                                    sx={{
-                                                                        width: 100,
-                                                                        backgroundColor: 'darkgrey',
-                                                                        borderColor: "success"
-                                                                    }}
-                                                                    label="Age"
-                                                                    onChange={(event) => handleDirectorsChange(event)}
-                                                                >
-                                                                    {directors.map((director) =>
-                                                                        <MenuItem
-                                                                            key={director.id}>{director.firstName + ' ' + director.lastName}</MenuItem>)}
-                                                                </Select>
-                                                            </Box>
-                                                        </DialogContent>
-                                                        <DialogActions>
-                                                            <Button
-                                                                onClick={() => setOpenDirectorMenu(false)}>Отменить</Button>
-                                                            <Button onClick={() => saveDirector()}>Сохранить</Button>
-                                                        </DialogActions>
-                                                    </Dialog>
-                                                    :
-                                                    null
-                                                }
-                                            </Select>
-                                        </FormControl>
+                                        <div className={style.director_box}>
+                                            <span>Режиссёры</span>
+                                            <div className={style.board_box}>
+                                                <div className={style.left_board}>
+                                                    <button className={style.clear_directors__btn}
+                                                            onClick={() => clearPostDirectorList()}>Очистить
+                                                    </button>
+                                                    {file.director?.map((new_director) => <ListCardDeleteable
+                                                        msg={new_director}/>)}
+                                                </div>
+                                                <div className={style.right_board}>
+                                                    {directors?.map((director) => <ListCard
+                                                        changeStateHandler={(e) => changeDirectorsStateHandler(e)}
+                                                        checked={checked}
+                                                        msg={director.firstName + ' ' + director.lastName}/>)}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className={style.genre_container}>
-                                    <div className={style.input_container}>
-                                        <FormControl sx={{m: 1, minWidth: 120}} size="small" focused={false}>
-                                            <InputLabel id="demo-select-small-label">Жанры</InputLabel>
-                                            <Select
-                                                labelId="demo-select-small-label"
-                                                id="demo-select-small"
-                                                name={'films'}
-                                                value={''}
-                                                color={'success'}
-                                                sx={{
-                                                    backgroundColor: '#2b303b',
-                                                    borderColor: '#c5c5c5',
-                                                    outlineColor: '#c5c5c5',
-                                                    color: '#c5c5c5'
-                                                }}
-                                                label="Age"
-
-                                            >
-                                                <MenuItem value="Добавить режисёра">
-                                                    <button className={style.redactor_btn}
-                                                            onClick={() => getAllDirectors()}><PlusIcon/><label>Добавить
-                                                        жанр</label></button>
-                                                </MenuItem>
-                                                {file.genre?.map((director) => <MenuItem>{director}</MenuItem>)}
-                                                {openGenreMenu ?
-                                                    <Dialog open={open}
-                                                            onClose={() => setOpenDirectorMenu(false)}>
-                                                        <DialogTitle>Выберайте режиссёра</DialogTitle>
-                                                        <DialogContent>
-                                                            <Box component="form"
-                                                                 sx={{display: 'flex', flexWrap: 'wrap'}}>
-                                                                <Select
-                                                                    labelId="demo-select-small-label"
-                                                                    id="demo-select-small"
-                                                                    name={'films'}
-                                                                    value={directors}
-                                                                    multiple
-                                                                    color={'success'}
-                                                                    sx={{
-                                                                        backgroundColor: 'darkgrey',
-                                                                        borderColor: "success"
-                                                                    }}
-                                                                    label="Age"
-                                                                    onChange={(event) => handleDirectorsChange(event)}
-                                                                >
-                                                                    {directors.map((director) =>
-                                                                        <MenuItem>{director}</MenuItem>)}
-                                                                </Select>
-                                                            </Box>
-                                                        </DialogContent>
-                                                        <DialogActions>
-                                                            <Button
-                                                                onClick={() => setOpenDirectorMenu(false)}>Отменить</Button>
-                                                            <Button onClick={() => saveDirector()}>Сохранить</Button>
-                                                        </DialogActions>
-                                                    </Dialog>
-                                                    :
-                                                    null
-                                                }
-                                            </Select>
-                                        </FormControl>
+                                <div className={style.director_box}>
+                                    <span>Жанры</span>
+                                    <div className={style.board_box}>
+                                        <div className={style.left_board}>
+                                            <button className={style.clear_directors__btn}
+                                                    onClick={() => clearPostGenreList()}>Очистить
+                                            </button>
+                                            {file.genre?.map((new_genre) => <ListCardDeleteable
+                                                msg={new_genre}/>)}
+                                        </div>
+                                        <div className={style.right_board}>
+                                            {genres?.map((genre) => <ListCard
+                                                changeStateHandler={(e) => changeGenresStateHandler(e)}
+                                                checked={checked}
+                                                msg={genre.title}/>)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
