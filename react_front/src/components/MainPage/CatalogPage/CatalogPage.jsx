@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
-import React, {Component, useEffect} from "react";
+import React, {Component, useEffect, useRef} from "react";
 import SearchBar from "../../../widgets/SearchBar/SearchBar";
 import {toast, ToastContainer} from "react-toastify";
 
@@ -241,6 +241,8 @@ class CatalogPage extends Component {
                 currentPage: 1,
                 active: false
             }, () => {
+                // const filterInput = useRef()
+                // filterInput.current.value = ''
                 this.getMinMaxPrice();
                 this.getMinMaxYear();
             }
@@ -429,6 +431,7 @@ class CatalogPage extends Component {
         const totalPages = this.state.totalPages;
         const {active, setActive} = this.state.active;
         const role = JSON.parse(localStorage.getItem('role_user'));
+
         return (
             <div className={style.catalog_container}>
 

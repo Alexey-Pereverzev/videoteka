@@ -176,7 +176,6 @@
     background: transparent;
     border: 1px solid #c5c5c5;
     border-radius: 10px;
-    padding: 10px;
 }
 .director_box,
 .country_box,
@@ -208,9 +207,21 @@
     width: 170px;
     height:320px;
     background: #EFEFEF;
-    border-radius: 10px;
     overflow-y: auto;
 }
 
 .right_board {
+}
+.btn_post{
+    height: 30px;
+    background-color: #3f00df;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+}
+.send_new_film__btn{
+
+}
+.clear_directors__btn{
+
 }
