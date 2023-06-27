@@ -43,7 +43,7 @@ const RedactorPage = () => {
 
     async function getAllFilms() {
         try {
-            return await axios.get('http://localhost:5555/catalog/api/v1/film/all')
+            return await axios.get('http://localhost:5555/catalog/api/v1/film/titles')
                 .then((response) => {
                         setFilms(response.data)
                     },

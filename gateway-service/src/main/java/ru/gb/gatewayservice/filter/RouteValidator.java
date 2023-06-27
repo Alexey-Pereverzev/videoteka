@@ -72,7 +72,7 @@ public class RouteValidator {
     );
 
     public static final List<String> managerApiEndpoints = List.of(
-            "/api/v1/film/all",
+            "/api/v1/film/titles",
             "/api/v1/country/new",
             "/api/v1/director/new",
             "/api/v1/film/new_film",
