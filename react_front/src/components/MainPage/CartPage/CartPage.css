@@ -104,3 +104,18 @@
     height: 80vh;
     width: 550px;
 }
+.to_cabinet__btn{
+    position: absolute;
+    top: 0;
+    left: 340px;
+}
+.to_orders{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 25px;
+}
