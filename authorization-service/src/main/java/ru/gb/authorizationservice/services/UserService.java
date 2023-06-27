@@ -39,7 +39,6 @@ public class UserService implements InfoMessage, Constant {
     private final PasswordChangeAttemptRepository attemptRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
-//    private final MailServiceIntegration mailServiceIntegration;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
 
@@ -101,7 +100,6 @@ public class UserService implements InfoMessage, Constant {
                 .subject(SIGN_UP)
                 .build();
 
-//        mailServiceIntegration.sendEmailMessage(emailDto);
         rabbitSend(emailDto);
     }
 
@@ -320,7 +318,6 @@ public class UserService implements InfoMessage, Constant {
         }
         emailDto.setMessage("Ваш код верификации — " + code);
         rabbitSend(emailDto);
-//        sendMessage(emailDto);
         return code;
     }
 
@@ -379,7 +376,6 @@ public class UserService implements InfoMessage, Constant {
                                 .subject(PASSWORD_UPDATE)
                                 .build();
                         rabbitSend(emailDto);
-//                        mailServiceIntegration.sendEmailMessage(emailDto);
                     } else {
                         throw new InputDataErrorException(validationMessage);
                     }
