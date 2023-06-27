@@ -2,6 +2,7 @@ package ru.gb.catalogservice.converters;
 
 import org.springframework.stereotype.Component;
 import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.FilmTitleDto;
 import ru.gb.catalogservice.entities.*;
 
 import java.util.ArrayList;
@@ -31,6 +32,13 @@ public class FilmConverter {
                 .salePrice(price.getPriceSale())
                 .build();
         return filmDto;
+    }
+
+    public FilmTitleDto titleByFilm (Film film) {
+        return FilmTitleDto.builder()
+                .id(film.getId())
+                .title(film.getTitle())
+                .build();
     }
 
     private List<String> getCountriesList(List<Country> list) {

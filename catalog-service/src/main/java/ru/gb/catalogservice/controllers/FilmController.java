@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.FilmTitleDto;
 import ru.gb.api.dtos.dto.MinMaxYearDto;
 
 import ru.gb.catalogservice.converters.FilmConverter;
@@ -104,5 +105,14 @@ public class FilmController {
     @GetMapping("all")
     public List<FilmDto> findAllNotDeletedFilms() {
         return filmService.findAllNotDeletedFilms().stream().map(filmConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Вывод всех имен неудаленных фильмов",
+            description = "Позволяет получить полный общий список имен всех фильмов"
+    )
+    @GetMapping("titles")
+    public List<FilmTitleDto> findAllTitlesOfNotDeletedFilms() {
+        return filmService.findAllNotDeletedFilms().stream().map(filmConverter::titleByFilm).toList();
     }
 }

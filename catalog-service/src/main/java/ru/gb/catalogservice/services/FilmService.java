@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.FilmTitleDto;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
 import ru.gb.catalogservice.exceptions.NoDataException;
@@ -16,6 +17,7 @@ import ru.gb.catalogservice.utils.ResultOperation;
 import ru.gb.common.constants.InfoMessage;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -220,4 +222,5 @@ public class FilmService implements InfoMessage {
     public List<Film> findAllNotDeletedFilms() {
         return filmRepository.findAllByIsDeletedIsFalse();
     }
+
 }
