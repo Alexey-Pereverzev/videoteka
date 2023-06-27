@@ -4,6 +4,7 @@ package ru.gb.cabinetorderservice.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,12 @@ public class OrdersController {
             summary = "Создание заказа",
             description = "Созадение заказа "
     )
-    @PostMapping
-    //@ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> createOrder(@RequestHeader String userId) {
-        String result = orderService.createOrder(userId);
+    @PostMapping()
+    public ResponseEntity<?> createOrder(@RequestHeader String userId,
+                                         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
+
+        String token = authorization.substring(7);
+        String result = orderService.createOrder(userId, token);
         if (result.equals("Заказ успено сохранен в БД")) {
             return ResponseEntity.ok(new StringResponse(" Заказ успешно сохранен в БД"));
 

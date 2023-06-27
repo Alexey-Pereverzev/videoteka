@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gb.api.dtos.dto.EmailDto;
-import ru.gb.api.dtos.dto.RegisterUserDto;
-import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.api.dtos.dto.*;
 import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
@@ -20,6 +18,7 @@ import ru.gb.common.constants.InfoMessage;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,7 +87,7 @@ public class UserService implements InfoMessage {
         EmailDto emailDto = EmailDto.builder()
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
-                .message("Поздравляем! Вы успешно зарегистрировались. Ваш логин - " + user.getUsername())
+                .message("Поздравляем! Вы успешно зарегистрировались. \nВаш логин — " + user.getUsername())
                 .subject(SIGN_UP)
                 .build();
         mailServiceIntegration.sendEmailMessage(emailDto);
@@ -217,6 +216,33 @@ public class UserService implements InfoMessage {
         return new StringResponse(user.getFirstName().concat(" ").concat(user.getLastName()));
     }
 
+    public List<ReviewWithNameDto> addingNamesToRatings(List<RatingDto> ratings) {
+        String name;
+        List<ReviewWithNameDto> result = new ArrayList<>(ratings.size());
+        for (RatingDto rating : ratings) {
+            Optional<User> user = findNotDeletedById(rating.getUser_id());
+            name = user.map(value -> value.getFirstName().concat(" ")
+                    .concat(value.getLastName())).orElse(USER_NOT_FOUND);
+            ReviewWithNameDto newItem = ReviewWithNameDto.builder()
+                    .user_id(rating.getUser_id())
+                    .film_id(rating.getFilm_id())
+                    .createDateTime(rating.getCreateDateTime())
+                    .fullName(name)
+                    .grade(rating.getGrade())
+                    .review(rating.getReview())
+                    .build();
+            result.add(newItem);
+        }
+        return result;
+    }
+
+    private Optional<User> findNotDeletedById(Long userId) {
+        Optional<User> result = userRepository.findById(userId);
+        if (result.isPresent() && !result.get().isDeleted()) {
+            return result;
+        } else return Optional.empty();
+    }
+
     public User findNameEmailById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 ()->new ResourceNotFoundException("Польователь с id="+id+" не найден"));
@@ -313,4 +339,6 @@ public class UserService implements InfoMessage {
         }
         return new StringResponse(PASSWORD_UPDATED_SUCCESSFULLY);
     }
+
+
 }

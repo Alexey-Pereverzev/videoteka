@@ -47,11 +47,11 @@ public class OrderService implements Constant {
 
 
     @Transactional
-    public String createOrder(String userId) {
+    public String createOrder(String userId, String token) {
         EmailDto emailDto = new EmailDto();
 
         try {
-            CartDto currentCart = cartServiceIntegration.getCart(userId);
+            CartDto currentCart = cartServiceIntegration.getCart(userId, token);
             Long userIDLong = Long.valueOf(userId);
             UserNameMailDto userNameMailDto = authServiceIntegration.findById(userIDLong);
             emailDto.setEmail(userNameMailDto.getEmail());
@@ -105,7 +105,7 @@ public class OrderService implements Constant {
                 }
             }
 
-            cartServiceIntegration.clearUserCart(userId);
+            cartServiceIntegration.clearUserCart(userId, token);
 
 
             return "Заказ успено сохранен в БД";

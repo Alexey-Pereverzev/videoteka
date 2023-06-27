@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import ru.gb.common.constants.InfoMessage;
+import ru.gb.common.utils.JwtUtil;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
