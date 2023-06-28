@@ -1,8 +1,9 @@
 import "./OrdersPage.css";
 import axios from "axios";
-import {Component} from "react";
+import React, {Component} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import ModalWindow from "../../../widgets/ModalWindow/ModalWindow";
+import {toast, ToastContainer} from "react-toastify";
 
 
 class OrdersPage extends Component {
@@ -65,6 +66,9 @@ class OrdersPage extends Component {
 
 
     render() {
+        let displayCartNotification = (message) => {
+            toast.error(message, {toastId: 'e1'});
+        }
         async function buyRentedFilm(id, title, cover, price, rentPrice) {
             try {
                 const response = await axios.get('http://localhost:5555/cart/api/v1/cart/add',
@@ -79,11 +83,23 @@ class OrdersPage extends Component {
                            isSale: true
                         }
                     }
-                )
+                ) .then(response => {
+                    window.location = '/cart'
+                    displayCartNotification(response.data.value)
+                },  function errorCallback(response) {
+                    console.log(response)
+                    let displayCartNotification = (message) => {
+                        toast.error(message, {toastId: 'e1'});
+                    }
+                    displayCartNotification(response.response.data.value)
+                })
                 console.log("Ответ метода buyRentedFilm: " + response.data)
-                window.location = '/cart'
+
             } catch (e) {
-                alert(e)
+                let displayCartNotification = (message) => {
+                    toast.error(message, {toastId: 'e2'});
+                }
+                displayCartNotification(e.value)
             }
         }
 
@@ -242,6 +258,18 @@ class OrdersPage extends Component {
                 >
                     {showVideo()}
                 </ModalWindow>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
 
 
