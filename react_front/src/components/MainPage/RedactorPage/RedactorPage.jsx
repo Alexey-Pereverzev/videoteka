@@ -89,6 +89,12 @@ const RedactorPage = () => {
             .then((data) => {
                 getAllFilms()
                 displayCartNotification(data.value)
+            }, function errorCallback(response) {
+                console.log(response)
+                let displayCartNotification = (message) => {
+                    toast.error(message, {toastId: 'e1'});
+                }
+                displayCartNotification(response.response.data.value)
             })
     }
 
@@ -241,7 +247,8 @@ const RedactorPage = () => {
                                        onChange={addLinkToCover}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="text" required=""  value={filmTitle} placeholder={'Название фильма'} onChange={addFilmTitle}/>
+                                <input type="text" required="" value={filmTitle} placeholder={'Название фильма'}
+                                       onChange={addFilmTitle}/>
                             </div>
                         </div>
                         <div className={style.description_area}>
@@ -254,10 +261,12 @@ const RedactorPage = () => {
                                        onChange={addPremierYear}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="number" required="" value={filmRentPrice} placeholder={'Цена аренды'} onChange={addRentPrice}/>
+                                <input type="number" required="" value={filmRentPrice} placeholder={'Цена аренды'}
+                                       onChange={addRentPrice}/>
                             </div>
                             <div className={style.input_container}>
-                                <input type="number" required="" value={filmSalePrice} placeholder={'Цена продажи'} onChange={addSalePrice}/>
+                                <input type="number" required="" value={filmSalePrice} placeholder={'Цена продажи'}
+                                       onChange={addSalePrice}/>
                             </div>
                         </div>
 
@@ -420,7 +429,8 @@ const RedactorPage = () => {
                                 </div>
                             </div>
                             <div className={style.description_area}>
-                                <textarea name="Text1" cols="40" rows="5" value={filmDescription} onChange={addFilmDescription}/>
+                                <textarea name="Text1" cols="40" rows="5" value={filmDescription}
+                                          onChange={addFilmDescription}/>
                             </div>
                             <div className={style.details_box}>
                                 <div className={style.input_container}>

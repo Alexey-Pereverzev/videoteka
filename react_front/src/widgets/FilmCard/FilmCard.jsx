@@ -42,7 +42,6 @@ function FilmCard(props) {
                 return <AddReviewPage filmId={props.id}
                                       setCommand={setCommand}
                 />
-
             default:
                 return <FilmPage director={props.director}
                                  filmId={props.id}
@@ -96,7 +95,7 @@ function FilmCard(props) {
                     </div>
                 </div>
             </div>
-            <ModalWindow active={modalActive} setActive={setModalActive}>
+            <ModalWindow setCommand={setCommand} active={modalActive} setActive={setModalActive}>
                 {switchScene(command)}
             </ModalWindow>
         </div>
