@@ -27,7 +27,7 @@ public class Cart {
                     return;
                 }
             }
-            throw new DuplicateInCartException("Такой фильм уже есть в корзине");
+            throw new DuplicateInCartException("Такой фильм уже есть в корзине. Перейдите в корзину для завершения покупки");
         }
         items.add(new CartItem(cartItemDto));
         recalculate();

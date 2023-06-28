@@ -114,7 +114,7 @@ public class CartService {
                 updateCart(cartKey, cart);
                 massege = "Некоторые фильмы были удалены пожалуйста вернитесь в корзину и обновите страницу ";
             } else
-                massege = "Можно оплавивать";
+                massege = "Можно оплачивать";
 
 
         }
