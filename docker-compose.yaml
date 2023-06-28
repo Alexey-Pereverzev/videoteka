@@ -195,6 +195,7 @@ services:
   email-service:
     depends_on:
       - gateway-service
+      - rabbitmq
     container_name: email-service
     build:
       context: .
