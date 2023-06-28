@@ -11,7 +11,7 @@ function FilmPage(props) {
 
 
     let displayCartNotification = (message) => {
-        toast.success(message);
+        toast.success(message, {toastId: 's1'});
     };
 
     let role = JSON.parse(localStorage.getItem('role_user'))
@@ -33,12 +33,22 @@ function FilmPage(props) {
                         }
                     }
                 )
-                event.target.disabled = true;
+                    .then(response => {
+                        displayCartNotification(response.data.value)
+                    },  function errorCallback(response) {
+                        console.log(response)
+                        let displayCartNotification = (message) => {
+                            toast.error(message, {toastId: 'e1'});
+                        }
+                        displayCartNotification(response.response.data.value)
+                    })
                 displayCartNotification(response.data.value)
-
-                console.log("Ответ метода addToCart: " + response.data)
+                console.log("Ответ метода addToCart: ", response.data)
             } catch (e) {
-                alert(e)
+                let displayCartNotification = (message) => {
+                    toast.error(message, {toastId: 'e2'});
+                }
+                displayCartNotification(e)
             }
         } else {
             displayCartNotification('Добавление в корзину и оформление заказов возможно только для авторизованных пользователей! Пожалуйста, авторизуйтесь!')
@@ -142,20 +152,7 @@ function FilmPage(props) {
                         Цена аренды: {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}}
                                                             component={CurrencyRubleIcon}/>
                     </div>
-
             </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
         </div>
     )
 }

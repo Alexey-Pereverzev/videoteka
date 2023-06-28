@@ -20,6 +20,7 @@ const LoginPage = (props) => {
   }
 
     let switchScene = (command) => {
+     console.log(command)
       switch (command) {
         case 'mail':
           return <MailPage setCommand={setCommand}
@@ -35,6 +36,7 @@ const LoginPage = (props) => {
 
 
     function startEvent() {
+     setModalActive(true)
         switchScene('mail')
     }
 

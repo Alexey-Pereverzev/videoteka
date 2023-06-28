@@ -96,9 +96,7 @@ function FilmCard(props) {
                     </div>
                 </div>
             </div>
-            <ModalWindow active={modalActive}
-                         setActive={setModalActive}
-            >
+            <ModalWindow active={modalActive} setActive={setModalActive}>
                 {switchScene(command)}
             </ModalWindow>
         </div>
