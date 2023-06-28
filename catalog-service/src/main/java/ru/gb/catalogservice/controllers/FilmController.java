@@ -12,6 +12,7 @@ import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.dto.FilmTitleDto;
 import ru.gb.api.dtos.dto.MinMaxYearDto;
 
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.IllegalInputDataException;
@@ -67,7 +68,7 @@ public class FilmController {
     public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
-            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
+            return ResponseEntity.ok(new StringResponse(resultOperation.getResultDescription()));
         }else {
             throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
