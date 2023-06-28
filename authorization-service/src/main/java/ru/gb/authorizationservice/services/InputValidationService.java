@@ -9,6 +9,7 @@ public class InputValidationService implements InfoMessage {
     private static ArrayList<Character> digits;
     private static ArrayList<Character> latin;
     private static ArrayList<Character> cyrillic;
+    private static ArrayList<Character> nameCharacters;
     private static ArrayList<Character> phoneCharacters;
     private static ArrayList<Character> loginCharacters;
     private static ArrayList<Character> passwordCharacters;
@@ -60,6 +61,11 @@ public class InputValidationService implements InfoMessage {
         passwordCharacters.addAll(digits);
         passwordCharacters.addAll(latin);
         passwordCharacters.addAll(cyrillic);
+
+        nameCharacters = new ArrayList<>(121);
+        nameCharacters.addAll(latin);
+        nameCharacters.addAll(cyrillic);
+        nameCharacters.add(' '); nameCharacters.add('-'); nameCharacters.add('\'');
 
         emailCharacters = new ArrayList<>(66);
         emailCharacters.addAll(digits);
@@ -113,7 +119,7 @@ public class InputValidationService implements InfoMessage {
 
     public String acceptableFirstName(String firstName) {
         if (firstName==null || firstName.isBlank()) return FIRSTNAME_CANNOT_BE_EMPTY;
-        if (areAllSymbolsInSet(firstName,latin) || areAllSymbolsInSet(firstName,cyrillic)) {
+        if (areAllSymbolsInSet(firstName, nameCharacters)) {
             return "";
         } else {
             return INVALID_FIRSTNAME;
@@ -122,7 +128,7 @@ public class InputValidationService implements InfoMessage {
 
     public String acceptableLastName(String lastName) {
         if (lastName==null || lastName.isBlank()) return LASTNAME_CANNOT_BE_EMPTY;
-        if (areAllSymbolsInSet(lastName,latin) || areAllSymbolsInSet(lastName,cyrillic)) {
+        if (areAllSymbolsInSet(lastName, nameCharacters)) {
             return "";
         } else {
             return INVALID_LASTNAME;
