@@ -1,28 +1,31 @@
 import "./CheckoutCard.css";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
-import React from "react";
+import React, {useRef} from "react";
 
 function CheckoutCard(props) {
     let displayCartNotification = (message) => {
         toast.success(message);
     };
-
-    let sendPaymentRequest = async () => {
+const payBtnRef = useRef()
+    let sendPaymentRequest = async (event) => {
         try {
             const response = await axios.post('http://localhost:5555/cabinet/api/v1/orders')
                 .then(response => {
-                    displayCartNotification(response.data.value)
+                    displayCartNotification(response.data.value, {toastId: 's2'})
                 },  function errorCallback(response) {
                     console.log(response)
                     let displayCartNotification = (message) => {
                         toast.error(message);
                     }
-                    displayCartNotification(response.response.data.value)
+                    displayCartNotification(response.response.data.value, {toastId: 's1'})
                 })
-                .then(() => props.clearCart())
+                .then(() => {
+                    event.current.target.disable()
+                    props.clearCart()
+                })
 
-            displayCartNotification(response.response.value)
+            displayCartNotification(response.response.value, {toastId: 'e1'})
         } catch (e) {
 
         }
@@ -57,7 +60,7 @@ function CheckoutCard(props) {
                     <br/>
 
                 </form>
-                <button className={'checkout_btn'} onClick={() => sendPaymentRequest()}>Оплатить</button>
+                <button className={'checkout_btn'} ref={payBtnRef} onClick={(event) => sendPaymentRequest(event)}>Оплатить</button>
             </div>
             <ToastContainer
                 position="top-right"

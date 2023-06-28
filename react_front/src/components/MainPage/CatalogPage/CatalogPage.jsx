@@ -15,6 +15,9 @@ import axios from "axios";
 import React, {Component, useEffect, useRef} from "react";
 import SearchBar from "../../../widgets/SearchBar/SearchBar";
 import {toast, ToastContainer} from "react-toastify";
+import {Route, Routes} from "react-router-dom";
+import MainPage from "../MainPage";
+import EmptyCard from "../../../widgets/EmptyCard/EmptyCard";
 
 class CatalogPage extends Component {
     constructor(props) {
@@ -217,6 +220,9 @@ class CatalogPage extends Component {
                 })
             }, function errorCallback(response) {
                 console.log(response)
+                // if (response.response.data.code === "NO_DATA"){
+                //     window.location = 'empty'
+                // }
                 let displayNotification = (message) => {
                     toast.error(message);
                 }
@@ -473,6 +479,9 @@ class CatalogPage extends Component {
                 </div>
 
                 <div className={style.catalog}>
+                    {/*<Routes>*/}
+                    {/*    <Route path={'empty'} element={<EmptyCard/>}/>*/}
+                    {/*</Routes>*/}
                     {
                         films.length === 0 ?
                             <div className={style.empty}>
@@ -597,18 +606,18 @@ class CatalogPage extends Component {
                             className={style.filter_btn}>Сбросить</Button>
 
                 </div>
-                {/*<ToastContainer*/}
-                {/*    position="top-right"*/}
-                {/*    autoClose={5000}*/}
-                {/*    hideProgressBar={false}*/}
-                {/*    newestOnTop={false}*/}
-                {/*    closeOnClick*/}
-                {/*    rtl={false}*/}
-                {/*    pauseOnFocusLoss*/}
-                {/*    draggable*/}
-                {/*    pauseOnHover*/}
-                {/*    theme="dark"*/}
-                {/*/>*/}
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         )
     }

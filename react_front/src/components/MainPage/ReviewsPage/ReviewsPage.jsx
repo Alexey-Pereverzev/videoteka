@@ -5,6 +5,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 
 function ReviewsPage(props) {
+    let role = JSON.parse(localStorage.getItem('role_user'))
     let getFilmIdReview = async () => {
         try {
             return await axios.get('http://localhost:5555/catalog/api/v1/rating/all_grade_and_review_by_filmId', {
@@ -42,14 +43,6 @@ function ReviewsPage(props) {
         })
 
     }
-   // const handleName = (userId) => {
-   //
-   //     getFullNameReviewers(userId)
-   //     //     .then(r => {
-   //     //     setFullName(r)
-   //     // })
-   //     return fullName
-   //  }
     const handleChange = (command) => {
         switch (command) {
             case '':
@@ -117,9 +110,13 @@ function ReviewsPage(props) {
                 <div className={'button-back_box'}>
                     <button onClick={() => handleChange('')}>Вернуться к фильму</button>
                 </div>
+                {role === 'ROLE_USER'?
                 <div className={'button-back_box'}>
                     <button onClick={() => handleChange('add_review')}>Написать отзыв</button>
                 </div>
+                    :
+                    null
+                }
             </div>
         </div>
     )

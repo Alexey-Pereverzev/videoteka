@@ -85,10 +85,9 @@ const RedactorPage = () => {
             rentPrice: filmRentPrice,
             salePrice: filmSalePrice
 
-        }).then(response => console.log(response.data))
+        }).then(response => displayCartNotification(response.data.value))
             .then((data) => {
                 getAllFilms()
-                displayCartNotification(data.value)
             }, function errorCallback(response) {
                 console.log(response)
                 let displayCartNotification = (message) => {
@@ -245,10 +244,12 @@ const RedactorPage = () => {
                             <div className={style.input_container}>
                                 <input type="text" required="" value={linkToCover} placeholder={'Ссылка для обложки'}
                                        onChange={addLinkToCover}/>
+
                             </div>
                             <div className={style.input_container}>
                                 <input type="text" required="" value={filmTitle} placeholder={'Название фильма'}
                                        onChange={addFilmTitle}/>
+
                             </div>
                         </div>
                         <div className={style.description_area}>
@@ -259,14 +260,17 @@ const RedactorPage = () => {
                             <div className={style.input_container}>
                                 <input type="number" required="" value={filmDate} placeholder={'Год премьеры'}
                                        onChange={addPremierYear}/>
+                                <label>Год премьеры</label>
                             </div>
                             <div className={style.input_container}>
                                 <input type="number" required="" value={filmRentPrice} placeholder={'Цена аренды'}
                                        onChange={addRentPrice}/>
+                                <label>Цена аренды</label>
                             </div>
                             <div className={style.input_container}>
                                 <input type="number" required="" value={filmSalePrice} placeholder={'Цена продажи'}
                                        onChange={addSalePrice}/>
+                                <label>Цена продажи</label>
                             </div>
                         </div>
 
@@ -435,12 +439,15 @@ const RedactorPage = () => {
                             <div className={style.details_box}>
                                 <div className={style.input_container}>
                                     <input type="text" required="" value={filmDate} onChange={addPremierYear}/>
+                                    <label>Год премьеры</label>
                                 </div>
                                 <div className={style.input_container}>
                                     <input type="text" required="" value={filmRentPrice} onChange={addRentPrice}/>
+                                    <label>Цена аренды</label>
                                 </div>
                                 <div className={style.input_container}>
                                     <input type="text" required="" value={filmSalePrice} onChange={addSalePrice}/>
+                                    <label>Цена продажи</label>
                                 </div>
                             </div>
                             <div className={style.select_box}>
