@@ -49,6 +49,16 @@ public class UserService implements InfoMessage, Constant {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<User> findByEmail(String email) {
+        List<User> found = userRepository.findByEmail(email);
+        for (User user : found) {
+            if (user.getEmail().equals(email) && !user.isDeleted()) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
+    }
+
     public StringResponse createNewUser(RegisterUserDto registerUserDto) {
         if (registerUserDto.getPassword()==null) {
             throw new InputDataErrorException(PASSWORD_CANNOT_BE_EMPTY);
@@ -151,6 +161,10 @@ public class UserService implements InfoMessage, Constant {
 
         validationMessage = validationService.acceptableEmail(email);
         if (validationMessage.equals("")) {
+            Optional<User> userByEmail = findByEmail(email);
+            if (userByEmail.isPresent()) {
+                return EMAIL_ALREADY_EXISTS;
+            }
             user.setEmail(email);
         } else {
             return validationMessage;

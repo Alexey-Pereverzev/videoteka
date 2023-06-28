@@ -30,6 +30,7 @@ public interface InfoMessage {
     String ROLE_CHANGED_SUCCESSFULLY = "Роль успешно изменена";
     String USER_DELETED_SUCCESSFULLY = "Пользователь успешно удален";
     String USER_ALREADY_EXISTS = "Такой пользователь уже есть в системе";
+    String EMAIL_ALREADY_EXISTS = "Такой email уже есть в системе";
     String ADMIN_NOT_FOUND = "Админ не найден в базе по id";
     String USER_FOUND = "Пользователь найден, вернули результат";
     String FULLNAME = "Имя и фамилия";

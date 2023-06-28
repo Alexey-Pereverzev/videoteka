@@ -21,7 +21,7 @@ const payBtnRef = useRef()
                     displayCartNotification(response.response.data.value, {toastId: 's1'})
                 })
                 .then(() => {
-                    event.current.target.disable()
+                    // event.current.target.disable()
                     props.clearCart()
                 })
 
