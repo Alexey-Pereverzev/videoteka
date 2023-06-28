@@ -1,5 +1,21 @@
 version: '3.8'
 services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648"
+    volumes:
+      - ~/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - videoteka-net
+    restart: always
+
   redis-videoteka:
     image: redis:7.0.11
     container_name: redis-videoteka
@@ -26,6 +42,7 @@ services:
       - "5435:5432"
     networks:
       - videoteka-net
+    restart: always
 
   catalog-db:
     image: postgres:15
@@ -41,6 +58,7 @@ services:
       - "5433:5432"
     networks:
       - videoteka-net
+    restart: always
 
   orders-db:
     image: postgres:15
@@ -56,6 +74,7 @@ services:
       - "5434:5432"
     networks:
       - videoteka-net
+    restart: always
 
   catalog-service:
     depends_on:
@@ -72,6 +91,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: "CatalogVideoteka2023"
     networks:
       - videoteka-net
+    volumes:
+      - ./secret:/opt/app/secret
     restart: always
 
   cabinet-service:
@@ -91,8 +112,11 @@ services:
       CART_SERVICE_LOCATION: cart-service
       EMAIL_SERVICE_LOCATION: email-service
       AUTH_SERVICE_LOCATION: authorization-service
+      RABBIT_LOCATION: rabbitmq
     networks:
       - videoteka-net
+    volumes:
+      - ./secret:/opt/app/secret
     restart: always
 
   cart-service:
@@ -111,6 +135,8 @@ services:
       - "8190:8190"
     networks:
       - videoteka-net
+    volumes:
+      - ./secret:/opt/app/secret
     restart: always
 
   authorization-service:
@@ -131,6 +157,7 @@ services:
       - videoteka-net
     volumes:
       - ./secret:/opt/app/secret
+    restart: always
 
   gateway-service:
     depends_on:
@@ -150,6 +177,7 @@ services:
       - videoteka-net
     volumes:
       - ./secret:/opt/app/secret
+    restart: always
 
   front-service:
     depends_on:
@@ -173,6 +201,8 @@ services:
       dockerfile: email-service/Dockerfile-email
     ports:
       - "8199:8199"
+    environment:
+      RABBIT_LOCATION: rabbitmq
     networks:
       - videoteka-net
     volumes:
