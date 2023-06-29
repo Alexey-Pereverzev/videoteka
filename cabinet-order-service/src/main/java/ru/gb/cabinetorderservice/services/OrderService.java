@@ -97,9 +97,7 @@ public class OrderService implements Constant {
                     }
 
                     ordersRepository.save(newOrder);
-                    rabbitTemplate.convertAndSend(emailDto);
                     rabbitSend(emailDto);
-
 
                 }
             }
