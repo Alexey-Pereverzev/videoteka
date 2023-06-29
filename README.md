@@ -13,6 +13,8 @@
 - FlyWay
 - Redis
 - RabbitMQ
+- Spring Security
+- SpringData JPA
 - Docker 
 - Front-end: React
 
