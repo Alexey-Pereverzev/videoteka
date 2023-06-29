@@ -86,10 +86,6 @@ public class UserService implements InfoMessage, Constant {
                 throw new InputDataErrorException(PASSWORD_MISMATCH);
             } else {
                 String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
-                user.setDeleted(false);
-                user.setDeletedBy(null);
-                user.setDeletedWhen(null);
-
                 saveAndNotify(registerUserDto, user, encryptedPassword);
                 return new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно восстановлен");
@@ -102,6 +98,9 @@ public class UserService implements InfoMessage, Constant {
         if (validationMessage != null) {
             throw new InputDataErrorException(validationMessage);
         }
+        user.setDeleted(false);
+        user.setDeletedBy(null);
+        user.setDeletedWhen(null);
         userRepository.save(user);
         EmailDto emailDto = EmailDto.builder()
                 .email(user.getEmail())
