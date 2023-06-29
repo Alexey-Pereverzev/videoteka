@@ -20,5 +20,5 @@
 1) склонировать проект с GitHub
 2) распаковать secret.zip в корень проекта
 3) сборка проекта: во вкладке Maven раскрыть Videoteka-Square. Выполнить clean, а затем package
-4) запустить сборку docker - файл docker-compose.yaml
+4) запустить сборку docker — файл docker-compose.yaml
 5) после старта всех контейнеров запустить проект в браузере: localhost:3000
