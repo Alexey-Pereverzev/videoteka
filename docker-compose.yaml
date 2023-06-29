@@ -98,6 +98,7 @@ services:
   cabinet-service:
     depends_on:
       - orders-db
+      - rabbitmq
     container_name: cabinet-service
     build:
       context: .
