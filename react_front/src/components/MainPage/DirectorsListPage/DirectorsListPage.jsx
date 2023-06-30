@@ -55,7 +55,9 @@ const DirectorsListPage = () => {
             <ModalWindow active={modalActive}
                          setActive={setModalActive}
             >
-                <AddDirectorPage getDirectors={() => getDirectors()}/>
+                <AddDirectorPage getDirectors={() => getDirectors()}
+                                 setActive={setModalActive}
+                />
             </ModalWindow>
         </div>
     )

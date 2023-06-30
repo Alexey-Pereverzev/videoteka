@@ -125,3 +125,21 @@ input[type="number"]::-webkit-inner-spin-button{
     background-color: #63386d;
     color: white;
 }
+.filter_btn{
+    color: #ef9223;
+}
+.active_btn{
+    color: white;
+}
+.catalog_menu{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.change_state{
+    display: flex;
+}
+.change_state button{
+    color: #ef9223;
+}

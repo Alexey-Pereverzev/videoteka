@@ -15,6 +15,12 @@ public interface InfoMessage {
     String PUBLIC_KEY_ERROR_CODE = "PUBLIC_KEY_ERROR";
     String ILLEGAL_ARGUMENT_CODE = "ILLEGAL_ARGUMENT";
     String INTEGRATION_ERROR_CODE = "INTEGRATION_ERROR";
+    String INVALID_HEADER_USERID = "Invalid header UserId";
+    String ACCESS_DENIED = "Access denied!";
+    String NOT_FOR_GUESTS = "Not for guests";
+    String BEARER = "Bearer ";
+    String USER_ID = "userId";
+    String ROLE = "role";
     String TOKEN_CREATED_SUCCESSFULLY = "Токен успешно создан";
     String INVALID_USERNAME_OR_PASSWORD = "Некорректный логин или пароль";
     String USER_NOT_FOUND = "Пользователь не найден";
@@ -24,6 +30,7 @@ public interface InfoMessage {
     String ROLE_CHANGED_SUCCESSFULLY = "Роль успешно изменена";
     String USER_DELETED_SUCCESSFULLY = "Пользователь успешно удален";
     String USER_ALREADY_EXISTS = "Такой пользователь уже есть в системе";
+    String EMAIL_ALREADY_EXISTS = "Такой email уже есть в системе";
     String ADMIN_NOT_FOUND = "Админ не найден в базе по id";
     String USER_FOUND = "Пользователь найден, вернули результат";
     String FULLNAME = "Имя и фамилия";
@@ -50,6 +57,6 @@ public interface InfoMessage {
     String INVALID_LASTNAME = "Ошибка ввода: фамилия должна быть введена полностью на кириллице или на латинице";
     String PASSWORD_MISMATCH = "Пароли не совпадают";
     String SIGN_UP = "Регистрация пользователя";
-
-
+    String NO_DATA="Ничего не найдено";
+    String INCORRECT_FILTER_PARAMETR="Некорректный параметр фильтра";
 }

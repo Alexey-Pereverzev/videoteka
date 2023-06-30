@@ -3,8 +3,8 @@ import SpeechBubbles from "../../../widgets/SpeechBubbles/SpeechBubbles";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
-// /
-// /
+
+
 function ModeratorPage() {
    const getMessagesOnModerate = async () => {
        try {
@@ -27,7 +27,7 @@ function ModeratorPage() {
 
     async function applyReview(userId, filmId) {
         try {
-            return await axios.get('http://localhost:5555/catalog/api/v1/rating/moderate-success', {
+            return await axios.get('http://localhost:5555/catalog/api/v1/rating/moderate_success', {
                 params:{
                     userId: userId,
                     filmId: filmId
@@ -50,7 +50,7 @@ function ModeratorPage() {
 
         async function rejectReview(userId, filmId) {
             try {
-                return await axios.get('http://localhost:5555/catalog/api/v1/rating/moderate-rejected', {
+                return await axios.get('http://localhost:5555/catalog/api/v1/rating/moderate_rejected', {
                     params:{
                         userId: userId,
                         filmId: filmId

@@ -5,7 +5,7 @@ import StringCard from "../../../widgets/StringCard/StringCard";
 import React, {Component} from "react";
 import axios from "axios";
 import CheckoutCard from "../../../widgets/CheckoutCard/CheckoutCard";
-import {toast, ToastContainer} from "react-toastify";
+import {ArrowForward, ArrowForwardIos} from "@mui/icons-material";
 
 class CartPage extends Component{
     constructor(props) {
@@ -33,6 +33,7 @@ class CartPage extends Component{
                 bayPack: data.items,
                 totalPrice: data.totalPrice
             })
+                console.log(data)
                 localStorage.setItem("totalPrice", JSON.stringify(data.totalPrice))
 
             })
@@ -59,10 +60,18 @@ class CartPage extends Component{
         return (
             <div className={'cart_container'}>
                 <div className={'cart_container__plate'}>
+
                     <div className={'cart_container__header'}>
                         <NavLink to={'/'}>
                             <span className={'to_catalog'}><ArrowBackIcon/><h4>Выбрать новые фильмы</h4></span>
                         </NavLink>
+                        <div className={'to_cabinet__btn'}>
+                            <NavLink to={'/cabinet/orders'}>
+                                <span className={'to_orders'}><h4>Мои фильмы</h4><ArrowForward/></span>
+                            </NavLink>
+                        </div>
+
+
                         <div className={'delimiter'}>
                             <span>.</span>
                         </div>
@@ -80,7 +89,9 @@ class CartPage extends Component{
                         {this.state.bayPack.map((item) =>
                                 <StringCard filmId={item.filmId}
                                             title={item.title}
-                                            price={item.price}
+                                            isSale={item.sale}
+                                            salePrice={item.salePrice}
+                                            rentPrice={item.rentPrice}
                                             cover={item.imageUrlLink}
                                             loadCart={this.loadCart}
 

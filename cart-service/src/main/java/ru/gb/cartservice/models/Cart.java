@@ -3,9 +3,11 @@ package ru.gb.cartservice.models;
 
 import lombok.Data;
 import ru.gb.api.dtos.cart.CartItemDto;
+import ru.gb.cartservice.exceptions.DuplicateInCartException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class Cart {
@@ -17,25 +19,26 @@ public class Cart {
     }
 // проверка если фильм есть корзине и статус в аренде и мы добавляем этот же фильм со статусом покупки то меняем цену и статус в корзине
     public void add(CartItemDto cartItemDto, boolean isSale) {
-        if (add(cartItemDto.getFilmId())) {
+        if (ifIdInCart(cartItemDto.getFilmId())) {
             for (CartItem o : items) {
-            if (!o.isSale()&& isSale ){
-                o.setPrice(cartItemDto.getPrice());
-                o.setSale(isSale);
+                if (!o.isSale() && isSale && o.getFilmId() == cartItemDto.getFilmId() ){
+                    o.setSalePrice(cartItemDto.getSalePrice());
+                    o.setSale(true);
+                    return;
+                }
             }
-            }
-
-            return;
+            throw new DuplicateInCartException("Такой фильм уже есть в корзине. Перейдите в корзину для завершения покупки");
         }
         items.add(new CartItem(cartItemDto));
         recalculate();
     }
 
-    public boolean add(Long id) {
+    public boolean ifIdInCart(Long id) {
         for (CartItem o : items) {
-            if (o.getFilmId().equals(id)) {
+            if (Objects.equals(o.getFilmId(), id)) {
                 return true;
             }
+
         }
         return false;
     }
@@ -53,9 +56,13 @@ public class Cart {
     private void recalculate() {
         totalPrice = 0;
         for (CartItem o : items) {
-            totalPrice += o.getPrice();
+            if (o.isSale()) {
+                totalPrice += o.getSalePrice();
+            } else
+                totalPrice += o.getRentPrice();
         }
     }
+
 
     public void merge(Cart another) {
         for (CartItem anotherItem : another.items) {

@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -26,7 +25,7 @@ import ru.gb.authorizationservice.utils.JwtTokenUtil;
 @EnableWebSecurity(debug = true)
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
@@ -45,11 +44,6 @@ public class SecurityConfig{
             "/swagger-ui/**"
             // other public endpoints of your API may be appended to this array
     };
-
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new CustomUserDetailsService(userRepository);
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -97,7 +91,7 @@ public class SecurityConfig{
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }

@@ -1,8 +1,9 @@
 import "./OrdersPage.css";
 import axios from "axios";
-import {Component} from "react";
+import React, {Component} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import ModalWindow from "../../../widgets/ModalWindow/ModalWindow";
+import {toast, ToastContainer} from "react-toastify";
 
 
 class OrdersPage extends Component {
@@ -65,7 +66,10 @@ class OrdersPage extends Component {
 
 
     render() {
-        async function buyRentedFilm(id, title, cover, price) {
+        let displayCartNotification = (message) => {
+            toast.error(message, {toastId: 'e1'});
+        }
+        async function buyRentedFilm(id, title, cover, price, rentPrice) {
             try {
                 const response = await axios.get('http://localhost:5555/cart/api/v1/cart/add',
                     {
@@ -73,16 +77,29 @@ class OrdersPage extends Component {
                             uuid: localStorage.getItem('guestCartId'),
                             filmId: id,
                             filmTitle: title,
-                            filmPrice: price,
+                            salePrice: price,
+                            rentPrice: rentPrice,
                             filmImageUrlLink: cover,
-                            isSale: true
+                           isSale: true
                         }
                     }
-                )
+                ) .then(response => {
+                    window.location = '/cart'
+                    displayCartNotification(response.data.value)
+                },  function errorCallback(response) {
+                    console.log(response)
+                    let displayCartNotification = (message) => {
+                        toast.error(message, {toastId: 'e1'});
+                    }
+                    displayCartNotification(response.response.data.value)
+                })
                 console.log("Ответ метода buyRentedFilm: " + response.data)
-                window.location = '/cart'
+
             } catch (e) {
-                alert(e)
+                let displayCartNotification = (message) => {
+                    toast.error(message, {toastId: 'e2'});
+                }
+                displayCartNotification(e.value)
             }
         }
 
@@ -114,18 +131,18 @@ class OrdersPage extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}>Обложка</TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="center">Название</TableCell>
+
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="center">Старт
+                                            аренды</TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="center">Финиш
+                                            аренды</TableCell>
+
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right"></TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right"></TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
-                                                   align="right">Название</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
-                                                   align="right">Цена</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Старт
-                                            аренды</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white'}} align="right">Финиш
-                                            аренды</TableCell>
+
                                         <TableCell sx={{background: '#2b303b', color: 'white'}}
                                                    align="right"></TableCell>
 
@@ -141,33 +158,40 @@ class OrdersPage extends Component {
 
                                         >
                                             <TableCell component="th" scope="row">
-                                                <img className={'orders_img'} src={row.imageUrlLink} alt={'обложка'}/>
+                                                <div className={'orders_img'}>
+                                                    <img src={row.imageUrlLink} alt={'обложка'}/>
+                                                </div>
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">{row.filmTitle}</TableCell>
+
+                                            <TableCell
+                                                align="center">{new Date(row.rentStart).toLocaleString("ru-RU", {
+                                                day: "numeric",
+                                                month: "long",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
+                                            })}</TableCell>
+                                            <TableCell
+                                                align="center">{new Date(row.rentEnd).toLocaleString("ru-RU", {
+                                                day: "numeric",
+                                                month: "long",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
+                                            })}</TableCell>
+
+                                            <TableCell align="center">
                                                 <button className={'buy-order__btn'}
                                                         onClick={() => this.setState({modalActive: true})}>Смотреть
                                                 </button>
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center">
                                                 <button className={'buy-order__btn'}
-                                                        onClick={() => buyRentedFilm(row.id, row.filmTitle, row.imageUrlLink, row.price)}>Купить
+                                                        onClick={() => buyRentedFilm(row.filmId, row.filmTitle, row.imageUrlLink, row.salePrice, row.rentPrice)}>Купить
                                                 </button>
                                             </TableCell>
-                                            <TableCell align="right">{row.filmTitle}</TableCell>
-                                            <TableCell align="right">{row.price}</TableCell>
 
-                                            <TableCell
-                                                align="right">{new Date(row.rentStart).toLocaleDateString("ru-RU", {
-                                                day: "numeric",
-                                                month: "long",
-                                                year: "numeric"
-                                            })}</TableCell>
-                                            <TableCell
-                                                align="right">{new Date(row.rentEnd).toLocaleDateString("ru-RU", {
-                                                day: "numeric",
-                                                month: "long",
-                                                year: "numeric"
-                                            })}</TableCell>
                                             <TableCell align="right">
 
                                             </TableCell>
@@ -195,8 +219,10 @@ class OrdersPage extends Component {
                                         }}>Обложка</TableCell>
                                         <TableCell sx={{background: '#2b303b', color: 'white', maxWidth: 77}}
                                                    align="center">Название</TableCell>
-                                        <TableCell sx={{background: '#2b303b', color: 'white', maxWidth: 77}}
-                                                   align="center">Цена</TableCell>
+                                        <TableCell sx={{background: '#2b303b', color: 'white'}}
+                                                   align="right"></TableCell>
+
+
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -206,13 +232,19 @@ class OrdersPage extends Component {
                                             tabIndex={-1}
                                             key={row.username}
                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                            onClick={() => this.setState({modalActive: true})}
                                         >
                                             <TableCell component="th" scope="row">
-                                                <img className={'orders_img'} src={row.imageUrlLink}/>
+                                                <div className={'orders_img'}>
+                                                <img src={row.imageUrlLink}/>
+                                                </div>
                                             </TableCell>
                                             <TableCell align="center">{row.filmTitle}</TableCell>
-                                            <TableCell align="center">{row.price}</TableCell>
+                                            <TableCell align="center">
+                                                <button className={'buy-order__btn'}
+                                                        onClick={() => this.setState({modalActive: true})}>Смотреть
+                                                </button>
+                                            </TableCell>
+
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -226,6 +258,18 @@ class OrdersPage extends Component {
                 >
                     {showVideo()}
                 </ModalWindow>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
 
 

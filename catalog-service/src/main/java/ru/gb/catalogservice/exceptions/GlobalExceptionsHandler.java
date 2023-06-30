@@ -20,4 +20,9 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<AppError> handleIllegalInputDataException(IllegalInputDataException e){
         return new ResponseEntity<>(new AppError("ILLEGAL_INPUT_DATA",e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleIllegalNoData(NoDataException e){
+        return new ResponseEntity<>(new AppError("NO_DATA",e.getMessage()), HttpStatus.CONFLICT);
+    }
 }

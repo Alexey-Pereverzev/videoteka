@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.FilmTitleDto;
 import ru.gb.api.dtos.dto.MinMaxYearDto;
 
+import ru.gb.api.dtos.dto.StringResponse;
 import ru.gb.catalogservice.converters.FilmConverter;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.IllegalInputDataException;
@@ -66,7 +68,7 @@ public class FilmController {
     public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
-            return ResponseEntity.ok().body(HttpStatus.OK+" "+resultOperation.getResultDescription());
+            return ResponseEntity.ok(new StringResponse(resultOperation.getResultDescription()));
         }else {
             throw new IllegalInputDataException(resultOperation.getResultDescription());
         }
@@ -104,5 +106,14 @@ public class FilmController {
     @GetMapping("all")
     public List<FilmDto> findAllNotDeletedFilms() {
         return filmService.findAllNotDeletedFilms().stream().map(filmConverter::entityToDto).toList();
+    }
+
+    @Operation(
+            summary = "Вывод всех имен неудаленных фильмов",
+            description = "Позволяет получить полный общий список имен всех фильмов"
+    )
+    @GetMapping("titles")
+    public List<FilmTitleDto> findAllTitlesOfNotDeletedFilms() {
+        return filmService.findAllNotDeletedFilms().stream().map(filmConverter::titleByFilm).toList();
     }
 }

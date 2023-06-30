@@ -11,22 +11,12 @@ function FilmPage(props) {
 
 
     let displayCartNotification = (message) => {
-        toast.success(message);
+        toast.success(message, {toastId: 's1'});
     };
 
-    let getPrice = () => {
-        let price = ''
-        if (props.isSale) {
-            price = props.salePrice
-        } else {
-            if (!props.isSale) {
-                price = props.rentPrice
-            }
-        }
-        return price
-    }
-    let addToCart = async (sale) => {
-        const price = getPrice()
+    let role = JSON.parse(localStorage.getItem('role_user'))
+    let addToCart = async (event, sale) => {
+
         const stringCover = props.cover
         if (localStorage.getItem("customer")) {
             try {
@@ -36,22 +26,36 @@ function FilmPage(props) {
                             uuid: localStorage.getItem('guestCartId'),
                             filmId: props.filmId,
                             filmTitle: props.title,
-                            filmPrice: price,
+                            rentPrice: props.rentPrice,
+                            salePrice: props.salePrice,
                             filmImageUrlLink: stringCover,
                             isSale: sale
                         }
                     }
                 )
-                    displayCartNotification(response.data.value)
-                console.log("Ответ метода addToCart: " + response.data)
+                    .then(response => {
+                        displayCartNotification(response.data.value)
+                    },  function errorCallback(response) {
+                        console.log(response)
+                        let displayCartNotification = (message) => {
+                            toast.error(message, {toastId: 'e1'});
+                        }
+                        displayCartNotification(response.response.data.value)
+                    })
+                displayCartNotification(response.data.value)
+                console.log("Ответ метода addToCart: ", response.data)
             } catch (e) {
-                alert(e)
+                let displayCartNotification = (message) => {
+                    toast.error(message, {toastId: 'e2'});
+                }
+                displayCartNotification(e)
             }
         } else {
             displayCartNotification('Добавление в корзину и оформление заказов возможно только для авторизованных пользователей! Пожалуйста, авторизуйтесь!')
         }
 
     }
+
     const handleChange = (command) => {
         switch (command) {
             case 'reviews':
@@ -110,46 +114,45 @@ function FilmPage(props) {
                         <button onClick={() => handleChange('reviews')}>
                             <span className={'to_reviews'}><h4>Отзывы на фильм</h4></span>
                         </button>
+                        {role === 'ROLE_USER'?
                         <button onClick={() => handleChange('add_review')}>
                             <span className={'to_reviews'}><h4>Оставить рецензию</h4></span>
                         </button>
+                            :
+                            null
+                        }
 
                     </div>
                     <p className="movie__detail"><span className="icons icons-yellow"><i
                         className="fas fa-file-invoice-dollar"></i>
                     </span>
-                        <button className={props.isSale ? 'pay_btn' : 'pay_btn sale'}
-                                onClick={() => addToCart(props.isSale)}
+                        {role === 'ROLE_USER'?
+                            <div className={'btn_box'}>
+                                <h5>Купить</h5>
+                                <button className={'sale'}
+                                        onClick={(event,_) => {addToCart(event, true)}}>
+                                    {props.salePrice}
+                                </button>
+                                <h5>Аренда</h5>
+                                <button className={'pay_btn'}
+                                        onClick={(event,_) => {addToCart(event, false)}}>
+                                    {props.rentPrice}
+                                </button>
+                            </div>
+                            :
+                            null
+                        }
 
-                        >В Корзину
-                        </button>
                     </p>
                 </div>
 
-                {props.isSale ?
                     <div className="movie__price">
                         Цена продажи: {props.salePrice}<Icon sx={{transform: 'rotate(90deg)'}}
-                                                             component={CurrencyRubleIcon}/>
-                    </div>
-                    :
-                    <div className="movie__price">
+                                                             component={CurrencyRubleIcon}/> /
                         Цена аренды: {props.rentPrice}<Icon sx={{transform: 'rotate(90deg)'}}
                                                             component={CurrencyRubleIcon}/>
                     </div>
-                }
             </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
         </div>
     )
 }

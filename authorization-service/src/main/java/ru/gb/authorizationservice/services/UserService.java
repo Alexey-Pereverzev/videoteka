@@ -1,44 +1,62 @@
 package ru.gb.authorizationservice.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gb.api.dtos.dto.EmailDto;
-import ru.gb.api.dtos.dto.RegisterUserDto;
-import ru.gb.api.dtos.dto.StringResponse;
+import ru.gb.api.dtos.dto.*;
 import ru.gb.authorizationservice.entities.PasswordChangeAttempt;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.InputDataErrorException;
 import ru.gb.authorizationservice.exceptions.NotDeletedUserException;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
-import ru.gb.authorizationservice.integrations.MailServiceIntegration;
 import ru.gb.authorizationservice.repositories.PasswordChangeAttemptRepository;
 import ru.gb.authorizationservice.repositories.UserRepository;
 import ru.gb.authorizationservice.utils.Time;
+import ru.gb.common.constants.Constant;
 import ru.gb.common.constants.InfoMessage;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements InfoMessage {
+public class UserService implements InfoMessage, Constant {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PasswordChangeAttemptRepository attemptRepository;
     private final RoleService roleService;
     private final InputValidationService validationService = new InputValidationService();
-    private final MailServiceIntegration mailServiceIntegration;
+    private final RabbitTemplate rabbitTemplate;
+    private final ObjectMapper objectMapper;
 
     private final Time time;
 
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        List<User> found = userRepository.findByEmail(email);
+        for (User user : found) {
+            if (user.getEmail().equals(email) && !user.isDeleted()) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 
     public StringResponse createNewUser(RegisterUserDto registerUserDto) {
@@ -68,10 +86,6 @@ public class UserService implements InfoMessage {
                 throw new InputDataErrorException(PASSWORD_MISMATCH);
             } else {
                 String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
-                user.setDeleted(false);
-                user.setDeletedBy(null);
-                user.setDeletedWhen(null);
-
                 saveAndNotify(registerUserDto, user, encryptedPassword);
                 return new StringResponse("Пользователь с именем "
                         + registerUserDto.getUsername() + " успешно восстановлен");
@@ -84,14 +98,37 @@ public class UserService implements InfoMessage {
         if (validationMessage != null) {
             throw new InputDataErrorException(validationMessage);
         }
+        user.setDeleted(false);
+        user.setDeletedBy(null);
+        user.setDeletedWhen(null);
         userRepository.save(user);
         EmailDto emailDto = EmailDto.builder()
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
-                .message("Поздравляем! Вы успешно зарегистрировались. Ваш логин - " + user.getUsername())
+                .message("Поздравляем! Вы успешно зарегистрировались. \nВаш логин — " + user.getUsername())
                 .subject(SIGN_UP)
                 .build();
-        mailServiceIntegration.sendEmailMessage(emailDto);
+
+        rabbitSend(emailDto);
+    }
+
+    public void rabbitSend(EmailDto emailDto) {
+        this.rabbitTemplate.setExchange(MAIL_EXCHANGE_NAME);
+        this.rabbitTemplate.setRoutingKey(MAIL_ROUTE_KEY);
+        Message message = null;
+        try {
+            message = MessageBuilder.withBody(objectMapper.writeValueAsBytes(emailDto))
+                    .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                    .build();
+
+            message.getMessageProperties()
+                    .setHeader(AbstractJavaTypeMapper.DEFAULT_CONTENT_CLASSID_FIELD_NAME,
+                            MessageProperties.CONTENT_TYPE_JSON);
+
+            this.rabbitTemplate.convertAndSend(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     private String validateAndSaveFields(RegisterUserDto registerUserDto, String encryptedPassword, User user) {
@@ -123,6 +160,10 @@ public class UserService implements InfoMessage {
 
         validationMessage = validationService.acceptableEmail(email);
         if (validationMessage.equals("")) {
+            Optional<User> userByEmail = findByEmail(email);
+            if (userByEmail.isPresent()) {
+                return EMAIL_ALREADY_EXISTS;
+            }
             user.setEmail(email);
         } else {
             return validationMessage;
@@ -217,6 +258,33 @@ public class UserService implements InfoMessage {
         return new StringResponse(user.getFirstName().concat(" ").concat(user.getLastName()));
     }
 
+    public List<ReviewWithNameDto> addingNamesToRatings(List<RatingDto> ratings) {
+        String name;
+        List<ReviewWithNameDto> result = new ArrayList<>(ratings.size());
+        for (RatingDto rating : ratings) {
+            Optional<User> user = findNotDeletedById(rating.getUser_id());
+            name = user.map(value -> value.getFirstName().concat(" ")
+                    .concat(value.getLastName())).orElse(USER_NOT_FOUND);
+            ReviewWithNameDto newItem = ReviewWithNameDto.builder()
+                    .user_id(rating.getUser_id())
+                    .film_id(rating.getFilm_id())
+                    .createDateTime(rating.getCreateDateTime())
+                    .fullName(name)
+                    .grade(rating.getGrade())
+                    .review(rating.getReview())
+                    .build();
+            result.add(newItem);
+        }
+        return result;
+    }
+
+    private Optional<User> findNotDeletedById(Long userId) {
+        Optional<User> result = userRepository.findById(userId);
+        if (result.isPresent() && !result.get().isDeleted()) {
+            return result;
+        } else return Optional.empty();
+    }
+
     public User findNameEmailById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 ()->new ResourceNotFoundException("Польователь с id="+id+" не найден"));
@@ -238,9 +306,10 @@ public class UserService implements InfoMessage {
             throw new InputDataErrorException(INCORRECT_EMAIL);
         }
 
-        String code =  mailServiceIntegration.composeVerificationLetter(user.getFirstName(), email);
+        String code =  composeVerificationLetter(user.getFirstName(), email);
 
-        PasswordChangeAttempt attempt = attemptRepository.findById(user.getId()).orElse(new PasswordChangeAttempt());
+        PasswordChangeAttempt attempt = attemptRepository.findById(user.getId())
+                .orElse(new PasswordChangeAttempt());
         LocalDateTime createdWhen = time.now();
         attempt.setUser(user);
         attempt.setCreatedWhen(createdWhen);
@@ -248,6 +317,21 @@ public class UserService implements InfoMessage {
         attempt.setVerified(false);
         attemptRepository.save(attempt);
 
+    }
+
+    private String composeVerificationLetter(String firstName, String email) {
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmail(email);
+        emailDto.setFirstName(firstName);
+        emailDto.setSubject("Код верификации");
+        int random = (int) (Math.random()*1000000);
+        String code = String.valueOf(random);
+        while (code.length() < 6) {
+            code = "0".concat(code);
+        }
+        emailDto.setMessage("Ваш код верификации — " + code);
+        rabbitSend(emailDto);
+        return code;
     }
 
 
@@ -304,7 +388,7 @@ public class UserService implements InfoMessage {
                                 .message(PASSWORD_UPDATED_SUCCESSFULLY)
                                 .subject(PASSWORD_UPDATE)
                                 .build();
-                        mailServiceIntegration.sendEmailMessage(emailDto);
+                        rabbitSend(emailDto);
                     } else {
                         throw new InputDataErrorException(validationMessage);
                     }
@@ -313,4 +397,6 @@ public class UserService implements InfoMessage {
         }
         return new StringResponse(PASSWORD_UPDATED_SUCCESSFULLY);
     }
+
+
 }

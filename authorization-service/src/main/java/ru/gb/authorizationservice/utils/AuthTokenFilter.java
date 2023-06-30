@@ -12,6 +12,7 @@ import ru.gb.authorizationservice.config.CustomUserDetailsService;
 import ru.gb.authorizationservice.entities.User;
 import ru.gb.authorizationservice.exceptions.ResourceNotFoundException;
 import ru.gb.authorizationservice.repositories.UserRepository;
+import ru.gb.common.constants.InfoMessage;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,9 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Component
 @RequiredArgsConstructor
-public class AuthTokenFilter extends OncePerRequestFilter {
+public class AuthTokenFilter extends OncePerRequestFilter implements InfoMessage {
 
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
@@ -63,9 +66,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+        String headerAuth = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER)) {
             return headerAuth.substring(7);
         }
 

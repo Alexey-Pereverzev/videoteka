@@ -7,7 +7,6 @@ spring:
     default-encoding: UTF-8
     host: smtp.gmail.com
     username: videotekahom@gmail.com
-    password: etemmntjhoyjzxkq
     port: 587
     properties:
       mail:
@@ -17,6 +16,9 @@ spring:
             enable: true
     protocol: smtp
     test-connection: false
+  rabbitmq:
+    host: ${RABBIT_LOCATION:127.0.0.1}
+    port: 5672
 
 
 

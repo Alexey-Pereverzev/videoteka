@@ -6,19 +6,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.gb.api.dtos.dto.FilmDto;
+import ru.gb.api.dtos.dto.FilmTitleDto;
 import ru.gb.catalogservice.entities.*;
 import ru.gb.catalogservice.exceptions.IncorrectFilterParametrException;
+import ru.gb.catalogservice.exceptions.NoDataException;
 import ru.gb.catalogservice.exceptions.ResourceNotFoundException;
 import ru.gb.catalogservice.repositories.FilmRepository;
 import ru.gb.catalogservice.utils.DirectorsFilter;
 import ru.gb.catalogservice.utils.ResultOperation;
+import ru.gb.common.constants.InfoMessage;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FilmService {
+public class FilmService implements InfoMessage {
     private final int FILM_PAGE_SIZE = 10;
     private final FilmRepository filmRepository;
     private final CountryService countryService;
@@ -191,20 +195,32 @@ public class FilmService {
         if (isSale != null && minPrice != null && maxPrice != null) {
             prices = getPrices(minPrice, maxPrice, isSale);
             if (findString == null || findString.length() == 0) {
-                return filmRepository.findWithFilter(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
+                Page <Film> films_result=filmRepository.findWithFilter(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
                         directors, genres, startPremierYear, endPremierYear, prices);
+                System.out.println(films_result.getTotalElements());
+                if (films_result.getTotalElements()==0){
+                    throw new NoDataException(NO_DATA);
+                }else {
+                    return films_result;
+                }
             } else {
                 findString = findString.toLowerCase();
-                return filmRepository.findWithFilterWithFindString(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
+                Page<Film> films_result=filmRepository.findWithFilterWithFindString(PageRequest.of(currentPage, FILM_PAGE_SIZE, sort), countries,
                         directors, genres, startPremierYear, endPremierYear, prices, findString);
+                System.out.println(films_result.getTotalElements());
+                if (films_result.getTotalElements()==0){
+                    throw new NoDataException(NO_DATA);
+                }
+                return films_result;
             }
 
         } else {
-            throw new IncorrectFilterParametrException("Некорректный параметр фильтра");
+            throw new IncorrectFilterParametrException(INCORRECT_FILTER_PARAMETR);
         }
     }
 
     public List<Film> findAllNotDeletedFilms() {
         return filmRepository.findAllByIsDeletedIsFalse();
     }
+
 }

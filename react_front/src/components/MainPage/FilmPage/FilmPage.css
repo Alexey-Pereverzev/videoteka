@@ -146,6 +146,7 @@
 }
 
 .pay_btn {
+
     font-size: 14px;
     color: #fff;
     padding: 5px 7px;
@@ -162,11 +163,28 @@
     background: #647895;
 }
 
-.pay_btn.sale {
+.sale {
     background-color: #FFBBEC;
     cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    padding: 5px 7px;
+    border: 1px solid transparent;
+    border-radius: 100px;
+    display: block;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.5s;
 }
 
-.pay_btn.sale:hover {
+.sale:hover {
     background: #a07895;
+}
+.sale,
+.pay_btn {
+    width: 100px;
+    height: 30px;
+}
+.btn_box{
+    /*display: flex;*/
 }

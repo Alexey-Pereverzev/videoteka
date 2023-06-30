@@ -8,11 +8,12 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import ru.gb.common.constants.InfoMessage;
 
 import java.util.List;
 
 @Component
-public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Config> {
+public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Config> implements InfoMessage {
 
     private final RouteValidator validator;
 
@@ -31,7 +32,7 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
 
                 if (getRoleHeader(request).equals("ROLE_ADMIN")) {
                     if (!validator.isAdminAccess.test(request)) {
-                        return this.onError(exchange, "Access denied!", HttpStatus.FORBIDDEN);
+                        return this.onError(exchange, ACCESS_DENIED, HttpStatus.FORBIDDEN);
                     } else {
                         requestIsSecured = true;
                     }
@@ -39,7 +40,7 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
 
                 if (getRoleHeader(request).equals("ROLE_USER")) {
                     if (!validator.isUserAccess.test(request)) {
-                        return this.onError(exchange, "Access denied!", HttpStatus.FORBIDDEN);
+                        return this.onError(exchange, ACCESS_DENIED, HttpStatus.FORBIDDEN);
                     } else {
                         requestIsSecured = true;
                     }
@@ -47,14 +48,14 @@ public class MyAuthFilter extends AbstractGatewayFilterFactory<MyAuthFilter.Conf
 
                 if (getRoleHeader(request).equals("ROLE_MANAGER")) {
                     if (!validator.isManagerAccess.test(request)) {
-                        return this.onError(exchange, "Access denied!", HttpStatus.FORBIDDEN);
+                        return this.onError(exchange, ACCESS_DENIED, HttpStatus.FORBIDDEN);
                     } else {
                         requestIsSecured = true;
                     }
                 }
 
                 if (!requestIsSecured) {
-                    return this.onError(exchange, "Not for guests", HttpStatus.UNAUTHORIZED);
+                    return this.onError(exchange, NOT_FOR_GUESTS, HttpStatus.UNAUTHORIZED);
                 }
 
             }

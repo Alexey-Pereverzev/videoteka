@@ -46,19 +46,19 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public StringResponse addToCart(String cartKey, String userId, Long filmId, String filmTitle, String filmImageUrlLink, int filmPrice, boolean isSale) {
-        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, filmPrice, isSale);
-
+    public StringResponse addToCart(String cartKey, String userId, Long filmId, String filmTitle, String filmImageUrlLink, int salePrice, int  rentPrice, boolean isSale) {
         if (!filmFindInMyFilm(userId, filmId,isSale)){
             return new StringResponse("Этот фильм уже есть в вашем кабинете " + filmTitle);
 
         }
+        CartItemDto cartItemDto = new CartItemDto(filmId, filmTitle, filmImageUrlLink, salePrice,  rentPrice,  isSale);
         execute(cartKey, c -> {
 
             c.add(cartItemDto, isSale);
         });
         return new StringResponse("Фильм успешно добавлен в корзину " + filmTitle);
     }
+
     public boolean filmFindInMyFilm(String userId, Long filmId, boolean isSale){
         OrderDto orderDto = orderServiceIntegration.findByFilmIdAndUserId(userId, filmId);
         if (orderDto.getId()==null) {
@@ -114,7 +114,7 @@ public class CartService {
                 updateCart(cartKey, cart);
                 massege = "Некоторые фильмы были удалены пожалуйста вернитесь в корзину и обновите страницу ";
             } else
-                massege = "Можно оплавивать";
+                massege = "Можно оплачивать";
 
 
         }

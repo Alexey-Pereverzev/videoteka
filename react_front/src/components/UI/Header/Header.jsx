@@ -38,6 +38,15 @@ function Header(props) {
 
     let roleMenu = () => {
         switch (role) {
+            case 'ROLE_USER':
+                return <div>
+                    <NavLink to={'cart'}>
+                        <DropdownItem text={'корзина'}/>
+                    </NavLink>
+                    <NavLink to={'cabinet/orders'}>
+                        <DropdownItem text={'мои фильмы'}/>
+                    </NavLink>
+                </div>
             case 'ROLE_ADMIN':
                 return <NavLink to={'cabinet/users'}>
                     <DropdownItem text={'пользователи'}/>
@@ -51,8 +60,14 @@ function Header(props) {
                         <NavLink to={'cabinet/moderation'}>
                             <DropdownItem text={'модерация отзывов'}/>
                         </NavLink>
+                        <NavLink to={'cabinet/country_list'}>
+                            <DropdownItem text={'список стран'}/>
+                        </NavLink>
+                        <NavLink to={'cabinet/directors_list'}>
+                        <DropdownItem text={'список режиссёров'}/>
+                    </NavLink>
                     </div>
-            )
+                )
             default:
                 return
         }
@@ -87,47 +102,44 @@ function Header(props) {
                 <div className={'menu_deck'}>
                     {user ?
                         <div className={'auth_container'}>
-                        <div className={'menu_container'} ref={menuRef}>
-                            <div className={'dropdown_trigger'} onClick={openMenu}>
-                                <Avatar
-                                    className={'iconblock__avatar'}
-                                    src={'/'}
-                                    sx={{
-                                        width: 36,
-                                        height: 36,
-                                    }}
-                                />
-                            </div>
-                            <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
-                                <h3 className={'menu_username'}>
-                                    {fullName}
-                                    <span className={'menu_location'}></span></h3>
-                                <ul>
-                                    <NavLink to={'cabinet/profile'}>
-                                        <DropdownItem text={'профиль'}/>
-                                    </NavLink>
-                                    <NavLink to={'cart'}>
-                                        <DropdownItem text={'корзина'}/>
-                                    </NavLink>
-                                    <NavLink to={'cabinet/orders'}>
-                                        <DropdownItem text={'мои фильмы'}/>
-                                    </NavLink>
-                                    <NavLink to={'cabinet/favourites'}>
-                                        <DropdownItem text={'избранное'}/>
-                                    </NavLink>
-                                    {roleMenu()}
-                                    <button className={'logout_btn'} onClick={() => logout()}>
-                                        <DropdownItem text={'выход'}/>
-                                    </button>
+                            <div className={'menu_container'} ref={menuRef}>
+                                <div className={'dropdown_trigger'} onClick={openMenu}>
+                                    <Avatar
+                                        className={'iconblock__avatar'}
+                                        src={'/'}
+                                        sx={{
+                                            width: 36,
+                                            height: 36,
+                                        }}
+                                    />
+                                    <div className={'user_name__under_avatar'}>{fullName}</div>
+                                </div>
+                                <div className={`dropdown_menu ${open ? 'active' : 'inactive'}`}>
+                                    <h3 className={'menu_username'}>
+                                        {fullName}
+                                        <span className={'menu_location'}></span></h3>
+                                    <ul>
+                                        <NavLink to={'cabinet/profile'}>
+                                            <DropdownItem text={'профиль'}/>
+                                        </NavLink>
+                                        {roleMenu()}
+                                        <button className={'logout_btn'} onClick={() => logout()}>
+                                            <DropdownItem text={'выход'}/>
+                                        </button>
 
-                                </ul>
-                            </div>
+                                    </ul>
+                                </div>
 
-                        </div>
+                            </div>
                             <div className={'cart_box'}>
-                                <NavLink to={'/cart'} className={'cart_box__button'}>
+                                {role === 'ROLE_USER'?
+                                    <NavLink to={'/cart'} className={'cart_box__button'}>
                                     <ShoppingCartIcon/>
-                                </NavLink>
+                                    </NavLink>
+                                    :
+                                    null
+                                }
+
                             </div>
                         </div>
                         :

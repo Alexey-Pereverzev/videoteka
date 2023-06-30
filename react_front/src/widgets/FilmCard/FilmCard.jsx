@@ -10,7 +10,7 @@ import AddReviewPage from "../../components/MainPage/AddReviewPage/AddReviewPage
 
 
 function FilmCard(props) {
-    const [ratingState, setRatingState] = useState(0.00);
+    const [ratingState, setRatingState] = useState('');
     console.log('Id фильма: ' + props.id)
     let getRating = () => {
         try {
@@ -23,10 +23,8 @@ function FilmCard(props) {
             ).then(response => response.data)
                 .then(data => {
                     let rating = data;
-                    let dotRating = rating
-                        .replace(",", ".")
-                    setRatingState(dotRating)
-                    console.log("Ответ метода getRating: " + dotRating)
+
+                    setRatingState(rating)
                 })
 
         } catch (e) {
@@ -44,7 +42,6 @@ function FilmCard(props) {
                 return <AddReviewPage filmId={props.id}
                                       setCommand={setCommand}
                 />
-
             default:
                 return <FilmPage director={props.director}
                                  filmId={props.id}
@@ -84,7 +81,7 @@ function FilmCard(props) {
                         <Rating name="half-rating-read"
                                sx={{padding: 1}}
                                 size={'normal'}
-                                precision={0.1}
+                                precision={0.01}
                                 value={ratingState}
                                 readOnly/>
                         <span>{ratingState}</span>
@@ -98,9 +95,7 @@ function FilmCard(props) {
                     </div>
                 </div>
             </div>
-            <ModalWindow active={modalActive}
-                         setActive={setModalActive}
-            >
+            <ModalWindow setCommand={setCommand} active={modalActive} setActive={setModalActive}>
                 {switchScene(command)}
             </ModalWindow>
         </div>

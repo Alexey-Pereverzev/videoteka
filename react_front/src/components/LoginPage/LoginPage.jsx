@@ -1,27 +1,44 @@
-import React, { Component } from "react";
+import React, {Component, useState} from "react";
 import Grid from "@mui/material/Grid";
 import "./LoginPage.css";
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 import {NavLink, Route, Routes} from "react-router-dom";
+import ModalWindow from "../../widgets/ModalWindow/ModalWindow";
+import MailPage from "./MailPage/MailPage";
+import CodeVerificationPage from "./CodeVerificationPage/CodeVerificationPage";
+import ChangePasswordPage from "./ChangePasswordPage/ChangePasswordPage";
 
-class LoginPage extends Component {
-  constructor(props) {
-    super(props);
+const LoginPage = (props) => {
+ const[isLogin, setIsLogin] = useState(true)
+ const[command, setCommand] = useState("")
+ const[modalActive, setModalActive] = useState(false)
 
-    this.state = {
-      isLogin: true,
-    };
+  let changeLoginState = () => {
+    if (isLogin) setIsLogin(false)
+    else setIsLogin( true )
   }
-  changeLoginState = () => {
-    if (this.state.isLogin) this.setState({ isLogin: false });
-    else this.setState({ isLogin: true });
-  };
 
-  render() {
+    let switchScene = (command) => {
+     console.log(command)
+      switch (command) {
+        case 'mail':
+          return <MailPage setCommand={setCommand}
+          />
+        case 'code':
+          return <CodeVerificationPage setCommand={setCommand}
+          />
+       case 'change':
+          return <ChangePasswordPage setCommand={setCommand}
+          />
+      }
+    }
 
 
-
+    function startEvent() {
+     setModalActive(true)
+        switchScene('mail')
+    }
 
     return (
       <Grid container>
@@ -39,8 +56,6 @@ class LoginPage extends Component {
                     <Route index path={'/login'} element={<SignIn/>}/>
                     <Route path={'/register'} element={<SignUp/>}/>
                   </Routes>
-                  {/*<SignIn/>*/}
-                  {/*<SignUp/>*/}
 
                   <div className="login-page__ordiv">
                     <div className="login-page__divider"></div>
@@ -53,17 +68,17 @@ class LoginPage extends Component {
                     {/*</button>*/}
                   </div>
                   <div className="login-page__forgot-password">
-                    Забыл пароль?
+                    <button onClick={() => startEvent()}>Забыл пароль?</button>
                   </div>
                 </div>
               </div>
 
               <div className="login-page__signup-option">
-                {this.state.isLogin ? (
+                {isLogin ? (
                   <div className="login-page__sign-in-prop">
                     <span>
                       Ты ещё не с нами?{" "}
-                      <NavLink to={'register'} onClick={() => this.changeLoginState()}>
+                      <NavLink to={'register'} onClick={() => changeLoginState()}>
                         Регистрируйся!
                       </NavLink>
 
@@ -72,7 +87,7 @@ class LoginPage extends Component {
                 ) : (
                   <div className="login-page__sign-up-prop">
                     Есть регистрация?{" "}
-                    <NavLink to={'login'} onClick={() => this.changeLoginState()}>
+                    <NavLink to={'login'} onClick={() => changeLoginState()}>
                       Входи!
                     </NavLink>
 
@@ -83,9 +98,14 @@ class LoginPage extends Component {
           </div>
         </Grid>
         <Grid item xs={3}></Grid>
+        <ModalWindow active={modalActive}
+                     setActive={setModalActive}
+        >
+          {switchScene(command)}
+        </ModalWindow>
       </Grid>
     );
-  }
+
 }
 
 export default LoginPage;

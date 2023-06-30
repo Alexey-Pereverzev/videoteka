@@ -2,8 +2,7 @@ package ru.gb.api.dtos.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

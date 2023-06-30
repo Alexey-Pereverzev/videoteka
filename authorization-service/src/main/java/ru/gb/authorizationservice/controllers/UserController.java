@@ -4,14 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.api.dtos.dto.AppError;
-import ru.gb.api.dtos.dto.StringResponse;
-import ru.gb.api.dtos.dto.UserDto;
-import ru.gb.api.dtos.dto.UserNameMailDto;
+import ru.gb.api.dtos.dto.*;
 import ru.gb.authorizationservice.converters.UserConverter;
 import ru.gb.authorizationservice.services.UserService;
 import ru.gb.common.constants.InfoMessage;
@@ -22,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 @Tag(name = "Пользователи", description = "Методы работы с базой пользователей")
+@SecurityRequirement(name = "openapibearer")
 public class UserController implements InfoMessage {
 
     private final UserService userService;
@@ -107,6 +106,22 @@ public class UserController implements InfoMessage {
     @GetMapping("fullname_by_id")
     public StringResponse fullNameById(@RequestParam Long userId) {
         return userService.fullNameById(userId);
+    }
+
+
+
+    @Operation(
+            summary = "Рейтинги с именами",
+            responses = {
+                    @ApiResponse(
+                            description = "Рейтинги вместе с именами пользователей", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = StringResponse.class))
+                    )
+            }
+    )
+    @PostMapping("adding_names_to_ratings")
+    public List<ReviewWithNameDto> addingNamesToRatings(@RequestBody List<RatingDto> ratings) {
+        return userService.addingNamesToRatings(ratings);
     }
 
 

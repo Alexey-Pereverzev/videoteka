@@ -1,14 +1,14 @@
 import style from "./MainPage.module.css"
 import Header from "../UI/Header/Header";
-import FilmCard from "../../widgets/FilmCard/FilmCard";
-import {Component} from "react";
-import axios from "axios";
-import {Button, ButtonGroup, FormControl, InputLabel, MenuItem, Pagination, Select} from "@mui/material";
+import {Component, lazy, Suspense} from "react";
 import Footer from "../UI/Footer/Footer";
 import {Route, Routes} from "react-router-dom";
-import CatalogPage from "./CatalogPage/CatalogPage";
+// import CatalogPage from "./CatalogPage/CatalogPage";
 import CartPage from "./CartPage/CartPage";
 import PanelPage from "./PanelPage/PanelPage";
+import {CircularProgress} from "@mui/material";
+const CatalogPage = lazy(() => import('./CatalogPage/CatalogPage'))
+
 
 
 class MainPage extends Component {
@@ -37,11 +37,15 @@ class MainPage extends Component {
                 />
                 <div className={style.main_container}>
                     <Routes>
-                        <Route index path={'/'} element={<CatalogPage films={this.state.films}
+                        <Route index path={'/'} element={
+                            <Suspense fallback={<CircularProgress color="secondary" sx={{mt: 25, ml: 70}}/>}>
+                                <CatalogPage films={this.state.films}
                                                                       totalPages={this.state.totalPages}
                                                                       totalElements={this.state.totalElements}
                                                                       currentPage={this.state.currentPage}
-                        />}/>
+                        />
+                            </Suspense>
+                            }/>
                         <Route path={'cart'} element={<CartPage/>}/>
                         <Route path={'cabinet/*'} element={<PanelPage/>}/>
                     </Routes>

@@ -3,20 +3,21 @@ import "./SignUp.css";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 
+const wait = (ms = 4) => new Promise((resolve) => setTimeout(resolve, ms));
 
-class SignUp extends Component {
+export default class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoggedIn: false
         };
-
+        this.sendRegisterRequest = this.sendRegisterRequest.bind(this);
     }
 
-    sendRegisterRequest = (event) => {
-        event.preventDefault(true);
-        return axios.post('http://localhost:5555/auth/api/v1/reg/register',
-            {
+    async sendRegisterRequest(event) {
+        try {
+            event.preventDefault(true);
+            const response = await axios.post('http://localhost:5555/auth/api/v1/reg/register', {
                 username: event.target.username.value,
                 password: event.target.password.value,
                 confirmPassword: event.target.confirmPassword.value,
@@ -25,27 +26,20 @@ class SignUp extends Component {
                 lastName: event.target.lastName.value,
                 phoneNumber: event.target.phoneNumber.value,
                 address: event.target.address.value
-            })
-            .then(response => {
-
-                console.log(response.data)
-                alert("Вы успешно зарегистрированы")
-                window.location = "/"
-            },
-                function errorCallback(response) {
-                console.log(response)
-                    let displayCartNotification = (message) => {
-                        toast.error(message);
-                    }
-                    displayCartNotification(response.response.data.value)
-            }
-            )
-
+            });
+            console.log("Перед алертом");
+            alert("Вы успешно зарегистрированы");
+            // await wait(3000);
+            console.log("Перед редиректом");
+            window.location = "/"
+        } catch (err) {
+            console.error("Register request error");
+            console.error(err);
+            toast.error(err.response.data.value);
+        }
     }
 
     render() {
-
-
         return (
             <div>
                 <form onSubmit={(event) => this.sendRegisterRequest(event)}>
@@ -124,4 +118,3 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;

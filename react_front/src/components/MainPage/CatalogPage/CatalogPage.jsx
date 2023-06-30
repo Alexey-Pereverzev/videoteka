@@ -12,15 +12,20 @@ import {
 } from "@mui/material";
 import FilmCard from "../../../widgets/FilmCard/FilmCard";
 import axios from "axios";
-import {Component, useEffect} from "react";
+import React, {Component, useEffect, useRef} from "react";
 import SearchBar from "../../../widgets/SearchBar/SearchBar";
+import {toast, ToastContainer} from "react-toastify";
+import {Route, Routes} from "react-router-dom";
+import MainPage from "../MainPage";
+import EmptyCard from "../../../widgets/EmptyCard/EmptyCard";
 
 class CatalogPage extends Component {
     constructor(props) {
         super(props);
         this.handleDirectorsChange = this.handleDirectorsChange.bind(this);
         this.handleCountriesChange = this.handleCountriesChange.bind(this);
-        this.handleSaleChange = this.handleSaleChange.bind(this);
+        this.handleSaleSet = this.handleSaleSet.bind(this);
+        this.handleRentSet = this.handleRentSet.bind(this);
 
         this.state = {
             films: [],
@@ -213,6 +218,15 @@ class CatalogPage extends Component {
                     totalElements: data.totalElements,
                     currentPage: data.number + 1
                 })
+            }, function errorCallback(response) {
+                console.log(response)
+                // if (response.response.data.code === "NO_DATA"){
+                //     window.location = 'empty'
+                // }
+                let displayNotification = (message) => {
+                    toast.error(message);
+                }
+                displayNotification(response.response.data.value)
             }).catch((error) => {
             console.error("Error: " + error)
         })
@@ -233,6 +247,8 @@ class CatalogPage extends Component {
                 currentPage: 1,
                 active: false
             }, () => {
+                // const filterInput = useRef()
+                // filterInput.current.value = ''
                 this.getMinMaxPrice();
                 this.getMinMaxYear();
             }
@@ -355,15 +371,14 @@ class CatalogPage extends Component {
         }
     }
 
-    handleSaleChange() {
-        if (this.state.isSale === true) {
-            this.setState({isSale: false}, () => this.getMinMaxPrice())
-        } else {
-            if (this.state.isSale === false) {
-                this.setState({isSale: true}, () => this.getMinMaxPrice())
-            }
-        }
 
+    handleSaleSet() {
+        this.setState({isSale: true}, () => this.getMinMaxPrice())
+    }
+
+
+    handleRentSet() {
+        this.setState({isSale: false}, () => this.getMinMaxPrice())
     }
 
     handlePriceChange(name, event) {
@@ -421,6 +436,8 @@ class CatalogPage extends Component {
         const countries = this.state.countries;
         const totalPages = this.state.totalPages;
         const {active, setActive} = this.state.active;
+        const role = JSON.parse(localStorage.getItem('role_user'));
+
         return (
             <div className={style.catalog_container}>
 
@@ -440,10 +457,11 @@ class CatalogPage extends Component {
                 <div className={style.pagination}>
                     {
                         films.length > 0 ?
-                            <div>
+                            <div className={style.catalog_menu}>
                                 {/*<div className={style.current_pages}>*/}
                                 {/*    <h4>Это {currentPage} страница из {totalPages}</h4>*/}
                                 {/*</div>*/}
+
                                 <div className={style.pagination_items}>
                                     <Pagination count={totalPages}
                                                 page={currentPage}
@@ -461,6 +479,9 @@ class CatalogPage extends Component {
                 </div>
 
                 <div className={style.catalog}>
+                    {/*<Routes>*/}
+                    {/*    <Route path={'empty'} element={<EmptyCard/>}/>*/}
+                    {/*</Routes>*/}
                     {
                         films.length === 0 ?
                             <div className={style.empty}>
@@ -577,15 +598,26 @@ class CatalogPage extends Component {
                         </div>
                     </div>
                     {!this.state.isSale ?
-                        <Button onClick={this.handleSaleChange} className={style.clear}>Продажа</Button>
+                        <Button onClick={this.handleSaleSet} className={style.filter_btn}>Продажа</Button>
                         :
-                        <Button onClick={this.handleSaleChange} className={style.clear}>Аренда</Button>
+                        <Button onClick={this.handleRentSet} className={style.filter_btn}>Аренда</Button>
                     }
-
-                    <Button onClick={() => this.filmFilterByGenres("Все")} className={style.clear}>Сбросить</Button>
+                    <Button onClick={() => this.filmFilterByGenres("Все")}
+                            className={style.filter_btn}>Сбросить</Button>
 
                 </div>
-
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         )
     }

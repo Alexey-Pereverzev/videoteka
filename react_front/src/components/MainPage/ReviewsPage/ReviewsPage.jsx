@@ -5,6 +5,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 
 function ReviewsPage(props) {
+    let role = JSON.parse(localStorage.getItem('role_user'))
     let getFilmIdReview = async () => {
         try {
             return await axios.get('http://localhost:5555/catalog/api/v1/rating/all_grade_and_review_by_filmId', {
@@ -13,7 +14,7 @@ function ReviewsPage(props) {
                 }
             })
                 .then((response) =>
-                    response.data,
+                    setFilmReviews(response.data),
                     function errorCallback(response) {
                         console.log(response)
                         let displayCartNotification = (message) => {
@@ -21,17 +22,19 @@ function ReviewsPage(props) {
                         }
                         displayCartNotification(response.response.data.value)
                     })
-                .then(data => {
-                        console.log(data.review)
-                        setFilmReviews(data)
-                    }
-                )
+                // .then(data => {
+                //
+                //     axios.post('http://localhost:5555/auth/api/v1/users/adding_names_to_ratings', {data})
+                //         .then((response) => setFilmReviews(response.data) )
+                //
+                //     }
+                // )
         } catch (e) {
 
         }
     }
     let getFullNameReviewers = async (userId) => {
-        return await axios.get('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
+        return await axios.post('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
             params: {
                 userId: userId
             }
@@ -40,14 +43,6 @@ function ReviewsPage(props) {
         })
 
     }
-   // const handleName = (userId) => {
-   //
-   //     getFullNameReviewers(userId)
-   //     //     .then(r => {
-   //     //     setFullName(r)
-   //     // })
-   //     return fullName
-   //  }
     const handleChange = (command) => {
         switch (command) {
             case '':
@@ -115,9 +110,13 @@ function ReviewsPage(props) {
                 <div className={'button-back_box'}>
                     <button onClick={() => handleChange('')}>Вернуться к фильму</button>
                 </div>
+                {role === 'ROLE_USER'?
                 <div className={'button-back_box'}>
                     <button onClick={() => handleChange('add_review')}>Написать отзыв</button>
                 </div>
+                    :
+                    null
+                }
             </div>
         </div>
     )

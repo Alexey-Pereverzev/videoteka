@@ -1,7 +1,13 @@
 package ru.gb.api.dtos.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Schema(description = "Модель ответа на запрос авторизации")
 public class JwtResponse {
     @Schema(description = "Токен", required = true,
@@ -11,27 +17,4 @@ public class JwtResponse {
     @Schema(description = "Роль пользователя", required = true, example = "'ROLE_USER'")
     private String role;
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public JwtResponse() {
-    }
-
-    public JwtResponse(String token, String role) {
-        this.token = token;
-        this.role = role;
-    }
 }

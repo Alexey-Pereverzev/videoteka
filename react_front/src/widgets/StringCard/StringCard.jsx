@@ -1,9 +1,10 @@
 import "./StringCard.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
+import {useState} from "react";
 
 function StringCard(props) {
-
+const[film, setFilm] = useState([])
     let removeFromCart = async () => {
         console.log(props.filmId)
         try {
@@ -21,6 +22,7 @@ function StringCard(props) {
             alert(e)
         }
     }
+
     return(
         <div className={'string_container'}>
             <div className={'string__cover'}>
@@ -30,7 +32,12 @@ function StringCard(props) {
                 <div className={'string__title'}>{props.title}</div>
             </div>
             <div className={'string_price'}>
-                <span>цена: {props.price} руб.</span>
+                {props.isSale?
+                    <span>цена: {props.salePrice} руб.</span>
+                    :
+                    <span>цена: {props.rentPrice} руб.</span>
+                }
+
             </div>
             <div className={'string__delete'}>
                 <button onClick={() => removeFromCart()}><DeleteIcon/></button>
