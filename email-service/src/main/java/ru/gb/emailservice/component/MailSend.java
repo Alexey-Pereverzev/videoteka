@@ -61,15 +61,15 @@ public class MailSend implements Constant
         }
     }
 
-    public void testMessage(String email) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        // message.setFrom("Videoteka");
-        message.setSubject("Оформление заказа");
-        message.setText("Здравствуйте, Анна! \nВаш заказ успешно оформлен ");
-        javaMailSender.send(message);
-
-    }
+//    public void testMessage(String email) {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(email);
+//        // message.setFrom("Videoteka");
+//        message.setSubject("Оформление заказа");
+//        message.setText("Здравствуйте, Анна! \nВаш заказ успешно оформлен ");
+//        javaMailSender.send(message);
+//
+//    }
 
 
 
