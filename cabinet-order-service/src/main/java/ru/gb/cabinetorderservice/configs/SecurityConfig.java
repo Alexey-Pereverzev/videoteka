@@ -56,14 +56,14 @@ public class SecurityConfig {
                 .and()
                 .build();
 
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return securityFilterChain;
     }
 
-//    @Bean
-//    public AuthTokenOuterFilter authenticationJwtTokenFilter() {
-//        return new AuthTokenOuterFilter(jwtTokenUtil);
-//    }
+    @Bean
+    public AuthTokenOuterFilter authenticationJwtTokenFilter() {
+        return new AuthTokenOuterFilter(jwtTokenUtil);
+    }
 
 }

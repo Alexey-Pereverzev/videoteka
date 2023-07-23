@@ -2,11 +2,13 @@ package ru.gb.cabinetorderservice.controllers;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.AppError;
 import ru.gb.api.dtos.dto.StringResponse;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 @Tag(name = "Заказы" , description = "Методы работы с заказами")
+@SecurityRequirement(name = "openapibearer")
 public class OrdersController {
     private final OrderService orderService;
     private final OrderConverter orderConverter;
@@ -32,6 +35,7 @@ public class OrdersController {
             description = "Созадение заказа "
     )
     @PostMapping()
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createOrder(@RequestHeader String userId,
                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
 
@@ -56,6 +60,7 @@ public class OrdersController {
             description = "Заказ пользователя "
     )
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public List<OrderDto> getCurrentUserOrders(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
         return orderService.findAllByUserId(userIDLong).stream()
@@ -67,6 +72,7 @@ public class OrdersController {
             description = "Просмотр фильма   "
     )
     @GetMapping("/play_film")
+    @PreAuthorize("hasRole('USER')")
     public String findByFilmId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
@@ -81,6 +87,7 @@ public class OrdersController {
             description = "Возвращает фильм пользователя  "
     )
     @GetMapping("/user_film")
+    @PreAuthorize("hasRole('USER')")
     public OrderDto findByFilmIdAndUserId(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         Optional<Order> optionalOrder = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId);
@@ -90,7 +97,6 @@ public class OrdersController {
             Order order1 = orderService.findFilmByUserIdAndFilmId(userIDLong, filmId).get();
             return orderConverter.entityToDto(order1);
         }
-
     }
 
     @Operation(
@@ -98,6 +104,7 @@ public class OrdersController {
             description = "удаление заказа из бд   "
     )
     @DeleteMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> delete(@RequestHeader String userId, @RequestParam Long filmId) {
         Long userIDLong = Long.valueOf(userId);
         String result = orderService.delete(userIDLong, filmId);
@@ -107,23 +114,26 @@ public class OrdersController {
         } else {
             return new ResponseEntity<>(new AppError("FILM_NOT_FOUND", "Фильм не найден в заказах пользователя"), HttpStatus.NOT_FOUND);
         }
-
     }
+
     @Operation(
-            summary = "Фильмы в арнде  ",
-            description = "удавытаскиваем из бд заказов фильмы пользователя которые в аренде  "
+            summary = "Фильмы в аренде  ",
+            description = "вытаскиваем из бд заказов фильмы пользователя которые в аренде  "
     )
     @GetMapping("/rent")
+    @PreAuthorize("hasRole('USER')")
     public List<OrderDto> filmIsRent(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
         return orderService.filmIsRent(userIDLong).stream()
                 .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
+
     @Operation(
             summary = "Фильмы купленные",
             description = "вытаскиваем из бд заказов фильмы пользователя которые куплены "
     )
     @GetMapping("/sale")
+    @PreAuthorize("hasRole('USER')")
     public List<OrderDto> filmIsSale(@RequestHeader String userId) {
         Long userIDLong = Long.valueOf(userId);
         return orderService.filmIsSale(userIDLong).stream()

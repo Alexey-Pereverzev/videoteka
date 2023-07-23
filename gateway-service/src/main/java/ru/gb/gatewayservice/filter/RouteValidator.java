@@ -60,8 +60,6 @@ public class RouteValidator {
 
             "/api/v1/orders",
             "/api/v1/orders/play_film",
-            "/api/v1/orders/user_film",
-            "/api/v1/orders/delete",
             "/api/v1/orders/rent",
             "/api/v1/orders/sale",
 

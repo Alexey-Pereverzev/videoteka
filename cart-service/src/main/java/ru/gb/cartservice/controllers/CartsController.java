@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.cart.CartDto;
@@ -49,10 +50,13 @@ public class CartsController {
     public StringResponse add(@RequestHeader(required = false) String userId,  @RequestParam  String uuid,
                               @RequestParam  Long filmId,  @RequestParam  String filmTitle,
                               @RequestParam String filmImageUrlLink,  @RequestParam  int  rentPrice,
-                              @RequestParam  int  salePrice, @RequestParam boolean isSale ) {
+                              @RequestParam  int  salePrice, @RequestParam boolean isSale,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
+
+        String token = authorization.substring(7);
 
         return cartService.addToCart(getCurrentCartUuid(userId, uuid), userId, filmId, filmTitle,
-                filmImageUrlLink, salePrice, rentPrice, isSale);
+                filmImageUrlLink, salePrice, rentPrice, isSale, token);
     }
 
     @Operation(
