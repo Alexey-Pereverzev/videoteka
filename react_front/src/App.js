@@ -24,11 +24,7 @@ function App(props) {
                 />
 
                }/>
-              <Route path='/gate/*' element={
-
-                      <LoginPage/>
-
-              }/>
+              <Route path='/gate/*' element={<LoginPage/>}/>
           </Routes>
         </BrowserRouter>
       </div>

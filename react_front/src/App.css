@@ -1,4 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 .App {
+  position: absolute;
+  top: 0;
+  left: 40vw;
   text-align: center;
 }
 .App::-webkit-scrollbar{

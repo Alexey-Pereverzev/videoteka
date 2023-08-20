@@ -8,11 +8,28 @@
     height: 36px;
     padding-left: 7px;
     margin-bottom: 7px;
+    margin-top: 7px;
     outline: 0;
     overflow: hidden;
 
 }
-
+.avatar_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border: 2px solid olivedrab;
+    border-radius: 50px;
+}
+.input_avatar{
+    height: 72px;
+    width: 72px;
+    background: transparent;
+    outline:0;
+    opacity:0;
+    user-select:none
+}
 .signup-page__sign-in__text:hover {
     border: 1px solid rgba(99, 56, 109, 0.767);
 }
