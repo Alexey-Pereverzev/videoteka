@@ -1,10 +1,12 @@
 package ru.gb.catalogservice.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.CountryDto;
 import ru.gb.catalogservice.converters.CountryConverter;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/country")
 @RequiredArgsConstructor
 @Tag(name = "Страны", description = "Методы для работы со списком стран")
+@SecurityRequirement(name = "openapibearer")
 public class CountryController {
     private final CountryService countryService;
     private final CountryConverter countryConverter;
@@ -47,6 +50,7 @@ public class CountryController {
             description = "Позволяет добавить в БД новую страну"
     )
     @PostMapping("/new")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> addNewFilm(@RequestBody CountryDto countryDto) {
         ResultOperation resultOperation = countryService.countryAddInVideoteka(countryDto);
         if (resultOperation.isResult()) {

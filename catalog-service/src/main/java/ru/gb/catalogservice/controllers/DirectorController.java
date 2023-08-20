@@ -1,10 +1,12 @@
 package ru.gb.catalogservice.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.DirectorDto;
 import ru.gb.catalogservice.converters.DirectorConverter;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/director")
 @RequiredArgsConstructor
 @Tag(name = "Режиссер", description = "Методы для работы со списком режиссеров")
+@SecurityRequirement(name = "openapibearer")
 public class DirectorController {
     private final DirectorService directorService;
     private final DirectorConverter directorConverter;
@@ -43,6 +46,7 @@ public class DirectorController {
             description = "Позволяет добавить в БД нового режиссера"
     )
     @PostMapping("/new")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> addNewFilm(@RequestBody DirectorDto directorDto) {
         ResultOperation resultOperation=directorService.directorAddInVideoteka(directorDto);
         if (resultOperation.isResult()){

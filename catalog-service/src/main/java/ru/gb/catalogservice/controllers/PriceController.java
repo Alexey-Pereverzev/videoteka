@@ -1,6 +1,7 @@
 package ru.gb.catalogservice.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import ru.gb.catalogservice.services.PriceService;
 @RequestMapping("/api/v1/price")
 @RequiredArgsConstructor
 @Tag(name = "Цены", description = "Методы для работы со списком цен")
+@SecurityRequirement(name = "openapibearer")
 public class PriceController {
     private final PriceService priceService;
     private final PriceConverter priceConverter;

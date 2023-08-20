@@ -98,9 +98,10 @@ public class CartsController {
             description = "Проходимся по фильмам если в бд фильм уже удален то удаляем в корзине и обновляем корзину отпровляем сообщение об этом "
     )
     @GetMapping("/pay")
-    public String pay(@RequestHeader(required = false) String userId, @RequestParam  String uuid) {
+    public String pay(@RequestHeader(required = false) String userId) {
         return cartService.validateCart(userId);
     }
+
     @GetMapping ("/redis_content")
     public StringResponse redisContent (){
         return cartService.redisContent();
