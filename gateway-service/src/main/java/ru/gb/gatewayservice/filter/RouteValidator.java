@@ -35,6 +35,9 @@ public class RouteValidator {
 
             "/api/v1/users/fullname_by_id",
             "/api/v1/users/adding_names_to_ratings",
+            "/api/v1/users/password_attempt",
+            "/api/v1/users/code_check",
+            "/api/v1/users/password",
 
             "/api/v1/mail/send"
 
@@ -43,10 +46,7 @@ public class RouteValidator {
     public static final List<String> adminApiEndpoints = List.of(
             "/api/v1/roles",
             "/api/v1/users",
-            "/api/v1/users/not_deleted",
-            "/api/v1/users/password_attempt",
-            "/api/v1/users/code_check",
-            "/api/v1/users/password"
+            "/api/v1/users/not_deleted"
     );
 
     public static final List<String> userApiEndpoints = List.of(
@@ -61,12 +61,7 @@ public class RouteValidator {
             "/api/v1/orders",
             "/api/v1/orders/play_film",
             "/api/v1/orders/rent",
-            "/api/v1/orders/sale",
-
-            "/api/v1/users/password_attempt",
-            "/api/v1/users/code_check",
-            "/api/v1/users/password"
-
+            "/api/v1/orders/sale"
     );
 
     public static final List<String> managerApiEndpoints = List.of(
@@ -78,11 +73,9 @@ public class RouteValidator {
             "/api/v1/rating/new_comment",
             "/api/v1/rating/all_grade_and_review_is_not_moderate",
             "/api/v1/rating/moderate_rejected",
-            "/api/v1/rating/moderate_success",
+            "/api/v1/rating/moderate_success"
 
-            "/api/v1/users/password_attempt",
-            "/api/v1/users/code_check",
-            "/api/v1/users/password"
+
     );
 
     public Predicate<ServerHttpRequest> isFreeAccess =

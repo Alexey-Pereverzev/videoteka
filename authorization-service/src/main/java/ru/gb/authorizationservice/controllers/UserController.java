@@ -143,7 +143,6 @@ public class UserController implements InfoMessage {
             }
     )
     @PostMapping("/password_attempt")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
     public StringResponse setPasswordChangeAttempt(@RequestHeader String userId,
                                                    @RequestParam String email) {
         userService.setPasswordChangeAttempt(userId, email);
@@ -168,7 +167,6 @@ public class UserController implements InfoMessage {
             }
     )
     @PutMapping("/code_check")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
     public StringResponse checkCodeForPasswordChange(@RequestHeader String userId,
                                                    @RequestParam String code) {
         return userService.checkCodeForPasswordChange(userId, code);
@@ -192,7 +190,6 @@ public class UserController implements InfoMessage {
             }
     )
     @PutMapping("/password")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
     public StringResponse updatePassword(@RequestHeader String userId, @RequestParam String password,
                                          @RequestParam String confirmPassword) {
         return userService.updatePassword(userId, password, confirmPassword);
