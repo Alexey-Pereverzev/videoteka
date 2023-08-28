@@ -10,5 +10,5 @@
 #**/private.key
 #**/public.key
 #**/password.txt
-#**/target/*
+**/target/*
 
