@@ -32,9 +32,7 @@ const MailPage = (props) => {
     }
     const handleSubmit = async () => {
         try {
-            await axios.post('http://localhost:5555/auth/api/v1/users/password_attempt', {
-                email: email
-            }).then(handleChangePage(props.step + 1))
+            await axios.post('http://localhost:5555/auth/api/v1/users/password_attempt/?email=' + email).then(handleChangePage(props.step + 1))
         } catch (e) {
 
         }

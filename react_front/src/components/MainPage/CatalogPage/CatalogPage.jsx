@@ -395,7 +395,6 @@ class CatalogPage extends Component {
                     this.state.minPrice,
                     this.state.maxPrice,
                     this.state.findString));
-
             }
         } else {
             if (parseInt(value) <= parseInt(this.state.maxPlaceholderPrice) && parseInt(value) >= parseInt(this.state.minPlaceholderPrice)) {
