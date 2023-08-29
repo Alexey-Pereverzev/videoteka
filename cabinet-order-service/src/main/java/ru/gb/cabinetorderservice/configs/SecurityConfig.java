@@ -16,7 +16,6 @@ import ru.gb.common.utils.JwtUtil;
 
 @Configuration
 @EnableWebSecurity
-//
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
 public class SecurityConfig {
