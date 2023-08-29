@@ -22,7 +22,8 @@ import ru.gb.authorizationservice.utils.JwtTokenUtil;
 
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
+//
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
 public class SecurityConfig {

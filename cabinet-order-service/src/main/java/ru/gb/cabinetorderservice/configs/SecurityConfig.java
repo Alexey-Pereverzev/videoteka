@@ -15,7 +15,8 @@ import ru.gb.common.utils.AuthTokenOuterFilter;
 import ru.gb.common.utils.JwtUtil;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
+//
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
 public class SecurityConfig {

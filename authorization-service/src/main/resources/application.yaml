@@ -29,9 +29,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         hbm2ddl:
           auto: update
-logging:
-  level:
-    org.springframework.security: trace
+#logging:
+#  level:
+#    org.springframework.security: trace
+
 integrations:
   email-service:
     url: http://${EMAIL_SERVICE_LOCATION:127.0.0.1}:8199/email-service
