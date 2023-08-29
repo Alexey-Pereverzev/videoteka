@@ -2,26 +2,12 @@ server:
   port: 8189
   servlet:
     context-path: /catalog-service
-flyway:
-  user: catalog
-  password: CatalogVideoteka2023
-  schemas: catalog_db
-  url: jdbc:postgresql://194.87.101.43:5432/catalog_db
 spring:
   datasource:
+    url: jdbc:postgresql://localhost:5432/catalog_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://194.87.101.43:5432/catalog_db
-    username: catalog
-    password: CatalogVideoteka2023
-#spring:
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/catalog_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-#    driver-class-name: org.postgresql.Driver
-#    username: postgres
-#    password: 123
-
-#  spring.datasource.username=root
-#  spring.datasource.password=root
+    username: postgres
+    password: admin
   jpa:
     show-sql: true
     properties:
@@ -29,3 +15,16 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         hbm2ddl:
           auto: update
+
+
+#flyway:
+#  user: catalog
+#  password: CatalogVideoteka2023
+#  schemas: catalog_db
+#  url: jdbc:postgresql://194.87.101.43:5432/catalog_db
+#spring:
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://194.87.101.43:5432/catalog_db
+#    username: catalog
+#    password: CatalogVideoteka2023

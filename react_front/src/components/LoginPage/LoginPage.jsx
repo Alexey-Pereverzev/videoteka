@@ -8,6 +8,7 @@ import ModalWindow from "../../widgets/ModalWindow/ModalWindow";
 import MailPage from "./MailPage/MailPage";
 import CodeVerificationPage from "./CodeVerificationPage/CodeVerificationPage";
 import ChangePasswordPage from "./ChangePasswordPage/ChangePasswordPage";
+import AlertDialogSlide from "../../widgets/AlertDialogSlide/AlertDialogSlide";
 
 const LoginPage = (props) => {
  const[isLogin, setIsLogin] = useState(true)
@@ -98,11 +99,11 @@ const LoginPage = (props) => {
           </div>
         </Grid>
         <Grid item xs={3}></Grid>
-        <ModalWindow active={modalActive}
-                     setActive={setModalActive}
-        >
-          {switchScene(command)}
-        </ModalWindow>
+          <AlertDialogSlide open={modalActive}
+                            setOpen={setModalActive}
+                            setCommand={setCommand}>
+              <ChangePasswordPage/>
+          </AlertDialogSlide>
       </Grid>
     );
 

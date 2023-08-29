@@ -46,8 +46,10 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public StringResponse addToCart(String cartKey, String userId, Long filmId, String filmTitle, String filmImageUrlLink, int salePrice, int  rentPrice, boolean isSale) {
-        if (!filmFindInMyFilm(userId, filmId,isSale)){
+    public StringResponse addToCart(String cartKey, String userId, Long filmId, String filmTitle,
+                                    String filmImageUrlLink, int salePrice, int  rentPrice, boolean isSale,
+                                    String token) {
+        if (!filmFindInMyFilm(userId, filmId,isSale, token)){
             return new StringResponse("Этот фильм уже есть в вашем кабинете " + filmTitle);
 
         }
@@ -59,8 +61,8 @@ public class CartService {
         return new StringResponse("Фильм успешно добавлен в корзину " + filmTitle);
     }
 
-    public boolean filmFindInMyFilm(String userId, Long filmId, boolean isSale){
-        OrderDto orderDto = orderServiceIntegration.findByFilmIdAndUserId(userId, filmId);
+    public boolean filmFindInMyFilm(String userId, Long filmId, boolean isSale, String token){
+        OrderDto orderDto = orderServiceIntegration.findByFilmIdAndUserId(userId, filmId, token);
         if (orderDto.getId()==null) {
             return true;
         }

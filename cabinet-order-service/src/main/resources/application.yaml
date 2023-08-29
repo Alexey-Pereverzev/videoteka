@@ -3,16 +3,16 @@ server:
   servlet:
     context-path: /cabinet-order-service
 flyway:
-  user: orders
-  password: OrdersVideoteka2023
+  user: postgres
+  password: admin
   schemas: orders_db
-  url: jdbc:postgresql://194.87.101.43:5432/orders_db
+  url: jdbc:postgresql://localhost:5432/orders_db
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://194.87.101.43:5432/orders_db
-    username: orders
-    password: OrdersVideoteka2023
+    url: jdbc:postgresql://localhost:5432/orders_db
+    username: postgres
+    password: admin
   rabbitmq:
     host: ${RABBIT_LOCATION:127.0.0.1}
     port: 5672

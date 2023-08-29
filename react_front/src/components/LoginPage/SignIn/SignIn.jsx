@@ -1,24 +1,16 @@
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import "./SignIn.css";
 import "react-toastify/dist/ReactToastify.css";
 import axios, {post} from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import jwt from 'jwt-decode'
-import {Alert} from "@mui/material";
+import {AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
 
 
 // login(): POST{email, password} & save JWT to Local Storage
-class SignIn extends Component {
+const SignIn = () => {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isLoggedIn: false
-        }
-    }
-
-    sendLoginRequest = (event) => {
+  const  sendLoginRequest = (event) => {
         event.preventDefault(true);
         const username = event.target.username.value
         try {
@@ -33,7 +25,7 @@ class SignIn extends Component {
                         axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
                         localStorage.setItem("customer", JSON.stringify(response.data))
                         localStorage.setItem("username", JSON.stringify(username))
-                        this.showCurrentUserInfo()
+                        showCurrentUserInfo()
 
                         console.log(JSON.parse(localStorage.getItem("userId")))
                         await axios.get('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
@@ -50,10 +42,9 @@ class SignIn extends Component {
                         axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
                             .then(response => response.data)
 
-
+                        window.location = "/"
                     }
 
-                    window.location = "/"
                 }, function errorCallback(response) {
                     console.log(response)
                     let displayCartNotification = (message) => {
@@ -61,13 +52,13 @@ class SignIn extends Component {
                     }
                     displayCartNotification(response.response.data.value)
                 })
-        }catch (e) {
+        } catch (e) {
 
         }
 
     }
-    showCurrentUserInfo = () =>{
-        if(this.isUserLoggedIn){
+   const showCurrentUserInfo = () => {
+        if (isUserLoggedIn) {
             let customer = JSON.parse(localStorage.getItem('customer'))
             let token = customer.token
             let payload = jwt(token)
@@ -79,11 +70,11 @@ class SignIn extends Component {
             alert('UNAUTHORIZED')
         }
     }
-    isUserLoggedIn = () =>{
+   const isUserLoggedIn = () => {
         return !!localStorage.getItem('customer');
     }
 
-    render() {
+
         function authHeaderHandler() {
             const customer = JSON.parse(localStorage.getItem('customer'))
             if (customer && customer.token) {
@@ -104,20 +95,39 @@ class SignIn extends Component {
             }
         }
 
+        const [visible, setVisible] = useState(false)
+        const [isLoggedIn, setIsLoggedIn] = useState(false)
         return (
             <div>
-                <form method={'post'} onSubmit={(event) => this.sendLoginRequest(event)}>
+                <form method={'post'} onSubmit={(event) => sendLoginRequest(event)}>
                     <input className="login-page__sign-in__text"
                            name={'username'}
                            id="username"
                            type="text"
                            placeholder="Почта, имя пользователя"
-                    /> <input className="login-page__sign-in__text"
-                              name={'password'}
-                              id="password"
-                              type="password"
-                              placeholder="Вводи пароль"
-                />
+                    />
+                    <div className={'mt-1 relative'}>
+                        <input className="login-page__sign-in__text"
+                               name={'password'}
+                               id="password"
+                               type={visible ? "text" : "password"}
+                               placeholder="Вводи пароль"
+                        />
+                        {visible ?
+                            <AiOutlineEye
+                                className={'absolute right-2 top-2 cursor-pointer'}
+                                size={25}
+                                onClick={() => setVisible(false)}
+                            />
+                            :
+                            <AiOutlineEyeInvisible
+                                className={'absolute right-2 top-2 cursor-pointer'}
+                                size={25}
+                                onClick={() => setVisible(true)}
+                            />
+                        }
+                    </div>
+
                     <button id="submit"
                             className="login-page__sign-in__button"
                     >
@@ -138,7 +148,7 @@ class SignIn extends Component {
                 />
             </div>
         );
-    }
+
 }
 
 export default SignIn;

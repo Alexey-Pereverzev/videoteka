@@ -10,10 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.gb.common.utils.AuthTokenOuterFilter;
 import ru.gb.common.utils.JwtUtil;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -59,14 +61,14 @@ public class SecurityConfig {
                 .and()
                 .build();
 
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return securityFilterChain;
     }
 
-//    @Bean
-//    public AuthTokenOuterFilter authenticationJwtTokenFilter() {
-//        return new AuthTokenOuterFilter(jwtTokenUtil);
-//    }
+    @Bean
+    public AuthTokenOuterFilter authenticationJwtTokenFilter() {
+        return new AuthTokenOuterFilter(jwtTokenUtil);
+    }
 
 }

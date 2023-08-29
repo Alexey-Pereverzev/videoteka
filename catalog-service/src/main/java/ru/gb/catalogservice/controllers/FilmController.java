@@ -2,11 +2,13 @@ package ru.gb.catalogservice.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.api.dtos.dto.FilmDto;
 import ru.gb.api.dtos.dto.FilmTitleDto;
@@ -27,6 +29,7 @@ import java.util.List;
 @RequestMapping("/api/v1/film")
 @RequiredArgsConstructor
 @Tag(name = "Фильмы", description = "Методы для работы со списком фильмов")
+@SecurityRequirement(name = "openapibearer")
 public class FilmController {
     private final FilmService filmService;
     private final FilmConverter filmConverter;
@@ -65,6 +68,7 @@ public class FilmController {
             description = "Позволяет добавлять фильмы в БД"
     )
     @PostMapping("/new_film")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> addNewFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
@@ -78,6 +82,7 @@ public class FilmController {
             description = "Позволяет изменять фильмы в БД"
     )
     @PutMapping("/movie_change")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> changeFilm(@RequestBody FilmDto filmDto) {
         ResultOperation resultOperation=filmService.filmAddOrChangeInVideoteka(filmDto);
         if (resultOperation.isResult()){
@@ -113,6 +118,7 @@ public class FilmController {
             description = "Позволяет получить полный общий список имен всех фильмов"
     )
     @GetMapping("titles")
+    @PreAuthorize("hasRole('MANAGER')")
     public List<FilmTitleDto> findAllTitlesOfNotDeletedFilms() {
         return filmService.findAllNotDeletedFilms().stream().map(filmConverter::titleByFilm).toList();
     }

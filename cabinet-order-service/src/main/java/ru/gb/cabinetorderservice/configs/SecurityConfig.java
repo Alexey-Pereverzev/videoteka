@@ -15,7 +15,7 @@ import ru.gb.common.utils.AuthTokenOuterFilter;
 import ru.gb.common.utils.JwtUtil;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true) // by default
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -56,14 +56,14 @@ public class SecurityConfig {
                 .and()
                 .build();
 
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return securityFilterChain;
     }
 
-//    @Bean
-//    public AuthTokenOuterFilter authenticationJwtTokenFilter() {
-//        return new AuthTokenOuterFilter(jwtTokenUtil);
-//    }
+    @Bean
+    public AuthTokenOuterFilter authenticationJwtTokenFilter() {
+        return new AuthTokenOuterFilter(jwtTokenUtil);
+    }
 
 }
