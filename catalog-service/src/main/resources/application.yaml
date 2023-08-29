@@ -7,7 +7,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/catalog_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 123
+    password: admin
   jpa:
     show-sql: true
     properties:

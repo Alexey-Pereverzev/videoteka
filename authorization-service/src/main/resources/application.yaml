@@ -2,15 +2,26 @@ server:
   port: 8187
   servlet:
     context-path: /auth-service
+flyway:
+  user: security
+  password: SequrityVideoteka2023
+  schemas: users_roles_db
+  url: jdbc:postgresql://localhost:5432/users_roles_db
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/users_roles_db
+    username: postgres
+    password: admin
   rabbitmq:
     host: ${RABBIT_LOCATION:127.0.0.1}
     port: 5672
-  datasource:
-    url: jdbc:postgresql://localhost:5432/users_roles_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 123
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/users_roles_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+#    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: 123
   jpa:
     show-sql: true
     properties:
@@ -30,18 +41,5 @@ integrations:
 
 jwt:
   lifetime: 36000000
-
-
-#flyway:
-#  user: security
-#  password: SequrityVideoteka2023
-#  schemas: users_roles_db
-#  url: jdbc:postgresql://194.87.101.43:5432/users_roles_db
-#spring:
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://194.87.101.43:5432/users_roles_db
-#    username: security
-#    password: SequrityVideoteka2023
 
 

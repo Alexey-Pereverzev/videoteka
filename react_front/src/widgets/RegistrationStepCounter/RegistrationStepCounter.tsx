@@ -2,6 +2,7 @@ import  {FC} from 'react'
 import {Box, Typography, useMediaQuery, useTheme} from "@mui/material"
 import FlexBetween from "../../components/UI/FlexBetween"
 import "./RegistrationStepCounter.css"
+// @ts-ignore
 import {displayIcon, iconClass} from "../../utils/RegisterStepUtils.tsx"
 interface RegistrationStepProps {
     step: number

@@ -65,12 +65,11 @@ export let rerenderEntireTree = (state) =>{
 
 
     root.render(
-        <React.StrictMode>
-        useEffect(() => {
-            run()
-        },[])
             <DevSupport ComponentPreviews={ComponentPreviews}
                         useInitialHook={useInitial}>
+                            useEffect(() => {
+                                run()
+                            },[])
 
                 <App state={state}
                      login={login}
@@ -84,9 +83,8 @@ export let rerenderEntireTree = (state) =>{
                      getAdminContent={getAdminContent}
                      addFilm={addFilm}
                      updateMessageHandler={updateMessageHandler}/>
-
             </DevSupport>
-        </React.StrictMode>
+
     );
 }
 reportWebVitals();

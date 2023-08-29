@@ -10,8 +10,6 @@ import {AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
 // login(): POST{email, password} & save JWT to Local Storage
 const SignIn = () => {
 
-
-
   const  sendLoginRequest = (event) => {
         event.preventDefault(true);
         const username = event.target.username.value
@@ -27,7 +25,7 @@ const SignIn = () => {
                         axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
                         localStorage.setItem("customer", JSON.stringify(response.data))
                         localStorage.setItem("username", JSON.stringify(username))
-                        this.showCurrentUserInfo()
+                        showCurrentUserInfo()
 
                         console.log(JSON.parse(localStorage.getItem("userId")))
                         await axios.get('http://localhost:5555/auth/api/v1/users/fullname_by_id', {
@@ -44,10 +42,9 @@ const SignIn = () => {
                         axios.get('http://localhost:5555/cart/api/v1/cart/' + localStorage.getItem('guestCartId') + '/merge')
                             .then(response => response.data)
 
-
+                        window.location = "/"
                     }
 
-                    window.location = "/"
                 }, function errorCallback(response) {
                     console.log(response)
                     let displayCartNotification = (message) => {
